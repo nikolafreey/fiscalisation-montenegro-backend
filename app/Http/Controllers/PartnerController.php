@@ -14,17 +14,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Partner::all();
     }
 
     /**
@@ -35,7 +25,8 @@ class PartnerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $partner = Partner::create($request->all());
+        return response()->json([$partner], 201);
     }
 
     /**
@@ -46,18 +37,7 @@ class PartnerController extends Controller
      */
     public function show(Partner $partner)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Partner  $partner
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Partner $partner)
-    {
-        //
+        return response()->json($partner, 200);
     }
 
     /**
@@ -69,7 +49,8 @@ class PartnerController extends Controller
      */
     public function update(Request $request, Partner $partner)
     {
-        //
+        $partner->update($request->all());
+        return response()->json([$partner], 200);
     }
 
     /**
@@ -80,6 +61,7 @@ class PartnerController extends Controller
      */
     public function destroy(Partner $partner)
     {
-        //
+        $partner->delete();
+        return response()->json($partner, 200);
     }
 }
