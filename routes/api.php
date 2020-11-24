@@ -35,12 +35,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('/djelatnosti', DjelatnostController::class);
     Route::apiResource('/moduli', ModulController::class);
-    Route::apiResource('/ovlascenalica', OvlascenoLiceController::class);
-    Route::apiResource('/tipovikorisnika', TipKorisnikaController::class);
+    Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class);
+    Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class);
     Route::apiResource('/kategorije', KategorijaController::class);
-    Route::apiResource('/fizickalica', FizickoLiceController::class);
+    Route::apiResource('/fizicka-lica', FizickoLiceController::class);
     Route::apiResource('/preduzeca', PreduzeceController::class);
-    Route::apiResource('/ziroracuni', ZiroRacunController::class);
+    Route::apiResource('/ziro-racuni', ZiroRacunController::class);
     Route::apiResource('/partneri', PartnerController::class);
 
 
