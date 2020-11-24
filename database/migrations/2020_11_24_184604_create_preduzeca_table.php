@@ -13,7 +13,7 @@ class CreatePreduzeceTable extends Migration
      */
     public function up()
     {
-        Schema::create('preduzece', function (Blueprint $table) {
+        Schema::create('preduzeca', function (Blueprint $table) {
             $table->id();
             $table->string('kratki_naziv', 50)->unique();
             $table->string('puni_naziv', 100);

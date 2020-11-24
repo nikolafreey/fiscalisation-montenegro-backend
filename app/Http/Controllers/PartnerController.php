@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buyer;
+use App\Models\Partner;
 use Illuminate\Http\Request;
 
-class BuyerController extends Controller
+class PartnerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,19 @@ class BuyerController extends Controller
      */
     public function index()
     {
-        return Buyer::all();
+        //
     }
 
-    
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -26,43 +35,51 @@ class BuyerController extends Controller
      */
     public function store(Request $request)
     {
-        $buyer = Buyer::create($request->all());
-        return response()->json([$buyer], 201);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Buyer  $buyer
+     * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function show(Buyer $buyer)
+    public function show(Partner $partner)
     {
-        return response()->json($buyer, 200);
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Partner  $partner
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Partner $partner)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Buyer  $buyer
+     * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buyer $buyer)
+    public function update(Request $request, Partner $partner)
     {
-        $buyer->update($request->all());
-        return response()->json([$buyer], 200);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Buyer  $buyer
+     * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Buyer $buyer)
+    public function destroy(Partner $partner)
     {
-        $buyer->delete();
-        return response()->json('Deleted', 200);
+        //
     }
 }
