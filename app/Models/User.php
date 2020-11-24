@@ -17,10 +17,28 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
+        'ime',
+        'prezime',
+        'jezik',
+        'avatar',
+        'paket',
+        'preuzece_id',
+        'tip_id'
+
     ];
+
+    public function preduzece(){
+        return $this->belongsTo('App\Models\Preduzece','preduzece_id');
+    }
+    public function tip_korisnika(){
+        return $this->belongsTo('App\Models\TipKorisnika','tip_id');
+    }
+
+    public function moduli(){
+        return $this->belongsToMany('App\Models\Modul','modul_user','user_id','modul_id');
+    }
 
     /**
      * The attributes that should be hidden for arrays.
