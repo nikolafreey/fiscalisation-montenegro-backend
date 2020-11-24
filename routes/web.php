@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
 /*
 |--------------------------------------------------------------------------
