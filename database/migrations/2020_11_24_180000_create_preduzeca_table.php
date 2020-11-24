@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePreduzeceTable extends Migration
+class CreatePreduzecaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -51,7 +51,12 @@ class CreatePreduzeceTable extends Migration
             $table->boolean('status');
             $table->boolean('privatnost');
             $table->boolean('verifikovan');
-            $table->foreignId('kategorija_id')->constrained('kategorije');
+            
+            $table->foreignId('kategorija_id')
+                ->constrained('kategorije')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            
             $table->timestamps();
         });
     }

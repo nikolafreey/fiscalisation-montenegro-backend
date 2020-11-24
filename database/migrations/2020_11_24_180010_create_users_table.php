@@ -22,11 +22,15 @@ class CreateUsersTable extends Migration
             $table->string('jezik',10);
             $table->string('avatar',255);
             $table->boolean('paket');
-            $table->foreignId('preduzece_id')->constrained('preduzeca')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('tip_id')->constrained('tipovi_korisnika')->onDelete('cascade')->onUpdate('cascade');
 
-
-
+            $table->foreignId('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreignId('tip_id')
+                ->constrained('tipovi_korisnika')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

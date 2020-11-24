@@ -15,7 +15,7 @@ class CreateFizickaLicaTable extends Migration
     {
         Schema::create('fizicka_lica', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            
             $table->string('ime', 50);
             $table->string('prezime', 50);
             $table->string('jmbg', 13);
@@ -34,6 +34,8 @@ class CreateFizickaLicaTable extends Migration
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->timestamps();
 
         });
     }

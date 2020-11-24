@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePartnersTable extends Migration
+class CreatePartneriTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,6 @@ class CreatePartnersTable extends Migration
     {
         Schema::create('partneri', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('kontakt_ime',50);
             $table->string('kontakt_prezime',50);
             $table->string('kontakt_telefon',50);
@@ -25,9 +24,21 @@ class CreatePartnersTable extends Migration
             $table->text('opis');
             
             $table->foreignId('user_id')
-                ->constrained('user')
+                ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->foreignId('fizicko_lice_id')
+                ->nullable()
+                ->constrained('fizicka_lica')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreignId('preduzece_id')
+                ->nullable()
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->timestamps();
         });
     }
 

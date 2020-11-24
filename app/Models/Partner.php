@@ -25,4 +25,12 @@ class Partner extends Model
     public function user() {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+
+    public function fizickoLice() {
+        return $this->belongsTo('App\Models\FizickoLice', 'fizicko_lice_id');
+    }
+
+    public function preduzece() {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
 }
