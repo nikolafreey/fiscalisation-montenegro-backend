@@ -26,7 +26,7 @@ class DjelatnostController extends Controller
     public function store(Request $request)
     {
         $djelatnost = Djelatnost::create($request->all());
-        return response()->json([$djelatnost], 201);
+        return response()->json($djelatnost, 201);
     }
 
     /**
@@ -50,7 +50,7 @@ class DjelatnostController extends Controller
     public function update(Request $request, Djelatnost $djelatnost)
     {
         $djelatnost->update($request->all());
-        return response()->json([$djelatnost], 200);
+        return response()->json($djelatnost, 200);
     }
 
     /**

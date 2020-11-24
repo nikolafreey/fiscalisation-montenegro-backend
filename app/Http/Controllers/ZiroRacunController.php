@@ -14,7 +14,7 @@ class ZiroRacunController extends Controller
      */
     public function index()
     {
-        ZiroRacun::all();
+        return ZiroRacun::all();
     }
 
     /**
@@ -26,7 +26,6 @@ class ZiroRacunController extends Controller
     public function store(Request $request)
     {
         $ziroRacun = ZiroRacun::create($request->all());
-
         return response()->json($ziroRacun, 201);
     }
 
@@ -51,7 +50,6 @@ class ZiroRacunController extends Controller
     public function update(Request $request, ZiroRacun $ziroRacun)
     {
         $ziroRacun->update($request->all());
-
         return response()->json($ziroRacun, 200);
     }
 
@@ -64,7 +62,6 @@ class ZiroRacunController extends Controller
     public function destroy(ZiroRacun $ziroRacun)
     {
         $ziroRacun->delete();
-
         return response()->json($ziroRacun, 200);
     }
 }

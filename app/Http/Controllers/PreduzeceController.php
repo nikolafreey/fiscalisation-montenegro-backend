@@ -26,7 +26,7 @@ class PreduzeceController extends Controller
     public function store(Request $request)
     {
         $preduzece = Preduzece::create($request->all());
-        return response()->json([$preduzece], 201);
+        return response()->json($preduzece, 201);
     }
 
     /**
@@ -50,7 +50,7 @@ class PreduzeceController extends Controller
     public function update(Request $request, Preduzece $preduzece)
     {
         $preduzece->update($request->all());
-        return response()->json([$preduzece], 200);
+        return response()->json($preduzece, 200);
     }
 
     /**

@@ -26,7 +26,7 @@ class KategorijaController extends Controller
     public function store(Request $request)
     {
         $kategorija = Kategorija::create($request->all());
-        return response()->json([$kategorija], 201);
+        return response()->json($kategorija, 201);
     }
 
     /**
@@ -50,7 +50,7 @@ class KategorijaController extends Controller
     public function update(Request $request, Kategorija $kategorija)
     {
         $kategorija->update($request->all());
-        return response()->json([$kategorija], 200);
+        return response()->json($kategorija, 200);
     }
 
     /**

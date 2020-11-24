@@ -26,7 +26,7 @@ class OvlascenoLiceController extends Controller
     public function store(Request $request)
     {
         $ovlascenoLice = OvlascenoLice::create($request->all());
-        return response()->json([$ovlascenoLice], 201);
+        return response()->json($ovlascenoLice, 201);
     }
 
     /**
@@ -50,7 +50,7 @@ class OvlascenoLiceController extends Controller
     public function update(Request $request, OvlascenoLice $ovlascenoLice)
     {
         $ovlascenoLice->update($request->all());
-        return response()->json([$ovlascenoLice], 200);
+        return response()->json($ovlascenoLice, 200);
     }
 
     /**

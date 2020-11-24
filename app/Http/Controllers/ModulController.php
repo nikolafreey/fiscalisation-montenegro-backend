@@ -15,11 +15,7 @@ class ModulController extends Controller
     public function index()
     {
         return Modul::all();
-
     }
-
- 
-   
 
     /**
      * Store a newly created resource in storage.
@@ -30,7 +26,7 @@ class ModulController extends Controller
     public function store(Request $request)
     {
         $modul = Modul::create($request->all());
-        return response()->json([$modul], 201);
+        return response()->json($modul, 201);
     }
 
     /**
@@ -44,9 +40,6 @@ class ModulController extends Controller
         return response()->json($modul, 200);
     }
 
- 
-  
-
     /**
      * Update the specified resource in storage.
      *
@@ -57,7 +50,7 @@ class ModulController extends Controller
     public function update(Request $request, Modul $modul)
     {
         $modul->update($request->all());
-        return response()->json([$modul], 200);
+        return response()->json($modul, 200);
     }
 
     /**

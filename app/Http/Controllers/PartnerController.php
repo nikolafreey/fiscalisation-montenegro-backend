@@ -26,7 +26,7 @@ class PartnerController extends Controller
     public function store(Request $request)
     {
         $partner = Partner::create($request->all());
-        return response()->json([$partner], 201);
+        return response()->json($partner, 201);
     }
 
     /**
@@ -50,7 +50,7 @@ class PartnerController extends Controller
     public function update(Request $request, Partner $partner)
     {
         $partner->update($request->all());
-        return response()->json([$partner], 200);
+        return response()->json($partner, 200);
     }
 
     /**

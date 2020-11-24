@@ -15,11 +15,7 @@ class TipKorisnikaController extends Controller
     public function index()
     {
         return TipKorisnika::all();
-
     }
-
- 
-   
 
     /**
      * Store a newly created resource in storage.
@@ -30,7 +26,7 @@ class TipKorisnikaController extends Controller
     public function store(Request $request)
     {
         $tipKorisnika = TipKorisnika::create($request->all());
-        return response()->json([$tipKorisnika], 201);
+        return response()->json($tipKorisnika, 201);
     }
 
     /**
@@ -44,9 +40,6 @@ class TipKorisnikaController extends Controller
         return response()->json($tipKorisnika, 200);
     }
 
- 
-  
-
     /**
      * Update the specified resource in storage.
      *
@@ -57,7 +50,7 @@ class TipKorisnikaController extends Controller
     public function update(Request $request, TipKorisnika $tipKorisnika)
     {
         $tipKorisnika->update($request->all());
-        return response()->json([$tipKorisnika], 200);
+        return response()->json($tipKorisnika, 200);
     }
 
     /**
@@ -68,7 +61,7 @@ class TipKorisnikaController extends Controller
      */
     public function destroy(TipKorisnika $tipKorisnika)
     {
-        $buyer->delete();
+        $tipKorisnika->delete();
         return response()->json($tipKorisnika, 200);
     }
 }
