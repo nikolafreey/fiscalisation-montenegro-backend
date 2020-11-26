@@ -14,7 +14,7 @@ class OvlascenoLiceController extends Controller
      */
     public function index()
     {
-        return OvlascenoLice::all();
+        return OvlascenoLice::paginate();
     }
 
     /**

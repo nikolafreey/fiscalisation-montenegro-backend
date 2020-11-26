@@ -14,7 +14,7 @@ class KategorijaController extends Controller
      */
     public function index()
     {
-        return Kategorija::all();
+        return Kategorija::paginate();
     }
 
     /**

@@ -14,7 +14,7 @@ class PreduzeceController extends Controller
      */
     public function index()
     {
-        return Preduzece::all();
+        return Preduzece::paginate();
     }
 
     /**

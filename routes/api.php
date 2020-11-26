@@ -32,16 +32,38 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
+    'fizicka-lica' => 'fizickoLice'
+]);
+Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
+    'djelatnosti' => 'djelatnost'
+]);
+Route::apiResource('/moduli', ModulController::class)->parameters([
+    'moduli' => 'modul'
+]);
+Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class)->parameters([
+    'ovlascena-lica' => 'ovlasceno-lice'
+]);
+Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class)->parameters([
+    'tipovi-korisnika' => 'tip-korisnika'
+]);
+Route::apiResource('/kategorije', KategorijaController::class)->parameters([
+    'kategorije' => 'kategorija'
+]);
+
+Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
+    'preduzeca' => 'preduzece'
+]);
+Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
+    'ziro-racuni' => 'ziro-racun'
+]);
+Route::apiResource('/partneri', PartnerController::class)->parameters([
+    'partneri' => 'partner'
+]);
+
+
 Route::middleware('auth:sanctum')->group(function() {
-    Route::apiResource('/djelatnosti', DjelatnostController::class);
-    Route::apiResource('/moduli', ModulController::class);
-    Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class);
-    Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class);
-    Route::apiResource('/kategorije', KategorijaController::class);
-    Route::apiResource('/fizicka-lica', FizickoLiceController::class);
-    Route::apiResource('/preduzeca', PreduzeceController::class);
-    Route::apiResource('/ziro-racuni', ZiroRacunController::class);
-    Route::apiResource('/partneri', PartnerController::class);
+    
 
 
 });

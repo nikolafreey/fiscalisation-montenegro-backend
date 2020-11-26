@@ -22,9 +22,9 @@ class CreatePreduzecaTable extends Migration
             $table->string('grad', 50);
             $table->string('drzava', 50);
             $table->string('telefon', 50);
-            $table->boolean('telfon_viber');
-            $table->boolean('telfon_whatsapp');
-            $table->boolean('telfon_facetime');
+            $table->boolean('telefon_viber');
+            $table->boolean('telefon_whatsapp');
+            $table->boolean('telefon_facetime');
             $table->string('fax', 50);
             $table->string('email', 191);
             $table->string('website', 191);

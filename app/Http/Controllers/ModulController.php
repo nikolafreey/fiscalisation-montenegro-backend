@@ -14,7 +14,7 @@ class ModulController extends Controller
      */
     public function index()
     {
-        return Modul::all();
+        return Modul::paginate();
     }
 
     /**

@@ -14,7 +14,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        return Partner::all();
+        return Partner::paginate();
     }
 
     /**

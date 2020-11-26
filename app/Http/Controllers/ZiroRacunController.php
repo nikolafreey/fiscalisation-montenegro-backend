@@ -14,7 +14,7 @@ class ZiroRacunController extends Controller
      */
     public function index()
     {
-        return ZiroRacun::all();
+        return ZiroRacun::paginate();
     }
 
     /**

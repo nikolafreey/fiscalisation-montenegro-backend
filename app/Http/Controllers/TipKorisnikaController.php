@@ -14,7 +14,7 @@ class TipKorisnikaController extends Controller
      */
     public function index()
     {
-        return TipKorisnika::all();
+        return TipKorisnika::paginate();
     }
 
     /**

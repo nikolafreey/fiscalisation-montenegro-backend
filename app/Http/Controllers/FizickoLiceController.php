@@ -14,7 +14,7 @@ class FizickoLiceController extends Controller
      */
     public function index()
     {
-        return FizickoLice::all();
+        return FizickoLice::paginate();
     }
 
     /**

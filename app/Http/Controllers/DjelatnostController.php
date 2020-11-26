@@ -14,7 +14,7 @@ class DjelatnostController extends Controller
      */
     public function index()
     {
-        return Djelatnost::all();
+        return Djelatnost::paginate();
     }
 
     /**
