@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,6 +22,11 @@ class Partner extends Model
         'opis',
         'user_id',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
+    }
 
     public function user() {
         return $this->belongsTo('App\Models\User', 'user_id');
