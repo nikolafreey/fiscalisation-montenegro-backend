@@ -17,4 +17,8 @@ class Grupa extends Model
         'popust_procenti',
         'popust_iznos'
     ];
+
+    public function usluge() {
+        return $this->hasMany('App\Models\Usluga', 'grupa_id');
+    }
 }

@@ -15,4 +15,8 @@ class JedinicaMjere extends Model
         'naziv',
         'kratki_naziv'
     ];
+
+    public function usluge() {
+        return $this->hasMany('App\Models\Usluga', 'jedinica_mjere_id');
+    }
 }
