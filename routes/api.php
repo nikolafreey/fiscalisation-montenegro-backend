@@ -34,6 +34,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/me', [UserController::class, 'me']);
 
+Route::apiResource('/usluge', DjelatnostController::class)->parameters([
+    'usluge' => 'usluga'
+]);
+
 Route::apiResource('/jedinice_mjere', DjelatnostController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
 ]);

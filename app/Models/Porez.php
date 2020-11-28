@@ -15,4 +15,8 @@ class Porez extends Model
         'naziv',
         'stopa'
     ];
+
+    public function usluge() {
+        return $this->hasMany('App\Models\Usluga', 'porez_id');
+    }
 }
