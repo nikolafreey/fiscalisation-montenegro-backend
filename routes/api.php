@@ -32,6 +32,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/me', [UserController::class, 'me']);
+
 Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
     'fizicka-lica' => 'fizickoLice'
 ]);
@@ -63,9 +65,7 @@ Route::apiResource('/partneri', PartnerController::class)->parameters([
 
 
 Route::middleware('auth:sanctum')->group(function() {
-    
-
-
+    Route::get('/me', [UserController::class, 'me']);
 });
 
 

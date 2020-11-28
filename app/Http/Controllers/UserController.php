@@ -65,4 +65,8 @@ class UserController extends Controller
         $user->delete();
         return response()->json($user, 200);
     }
+
+    public function me() {
+        return auth()->user();
+    }
 }
