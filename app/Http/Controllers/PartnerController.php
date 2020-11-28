@@ -25,8 +25,10 @@ class PartnerController extends Controller
      */
     public function store(Request $request)
     {
-        $partner = Partner::create($request->all());
-        return response()->json($partner, 201);
+        $partner = Partner::make($request->all());
+        $partner->user_id = auth()->id();
+        
+        return response()->json($partner->save(), 201);
     }
 
     /**
