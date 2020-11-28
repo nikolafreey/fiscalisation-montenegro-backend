@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreFizickoLice;
 use App\Models\FizickoLice;
 use Illuminate\Http\Request;
 
@@ -23,9 +24,9 @@ class FizickoLiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreFizickoLice $request)
     {
-        $fizickoLice = FizickoLice::create($request->all());
+        $fizickoLice = FizickoLice::create($request->validated());
 
         return response()->json($fizickoLice, 201);
     }
