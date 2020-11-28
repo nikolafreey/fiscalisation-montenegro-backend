@@ -34,10 +34,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/me', [UserController::class, 'me']);
 
+Route::apiResource('/porezi', DjelatnostController::class)->parameters([
+    'porezi' => 'porez'
+]);
+
+Route::apiResource('/grupe', DjelatnostController::class)->parameters([
+    'grupe' => 'grupa'
+]);
 
 Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
     'djelatnosti' => 'djelatnost'
 ]);
+
 Route::apiResource('/moduli', ModulController::class)->parameters([
     'moduli' => 'modul'
 ]);
