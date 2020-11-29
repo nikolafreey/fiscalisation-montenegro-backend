@@ -13,8 +13,11 @@ class FizickoLiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->search){
+            return FizickoLice::search($request->search)->paginate();
+        }
         return FizickoLice::paginate();
     }
 

@@ -77,12 +77,13 @@ Route::apiResource('/partneri', PartnerController::class)->parameters([
 Auth::routes();
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
+Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
+    'fizicka-lica' => 'fizickoLice'
+]);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/me', [UserController::class, 'me']);
-    Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
-        'fizicka-lica' => 'fizickoLice'
-    ]);
+    
 });
 
 
