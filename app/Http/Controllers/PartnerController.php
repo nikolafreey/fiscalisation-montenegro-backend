@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePartner;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 
@@ -23,11 +24,11 @@ class PartnerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePartner $request)
     {
-        $partner = Partner::make($request->all());
+        $partner = Partner::make($request->validated());
         $partner->user_id = auth()->id();
-        
+
         return response()->json($partner->save(), 201);
     }
 
@@ -49,9 +50,9 @@ class PartnerController extends Controller
      * @param  \App\Models\Partner  $partner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Partner $partner)
+    public function update(StorePartner $request, Partner $partner)
     {
-        $partner->update($request->all());
+        $partner->update($request->validated());
         return response()->json($partner, 200);
     }
 
