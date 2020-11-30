@@ -12,6 +12,13 @@ use App\Http\Controllers\ZiroRacunController;
 use App\Http\Controllers\KategorijaController;
 use App\Http\Controllers\TipKorisnikaController;
 use App\Http\Controllers\FizickoLiceController;
+use App\Http\Controllers\UslugaController;
+use App\Http\Controllers\GrupaController;
+use App\Http\Controllers\JedinicaMjereController;
+use App\Http\Controllers\PorezController;
+
+
+
 
 
 
@@ -34,19 +41,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/me', [UserController::class, 'me']);
 
-Route::apiResource('/usluge', DjelatnostController::class)->parameters([
-    'usluge' => 'usluga'
-]);
 
-Route::apiResource('/jedinice_mjere', DjelatnostController::class)->parameters([
+
+Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
 ]);
 
-Route::apiResource('/porezi', DjelatnostController::class)->parameters([
+Route::apiResource('/porezi', PorezController::class)->parameters([
     'porezi' => 'porez'
 ]);
 
-Route::apiResource('/grupe', DjelatnostController::class)->parameters([
+Route::apiResource('/grupe', GrupaController::class)->parameters([
     'grupe' => 'grupa'
 ]);
 
@@ -82,6 +87,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/me', [UserController::class, 'me']);
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
+    ]);
+    Route::apiResource('/usluge', UslugaController::class)->parameters([
+        'usluge' => 'usluga'
     ]);
 });
 

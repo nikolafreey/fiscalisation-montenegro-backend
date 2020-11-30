@@ -21,7 +21,7 @@ class Usluga extends Model
         'user_id',
         'grupa_id',
         'jedinica_mjere_id',
-        'porezi_id',
+        'porez_id',
     ];
 
     public function user() {

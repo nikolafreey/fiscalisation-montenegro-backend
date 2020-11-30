@@ -15,9 +15,9 @@ class CreatePoreziTable extends Migration
     {
         Schema::create('porezi', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('naziv', 45);
             $table->decimal('stopa', 3, 2);
+            $table->timestamps();
         });
     }
 

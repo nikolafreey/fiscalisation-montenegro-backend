@@ -15,9 +15,9 @@ class CreateJedinicemjereTable extends Migration
     {
         Schema::create('jedinice_mjere', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('naziv', 45);
             $table->string('kratki_naziv', 45);
+            $table->timestamps();
         });
     }
 
