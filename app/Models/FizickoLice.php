@@ -31,10 +31,6 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
-<<<<<<< HEAD
-    public function ziroRacuni()
-    {
-=======
     use Searchable;
 
     protected $indexConfigurator = MyIndexConfigurator::class;
@@ -62,7 +58,6 @@ class FizickoLice extends Model
     }
 
     public function ziroRacuni() {
->>>>>>> 11a2ee88526ca297894242b774266c422129c42c
         return $this->hasMany('App\Models\ZiroRacun', 'fizicko_lice_id');
     }
 
