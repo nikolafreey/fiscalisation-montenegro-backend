@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\MyIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use ScoutElastic\Searchable;
 
 class FizickoLice extends Model
 {
@@ -29,8 +31,38 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
+<<<<<<< HEAD
     public function ziroRacuni()
     {
+=======
+    use Searchable;
+
+    protected $indexConfigurator = MyIndexConfigurator::class;
+
+    protected $searchRules = [
+        //
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'ime' => [
+                'type' => 'text',
+            ],
+            'prezime' => [
+                'type' => 'text',
+            ],
+        ]
+    ];
+
+    public function toSearchableArray()
+    {
+        $array = $this->only('ime', 'prezime');
+
+        return $array;
+    }
+
+    public function ziroRacuni() {
+>>>>>>> 11a2ee88526ca297894242b774266c422129c42c
         return $this->hasMany('App\Models\ZiroRacun', 'fizicko_lice_id');
     }
 

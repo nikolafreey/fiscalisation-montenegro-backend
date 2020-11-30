@@ -12,10 +12,7 @@ use App\Http\Controllers\ZiroRacunController;
 use App\Http\Controllers\KategorijaController;
 use App\Http\Controllers\TipKorisnikaController;
 use App\Http\Controllers\FizickoLiceController;
-
-
-
-
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,12 +74,16 @@ Route::apiResource('/partneri', PartnerController::class)->parameters([
     'partneri' => 'partner'
 ]);
 
+Auth::routes();
+Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
+
+Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
+    'fizicka-lica' => 'fizickoLice'
+]);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/me', [UserController::class, 'me']);
-    Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
-        'fizicka-lica' => 'fizickoLice'
-    ]);
+    
 });
 
 
