@@ -15,11 +15,12 @@ class CreateGrupeTable extends Migration
     {
         Schema::create('grupe', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('naziv', 50);
             $table->text('opis');
             $table->decimal('popust_procenti', 4, 2);
             $table->decimal('popust_iznos', 15, 2);
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 

@@ -15,13 +15,14 @@ class CreateUslugeTable extends Migration
     {
         Schema::create('usluge', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('naziv', 50);
             $table->text('opis');
             $table->decimal('cijena_bez_pdv', 15, 2);
             $table->decimal('pdv_iznos', 15, 2);
             $table->decimal('ukupna_cijena', 15, 2);
             $table->boolean('status');
+            $table->softDeletes();
+            $table->timestamps();
 
             $table->foreignId('user_id')
                 ->constrained('users')
@@ -39,7 +40,6 @@ class CreateUslugeTable extends Migration
                 ->constrained('porezi')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
         });
     }
 

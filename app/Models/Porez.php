@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Porez extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'porezi';
 
@@ -16,7 +17,8 @@ class Porez extends Model
         'stopa'
     ];
 
-    public function usluge() {
+    public function usluge()
+    {
         return $this->hasMany('App\Models\Usluga', 'porez_id');
     }
 }

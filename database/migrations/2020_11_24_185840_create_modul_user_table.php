@@ -15,16 +15,17 @@ class CreateModulUserTable extends Migration
     {
         Schema::create('modul_user', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('modul_id')
                 ->constrained('moduli')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreignId('user_id')
-                ->constrained('users') 
+                ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

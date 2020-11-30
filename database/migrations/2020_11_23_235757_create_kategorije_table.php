@@ -16,6 +16,7 @@ class CreateKategorijeTable extends Migration
         Schema::create('kategorije', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50)->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

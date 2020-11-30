@@ -16,7 +16,7 @@ class CreateZiroRacuniTable extends Migration
         Schema::create('ziro_racuni', function (Blueprint $table) {
             $table->id();
             $table->string('broj_racuna', 50);
-            
+
             $table->foreignId('preduzece_id')
                 ->nullable()
                 ->constrained('preduzeca')
@@ -28,6 +28,7 @@ class CreateZiroRacuniTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUsluga;
 use App\Models\Usluga;
 use Illuminate\Http\Request;
 
@@ -23,11 +24,11 @@ class UslugaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUsluga $request)
     {
-        $usluga = Usluga::make($request->all());
+        $usluga = Usluga::make($request->validated());
         $usluga->user_id = auth()->id();
-        
+
         return response()->json($usluga->save(), 201);
     }
 
@@ -49,9 +50,9 @@ class UslugaController extends Controller
      * @param  \App\Models\Usluga  $usluga
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Usluga $usluga)
+    public function update(StoreUsluga $request, Usluga $usluga)
     {
-        $usluga->update($request->all());
+        $usluga->update($request->validated());
         return response()->json($usluga, 200);
     }
 

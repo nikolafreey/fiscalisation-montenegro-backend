@@ -51,12 +51,13 @@ class CreatePreduzecaTable extends Migration
             $table->boolean('status');
             $table->boolean('privatnost');
             $table->boolean('verifikovan');
-            
+
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
