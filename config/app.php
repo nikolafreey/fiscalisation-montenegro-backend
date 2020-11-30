@@ -230,4 +230,6 @@ return [
 
     ],
 
+    'front_base_url' => env('FRONT_BASE_URL'),
+
 ];

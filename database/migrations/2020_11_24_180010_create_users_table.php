@@ -15,12 +15,12 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('email',50)->unique();
+            $table->string('email', 50)->unique();
             $table->string('password');
-            $table->string('ime',50);
-            $table->string('prezime',50);
-            $table->string('jezik',10);
-            $table->string('avatar',255);
+            $table->string('ime', 50);
+            $table->string('prezime', 50);
+            $table->string('jezik', 10);
+            $table->string('avatar', 255);
             $table->boolean('paket');
 
             $table->foreignId('preduzece_id')
@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

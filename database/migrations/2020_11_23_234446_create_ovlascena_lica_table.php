@@ -22,6 +22,7 @@ class CreateOvlascenaLicaTable extends Migration
             $table->boolean('telefon_whatsapp');
             $table->boolean('telefon_facetime');
             $table->string('email', 50);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

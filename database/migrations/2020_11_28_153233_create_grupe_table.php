@@ -19,6 +19,7 @@ class CreateGrupeTable extends Migration
             $table->text('opis');
             $table->decimal('popust_procenti', 4, 2);
             $table->decimal('popust_iznos', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Grupa extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'grupe';
 
@@ -18,7 +19,8 @@ class Grupa extends Model
         'popust_iznos'
     ];
 
-    public function usluge() {
+    public function usluge()
+    {
         return $this->hasMany('App\Models\Usluga', 'grupa_id');
     }
 }

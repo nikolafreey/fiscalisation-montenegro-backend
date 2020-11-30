@@ -16,6 +16,7 @@ class CreateDjelatnostiTable extends Migration
         Schema::create('djelatnosti', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

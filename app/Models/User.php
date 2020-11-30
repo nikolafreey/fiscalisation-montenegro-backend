@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,15 +30,18 @@ class User extends Authenticatable
 
     ];
 
-    public function preduzece(){
-        return $this->belongsTo('App\Models\Preduzece','preduzece_id');
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
-    public function tip_korisnika(){
-        return $this->belongsTo('App\Models\TipKorisnika','tip_id');
+    public function tip_korisnika()
+    {
+        return $this->belongsTo('App\Models\TipKorisnika', 'tip_id');
     }
 
-    public function moduli(){
-        return $this->belongsToMany('App\Models\Modul','modul_user','user_id','modul_id');
+    public function moduli()
+    {
+        return $this->belongsToMany('App\Models\Modul', 'modul_user', 'user_id', 'modul_id');
     }
 
     /**

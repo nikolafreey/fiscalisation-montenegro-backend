@@ -17,6 +17,7 @@ class CreateJedinicemjereTable extends Migration
             $table->id();
             $table->string('naziv', 45);
             $table->string('kratki_naziv', 45);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

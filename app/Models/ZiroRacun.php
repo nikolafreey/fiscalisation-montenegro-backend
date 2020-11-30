@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ZiroRacun extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'ziro_racuni';
 
@@ -17,12 +18,13 @@ class ZiroRacun extends Model
         'fizicko_lice_id'
     ];
 
-    public function preduzece() {
+    public function preduzece()
+    {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 
-    public function fizickoLice() {
+    public function fizickoLice()
+    {
         return $this->belongsTo('App\Models\FizickoLice', 'fizicko_lice_id');
     }
-    
 }

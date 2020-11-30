@@ -21,8 +21,9 @@ class CreateUslugeTable extends Migration
             $table->decimal('pdv_iznos', 15, 2);
             $table->decimal('ukupna_cijena', 15, 2);
             $table->boolean('status');
+            $table->softDeletes();
             $table->timestamps();
-            
+
             $table->foreignId('user_id')
             ->constrained('users')
             ->onDelete('cascade')
@@ -39,7 +40,6 @@ class CreateUslugeTable extends Migration
                 ->constrained('porezi')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
         });
     }
 

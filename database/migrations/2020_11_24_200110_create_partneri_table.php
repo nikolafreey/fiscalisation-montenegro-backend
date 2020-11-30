@@ -15,14 +15,14 @@ class CreatePartneriTable extends Migration
     {
         Schema::create('partneri', function (Blueprint $table) {
             $table->id();
-            $table->string('kontakt_ime',50);
-            $table->string('kontakt_prezime',50);
-            $table->string('kontakt_telefon',50);
+            $table->string('kontakt_ime', 50);
+            $table->string('kontakt_prezime', 50);
+            $table->string('kontakt_telefon', 50);
             $table->boolean('kontakt_viber');
             $table->boolean('kontakt_whatsapp');
             $table->boolean('kontakt_facetime');
             $table->text('opis');
-            
+
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
@@ -38,6 +38,7 @@ class CreatePartneriTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

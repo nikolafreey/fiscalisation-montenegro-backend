@@ -15,7 +15,8 @@ class CreateModuliTable extends Migration
     {
         Schema::create('moduli', function (Blueprint $table) {
             $table->id();
-            $table->string('naziv',50)->unique();
+            $table->string('naziv', 50)->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

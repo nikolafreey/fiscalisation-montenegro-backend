@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePreduzece;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
@@ -23,9 +24,9 @@ class PreduzeceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePreduzece $request)
     {
-        $preduzece = Preduzece::create($request->all());
+        $preduzece = Preduzece::create($request->validated());
         return response()->json($preduzece, 201);
     }
 
@@ -47,9 +48,9 @@ class PreduzeceController extends Controller
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Preduzece $preduzece)
+    public function update(StorePreduzece $request, Preduzece $preduzece)
     {
-        $preduzece->update($request->all());
+        $preduzece->update($request->validated());
         return response()->json($preduzece, 200);
     }
 

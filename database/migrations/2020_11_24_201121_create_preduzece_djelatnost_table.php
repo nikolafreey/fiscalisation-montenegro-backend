@@ -15,16 +15,17 @@ class CreatePreduzeceDjelatnostTable extends Migration
     {
         Schema::create('preduzece_djelatnost', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('djelatnost_id')
                 ->constrained('djelatnosti')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreignId('preduzece_id')
-            ->constrained('preduzeca')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
-            
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

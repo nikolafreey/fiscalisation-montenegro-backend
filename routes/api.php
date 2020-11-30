@@ -16,13 +16,7 @@ use App\Http\Controllers\UslugaController;
 use App\Http\Controllers\GrupaController;
 use App\Http\Controllers\JedinicaMjereController;
 use App\Http\Controllers\PorezController;
-
-
-
-
-
-
-
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,6 +76,12 @@ Route::apiResource('/partneri', PartnerController::class)->parameters([
     'partneri' => 'partner'
 ]);
 
+Auth::routes();
+Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
+
+Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
+    'fizicka-lica' => 'fizickoLice'
+]);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/me', [UserController::class, 'me']);

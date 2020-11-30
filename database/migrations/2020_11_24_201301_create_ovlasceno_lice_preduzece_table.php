@@ -15,7 +15,7 @@ class CreateOvlascenoLicePreduzeceTable extends Migration
     {
         Schema::create('ovlasceno_lice_preduzece', function (Blueprint $table) {
             $table->id();
-            
+
             $table->foreignId('ovlasceno_lice_id')
                 ->constrained('ovlascena_lica')
                 ->onDelete('cascade')
@@ -24,7 +24,8 @@ class CreateOvlascenoLicePreduzeceTable extends Migration
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }
