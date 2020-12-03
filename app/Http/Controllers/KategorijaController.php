@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreKategorija;
 use App\Models\Kategorija;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class KategorijaController extends Controller
 {
@@ -23,9 +25,11 @@ class KategorijaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreKategorija $request)
     {
         $kategorija = Kategorija::create($request->all());
+        $kategorija->updated_at = Carbon::now()->addHour();
+        $kategorija->created_at = Carbon::now()->addHour();
         return response()->json($kategorija, 201);
     }
 
@@ -37,7 +41,7 @@ class KategorijaController extends Controller
      */
     public function show(Kategorija $kategorija)
     {
-        return response()->json($kategorija, 200);
+        return response()->json($kategorija->created_at->format('d-m-Y h:i:s A'), 200);
     }
 
     /**
@@ -47,9 +51,10 @@ class KategorijaController extends Controller
      * @param  \App\Models\Kategorija  $kategorija
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kategorija $kategorija)
+    public function update(StoreKategorija $request, Kategorija $kategorija)
     {
         $kategorija->update($request->all());
+        $kategorija->updated_at = Carbon::now()->addHour();
         return response()->json($kategorija, 200);
     }
 

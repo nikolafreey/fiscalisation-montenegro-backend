@@ -21,4 +21,9 @@ class Porez extends Model
     {
         return $this->hasMany('App\Models\Usluga', 'porez_id');
     }
+
+    public function cijena_robe()
+    {
+        return $this->hasMany('App\Models\CijenaRobe', 'porez_id');
+    }
 }

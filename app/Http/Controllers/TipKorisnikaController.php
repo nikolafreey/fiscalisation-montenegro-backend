@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTipKorisnika;
 use App\Models\TipKorisnika;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class TipKorisnikaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTipKorisnika $request)
     {
         $tipKorisnika = TipKorisnika::create($request->all());
         return response()->json($tipKorisnika, 201);
@@ -47,7 +48,7 @@ class TipKorisnikaController extends Controller
      * @param  \App\Models\TipKorisnika  $tipKorisnika
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipKorisnika $tipKorisnika)
+    public function update(StoreTipKorisnika $request, TipKorisnika $tipKorisnika)
     {
         $tipKorisnika->update($request->all());
         return response()->json($tipKorisnika, 200);

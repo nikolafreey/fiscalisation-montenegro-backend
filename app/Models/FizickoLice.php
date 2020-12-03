@@ -31,35 +31,36 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
-    public function ziroRacuni()
+    // public function ziroRacuni()
+    // {
+    // use Searchable;
+
+    // protected $indexConfigurator = MyIndexConfigurator::class;
+
+    // protected $searchRules = [
+    //     //
+    // ];
+
+    // protected $mapping = [
+    //     'properties' => [
+    //         'ime' => [
+    //             'type' => 'text',
+    //         ],
+    //         'prezime' => [
+    //             'type' => 'text',
+    //         ],
+    //     ]
+    // ];
+
+    // public function toSearchableArray()
+    // {
+    //     $array = $this->only('ime', 'prezime');
+
+    //     return $array;
+    // }
+
+    public function ziroRacuni1()
     {
-    use Searchable;
-
-    protected $indexConfigurator = MyIndexConfigurator::class;
-
-    protected $searchRules = [
-        //
-    ];
-
-    protected $mapping = [
-        'properties' => [
-            'ime' => [
-                'type' => 'text',
-            ],
-            'prezime' => [
-                'type' => 'text',
-            ],
-        ]
-    ];
-
-    public function toSearchableArray()
-    {
-        $array = $this->only('ime', 'prezime');
-
-        return $array;
-    }
-
-    public function ziroRacuni() {
         return $this->hasMany('App\Models\ZiroRacun', 'fizicko_lice_id');
     }
 

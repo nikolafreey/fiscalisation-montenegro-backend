@@ -44,6 +44,36 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Modul', 'modul_user', 'user_id', 'modul_id');
     }
 
+    public function tip_atributa()
+    {
+        return $this->hasMany('App\Models\TipAtributa', 'user_id');
+    }
+
+    public function atribut_robe()
+    {
+        return $this->hasMany('App\Models\AtributRobe', 'user_id');
+    }
+
+    public function cijena_robe()
+    {
+        return $this->hasMany('App\Models\CijenaRobe', 'user_id');
+    }
+
+    public function kategorija_robe()
+    {
+        return $this->hasMany('App\Models\KategorijaRobe', 'user_id');
+    }
+
+    public function podkategorija_robe()
+    {
+        return $this->hasMany('App\Models\PodKategorijaRobe', 'user_id');
+    }
+
+    public function proizvodjac_robe()
+    {
+        return $this->hasMany('App\Models\ProizvodjacRobe', 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -47,4 +47,9 @@ class Preduzece extends Model
     {
         return $this->belongsTo('App\Models\Kategorija');
     }
+
+    public function roba()
+    {
+        return $this->belongsTo('App\Models\Roba', 'preduzece_id');
+    }
 }

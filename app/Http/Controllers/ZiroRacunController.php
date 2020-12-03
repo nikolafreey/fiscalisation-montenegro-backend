@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreZiroRacun;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class ZiroRacunController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreZiroRacun $request)
     {
         $ziroRacun = ZiroRacun::create($request->all());
         return response()->json($ziroRacun, 201);
@@ -47,7 +48,7 @@ class ZiroRacunController extends Controller
      * @param  \App\Models\ZiroRacun  $ziroRacun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ZiroRacun $ziroRacun)
+    public function update(StoreZiroRacun $request, ZiroRacun $ziroRacun)
     {
         $ziroRacun->update($request->all());
         return response()->json($ziroRacun, 200);

@@ -21,4 +21,9 @@ class JedinicaMjere extends Model
     {
         return $this->hasMany('App\Models\Usluga', 'jedinica_mjere_id');
     }
+
+    public function roba()
+    {
+        return $this->hasOne('App\Models\Roba', 'jedinica_mjere_id');
+    }
 }

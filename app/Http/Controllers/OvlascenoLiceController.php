@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOvlascenoLice;
 use App\Models\OvlascenoLice;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class OvlascenoLiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreOvlascenoLice $request)
     {
         $ovlascenoLice = OvlascenoLice::create($request->all());
         return response()->json($ovlascenoLice, 201);
@@ -47,7 +48,7 @@ class OvlascenoLiceController extends Controller
      * @param  \App\Models\OvlascenoLice  $ovlascenoLice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OvlascenoLice $ovlascenoLice)
+    public function update(StoreOvlascenoLice $request, OvlascenoLice $ovlascenoLice)
     {
         $ovlascenoLice->update($request->all());
         return response()->json($ovlascenoLice, 200);
