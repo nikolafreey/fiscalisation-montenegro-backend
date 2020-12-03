@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCijenaRobesTable extends Migration
+class CreateCijeneRobaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,6 +20,7 @@ class CreateCijenaRobesTable extends Migration
             $table->decimal('cijena_bez_pdv', 15, 2);
             $table->decimal('pdv_iznos', 15, 2);
             $table->decimal('ukupna_cijena', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreignId('user_id')

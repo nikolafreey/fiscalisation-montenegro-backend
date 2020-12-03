@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProizvodjacRobesTable extends Migration
+class CreateProizvodjaciRobaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -19,6 +19,7 @@ class CreateProizvodjacRobesTable extends Migration
             $table->string('opis', 255);
             $table->decimal('popust_procenti', 15, 2);
             $table->decimal('popust_iznos', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreignId('user_id')
