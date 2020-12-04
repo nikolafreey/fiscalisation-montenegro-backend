@@ -15,7 +15,7 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        return Partner::paginate();
+        return Partner::with(['preduzece', 'fizicko_lice'])->paginate();
     }
 
     /**
