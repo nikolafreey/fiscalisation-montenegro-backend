@@ -22,7 +22,13 @@ class OvlascenoLiceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'ime' => $this->faker->firstName(), 
+            'prezime' => $this->faker->lastName(), 
+            'telefon' => $this->faker->phoneNumber, 
+            'telefon_viber' => $this->faker->boolean(), 
+            'telefon_whatsapp' => $this->faker->boolean(), 
+            'telefon_facetime' => $this->faker->boolean(), 
+            'email' => $this->faker->safeEmail()
         ];
     }
 }
