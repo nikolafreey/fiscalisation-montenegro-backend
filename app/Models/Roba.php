@@ -28,4 +28,13 @@ class Roba extends Model
     {
         return $this->hasMany('App\Models\Preduzeca', 'id');
     }
+
+    public function tipovi_atributa()
+    {
+        return $this->belongsToMany('App\Models\TipAtributa', 'robe_tipovi_atributa', 'roba_id', 'tipovi_atributa_roba_id');
+    }
+    public function kategorije_roba()
+    {
+        return $this->belongsToMany('App\Models\KategorijaRobe', 'robe_kategorije', 'roba_id', 'kategorija_robe_id');
+    }
 }
