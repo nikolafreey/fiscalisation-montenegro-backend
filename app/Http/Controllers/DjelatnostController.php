@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDjelatnost;
 use App\Models\Djelatnost;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class DjelatnostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreDjelatnost $request)
     {
         $djelatnost = Djelatnost::create($request->all());
         return response()->json($djelatnost, 201);
@@ -47,7 +48,7 @@ class DjelatnostController extends Controller
      * @param  \App\Models\Djelatnost  $djelatnost
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Djelatnost $djelatnost)
+    public function update(StoreDjelatnost $request, Djelatnost $djelatnost)
     {
         $djelatnost->update($request->all());
         return response()->json($djelatnost, 200);

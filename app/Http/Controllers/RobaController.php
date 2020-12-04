@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGrupa;
-use App\Models\Grupa;
+use App\Http\Requests\StoreRoba;
+use App\Models\Roba;
 use Illuminate\Http\Request;
 
-class GrupaController extends Controller
+class RobaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class GrupaController extends Controller
      */
     public function index()
     {
-        return Grupa::all();
+        return Roba::paginate();
     }
 
     /**
@@ -24,42 +24,47 @@ class GrupaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoba $request)
     {
-        //
+        $roba = Roba::make($request->validated());
+        $roba->user_id = auth()->id();
+
+        return response()->json($roba->save(), 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Grupa  $grupa
+     * @param  \App\Models\Roba  $roba
      * @return \Illuminate\Http\Response
      */
-    public function show(Grupa $grupa)
+    public function show(Roba $roba)
     {
-        return $grupa;
+        return response()->json($roba, 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Grupa  $grupa
+     * @param  \App\Models\Roba  $roba
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Grupa $grupa)
+    public function update(StoreRoba $request, Roba $roba)
     {
-        //
+        $roba->update($request->validated());
+        return response()->json($roba, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Grupa  $grupa
+     * @param  \App\Models\Roba  $roba
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Grupa $grupa)
+    public function destroy(Roba $roba)
     {
-        //
+        $roba->delete();
+        return response()->json($roba, 200);
     }
 }

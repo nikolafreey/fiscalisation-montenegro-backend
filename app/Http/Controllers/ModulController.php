@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreModul;
 use App\Models\Modul;
 use Illuminate\Http\Request;
 
@@ -23,7 +24,7 @@ class ModulController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreModul $request)
     {
         $modul = Modul::create($request->all());
         return response()->json($modul, 201);
@@ -47,7 +48,7 @@ class ModulController extends Controller
      * @param  \App\Models\Modul  $modul
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Modul $modul)
+    public function update(StoreModul $request, Modul $modul)
     {
         $modul->update($request->all());
         return response()->json($modul, 200);

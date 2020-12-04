@@ -35,7 +35,7 @@ class StorePreduzece extends FormRequest
             'telfon_whatsapp' => 'boolean',
             'telfon_facetime' => 'boolean',
             'fax' => 'string|max:50|min:3',
-            'email' => 'string|max:191|min:3',
+            'email' => 'string|email',
             'website' => 'string|max:191|min:3',
             'pib' => 'require|string|max:50|min:3',
             'pdv' => 'require|string|max:50|min:3',
