@@ -38,7 +38,7 @@ class Preduzece extends Model
         return $this->belongsToMany('App\Models\Djelatnost', 'preduzece_djelatnost', 'preduzece_id', 'djelatnost_id');
     }
 
-    public function ovlascenaLica()
+    public function ovlascena_lica()
     {
         return $this->belongsToMany('App\Models\OvlascenoLice', 'ovlasceno_lice_preduzece', 'preduzece_id', 'ovlasceno_lice_id');
     }
