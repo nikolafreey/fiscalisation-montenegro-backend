@@ -18,4 +18,9 @@ class KategorijaRobe extends Model
     {
         return $this->belongsTo('App\Models\User', 'id');
     }
+
+    public function robe()
+    {
+        return $this->belongsToMany('App\Models\Roba', 'robe_kategorije', 'kategorija_robe_id', 'roba_id');
+    }
 }
