@@ -22,7 +22,8 @@ class DjelatnostFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'naziv' => $this->faker->title(),
+            
         ];
     }
 }

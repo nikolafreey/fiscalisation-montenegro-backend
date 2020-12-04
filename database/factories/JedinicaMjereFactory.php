@@ -22,7 +22,9 @@ class JedinicaMjereFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'naziv' => $this->faker->title(),
+            'kratki_naziv' => $this->faker->title(),
+       
         ];
     }
 }

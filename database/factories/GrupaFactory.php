@@ -22,7 +22,11 @@ class GrupaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'naziv' => $this->faker->title(),
+            'opis' => $this->faker->name(),
+            'popust_procenti' => $this->faker->randomFloat(),
+            'popust_iznos' => $this->faker->randomFloat(),
+           
         ];
     }
 }

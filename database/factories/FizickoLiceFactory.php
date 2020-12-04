@@ -22,7 +22,21 @@ class FizickoLiceFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'ime' => $this->faker->firstname(),
+            'prezime' => $this->faker->lastname(),
+            'jmbg' => $this->faker->unique()->year(),
+            'ib' => $this->faker->year(),
+            'adresa' => $this->faker->streetName(),
+            'telefon' => $this->faker->phoneNumber(),
+            'email' => $this->faker->unique()->safeEmail,
+            'zanimanje' => $this->faker->randomFloat(),
+            'radno_mjesto' => $this->faker->randomFloat(),
+            'drzavljanstvo' => $this->faker->country(),
+            'nacionalnost' => $this->faker->country(),
+            'cv_link' => $this->faker->mimeType(),
+            'avatar' => $this->faker->imageUrl(),
+
+            'preduzece_id' => Preduzeca::all()->random()->id,
         ];
     }
 }

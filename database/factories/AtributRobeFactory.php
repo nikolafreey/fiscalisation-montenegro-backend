@@ -22,7 +22,13 @@ class AtributRobeFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'naziv' => $this->faker->title(),
+            'opis' => $this->faker->name(),
+            'popust_procenti' => $this->faker->randomFloat(),
+            'popust_iznos' => $this->faker->randomFloat(),
+            'user_id' => User::all()->random()->id,
+            'tip_atributa_id' => TipAtributa::all()->random()->id
+
         ];
     }
 }
