@@ -34,7 +34,7 @@ class Partner extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function fizickoLice()
+    public function fizicko_lice()
     {
         return $this->belongsTo('App\Models\FizickoLice', 'fizicko_lice_id');
     }

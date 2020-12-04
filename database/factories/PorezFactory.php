@@ -22,7 +22,8 @@ class PorezFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'stopa' => $this->faker->randomFloat(),
+            'naziv' => $this->faker->word()
         ];
     }
 }

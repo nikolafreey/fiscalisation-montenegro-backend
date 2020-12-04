@@ -2,6 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Grupa;
+use App\Models\JedinicaMjere;
+use App\Models\Porez;
+use App\Models\User;
 use App\Models\Usluga;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +26,16 @@ class UslugaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'naziv' => $this->faker->word(),
+            'opis' => $this->faker->text(),
+            'cijena_bez_pdv' => $this->faker->randomFloat(),
+            'iznos_pdv' => $this->faker->randomFloat(),
+            'ukupna_cijena' => $this->faker->randomFloat(),
+            'status' => $this->faker->boolean(),
+            'user_id' => User::all()->random()->id,
+            'grupa_id' => Grupa::all()->random()->id,
+            'jedinica_mjere_id' => JedinicaMjere::all()->random()->id,
+            'porez_id' => Porez::all()->random()->id,
         ];
     }
 }
