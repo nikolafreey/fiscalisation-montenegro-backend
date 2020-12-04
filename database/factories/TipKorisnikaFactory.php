@@ -22,7 +22,7 @@ class TipKorisnikaFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'naziv' => $this->faker->word()
         ];
     }
 }
