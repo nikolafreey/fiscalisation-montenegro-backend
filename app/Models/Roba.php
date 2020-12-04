@@ -26,6 +26,16 @@ class Roba extends Model
 
     public function preduzece()
     {
-        return $this->hasMany('App\Models\Preduzeca', 'id');
+        return $this->hasMany('App\Models\Preduzece', 'id');
+    }
+
+    public function robe_kategorije()
+    {
+        return $this->belongsToMany('App\Models\Kategorija', 'robe_kategorije', 'roba_id', 'kategorija_id');
+    }
+
+    public function robe_tipovi()
+    {
+        return $this->belongsToMany('App\Models\CijenaRobe', 'robe_cijene_roba', 'cijena_robe_id', 'roba_id');
     }
 }

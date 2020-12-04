@@ -12,7 +12,7 @@ class CijenaRobe extends Model
 
     protected $table = 'cijene_robe';
 
-    protected $fillable = ['user_id', 'atributi_robe_id', 'roba_id', 'nabavna_cijena_bez_pdv', 'nabavna_cijena_sa_pdv', 'cijena_bez_pdv', 'porezi_id', 'pdv_iznos', 'ukupna_cijena'];
+    protected $fillable = ['user_id', 'nabavna_cijena_bez_pdv', 'nabavna_cijena_sa_pdv', 'cijena_bez_pdv', 'porezi_id', 'pdv_iznos', 'ukupna_cijena'];
 
     public function user()
     {
@@ -26,7 +26,7 @@ class CijenaRobe extends Model
 
     public function roba()
     {
-        return $this->hasMany('App\Models\Roba', 'id');
+        return $this->belongsToMany('App\Models\Roba', 'robe_cijene_roba', 'roba_id', 'cijena_robe_id');
     }
 
     public function porez()

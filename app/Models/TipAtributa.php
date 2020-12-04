@@ -10,9 +10,9 @@ class TipAtributa extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'tipovi_atributa';
+    protected $table = 'tipovi_atributa_roba';
 
-    protected $fillable = ['user_id', 'naziv', 'opis'];
+    protected $fillable = ['user_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
 
     public function user()
     {
@@ -22,5 +22,10 @@ class TipAtributa extends Model
     public function atribut_robe()
     {
         return $this->hasMany('App\Models\AtributRobe', 'tip_atributa_id');
+    }
+
+    public function robe_tipovi()
+    {
+        return $this->hasMany('App\Models\Roba', 'robe_tipovi_atributa', 'roba_id', 'tipovi_atributa_id');
     }
 }

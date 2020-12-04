@@ -17,6 +17,9 @@ class CreateTipoviAtributaTable extends Migration
             $table->id();
             $table->string('naziv', 50);
             $table->string('opis', 255);
+            $table->decimal('popust_procenti', 15, 2);
+            $table->decimal('popust_iznos', 15, 2);
+            $table->boolean('status');
             $table->softDeletes();
             $table->timestamps();
 

@@ -18,4 +18,9 @@ class PodKategorijaRobe extends Model
     {
         return $this->belongsTo('App\Models\User', 'id');
     }
+
+    public function kategorija()
+    {
+        return $this->belongsTo('App\Models\Kategorija', 'id');
+    }
 }

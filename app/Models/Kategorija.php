@@ -18,4 +18,14 @@ class Kategorija extends Model
     {
         return $this->hasMany('App\Models\Preduzece');
     }
+
+    public function robe_kategorije()
+    {
+        return $this->belongsToMany('App\Models\Roba', 'robe_kategorije', 'kategorija_id', 'roba_id');
+    }
+
+    public function podkategorije()
+    {
+        return $this->hasMany('App\Models\PodKategorija', 'kategorija_id');
+    }
 }
