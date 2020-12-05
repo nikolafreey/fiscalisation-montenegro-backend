@@ -38,11 +38,13 @@ class DatabaseSeeder extends Seeder
         OvlascenoLice::factory(10)->create();
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
-        Preduzece::factory(10)->create();
+        Preduzece::factory(100)->create();
         User::factory(10)->create();
+        User::factory(1)->create(['email' => 'test@gmail.com']);
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
-        Partner::factory(10)->create();
+        Partner::factory(5)->create(['preduzece_id' => Preduzece::all()->random()->id]);
+        Partner::factory(5)->create(['fizicko_lice_id' => FizickoLice::all()->random()->id]);
         Porez::factory(10)->create();
         Grupa::factory(10)->create();
         JedinicaMjere::factory(10)->create();

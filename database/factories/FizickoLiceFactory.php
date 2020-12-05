@@ -38,7 +38,7 @@ class FizickoLiceFactory extends Factory
 
             'nacionalnost' => $this->faker->country(),
             'cv_link' => $this->faker->mimeType(),
-            'avatar' => $this->faker->imageUrl(),
+            'avatar' => $this->faker->imageUrl(640, 480, 'people'),
 
             'preduzece_id' => Preduzece::all()->random()->id,
         ];

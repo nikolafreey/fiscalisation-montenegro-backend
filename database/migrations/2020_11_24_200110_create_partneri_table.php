@@ -15,13 +15,13 @@ class CreatePartneriTable extends Migration
     {
         Schema::create('partneri', function (Blueprint $table) {
             $table->id();
-            $table->string('kontakt_ime', 50);
-            $table->string('kontakt_prezime', 50);
-            $table->string('kontakt_telefon', 50);
-            $table->boolean('kontakt_viber');
-            $table->boolean('kontakt_whatsapp');
-            $table->boolean('kontakt_facetime');
-            $table->text('opis');
+            $table->string('kontakt_ime', 50)->nullable();
+            $table->string('kontakt_prezime', 50)->nullable();
+            $table->string('kontakt_telefon', 50)->nullable();
+            $table->boolean('kontakt_viber')->nullable();
+            $table->boolean('kontakt_whatsapp')->nullable();
+            $table->boolean('kontakt_facetime')->nullable();
+            $table->text('opis')->nullable();
 
             $table->foreignId('user_id')
                 ->constrained('users')

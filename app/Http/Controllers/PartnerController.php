@@ -28,8 +28,9 @@ class PartnerController extends Controller
     {
         $partner = Partner::make($request->validated());
         $partner->user_id = auth()->id();
+        $partner->save();
 
-        return response()->json($partner->save(), 201);
+        return response()->json($partner, 201);
     }
 
     /**
