@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\AtributRobe;
+use App\Models\TipAtributa;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AtributRobeFactory extends Factory
@@ -22,7 +24,7 @@ class AtributRobeFactory extends Factory
     public function definition()
     {
         return [
-            'naziv' => $this->faker->title(),
+            'naziv' => $this->faker->word(),
             'opis' => $this->faker->name(),
             'popust_procenti' => $this->faker->randomFloat(),
             'popust_iznos' => $this->faker->randomFloat(),

@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\CijenaRobe;
+use App\Models\Porez;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CijenaRobeFactory extends Factory

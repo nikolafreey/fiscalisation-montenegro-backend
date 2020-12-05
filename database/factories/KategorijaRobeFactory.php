@@ -25,8 +25,8 @@ class KategorijaRobeFactory extends Factory
         return [
             'naziv' => $this->faker->word,
             'opis' => $this->faker->text, 
-            'popust_procenti' => $this->faker->randomFloat(), 
-            'popust_iznos' => $this->faker->randomFloat(), 
+            'popust_procenti' => $this->faker->randomFloat(2,0,10), 
+            'popust_iznos' => $this->faker->randomFloat(2,0,10), 
             'status' => $this->faker->boolean(), 
             'user_id' => User::all()->random()->id
         ];

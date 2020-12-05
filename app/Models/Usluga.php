@@ -17,6 +17,7 @@ class Usluga extends Model
         'opis',
         'cijena_bez_pdv',
         'ukupna_cijena',
+        'pdv_iznos',
         'status',
         'user_id',
         'grupa_id',

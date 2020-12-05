@@ -29,7 +29,7 @@ class UslugaFactory extends Factory
             'naziv' => $this->faker->word(),
             'opis' => $this->faker->text(),
             'cijena_bez_pdv' => $this->faker->randomFloat(),
-            'iznos_pdv' => $this->faker->randomFloat(),
+            'pdv_iznos' => $this->faker->randomFloat(),
             'ukupna_cijena' => $this->faker->randomFloat(),
             'status' => $this->faker->boolean(),
             'user_id' => User::all()->random()->id,

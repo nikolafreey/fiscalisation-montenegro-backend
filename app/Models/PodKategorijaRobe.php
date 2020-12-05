@@ -12,7 +12,7 @@ class PodKategorijaRobe extends Model
 
     protected $table = 'podkategorije_roba';
 
-    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status', 'user_id'];
+    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status', 'user_id', 'kategorija_id'];
 
     public function user()
     {

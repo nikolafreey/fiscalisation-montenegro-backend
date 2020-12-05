@@ -27,7 +27,6 @@ class ProizvodjacRobeFactory extends Factory
             'opis' => $this->faker->text(),
             'popust_procenti' => $this->faker->randomFloat(),
             'popust_iznos' => $this->faker->randomFloat(),
-            'status' => $this->faker->boolean(),
             'user_id' => User::all()->random()->id
         ];
     }

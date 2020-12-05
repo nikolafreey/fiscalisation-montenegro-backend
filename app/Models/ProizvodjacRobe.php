@@ -10,7 +10,7 @@ class ProizvodjacRobe extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'podkategorije_roba';
+    protected $table = 'proizvodjaci_roba';
 
     protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status', 'user_id'];
 

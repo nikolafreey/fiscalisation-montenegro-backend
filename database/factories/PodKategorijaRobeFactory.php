@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\KategorijaRobe;
 use App\Models\PodKategorijaRobe;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -28,7 +29,8 @@ class PodKategorijaRobeFactory extends Factory
             'popust_procenti' => $this->faker->randomFloat(), 
             'popust_iznos' => $this->faker->randomFloat(), 
             'status' => $this->faker->boolean(), 
-            'user_id' => User::all()->random()->id
+            'user_id' => User::all()->random()->id,
+            'kategorija_id' => KategorijaRobe::all()->random()->id
         ];
     }
 }

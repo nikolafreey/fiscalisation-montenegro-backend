@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\TipoviAtributa;
+use App\Models\TipAtributa;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class TipoviAtributaFactory extends Factory
+class TipAtributaFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = TipoviAtributa::class;
+    protected $model = TipAtributa::class;
 
     /**
      * Define the model's default state.

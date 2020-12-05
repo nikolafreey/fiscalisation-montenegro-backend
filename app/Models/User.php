@@ -11,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes, LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes; //LogsActivity;
 
     /**
      * The attributes that are mass assignable.
