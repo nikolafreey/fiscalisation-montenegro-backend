@@ -15,7 +15,7 @@ class PreduzeceController extends Controller
      */
     public function index()
     {
-        return Preduzece::paginate();
+        return Preduzece::with('partneri:id,preduzece_id,user_id')->paginate();
     }
 
     /**

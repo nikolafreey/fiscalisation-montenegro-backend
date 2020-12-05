@@ -22,6 +22,8 @@ class Partner extends Model
         'kontakt_facetime',
         'opis',
         'user_id',
+        'preduzece_id',
+        'fizicko_lice_id'
     ];
 
     protected static function booted()

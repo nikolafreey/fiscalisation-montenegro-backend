@@ -26,7 +26,7 @@ class Preduzece extends Model
 
     public function partneri()
     {
-        return $this->hasMany('App\Models\Partner');
+        return $this->hasMany('App\Models\Partner', 'preduzece_id');
     }
 
     public function ziroRacuni()

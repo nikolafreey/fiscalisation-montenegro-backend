@@ -31,7 +31,7 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
-    use Searchable;
+    //use Searchable;
 
     protected $indexConfigurator = MyIndexConfigurator::class;
 
