@@ -20,6 +20,9 @@ class FizickoLice extends Model
         'jmbg',
         'ib',
         'adresa',
+        'grad',
+        'drzava',
+
         'telefon',
         'email',
         'zanimanje',
@@ -31,31 +34,31 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
-    use Searchable;
+    // use Searchable;
 
-    protected $indexConfigurator = MyIndexConfigurator::class;
+    // protected $indexConfigurator = MyIndexConfigurator::class;
 
-    protected $searchRules = [
-        //
-    ];
+    // protected $searchRules = [
+    //     //
+    // ];
 
-    protected $mapping = [
-        'properties' => [
-            'ime' => [
-                'type' => 'text',
-            ],
-            'prezime' => [
-                'type' => 'text',
-            ],
-        ]
-    ];
+    // protected $mapping = [
+    //     'properties' => [
+    //         'ime' => [
+    //             'type' => 'text',
+    //         ],
+    //         'prezime' => [
+    //             'type' => 'text',
+    //         ],
+    //     ]
+    // ];
 
-    public function toSearchableArray()
-    {
-        $array = $this->only('ime', 'prezime');
+    // public function toSearchableArray()
+    // {
+    //     $array = $this->only('ime', 'prezime');
 
-        return $array;
-    }
+    //     return $array;
+    // }
 
     public function ziro_racuni() {
         return $this->hasMany('App\Models\ZiroRacun', 'fizicko_lice_id');

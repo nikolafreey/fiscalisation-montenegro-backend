@@ -33,6 +33,9 @@ class FizickoLiceFactory extends Factory
             'zanimanje' => $this->faker->randomFloat(),
             'radno_mjesto' => $this->faker->randomFloat(),
             'drzavljanstvo' => $this->faker->country(),
+            'grad' => $this->faker->country(),
+            'drzava' => $this->faker->country(),
+
             'nacionalnost' => $this->faker->country(),
             'cv_link' => $this->faker->mimeType(),
             'avatar' => $this->faker->imageUrl(),

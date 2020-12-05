@@ -29,6 +29,9 @@ class StoreFizickoLice extends FormRequest
             'jmbg' => 'required|string|size:13',
             'ib' => 'string|size:8',
             'adresa' => 'string|max:191',
+            'grad' => 'string|max:191',
+            'drzava' => 'string|max:191',
+
             'telefon' => 'string|max:191',
             'email' => 'required|email',
             'zanimanje' => 'string|max:191',
