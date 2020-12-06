@@ -33,6 +33,9 @@ class StoreFizickoLice extends FormRequest
             'drzava' => 'string|max:191',
 
             'telefon' => 'string|max:191',
+            'telfon_viber' => 'boolean',
+            'telfon_whatsapp' => 'boolean',
+            'telfon_facetime' => 'boolean',
             'email' => 'required|email',
             'zanimanje' => 'string|max:191',
             'radno_mjesto' => 'string|max:50',

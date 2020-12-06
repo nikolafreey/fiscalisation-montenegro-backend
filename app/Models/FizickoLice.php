@@ -22,8 +22,11 @@ class FizickoLice extends Model
         'adresa',
         'grad',
         'drzava',
-
+    
         'telefon',
+        'telefon_viber', 
+        'telefon_whatsapp', 
+        'telefon_facetime',
         'email',
         'zanimanje',
         'radno_mjesto',
