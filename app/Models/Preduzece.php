@@ -16,34 +16,34 @@ class Preduzece extends Model
 
     protected $fillable = ['kratki_naziv', 'puni_naziv', 'oblik_preduzeca', 'adresa', 'grad', 'drzava', 'telefon', 'telefon_viber', 'telefon_whatsapp', 'telefon_facetime', 'fax', 'email', 'website', 'pib', 'pdv', 'djelatnost', 'iban', 'bic_swift', 'kontakt_ime', 'kontakt_prezime', 'kontakt_telefon', 'kontakt_viber', 'kontakt_whatsapp', 'kontakt_facetime', 'kontakt_email', 'twitter_username', 'instagram_username', 'facebook_username', 'skype_username', 'logotip', 'opis', 'lokacija_lat', 'lokacija_long', 'status', 'privatnost', 'verifikovan', 'kategorija_id'];
 
-    // use Searchable;
+    use Searchable;
 
-    // protected $indexConfigurator = PreduzecaIndexConfigurator::class;
+    protected $indexConfigurator = PreduzecaIndexConfigurator::class;
 
-    // protected $searchRules = [
-    //     //
-    // ];
+    protected $searchRules = [
+        //
+    ];
 
-    // protected $mapping = [
-    //     'properties' => [
-    //         'kratki_naziv' => [
-    //             'type' => 'text',
-    //         ],
-    //         'puni_naziv' => [
-    //             'type' => 'text',
-    //         ],
-    //         'pib' => [
-    //             'type' => 'text',
-    //         ],
-    //     ]
-    // ];
+    protected $mapping = [
+        'properties' => [
+            'kratki_naziv' => [
+                'type' => 'text',
+            ],
+            'puni_naziv' => [
+                'type' => 'text',
+            ],
+            'pib' => [
+                'type' => 'text',
+            ],
+        ]
+    ];
 
-    // public function toSearchableArray()
-    // {
-    //     $array = $this->only('kratki_naziv', 'puni_naziv', 'pib');
+    public function toSearchableArray()
+    {
+        $array = $this->only('kratki_naziv', 'puni_naziv', 'pib');
 
-    //     return $array;
-    // }
+        return $array;
+    }
     
     public function users()
     {
