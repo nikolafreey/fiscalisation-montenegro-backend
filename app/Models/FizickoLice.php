@@ -31,24 +31,24 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
-    use Searchable;
+    // use Searchable;
 
-    protected $indexConfigurator = MyIndexConfigurator::class;
+    // protected $indexConfigurator = MyIndexConfigurator::class;
 
-    protected $searchRules = [
-        //
-    ];
+    // protected $searchRules = [
+    //     //
+    // ];
 
-    protected $mapping = [
-        'properties' => [
-            'ime' => [
-                'type' => 'text',
-            ],
-            'prezime' => [
-                'type' => 'text',
-            ],
-        ]
-    ];
+    // protected $mapping = [
+    //     'properties' => [
+    //         'ime' => [
+    //             'type' => 'text',
+    //         ],
+    //         'prezime' => [
+    //             'type' => 'text',
+    //         ],
+    //     ]
+    // ];
 
     public function toSearchableArray()
     {
@@ -57,7 +57,8 @@ class FizickoLice extends Model
         return $array;
     }
 
-    public function ziro_racuni() {
+    public function ziro_racuni()
+    {
         return $this->hasMany('App\Models\ZiroRacun', 'fizicko_lice_id');
     }
 

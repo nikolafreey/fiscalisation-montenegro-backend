@@ -19,6 +19,7 @@ class CreateRobeTable extends Migration
             $table->string('opis', 255);
             $table->string('detaljni_opis', 255);
             $table->string('ean', 50);
+            $table->string('interna_sifra_proizvoda', 50);
             $table->boolean('status');
             $table->softDeletes();
             $table->timestamps();

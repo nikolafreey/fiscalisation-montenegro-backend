@@ -29,6 +29,7 @@ class RobaFactory extends Factory
             'opis' => $this->faker->text(),
             'detaljni_opis' => $this->faker->text(),
             'ean' => $this->faker->word(),
+            'interna_sifra_proizvoda' => $this->faker->word(),
             'status' => $this->faker->boolean(),
             'proizvodjac_robe_id' => ProizvodjacRobe::all()->random()->id,
             'jedinica_mjere_id' => JedinicaMjere::all()->random()->id,

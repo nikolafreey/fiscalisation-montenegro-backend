@@ -31,8 +31,8 @@ class StorePartner extends FormRequest
             'kontakt_whatsapp' => 'boolean',
             'kontakt_facetime' => 'boolean',
             'opis' => 'string',
-            'fizicko_lice_id' => 'int|max:20',
-            'preduzece_id' => 'string|max:20',
+            'fizicko_lice_id' => 'int',
+            'preduzece_id' => 'int',
         ];
     }
 }

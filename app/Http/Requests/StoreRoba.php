@@ -25,7 +25,7 @@ class StoreRoba extends FormRequest
     {
         return [
             'naziv' => 'required|string|max:50|min:3',
-            'jedinica_mjere' => 'required|int|max:20',
+            'jedinica_mjere' => 'required|int',
         ];
     }
 }
