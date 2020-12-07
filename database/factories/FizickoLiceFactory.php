@@ -38,6 +38,7 @@ class FizickoLiceFactory extends Factory
             'drzavljanstvo' => $this->faker->country(),
             'grad' => $this->faker->country(),
             'drzava' => $this->faker->country(),
+            'status' => $this->faker->boolean(),
 
             'nacionalnost' => $this->faker->country(),
             'cv_link' => $this->faker->mimeType(),
