@@ -24,15 +24,15 @@ class StorePartner extends FormRequest
     public function rules()
     {
         return [
-            'kontakt_ime' => 'required|string|max:50|min:3',
-            'kontakt_prezime' => 'required|string|max:50|min:3',
-            'kontakt_telefon' => 'string|max:50|min:3',
-            'kontakt_viber' => 'boolean',
-            'kontakt_whatsapp' => 'boolean',
-            'kontakt_facetime' => 'boolean',
-            'opis' => 'string',
-            'fizicko_lice_id' => 'int',
-            'preduzece_id' => 'int',
+            'kontakt_ime' => 'nullable|string|max:50|min:3',
+            'kontakt_prezime' => 'nullable|string|max:50|min:3',
+            'kontakt_telefon' => 'nullable|string|max:50|min:3',
+            'kontakt_viber' => 'nullable|boolean',
+            'kontakt_whatsapp' => 'nullable|boolean',
+            'kontakt_facetime' => 'nullable|boolean',
+            'opis' => 'nullable|string',
+            'fizicko_lice_id' => 'nullable|int|exists:fizicka_lica,id',
+            'preduzece_id' => 'nullable|int|exists:preduzeca,id',
         ];
     }
 }

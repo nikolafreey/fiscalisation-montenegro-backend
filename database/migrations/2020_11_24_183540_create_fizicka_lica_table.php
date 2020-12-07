@@ -21,7 +21,13 @@ class CreateFizickaLicaTable extends Migration
             $table->string('jmbg', 13);
             $table->string('ib', 8);
             $table->string('adresa', 50);
+            $table->string('grad', 50);
+            $table->string('drzava', 50);
+
             $table->string('telefon', 50);
+            $table->boolean('telefon_viber');
+            $table->boolean('telefon_whatsapp');
+            $table->boolean('telefon_facetime');
             $table->string('email', 191);
             $table->string('zanimanje', 191);
             $table->string('radno_mjesto', 50);

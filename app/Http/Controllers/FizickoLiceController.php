@@ -17,7 +17,7 @@ class FizickoLiceController extends Controller
     public function index(Request $request)
     {
         if ($request->search){
-            return FizickoLice::search($request->search)->paginate();
+            return FizickoLice::search($request->search . '*')->paginate();
         }
         return FizickoLice::paginate();
     }

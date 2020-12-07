@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\MyIndexConfigurator;
+use App\FizickaLicaIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,7 +20,12 @@ class FizickoLice extends Model
         'jmbg',
         'ib',
         'adresa',
+        'grad',
+        'drzava',
         'telefon',
+        'telefon_viber',
+        'telefon_whatsapp',
+        'telefon_facetime',
         'email',
         'zanimanje',
         'radno_mjesto',
@@ -33,26 +38,32 @@ class FizickoLice extends Model
 
     // use Searchable;
 
-    // protected $indexConfigurator = MyIndexConfigurator::class;
+    protected $indexConfigurator = FizickaLicaIndexConfigurator::class;
 
     // protected $searchRules = [
     //     //
     // ];
 
-    // protected $mapping = [
-    //     'properties' => [
-    //         'ime' => [
-    //             'type' => 'text',
-    //         ],
-    //         'prezime' => [
-    //             'type' => 'text',
-    //         ],
-    //     ]
-    // ];
+    protected $mapping = [
+        'properties' => [
+            'ime' => [
+                'type' => 'text',
+            ],
+            'prezime' => [
+                'type' => 'text',
+            ],
+            'jmbg' => [
+                'type' => 'text',
+            ],
+            'ib' => [
+                'type' => 'text',
+            ],
+        ]
+    ];
 
     public function toSearchableArray()
     {
-        $array = $this->only('ime', 'prezime');
+        $array = $this->only('ime', 'prezime', 'jmbg', 'ib');
 
         return $array;
     }

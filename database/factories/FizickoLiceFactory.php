@@ -29,13 +29,19 @@ class FizickoLiceFactory extends Factory
             'ib' => $this->faker->year(),
             'adresa' => $this->faker->streetName(),
             'telefon' => $this->faker->phoneNumber(),
+            'telefon_viber' => $this->faker->boolean(),
+            'telefon_whatsapp' => $this->faker->boolean(),
+            'telefon_facetime' => $this->faker->boolean(),
             'email' => $this->faker->unique()->safeEmail,
             'zanimanje' => $this->faker->randomFloat(),
             'radno_mjesto' => $this->faker->randomFloat(),
             'drzavljanstvo' => $this->faker->country(),
+            'grad' => $this->faker->country(),
+            'drzava' => $this->faker->country(),
+
             'nacionalnost' => $this->faker->country(),
             'cv_link' => $this->faker->mimeType(),
-            'avatar' => $this->faker->imageUrl(),
+            'avatar' => $this->faker->imageUrl(640, 480, 'people'),
 
             'preduzece_id' => Preduzece::all()->random()->id,
         ];

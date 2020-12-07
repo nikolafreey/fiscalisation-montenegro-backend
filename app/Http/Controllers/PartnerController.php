@@ -13,8 +13,11 @@ class PartnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('filter')) {
+            return Partner::with(['preduzece', 'fizicko_lice'])->has($request->filter)->paginate();
+        }
         return Partner::with(['preduzece', 'fizicko_lice'])->paginate();
     }
 
@@ -28,8 +31,9 @@ class PartnerController extends Controller
     {
         $partner = Partner::make($request->validated());
         $partner->user_id = auth()->id();
+        $partner->save();
 
-        return response()->json($partner->save(), 201);
+        return response()->json($partner, 201);
     }
 
     /**
