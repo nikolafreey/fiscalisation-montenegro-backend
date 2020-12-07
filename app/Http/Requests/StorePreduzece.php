@@ -58,7 +58,7 @@ class StorePreduzece extends FormRequest
             'status ' => 'boolean',
             'privatnost ' => 'boolean',
             'verifikovan ' => 'boolean',
-            'kategorija_id ' => 'required|int|max:20',
+            'kategorija_id ' => 'required|int',
         ];
     }
 }
