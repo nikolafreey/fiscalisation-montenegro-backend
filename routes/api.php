@@ -18,6 +18,8 @@ use App\Http\Controllers\JedinicaMjereController;
 use App\Http\Controllers\PorezController;
 use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\RobaController;
+use App\Http\Controllers\KategorijaRobeController;
+use App\Http\Controllers\PodKategorijaRobeController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -37,14 +39,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/me', [UserController::class, 'me']);
 
-
-
 Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
 ]);
 
 Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
     'proizvodjaci-robe' => 'proizvodjaci-robe'
+]);
+
+Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
+    'kategorije-robe' => 'kategorija-robe'
+]);
+
+Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
+    'podkategorije-robe' => 'podkategorija-robe'
 ]);
 
 Route::apiResource('/porezi', PorezController::class)->parameters([
