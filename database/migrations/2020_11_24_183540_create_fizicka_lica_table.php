@@ -35,6 +35,8 @@ class CreateFizickaLicaTable extends Migration
             $table->string('nacionalnost', 50);
             $table->string('cv_link', 255);
             $table->string('avatar', 255);
+            $table->boolean('status');
+
 
             $table->foreignId('preduzece_id')
                 ->constrained('preduzeca')

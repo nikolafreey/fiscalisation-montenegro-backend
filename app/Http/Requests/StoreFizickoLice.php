@@ -31,6 +31,7 @@ class StoreFizickoLice extends FormRequest
             'adresa' => 'string|max:191',
             'grad' => 'string|max:191',
             'drzava' => 'string|max:191',
+            'status'=>'boolean',
 
             'telefon' => 'string|max:191',
             'telefon_viber' => 'boolean',
