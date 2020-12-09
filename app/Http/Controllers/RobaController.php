@@ -28,6 +28,7 @@ class RobaController extends Controller
     {
         $roba = Roba::make($request->validated());
         $roba->user_id = auth()->id();
+        $roba->save();
 
         return response()->json($roba->save(), 201);
     }

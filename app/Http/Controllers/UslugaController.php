@@ -28,7 +28,8 @@ class UslugaController extends Controller
     {
         $usluga = Usluga::make($request->validated());
         $usluga->user_id = auth()->id();
-        
+        $usluga->save();
+
         return response()->json($usluga->save(), 201);
     }
 

@@ -28,6 +28,7 @@ class ProizvodjacRobeController extends Controller
     {
         $proizvodjacRobe = ProizvodjacRobe::make($request->validated());
         $proizvodjacRobe->user_id = auth()->id();
+        $proizvodjacRobe->save();
 
         return response()->json($proizvodjacRobe, 201);
     }
