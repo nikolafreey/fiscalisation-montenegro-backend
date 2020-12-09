@@ -28,6 +28,7 @@ class PodKategorijaRobeController extends Controller
     {
         $podKategorijaRobe = PodKategorijaRobe::make($request->validated());
         $podKategorijaRobe->user_id = auth()->id();
+        $podKategorijaRobe->save();
 
         return response()->json($podKategorijaRobe, 201);
     }

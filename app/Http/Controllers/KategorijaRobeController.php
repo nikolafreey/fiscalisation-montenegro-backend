@@ -15,7 +15,7 @@ class KategorijaRobeController extends Controller
      */
     public function index()
     {
-        return KategorijaRobe::all();
+        return KategorijaRobe::with('podkategorije_robe:id,naziv,kategorija_id')->get();
     }
 
     /**
@@ -28,6 +28,7 @@ class KategorijaRobeController extends Controller
     {
         $kategorijaRobe = KategorijaRobe::make($request->validated());
         $kategorijaRobe->user_id = auth()->id();
+        $kategorijaRobe->save();
 
         return response()->json($kategorijaRobe, 201);
     }

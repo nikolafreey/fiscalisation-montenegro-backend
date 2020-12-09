@@ -25,6 +25,7 @@ class StorePodKategorijaRobe extends FormRequest
     {
         return [
             'naziv' => 'required|string|max:50|min:3',
+            'kategorija_id' => 'required|exists:kategorije_roba,id'
         ];
     }
 }
