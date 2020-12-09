@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class RobaKategorijaPodKategorija extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [ 'roba_id', 'kategorija_robe_id', 'podkategorija_robe_id'];
+
+
+    public function robe()
+        {
+            return $this->belongsTo('App\Roba', 'roba_id');
+        }
+    public function kategorije_roba()
+        {
+            return $this->belongsTo('App\KategorijaRobe', 'kategorija_robe_id');
+         }
+    public function podkategorije_roba()
+        {
+            return $this->belongsTo('App\PodKategorijaRobe', 'podkategorija_robe_id');
+        }
+}
