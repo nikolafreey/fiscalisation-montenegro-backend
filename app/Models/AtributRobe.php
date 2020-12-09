@@ -33,4 +33,9 @@ class AtributRobe extends Model
     {
         return $this->belongsTo('App\Models\Porez', 'id');
     }
+
+    public function robe()
+    {
+        return $this->belongsToMany('App\Models\Roba', 'robe_atributi_roba', 'atributi_roba_id', 'roba_id');
+    }
 }
