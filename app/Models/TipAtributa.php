@@ -19,7 +19,10 @@ class TipAtributa extends Model
         return $this->belongsTo('App\Models\User', 'id');
     }
 
-   
+   public function atributi()
+   {
+       return $this->hasMany('App\Models\AtributRobe', 'tip_atributa_id');
+   }
 
     public function robe()
     {

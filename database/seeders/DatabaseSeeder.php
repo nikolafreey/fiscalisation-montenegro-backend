@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AtributRobe;
 use App\Models\CijenaRobe;
 use App\Models\Djelatnost;
 use App\Models\FizickoLice;
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
         PodKategorijaRobe::factory(10)->create();
         ProizvodjacRobe::factory(10)->create();
         TipAtributa::factory(10)->create();
+        AtributRobe::factory(10)->create();
         Roba::factory(10)->create();
         CijenaRobe::factory(10)->create();
     }

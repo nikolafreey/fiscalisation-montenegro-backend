@@ -20,6 +20,7 @@ use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\RobaController;
 use App\Http\Controllers\KategorijaRobeController;
 use App\Http\Controllers\PodKategorijaRobeController;
+use App\Http\Controllers\TipoviAtributaController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -38,6 +39,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/me', [UserController::class, 'me']);
+
+Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([
+    'tipovi-atributa' => 'tip-atributa'
+]);
+
 
 Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
