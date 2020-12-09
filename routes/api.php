@@ -16,6 +16,10 @@ use App\Http\Controllers\UslugaController;
 use App\Http\Controllers\GrupaController;
 use App\Http\Controllers\JedinicaMjereController;
 use App\Http\Controllers\PorezController;
+use App\Http\Controllers\ProizvodjacRobeController;
+use App\Http\Controllers\RobaController;
+use App\Http\Controllers\KategorijaRobeController;
+use App\Http\Controllers\PodKategorijaRobeController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -35,10 +39,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/me', [UserController::class, 'me']);
 
-
-
 Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
+]);
+
+Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
+    'proizvodjaci-robe' => 'proizvodjaci-robe'
+]);
+
+Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
+    'kategorije-robe' => 'kategorija-robe'
+]);
+
+Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
+    'podkategorije-robe' => 'podkategorija-robe'
 ]);
 
 Route::apiResource('/porezi', PorezController::class)->parameters([
@@ -51,6 +65,10 @@ Route::apiResource('/grupe', GrupaController::class)->parameters([
 
 Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
     'djelatnosti' => 'djelatnost'
+]);
+
+Route::apiResource('/robe', RobaController::class)->parameters([
+    'robe' => 'roba'
 ]);
 
 Route::apiResource('/moduli', ModulController::class)->parameters([
@@ -80,7 +98,7 @@ Auth::routes();
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
@@ -89,5 +107,3 @@ Route::middleware('auth:sanctum')->group(function() {
         'usluge' => 'usluga'
     ]);
 });
-
-
