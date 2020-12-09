@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRobeKategorijeTable extends Migration
+class CreateRobeKategorijePodKategorijeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRobeKategorijeTable extends Migration
      */
     public function up()
     {
-        Schema::create('robe_kategorije', function (Blueprint $table) {
+        Schema::create('robe_kategorije_podkategorije', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('roba_id')
@@ -22,6 +22,10 @@ class CreateRobeKategorijeTable extends Migration
                 ->onUpdate('cascade');
             $table->foreignId('kategorija_robe_id')
                 ->constrained('kategorije_roba')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+                $table->foreignId('podkategorija_robe_id')
+                ->constrained('podkategorije_roba')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
@@ -37,6 +41,6 @@ class CreateRobeKategorijeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('robe_kategorije');
+        Schema::dropIfExists('robe_kategorije_podkategorije');
     }
 }
