@@ -15,7 +15,7 @@ class KategorijaRobeController extends Controller
      */
     public function index()
     {
-        return KategorijaRobe::all();
+        return KategorijaRobe::with('podkategorije_robe:id,naziv,kategorija_id')->get();
     }
 
     /**

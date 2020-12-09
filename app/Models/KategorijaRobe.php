@@ -23,4 +23,9 @@ class KategorijaRobe extends Model
     {
         return $this->hasMany('App\Models\RobaKategorijaPodKategorija', 'kategorija_robe_id');
     }
+
+    public function podkategorije_robe() 
+    {
+        return $this->hasMany('App\Models\PodKategorijaRobe', 'kategorija_id');
+    }
 }

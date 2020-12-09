@@ -16,10 +16,10 @@ class CreatePodKategorijeRobaTable extends Migration
         Schema::create('podkategorije_roba', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
-            $table->string('opis', 255);
-            $table->decimal('popust_procenti', 15, 2);
-            $table->decimal('popust_iznos', 15, 2);
-            $table->boolean('status');
+            $table->string('opis', 255)->nullable();
+            $table->decimal('popust_procenti', 15, 2)->nullable();
+            $table->decimal('popust_iznos', 15, 2)->nullable();
+            $table->boolean('status')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
