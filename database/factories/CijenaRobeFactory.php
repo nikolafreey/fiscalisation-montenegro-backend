@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Models\CijenaRobe;
 use App\Models\Porez;
 use App\Models\User;
+use App\Models\Roba;
+use App\Models\AtributRobe;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CijenaRobeFactory extends Factory
@@ -30,7 +33,10 @@ class CijenaRobeFactory extends Factory
             'pdv_iznos' => $this->faker->randomFloat(),
             'ukupna_cijena' => $this->faker->randomFloat(),
             'user_id' => User::all()->random()->id,
-            'porez_id' => Porez::all()->random()->id
+            'porez_id' => Porez::all()->random()->id,
+            'roba_id' => Roba::all()->random()->id,
+            'atribut_id' => AtributRobe::all()->random()->id
+
         ];
     }
 }

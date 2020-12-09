@@ -28,7 +28,7 @@ class PreduzeceFactory extends Factory
             'oblik_preduzeca' => $this->faker->word(),
             'adresa' => $this->faker->streetAddress(),
             'grad' => $this->faker->city(),
-            'drzava' => $this->faker->country(),
+            'drzava' => $this->faker->name(),
             'telefon' => $this->faker->phoneNumber(),
             'telefon_viber' => $this->faker->boolean(),
             'telefon_whatsapp' => $this->faker->boolean(),
