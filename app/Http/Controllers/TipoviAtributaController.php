@@ -28,6 +28,7 @@ class TipoviAtributaController extends Controller
     {
         $tipAtributa = TipAtributa::make($request->validated());
         $tipAtributa->user_id = auth()->id();
+        $tipAtributa->save();
 
         return response()->json($tipAtributa, 201);
     }

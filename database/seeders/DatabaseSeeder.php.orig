@@ -53,6 +53,11 @@ class DatabaseSeeder extends Seeder
         KategorijaRobe::factory(10)->create();
         PodKategorijaRobe::factory(10)->create();
         ProizvodjacRobe::factory(10)->create();
+<<<<<<< HEAD
+        TipAtributa::factory(10)->create();
+        AtributRobe::factory(10)->create();
+=======
+>>>>>>> eb18652fc4258186ba8052234e0365215c5860a6
         Roba::factory(10)->create();
         TipAtributa::factory(10)->create();
         AtributRobe::factory(10)->create();

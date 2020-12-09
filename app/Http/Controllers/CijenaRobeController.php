@@ -28,6 +28,7 @@ class CijenaRobeController extends Controller
     {
         $cijenaRobe = CijenaRobe::make($request->validated());
         $cijenaRobe->user_id = auth()->id();
+        $cijenaRobe->save();
 
         return response()->json($cijenaRobe, 201);
     }

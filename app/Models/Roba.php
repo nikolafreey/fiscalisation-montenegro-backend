@@ -34,9 +34,9 @@ class Roba extends Model
         return $this->belongsToMany('App\Models\Kategorija', 'robe_kategorije', 'roba_id', 'kategorija_id');
     }
 
-    public function robe_tipovi()
+    public function cijene_roba()
     {
-        return $this->belongsToMany('App\Models\CijenaRobe', 'robe_cijene_roba', 'cijena_robe_id', 'roba_id');
+        return $this->hasMany('App\Models\CijenaRobe', 'roba_id');
     }
 
     public function tipovi_atributa()

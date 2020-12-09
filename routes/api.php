@@ -53,6 +53,14 @@ Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->para
     'proizvodjaci-robe' => 'proizvodjaci-robe'
 ]);
 
+Route::apiResource('/atribut-roba', ProizvodjacRobeController::class)->parameters([
+    'atribut-roba' => 'atribut-robe'
+]);
+
+Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
+    'proizvodjaci-robe' => 'proizvodjaci-robe'
+]);
+
 Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
     'kategorije-robe' => 'kategorija-robe'
 ]);
