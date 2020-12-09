@@ -28,6 +28,7 @@ class KategorijaRobeController extends Controller
     {
         $kategorijaRobe = KategorijaRobe::make($request->validated());
         $kategorijaRobe->user_id = auth()->id();
+        $kategorijaRobe->save();
 
         return response()->json($kategorijaRobe, 201);
     }
