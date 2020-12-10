@@ -30,6 +30,9 @@ class RobaController extends Controller
         $roba->user_id = auth()->id();
         $roba->save();
 
+        $roba->storeKategorije($request->kategorije);
+        $roba->storeAtributi($request->atributi);
+
         return response()->json($roba->save(), 201);
     }
 

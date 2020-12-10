@@ -11,6 +11,7 @@ class RobaKategorijaPodKategorija extends Model
 
     protected $fillable = [ 'roba_id', 'kategorija_robe_id', 'podkategorija_robe_id'];
 
+    protected $table = 'robe_kategorije_podkategorije';
 
     public function robe()
         {

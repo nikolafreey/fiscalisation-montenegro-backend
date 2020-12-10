@@ -25,6 +25,7 @@ class CreateRobeKategorijePodKategorijeTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
                 $table->foreignId('podkategorija_robe_id')
+                ->nullable()
                 ->constrained('podkategorije_roba')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
