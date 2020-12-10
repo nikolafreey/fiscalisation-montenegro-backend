@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('ime', 50);
             $table->string('prezime', 50);
-            $table->string('jezik', 10);
-            $table->string('avatar', 255);
-            $table->boolean('paket');
+            $table->string('jezik', 10)->nullable();
+            $table->string('avatar', 255)->nullable();
+            $table->boolean('paket')->nullable();
 
             $table->foreignId('preduzece_id')
                 ->constrained('preduzeca')

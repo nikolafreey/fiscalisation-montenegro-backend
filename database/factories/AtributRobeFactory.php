@@ -30,7 +30,6 @@ class AtributRobeFactory extends Factory
             'popust_iznos' => $this->faker->randomFloat(),
             'user_id' => User::all()->random()->id,
             'tip_atributa_id' => TipAtributa::all()->random()->id
-
         ];
     }
 }

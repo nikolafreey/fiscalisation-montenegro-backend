@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\AtributRobe;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
+
 use App\Models\CijenaRobe;
 use App\Models\Djelatnost;
 use App\Models\FizickoLice;
@@ -55,5 +59,67 @@ class DatabaseSeeder extends Seeder
         TipAtributa::factory(10)->create();
         Roba::factory(10)->create();
         CijenaRobe::factory(10)->create();
+        AtributRobe::factory(10)->create();
+
+        $djelatnostiIds = DB::table('djelatnosti')->pluck('id')->toArray();
+        $preduzecaIds = DB::table('preduzeca')->pluck('id')->toArray();
+        $usersIds = DB::table('users')->pluck('id')->toArray();
+        $ovlascena_licaIds = DB::table('ovlascena_lica')->pluck('id')->toArray();
+        $robeIds = DB::table('robe')->pluck('id')->toArray();
+        $kategorijeIds = DB::table('kategorije')->pluck('id')->toArray();
+
+        // DB::table('ovlasceno_lice_preduzece')->insert(
+        //     [
+        //         'ovlasceno_lice_id' => 1,
+        //         'preduzece_id' => 1
+        //     ]
+        // );
+
+        foreach ((range(1, 10)) as $index) {
+            DB::table('ovlasceno_lice_preduzece')->insert(
+                [
+                    'ovlasceno_lice_id' => OvlascenoLice::all()->random()->id,
+                    'preduzece_id' => Preduzece::all()->random()->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            DB::table('preduzece_djelatnost')->insert(
+                [
+                    'djelatnost_id' => Djelatnost::all()->random()->id,
+                    'preduzece_id' => Preduzece::all()->random()->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            DB::table('robe_cijene_roba')->insert(
+                [
+                    'roba_id' => Roba::all()->random()->id,
+                    'cijena_robe_id' => CijenaRobe::all()->random()->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            DB::table('robe_kategorije')->insert(
+                [
+                    'roba_id' => Roba::all()->random()->id,
+                    'kategorije_id' => KategorijaRobe::all()->random()->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            DB::table('robe_atributi_roba')->insert(
+                [
+                    'robe_id' => Roba::all()->random()->id,
+                    'atributi_roba_id' => AtributRobe::all()->random()->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
     }
 }

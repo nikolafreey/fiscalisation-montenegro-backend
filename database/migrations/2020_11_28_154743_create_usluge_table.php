@@ -16,7 +16,7 @@ class CreateUslugeTable extends Migration
         Schema::create('usluge', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
-            $table->text('opis');
+            $table->text('opis')->nullable();
             $table->decimal('cijena_bez_pdv', 15, 2);
             $table->decimal('ukupna_cijena', 15, 2);
             $table->boolean('status');
@@ -24,15 +24,16 @@ class CreateUslugeTable extends Migration
             $table->timestamps();
 
             $table->foreignId('user_id')
-            ->constrained('users')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
+                ->constrained('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->foreignId('grupa_id')
-            ->constrained('grupe')
-            ->onDelete('cascade')
-            ->onUpdate('cascade');
+                ->nullable()
+                ->constrained('grupe')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->foreignId('jedinica_mjere_id')
-            ->constrained('jedinice_mjere')
+                ->constrained('jedinice_mjere')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->foreignId('porez_id')

@@ -16,7 +16,7 @@ class CreateAtributiRobaTable extends Migration
         Schema::create('atributi_roba', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
-            $table->string('opis', 255);
+            $table->string('opis', 255)->nullable();
             $table->decimal('popust_procenti', 15, 2);
             $table->decimal('popust_iznos', 15, 2);
             $table->softDeletes();

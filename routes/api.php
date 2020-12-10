@@ -20,6 +20,7 @@ use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\RobaController;
 use App\Http\Controllers\KategorijaRobeController;
 use App\Http\Controllers\PodKategorijaRobeController;
+use App\Models\AtributRobe;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -47,12 +48,8 @@ Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->para
     'proizvodjaci-robe' => 'proizvodjaci-robe'
 ]);
 
-Route::apiResource('/atribut-roba', ProizvodjacRobeController::class)->parameters([
+Route::apiResource('/atribut-roba', AtributRobe::class)->parameters([
     'atribut-roba' => 'atribut-robe'
-]);
-
-Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
-    'proizvodjaci-robe' => 'proizvodjaci-robe'
 ]);
 
 Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([

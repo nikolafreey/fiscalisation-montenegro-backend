@@ -16,10 +16,10 @@ class CreateRobeTable extends Migration
         Schema::create('robe', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
-            $table->string('opis', 255);
-            $table->string('detaljni_opis', 255);
+            $table->string('opis', 255)->nullable();
+            $table->string('detaljni_opis', 255)->nullable();
             $table->string('ean', 50);
-            $table->string('interna_sifra_proizvoda', 50);
+            $table->string('interna_sifra_proizvoda', 50)->nullable();
             $table->boolean('status');
             $table->softDeletes();
             $table->timestamps();
@@ -35,6 +35,7 @@ class CreateRobeTable extends Migration
                 ->onUpdate('cascade');
 
             $table->foreignId('preduzece_id')
+                ->nullable()
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
