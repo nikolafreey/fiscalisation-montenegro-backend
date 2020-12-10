@@ -6,7 +6,7 @@ use App\Http\Requests\StoreTipAtributa;
 use App\Models\TipAtributa;
 use Illuminate\Http\Request;
 
-class TipAtributaController extends Controller
+class TipoviAtributaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class TipAtributaController extends Controller
      */
     public function index()
     {
-        return TipAtributa::get();
+        return TipAtributa::with('atributi:id,naziv,tip_atributa_id')->get(['id', 'naziv']);
     }
 
     /**

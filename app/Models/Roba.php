@@ -14,6 +14,40 @@ class Roba extends Model
 
     protected $fillable = ['naziv', 'opis', 'detaljni_opis', 'ean', 'interna_sifra_proizvoda', 'status', 'proizvodjac_robe_id', 'jedinica_mjere_id', 'preduzece_id'];
 
+    public function storeKategorije($kategorije) 
+    {
+        foreach ($kategorije as $kategorijaId => $podKategorije) {
+            if (count($podKategorije) == 0) {
+                $robaKategorijaPodkategorija[] = [
+                    'roba_id' => $this->id,
+                    'kategorija_robe_id' => $kategorijaId,
+                    'podkategorija_robe_id' => null,
+                    'created_at'=>date('Y-m-d H:i:s'),
+                    'updated_at'=> date('Y-m-d H:i:s')
+                ];
+            }
+            else{
+                foreach ($podKategorije as $podKategorijaId) {
+                    $robaKategorijaPodkategorija[] = [
+                        'roba_id' => $this->id,
+                        'kategorija_robe_id' => $kategorijaId,
+                        'podkategorija_robe_id' => $podKategorijaId,
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=> date('Y-m-d H:i:s')
+                    ];
+                };
+            }
+            
+        };
+
+        RobaKategorijaPodKategorija::insert($robaKategorijaPodkategorija);
+    }
+
+    public function storeAtributi($atributi)
+    {
+        $this->atributi_roba()->sync($atributi);
+    }
+
     public function proizvodjac_robe()
     {
         return $this->hasOne('App\Models\Proizvodjac', 'id');
@@ -34,9 +68,9 @@ class Roba extends Model
         return $this->belongsToMany('App\Models\Kategorija', 'robe_kategorije', 'roba_id', 'kategorija_id');
     }
 
-    public function robe_tipovi()
+    public function cijene_roba()
     {
-        return $this->belongsToMany('App\Models\CijenaRobe', 'robe_cijene_roba', 'cijena_robe_id', 'roba_id');
+        return $this->hasMany('App\Models\CijenaRobe', 'roba_id');
     }
 
     public function tipovi_atributa()
@@ -50,6 +84,6 @@ class Roba extends Model
 
     public function atributi_roba()
     {
-        return $this->belongsToMany('App\Models\AtributRobe', 'robe_atributi_roba', 'roba_id', 'atributi_roba_id');
+        return $this->belongsToMany('App\Models\AtributRobe', 'robe_atributi_roba', 'roba_id', 'atribut_id');
     }
 }

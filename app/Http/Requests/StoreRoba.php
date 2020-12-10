@@ -25,7 +25,13 @@ class StoreRoba extends FormRequest
     {
         return [
             'naziv' => 'required|string|max:50|min:3',
-            'jedinica_mjere' => 'required|int',
+            'opis' => 'nullable|string', 
+            'detaljni_opis' => 'nullable|string', 
+            'ean' => 'nullable|string', 
+            'interna_sifra_proizvoda' => 'nullable|string', 
+            'status' => 'nullable|boolean', 
+            'proizvodjac_robe_id' => 'nullable', 
+            'jedinica_mjere_id' => 'nullable',
         ];
     }
 }

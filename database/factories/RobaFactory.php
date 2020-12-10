@@ -6,6 +6,7 @@ use App\Models\JedinicaMjere;
 use App\Models\Preduzece;
 use App\Models\ProizvodjacRobe;
 use App\Models\Roba;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RobaFactory extends Factory
@@ -33,7 +34,7 @@ class RobaFactory extends Factory
             'status' => $this->faker->boolean(),
             'proizvodjac_robe_id' => ProizvodjacRobe::all()->random()->id,
             'jedinica_mjere_id' => JedinicaMjere::all()->random()->id,
-            'preduzece_id' => Preduzece::all()->random()->id
+            'user_id' => User::all()->random()->id
         ];
     }
 }
