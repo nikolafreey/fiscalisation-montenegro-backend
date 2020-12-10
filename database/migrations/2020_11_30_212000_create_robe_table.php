@@ -18,15 +18,9 @@ class CreateRobeTable extends Migration
             $table->string('naziv', 50);
             $table->string('opis', 255)->nullable();
             $table->string('detaljni_opis', 255)->nullable();
-<<<<<<< HEAD
-            $table->string('ean', 50);
-            $table->string('interna_sifra_proizvoda', 50)->nullable();
-            $table->boolean('status');
-=======
             $table->string('ean', 50)->nullable();
             $table->string('interna_sifra_proizvoda', 50)->nullable();
             $table->boolean('status')->nullable();
->>>>>>> ce5cb9bc5ad2975d6874f7fe266afde93a0369b0
             $table->softDeletes();
             $table->timestamps();
 
@@ -40,14 +34,8 @@ class CreateRobeTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-<<<<<<< HEAD
-            $table->foreignId('preduzece_id')
-                ->nullable()
-                ->constrained('preduzeca')
-=======
             $table->foreignId('user_id')
                 ->constrained('users')
->>>>>>> ce5cb9bc5ad2975d6874f7fe266afde93a0369b0
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

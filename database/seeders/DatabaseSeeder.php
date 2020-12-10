@@ -3,12 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\AtributRobe;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
-=======
->>>>>>> ce5cb9bc5ad2975d6874f7fe266afde93a0369b0
 use App\Models\CijenaRobe;
 use App\Models\Djelatnost;
 use App\Models\FizickoLice;

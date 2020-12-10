@@ -20,11 +20,7 @@ use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\RobaController;
 use App\Http\Controllers\KategorijaRobeController;
 use App\Http\Controllers\PodKategorijaRobeController;
-<<<<<<< HEAD
-use App\Models\AtributRobe;
-=======
 use App\Http\Controllers\TipoviAtributaController;
->>>>>>> ce5cb9bc5ad2975d6874f7fe266afde93a0369b0
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
