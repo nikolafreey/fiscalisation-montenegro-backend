@@ -30,6 +30,12 @@ class CreateAtributiRobaTable extends Migration
                 ->constrained('tipovi_atributa_roba')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            
+            $table->foreignId('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

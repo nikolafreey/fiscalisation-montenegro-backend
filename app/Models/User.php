@@ -32,9 +32,9 @@ class User extends Authenticatable
 
     ];
 
-    public function preduzece()
+    public function preduzeca()
     {
-        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsToMany('App\Models\Preduzece', 'user_tip_korisnika', 'user_id', 'preduzece_id');
     }
     public function tip_korisnika()
     {

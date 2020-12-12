@@ -45,6 +45,15 @@ class DatabaseSeeder extends Seeder
         Preduzece::factory(100)->create();
         User::factory(10)->create();
         User::factory(1)->create(['email' => 'test@gmail.com']);
+
+        foreach(User::all() as $user) {
+            DB::table('user_tip_korisnika')->insert([
+                'preduzece_id' => Preduzece::all()->random()->id,
+                'user_id' => $user->id,
+                'tip_korisnika_id' => TipKorisnika::all()->random()->id,
+            ]);
+        }
+
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
         Partner::factory(5)->create(['preduzece_id' => Preduzece::all()->random()->id]);

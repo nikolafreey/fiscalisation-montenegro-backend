@@ -22,13 +22,16 @@ class KategorijaRobeFactory extends Factory
      */
     public function definition()
     {
+        $user = User::all()->random();
+
         return [
             'naziv' => $this->faker->word,
             'opis' => $this->faker->text, 
             'popust_procenti' => $this->faker->randomFloat(2,0,10), 
             'popust_iznos' => $this->faker->randomFloat(2,0,10), 
             'status' => $this->faker->boolean(), 
-            'user_id' => User::all()->random()->id
+            'user_id' => $user->id,
+            'preduzece_id' => $user->preduzeca()->first()
         ];
     }
 }

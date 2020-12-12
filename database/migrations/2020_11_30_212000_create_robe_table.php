@@ -38,6 +38,11 @@ class CreateRobeTable extends Migration
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->foreignId('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

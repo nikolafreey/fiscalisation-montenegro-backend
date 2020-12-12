@@ -23,10 +23,6 @@ class CreateUsersTable extends Migration
             $table->string('avatar', 255)->nullable();
             $table->boolean('paket')->nullable();
 
-            $table->foreignId('preduzece_id')
-                ->constrained('preduzeca')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
             $table->foreignId('tip_id')
                 ->constrained('tipovi_korisnika')
                 ->onDelete('cascade')
