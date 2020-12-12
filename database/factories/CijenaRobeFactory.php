@@ -30,7 +30,6 @@ class CijenaRobeFactory extends Factory
             'nabavna_cijena_bez_pdv' => $this->faker->randomFloat(),
             'nabavna_cijena_sa_pdv' => $this->faker->randomFloat(),
             'cijena_bez_pdv' => $this->faker->randomFloat(),
-            'pdv_iznos' => $this->faker->randomFloat(),
             'ukupna_cijena' => $this->faker->randomFloat(),
             'user_id' => User::all()->random()->id,
             'porez_id' => Porez::all()->random()->id,

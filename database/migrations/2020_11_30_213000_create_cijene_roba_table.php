@@ -18,7 +18,6 @@ class CreateCijeneRobaTable extends Migration
             $table->decimal('nabavna_cijena_bez_pdv', 15, 2)->nullable();
             $table->decimal('nabavna_cijena_sa_pdv', 15, 2)->nullable();
             $table->decimal('cijena_bez_pdv', 15, 2)->nullable();
-            $table->decimal('pdv_iznos', 15, 2)->nullable();
             $table->decimal('ukupna_cijena', 15, 2)->nullable();
             $table->softDeletes();
             $table->timestamps();
@@ -33,11 +32,11 @@ class CreateCijeneRobaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-                $table->foreignId('roba_id')
+            $table->foreignId('roba_id')
                 ->constrained('robe')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-                $table->foreignId('atribut_id')
+            $table->foreignId('atribut_id')
                 ->constrained('atributi_roba')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
