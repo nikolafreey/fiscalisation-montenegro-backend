@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('email', 50)->unique();
             $table->string('password');
             $table->string('ime', 50);
@@ -23,10 +23,6 @@ class CreateUsersTable extends Migration
             $table->string('avatar', 255)->nullable();
             $table->boolean('paket')->nullable();
 
-            $table->foreignId('preduzece_id')
-                ->constrained('preduzeca')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
             $table->foreignId('tip_id')
                 ->constrained('tipovi_korisnika')
                 ->onDelete('cascade')

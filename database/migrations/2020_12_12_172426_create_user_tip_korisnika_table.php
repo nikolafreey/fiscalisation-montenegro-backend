@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateZiroRacuniTable extends Migration
+class CreateUserTipKorisnikaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,29 @@ class CreateZiroRacuniTable extends Migration
      */
     public function up()
     {
-        Schema::create('ziro_racuni', function (Blueprint $table) {
+        Schema::create('user_tip_korisnika', function (Blueprint $table) {
             $table->id();
-            $table->string('broj_racuna', 50);
-
+            
             $table->uuid('preduzece_id')
-                ->nullable()
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->foreignId('fizicko_lice_id')
-                ->nullable()
-                ->constrained('fizicka_lica')
+            
+                $table->uuid('user_id')
+                ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            
+                $table->foreignId('tip_korisnika_id')
+                ->constrained('tipovi_korisnika')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            
+                $table->timestamps();
 
-            $table->softDeletes();
-            $table->timestamps();
+                $table->unique(['preduzece_id', 'user_id']);
+
+            
         });
     }
 
@@ -40,6 +46,6 @@ class CreateZiroRacuniTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ziro_racuns');
+        Schema::dropIfExists('user_tip_korisnika');
     }
 }

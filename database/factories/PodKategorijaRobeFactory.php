@@ -23,13 +23,16 @@ class PodKategorijaRobeFactory extends Factory
      */
     public function definition()
     {
+        $user = User::all()->random();
+        
         return [
             'naziv' => $this->faker->word,
             'opis' => $this->faker->text, 
             'popust_procenti' => $this->faker->randomFloat(), 
             'popust_iznos' => $this->faker->randomFloat(), 
             'status' => $this->faker->boolean(), 
-            'user_id' => User::all()->random()->id,
+            'user_id' => $user->id,
+            'preduzece_id' => $user->preduzeca()->first(),
             'kategorija_id' => KategorijaRobe::all()->random()->id
         ];
     }

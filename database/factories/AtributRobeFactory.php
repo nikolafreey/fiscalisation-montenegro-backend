@@ -23,12 +23,15 @@ class AtributRobeFactory extends Factory
      */
     public function definition()
     {
+        $user = User::all()->random();
+
         return [
             'naziv' => $this->faker->word(),
             'opis' => $this->faker->name(),
             'popust_procenti' => $this->faker->randomFloat(),
             'popust_iznos' => $this->faker->randomFloat(),
-            'user_id' => User::all()->random()->id,
+            'user_id' => $user->id,
+            'preduzece_id' => $user->preduzeca()->first(),
             'tip_atributa_id' => TipAtributa::all()->random()->id
         ];
     }

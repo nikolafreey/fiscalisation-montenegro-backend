@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\GenerateUuid;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes; //LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes, GenerateUuid; //LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -31,13 +33,13 @@ class User extends Authenticatable
 
     ];
 
-    public function preduzece()
+    public function preduzeca()
     {
-        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsToMany('App\Models\Preduzece', 'user_tip_korisnika', 'user_id', 'preduzece_id');
     }
     public function tip_korisnika()
     {
-        return $this->belongsTo('App\Models\TipKorisnika', 'tip_id');
+        return $this->belongsToMany('App\Models\TipKorisnika', 'user_tip_korisnika', 'user_id', 'tip_korisnika_id');
     }
 
     public function moduli()
@@ -73,6 +75,16 @@ class User extends Authenticatable
     public function proizvodjac_robe()
     {
         return $this->hasMany('App\Models\ProizvodjacRobe', 'user_id');
+    }
+
+    public function dozvole($preduzece_id)
+    {
+        return DB::table('users')
+            ->join('user_tip_korisnika', 'users.id', '==', 'user_tip_korisnika.user_id')
+            ->join('dozvole_tip_korisnika', 'user_tip_korisnika.tip_korisnika_id', '==', 'dozvole_tip_korisnika.tip_korisnika_id')
+            ->where('user_tip_korisnika.preduzece_id', '==', $preduzece_id)
+            ->select('dozvole_tip_korisnika.*')
+            ->get();
     }
 
     /**

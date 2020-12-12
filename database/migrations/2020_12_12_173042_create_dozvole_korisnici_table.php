@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateModulUserTable extends Migration
+class CreateDozvoleKorisniciTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,17 @@ class CreateModulUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('modul_user', function (Blueprint $table) {
+        Schema::create('dozvole_korisnici', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('modul_id')
-                ->constrained('moduli')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
             $table->uuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->softDeletes();
+            $table->string('model', 50);
+            $table->boolean('can_read')->default(false);
+            $table->boolean('can_create')->default(false);
+            $table->boolean('can_edit')->default(false);
+            $table->boolean('can_delete')->default(false);
             $table->timestamps();
         });
     }
@@ -37,6 +35,6 @@ class CreateModulUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modul_user');
+        Schema::dropIfExists('dozvole_korisnici');
     }
 }

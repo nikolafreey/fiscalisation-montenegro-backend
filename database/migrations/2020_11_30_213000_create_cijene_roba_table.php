@@ -22,7 +22,7 @@ class CreateCijeneRobaTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreignId('user_id')
+            $table->uuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
@@ -38,6 +38,11 @@ class CreateCijeneRobaTable extends Migration
                 ->onUpdate('cascade');
             $table->foreignId('atribut_id')
                 ->constrained('atributi_roba')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->uuid('preduzece_id')
+                ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

@@ -25,6 +25,8 @@ class RobaFactory extends Factory
      */
     public function definition()
     {
+        $user = User::all()->random();
+
         return [
             'naziv' => $this->faker->word(),
             'opis' => $this->faker->text(),
@@ -34,7 +36,8 @@ class RobaFactory extends Factory
             'status' => $this->faker->boolean(),
             'proizvodjac_robe_id' => ProizvodjacRobe::all()->random()->id,
             'jedinica_mjere_id' => JedinicaMjere::all()->random()->id,
-            'user_id' => User::all()->random()->id
+            'user_id' => $user->id,
+            'preduzece_id' => $user->preduzeca()->first()
         ];
     }
 }

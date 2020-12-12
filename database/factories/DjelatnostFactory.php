@@ -22,7 +22,7 @@ class DjelatnostFactory extends Factory
     public function definition()
     {
         return [
-            'naziv' => $this->faker->word(),
+            'naziv' => $this->faker->unique()->word(),
             
         ];
     }
