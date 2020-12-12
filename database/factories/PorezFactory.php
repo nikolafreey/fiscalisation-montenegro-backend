@@ -23,7 +23,7 @@ class PorezFactory extends Factory
     {
         return [
             'stopa' => $this->faker->randomFloat(2, 0, 10),
-            'naziv' => $this->faker->word()
+            'naziv' => $this->faker->unique()->word()
         ];
     }
 }

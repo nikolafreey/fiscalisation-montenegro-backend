@@ -12,9 +12,14 @@ class TipKorisnika extends Model
 
     protected $table = 'tipovi_korisnika';
     protected $fillable = ['naziv'];
-
+    /*
     public function users()
     {
         return $this->hasMany('App\Models\User', 'tip_id');
+    }*/
+
+    public function dozvole()
+    {
+        return $this->hasMany('App\Models\DozvolaTipKorisnika', 'tip_korisnika_id');
     }
 }

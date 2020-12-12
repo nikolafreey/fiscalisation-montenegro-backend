@@ -95,28 +95,28 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            DB::table('robe_cijene_roba')->insert(
+            /*DB::table('robe_cijene_roba')->insert(
                 [
                     'roba_id' => Roba::all()->random()->id,
                     'cijena_robe_id' => CijenaRobe::all()->random()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
-            );
+            );*/
 
-            DB::table('robe_kategorije')->insert(
+            /*DB::table('robe_kategorije')->insert(
                 [
                     'roba_id' => Roba::all()->random()->id,
                     'kategorije_id' => KategorijaRobe::all()->random()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
-            );
+            );*/
 
             DB::table('robe_atributi_roba')->insert(
                 [
-                    'robe_id' => Roba::all()->random()->id,
-                    'atributi_roba_id' => AtributRobe::all()->random()->id,
+                    'roba_id' => Roba::all()->random()->id,
+                    'atribut_id' => AtributRobe::all()->random()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
