@@ -23,7 +23,7 @@ class CreateUslugeTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreignId('user_id')
+            $table->uuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
@@ -40,7 +40,7 @@ class CreateUslugeTable extends Migration
                 ->constrained('porezi')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->foreignId('preduzece_id')
+            $table->uuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

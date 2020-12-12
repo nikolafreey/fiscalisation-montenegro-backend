@@ -17,7 +17,7 @@ class CreateZiroRacuniTable extends Migration
             $table->id();
             $table->string('broj_racuna', 50);
 
-            $table->foreignId('preduzece_id')
+            $table->uuid('preduzece_id')
                 ->nullable()
                 ->constrained('preduzeca')
                 ->onDelete('cascade')

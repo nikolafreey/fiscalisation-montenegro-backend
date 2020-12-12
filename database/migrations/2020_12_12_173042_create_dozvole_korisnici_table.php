@@ -15,7 +15,7 @@ class CreateDozvoleKorisniciTable extends Migration
     {
         Schema::create('dozvole_korisnici', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')
+            $table->uuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

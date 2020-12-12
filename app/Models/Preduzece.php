@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\PreduzecaIndexConfigurator;
+use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use ScoutElastic\Searchable;
 
 class Preduzece extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, GenerateUuid;
 
     protected $table = 'preduzeca';
 

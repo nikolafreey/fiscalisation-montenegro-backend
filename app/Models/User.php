@@ -9,10 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\GenerateUuid;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes; //LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes, GenerateUuid; //LogsActivity;
 
     /**
      * The attributes that are mass assignable.
