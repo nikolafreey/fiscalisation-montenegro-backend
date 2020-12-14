@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class Racun extends Model
+{
+    use HasFactory;
+
+    protected $table = 'racuni';
+
+    protected $fillable = [
+        'kod_operatera',
+        'kod_poslovnog_prostora',
+        'ikof',
+        'jikr',
+        'tip_racuna',
+        'vrsta_racuna',
+        'korektivni_racun',
+        'korektivni_racun_vrsta',
+        'broj_racuna',
+        'datum_izdavanja',
+        'datum_za_placanje',
+        'kod_poslovnog_prostora_enu',
+        'ukupna_cijena_bez_pdv',
+        'ukupna_cijena_sa_pdv',
+        'ukupan_iznos_pdv',
+        'popust_procenat',
+        'popust_iznos',
+        'popust_na_cijenu_bez_pdv',
+        'popust_ukupno',
+        'opis',
+        'status',
+        'preduzece_id',
+        'user_id',
+    ];
+
+    public function kreirajStavke(Request $request) {
+        $stavke = [];
+        
+        foreach($request->stavke as $stavka) {
+            if($stavka['usluga_id']) {
+                $usluga = Usluga::find($stavka['usluga_id']);
+                $stavke[] = $this->kreirajStavkuIzUsluge($usluga, $stavka);
+            }
+            if($stavka['roba_id']) {
+                $roba = Roba::find($stavka['roba_id']);
+                $stavke[] = $this->kreirajStavkuIzRobe($roba, $stavka);
+            }
+        }
+
+        DB::insert($stavke);
+    }
+
+    private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka) {
+        return StavkaRacuna::make([
+            'naziv' => $usluga->naziv,
+            'opis' => $usluga->opis,
+            'jedinicna_cijena_bez_pdv' => $usluga->cijena_bez_pdv,
+            'kolicina' => $stavka->kolicina,
+            'pdv_iznos' => $usluga->ukupna_cijena - $usluga->cijena_bez_pdv,
+            'popust_procenat' => $stavka->popust_procenat,
+            'popust_iznos' => $stavka->popust_iznos,
+            'popust_na_jedinicnu_cijenu' => $stavka->popust_na_jedinicnu_cijenu,
+            'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka->kolicina,
+            'porez_id' => $usluga->porez_id,
+            'jedinica_id' => $stavka->jedinica_id,
+            'racun_id' => $this->id,
+        ]);
+    }
+
+    private function kreirajStavkuIzRobe(Roba $roba, $stavka) {
+        $cijenaRobe = CijenaRobe::where('roba_id', $roba->id)
+            ->where('atribut_id', $stavka['atribut_id'])
+            ->get();
+        
+        return StavkaRacuna::make([
+            'naziv' => $roba->naziv,
+            'opis' => $roba->opis,
+            'jedinicna_cijena_bez_pdv' => $cijenaRobe->cijena_bez_pdv,
+            'kolicina' => $stavka->kolicina,
+            'pdv_iznos' => $cijenaRobe->ukupna_cijena - $cijenaRobe->cijena_bez_pdv,
+            'popust_procenat' => $stavka->popust_procenat,
+            'popust_iznos' => $stavka->popust_iznos,
+            'popust_na_jedinicnu_cijenu' => $stavka->popust_na_jedinicnu_cijenu,
+            'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka->kolicina,
+            'porez_id' => $cijenaRobe->porezi_id,
+            'jedinica_id' => $roba->jedinica_mjere_id,
+            'racun_id' => $this->id,
+        ]);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
+
+    public function stavke()
+    {
+        return $this->hasMany('App\Models\StavkaRacuna', 'racun_id');
+    }
+
+    public function porezi()
+    {
+        return $this->belongsToMany('App\Models\Porez', 'porezi_za_racun', 'racun_id', 'porez_id');
+    }
+}

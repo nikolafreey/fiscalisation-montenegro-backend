@@ -44,6 +44,10 @@ Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->paramet
     'tipovi-atributa' => 'tip-atributa'
 ]);
 
+Route::apiResource('/racuni', TipoviAtributaController::class)->parameters([
+    'racuni' => 'racun'
+]);
+
 
 Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'

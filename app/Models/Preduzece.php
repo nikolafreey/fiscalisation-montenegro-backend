@@ -85,4 +85,9 @@ class Preduzece extends Model
     {
         return $this->belongsTo('App\Models\Roba', 'preduzece_id');
     }
+
+    public function racuni()
+    {
+        return $this->hasMany('App\Models\Racun', 'preduzece_id');
+    }
 }

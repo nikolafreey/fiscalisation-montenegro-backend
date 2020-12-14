@@ -20,7 +20,9 @@ use App\Models\PodKategorijaRobe;
 use App\Models\Porez;
 use App\Models\Preduzece;
 use App\Models\ProizvodjacRobe;
+use App\Models\Racun;
 use App\Models\Roba;
+use App\Models\StavkaRacuna;
 use App\Models\TipAtributa;
 use App\Models\TipKorisnika;
 use App\Models\User;
@@ -70,6 +72,8 @@ class DatabaseSeeder extends Seeder
         AtributRobe::factory(10)->create();
         CijenaRobe::factory(10)->create();
         AtributRobe::factory(10)->create();
+        Racun::factory(20)->create();
+        StavkaRacuna::factory(100)->create();
 
         $djelatnostiIds = DB::table('djelatnosti')->pluck('id')->toArray();
         $preduzecaIds = DB::table('preduzeca')->pluck('id')->toArray();
@@ -128,6 +132,14 @@ class DatabaseSeeder extends Seeder
                     'atribut_id' => AtributRobe::all()->random()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
+                ]
+            );
+
+            DB::table('porezi_za_racun')->insert(
+                [
+                    'racun_id' => Racun::all()->random()->id,
+                    'porez_id' => Porez::all()->random()->id,
+                    'pdv_iznos_ukupno' => Racun::all()->random()->ukupan_iznos_pdv
                 ]
             );
         }

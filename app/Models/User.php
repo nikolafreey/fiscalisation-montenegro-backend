@@ -87,6 +87,11 @@ class User extends Authenticatable
             ->get();
     }
 
+    public function racuni() 
+    {
+        return $this->hasMany('App\Models\Racun', 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
