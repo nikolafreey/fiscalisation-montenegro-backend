@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         User::factory(1)->create(['email' => 'test@gmail.com']);
 
-        foreach(User::all() as $user) {
+        foreach (User::all() as $user) {
             DB::table('user_tip_korisnika')->insert([
                 'preduzece_id' => Preduzece::all()->random()->id,
                 'user_id' => $user->id,
@@ -108,23 +108,23 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            /*DB::table('robe_cijene_roba')->insert(
-                [
-                    'roba_id' => Roba::all()->random()->id,
-                    'cijena_robe_id' => CijenaRobe::all()->random()->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );*/
+            // DB::table('robe_cijene_roba')->insert(
+            //     [
+            //         'roba_id' => Roba::all()->random()->id,
+            //         'cijena_robe_id' => CijenaRobe::all()->random()->id,
+            //         'created_at' => now(),
+            //         'updated_at' => now(),
+            //     ]
+            // );
 
-            /*DB::table('robe_kategorije')->insert(
-                [
-                    'roba_id' => Roba::all()->random()->id,
-                    'kategorije_id' => KategorijaRobe::all()->random()->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );*/
+            // DB::table('kategorije_roba')->insert(
+            //     [
+            //         'roba_id' => Roba::all()->random()->id,
+            //         'kategorije_id' => KategorijaRobe::all()->random()->id,
+            //         'created_at' => now(),
+            //         'updated_at' => now(),
+            //     ]
+            // );
 
             DB::table('robe_atributi_roba')->insert(
                 [

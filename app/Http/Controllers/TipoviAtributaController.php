@@ -41,7 +41,7 @@ class TipoviAtributaController extends Controller
      */
     public function show(TipAtributa $tipAtributa)
     {
-        return response()->json($tipAtributa, 200);
+        return response()->json($tipAtributa->atributi, 200);
     }
 
     /**

@@ -31,6 +31,8 @@ class RobaController extends Controller
         $roba->save();
 
         $roba->storeKategorije($request->kategorije);
+        $roba->storeCijene($request->all());
+
         $roba->storeAtributi($request->atributi);
 
         return response()->json($roba, 201);
