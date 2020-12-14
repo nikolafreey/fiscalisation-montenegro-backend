@@ -12,9 +12,15 @@ class RacunController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Racun::all()->paginate();
+        $query = Racun::filter($request);
+
+        $paginatedData = $query->paginate();
+        
+        $paginatedData['ukupna_cijena'] = Racun::izracunajUkupnuCijenu($query);
+
+        return $paginatedData;
     }
 
     /**

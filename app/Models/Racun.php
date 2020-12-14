@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\RacuniIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use ScoutElastic\Searchable;
 
 class Racun extends Model
 {
@@ -38,6 +40,66 @@ class Racun extends Model
         'preduzece_id',
         'user_id',
     ];
+
+    use Searchable;
+
+    protected $indexConfigurator = RacuniIndexConfigurator::class;
+
+    protected $searchRules = [
+        //
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'broj_racuna' => [
+                'type' => 'text',
+            ],
+            'status' => [
+                'type' => 'keyword',
+            ],
+            'created_at' => [
+                'type' => 'date',
+            ],
+        ]
+    ];
+
+    public function toSearchableArray()
+    {
+        $array = $this->only('broj_racuna', 'status', 'created_at');
+
+        return $array;
+    }
+ 
+    public static function filter(Request $request) {
+        
+        if ($request->has('search')){
+            $query = Racun::search($request->search . '*');       
+        } else {
+            $query = Racun::query();
+        }
+        if ($request->has('datum_start')) {
+            $query = $query->where('created_at', '>=', $request->datum_start);
+        }
+        if ($request->has('datum_end')) {
+            $query = $query->where('created_at', '<=', $request->datum_end);
+        }
+        if ($request->has('status')) {
+            $query = $query->where('status', $request->status);
+        }
+
+        return $query;
+    }
+
+    public static function izracunajUkupnuCijenu($query) {
+        $racuni = $query->get();
+        $suma = 0;
+
+        foreach ($racuni as $racun) {
+            $suma += $racun->ukupna_cijena_sa_pdv;
+        }
+
+        return $suma;
+    }
 
     public function kreirajStavke(Request $request) {
         $stavke = [];
