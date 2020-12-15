@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Partner;
 use App\Models\Preduzece;
 use App\Models\Racun;
 use App\Models\User;
@@ -47,6 +48,7 @@ class RacunFactory extends Factory
             'status' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
             'preduzece_id' => Preduzece::all()->random()->id,
             'user_id' => User::all()->random()->id,
+            'partner_id' => Partner::all()->random()->id,
         ];
     }
 }

@@ -47,6 +47,11 @@ class CreateRacuniTable extends Migration
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->foreignId('partner_id')
+                ->constrained('partneri')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             
         });
     }

@@ -39,6 +39,7 @@ class Racun extends Model
         'status',
         'preduzece_id',
         'user_id',
+        'partner_id'
     ];
 
     use Searchable;
@@ -60,12 +61,47 @@ class Racun extends Model
             'created_at' => [
                 'type' => 'date',
             ],
+            'preduzece_kratki_naziv' => [
+                'type' => 'text',
+            ],
+            'preduzece_puni_naziv' => [
+                'type' => 'text',
+            ],
+            'preduzece_pib' => [
+                'type' => 'text',
+            ],
+            'fizicko_lice_ime' => [
+                'type' => 'text',
+            ],
+            'fizicko_lice_prezime' => [
+                'type' => 'text',
+            ],
         ]
     ];
 
     public function toSearchableArray()
     {
         $array = $this->only('broj_racuna', 'status', 'created_at');
+
+        $partner = $this->partner;
+
+        if ($partner->preduzece_id) {
+            $array['preduzece_kratki_naziv'] = $partner->preduzece->kratki_naziv;
+            $array['preduzece_puni_naziv'] = $partner->preduzece->puni_naziv;
+            $array['preduzece_pib'] = $partner->preduzece->pib;
+        } else {
+            $array['preduzece_kratki_naziv'] = '';
+            $array['preduzece_puni_naziv'] = '';
+            $array['preduzece_pib'] = '';
+        }
+
+        if ($partner->fizicko_lice_id) {
+            $array['fizicko_lice_ime'] = $partner->fizicko_lice->ime;
+            $array['fizicko_lice_prezime'] = $partner->fizicko_lice->prezime;
+        } else {
+            $array['fizicko_lice_ime'] = '';
+            $array['fizicko_lice_prezime'] = '';
+        }
 
         return $array;
     }
@@ -174,5 +210,10 @@ class Racun extends Model
     public function porezi()
     {
         return $this->belongsToMany('App\Models\Porez', 'porezi_za_racun', 'racun_id', 'porez_id');
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo('App\Models\Partner', 'partner_id');
     }
 }

@@ -71,7 +71,6 @@ class DatabaseSeeder extends Seeder
         TipAtributa::factory(10)->create();
         AtributRobe::factory(10)->create();
         CijenaRobe::factory(10)->create();
-        AtributRobe::factory(10)->create();
         Racun::factory(20)->create();
         StavkaRacuna::factory(100)->create();
 
