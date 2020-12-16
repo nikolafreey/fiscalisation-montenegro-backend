@@ -42,7 +42,7 @@ class Racun extends Model
         'partner_id'
     ];
 
-    use Searchable;
+    // use Searchable;
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
 
@@ -105,11 +105,12 @@ class Racun extends Model
 
         return $array;
     }
- 
-    public static function filter(Request $request) {
-        
-        if ($request->has('search')){
-            $query = Racun::search($request->search . '*');       
+
+    public static function filter(Request $request)
+    {
+
+        if ($request->has('search')) {
+            $query = Racun::search($request->search . '*');
         } else {
             $query = Racun::query();
         }
@@ -126,7 +127,8 @@ class Racun extends Model
         return $query;
     }
 
-    public static function izracunajUkupnuCijenu($query) {
+    public static function izracunajUkupnuCijenu($query)
+    {
         $racuni = $query->get();
         $suma = 0;
 
@@ -137,15 +139,16 @@ class Racun extends Model
         return $suma;
     }
 
-    public function kreirajStavke(Request $request) {
+    public function kreirajStavke(Request $request)
+    {
         $stavke = [];
-        
-        foreach($request->stavke as $stavka) {
-            if($stavka['usluga_id']) {
+
+        foreach ($request->stavke as $stavka) {
+            if ($stavka['usluga_id']) {
                 $usluga = Usluga::find($stavka['usluga_id']);
                 $stavke[] = $this->kreirajStavkuIzUsluge($usluga, $stavka);
             }
-            if($stavka['roba_id']) {
+            if ($stavka['roba_id']) {
                 $roba = Roba::find($stavka['roba_id']);
                 $stavke[] = $this->kreirajStavkuIzRobe($roba, $stavka);
             }
@@ -154,7 +157,8 @@ class Racun extends Model
         DB::insert($stavke);
     }
 
-    private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka) {
+    private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka)
+    {
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
             'opis' => $usluga->opis,
@@ -171,11 +175,12 @@ class Racun extends Model
         ]);
     }
 
-    private function kreirajStavkuIzRobe(Roba $roba, $stavka) {
+    private function kreirajStavkuIzRobe(Roba $roba, $stavka)
+    {
         $cijenaRobe = CijenaRobe::where('roba_id', $roba->id)
             ->where('atribut_id', $stavka['atribut_id'])
             ->get();
-        
+
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
             'opis' => $roba->opis,

@@ -17,8 +17,8 @@ class CreateAtributiRobaTable extends Migration
             $table->id();
             $table->string('naziv', 50);
             $table->string('opis', 255)->nullable();
-            $table->decimal('popust_procenti', 15, 2);
-            $table->decimal('popust_iznos', 15, 2);
+            $table->decimal('popust_procenti', 15, 2)->nullable();
+            $table->decimal('popust_iznos', 15, 2)->nullable();
             $table->softDeletes();
             $table->timestamps();
 
@@ -31,7 +31,7 @@ class CreateAtributiRobaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            
+
             $table->uuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')

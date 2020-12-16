@@ -25,6 +25,8 @@ class StoreTipAtributa extends FormRequest
     {
         return [
             'naziv' => 'required|string|max:50|min:3',
+
+
         ];
     }
 }

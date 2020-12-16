@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AtributRobeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DjelatnostController;
@@ -57,7 +58,7 @@ Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->para
     'proizvodjaci-robe' => 'proizvodjaci-robe'
 ]);
 
-Route::apiResource('/atribut-roba', AtributRobe::class)->parameters([
+Route::apiResource('/atribut-roba', AtributRobeController::class)->parameters([
     'atribut-roba' => 'atribut-robe'
 ]);
 
