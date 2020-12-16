@@ -113,11 +113,11 @@ class Racun extends Model
         } else {
             $query = Racun::query();
         }
-        if ($request->has('datum_start')) {
-            $query = $query->where('created_at', '>=', $request->datum_start);
+        if ($request->has('start_date')) {
+            $query = $query->where('created_at', '>=', $request->start_date);
         }
-        if ($request->has('datum_end')) {
-            $query = $query->where('created_at', '<=', $request->datum_end);
+        if ($request->has('end_date')) {
+            $query = $query->where('created_at', '<=', $request->end_date);
         }
         if ($request->has('status')) {
             $query = $query->where('status', $request->status);

@@ -16,13 +16,13 @@ class CreateStavkeRacunaTable extends Migration
         Schema::create('stavke_racuna', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
-            $table->text('opis', 50);
+            $table->text('opis', 50)->nullable();
             $table->decimal('jedinicna_cijena_bez_pdv', 15, 2);
             $table->decimal('kolicina', 15, 2);
             $table->decimal('pdv_iznos', 15, 2);
-            $table->decimal('popust_procenat', 15, 2);
-            $table->decimal('popust_iznos', 15, 2);
-            $table->boolean('popust_na_jedinicnu_cijenu');
+            $table->decimal('popust_procenat', 15, 2)->nullable();
+            $table->decimal('popust_iznos', 15, 2)->nullable();
+            $table->boolean('popust_na_jedinicnu_cijenu')->nullable();
             $table->decimal('cijena_sa_pdv', 15, 2);
             $table->timestamps();
 
