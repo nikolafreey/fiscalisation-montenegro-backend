@@ -42,7 +42,7 @@ class Racun extends Model
         'partner_id'
     ];
 
-    // use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
 
@@ -114,11 +114,11 @@ class Racun extends Model
         } else {
             $query = Racun::query();
         }
-        if ($request->has('start_date')) {
-            $query = $query->where('created_at', '>=', $request->start_date);
+        if ($request->has('startDate')) {
+            $query = $query->where('created_at', '>=', $request->startDate);
         }
-        if ($request->has('end_date')) {
-            $query = $query->where('created_at', '<=', $request->end_date);
+        if ($request->has('endDate')) {
+            $query = $query->where('created_at', '<=', $request->endDate);
         }
         if ($request->has('status')) {
             $query = $query->where('status', $request->status);
