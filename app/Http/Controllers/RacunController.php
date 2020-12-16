@@ -18,9 +18,11 @@ class RacunController extends Controller
 
         $paginatedData = $query->paginate();
         
-        $paginatedData['ukupna_cijena'] = Racun::izracunajUkupnuCijenu($query);
+        $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
+        //$paginatedData['ukupna_cijena'] = Racun::izracunajUkupnuCijenu($query);
+        $data = $ukupnaCijena->merge($paginatedData);
 
-        return $paginatedData;
+        return $data;
     }
 
     /**
