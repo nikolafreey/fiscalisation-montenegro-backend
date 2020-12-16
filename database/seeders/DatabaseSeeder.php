@@ -23,8 +23,10 @@ use App\Models\ProizvodjacRobe;
 use App\Models\Racun;
 use App\Models\Roba;
 use App\Models\StavkaRacuna;
+use App\Models\StavkaUlazniRacun;
 use App\Models\TipAtributa;
 use App\Models\TipKorisnika;
+use App\Models\UlazniRacun;
 use App\Models\User;
 use App\Models\Usluga;
 use App\Models\ZiroRacun;
@@ -72,7 +74,11 @@ class DatabaseSeeder extends Seeder
         AtributRobe::factory(10)->create();
         CijenaRobe::factory(10)->create();
         Racun::factory(20)->create();
+        UlazniRacun::factory(20)->create();
+
         StavkaRacuna::factory(100)->create();
+        StavkaUlazniRacun::factory(100)->create();
+
 
         $djelatnostiIds = DB::table('djelatnosti')->pluck('id')->toArray();
         $preduzecaIds = DB::table('preduzeca')->pluck('id')->toArray();
