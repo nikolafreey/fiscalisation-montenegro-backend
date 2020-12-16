@@ -28,9 +28,11 @@ class AtributRobeController extends Controller
     {
         $atributRobe = AtributRobe::make($request->validated());
         $atributRobe->user_id = auth()->id();
+        $atributRobe->preduzece_id = 1;
+
         $atributRobe->save();
 
-        return response()->json($atributRobe->save(), 201);
+        return response()->json($atributRobe, 201);
     }
 
     /**
