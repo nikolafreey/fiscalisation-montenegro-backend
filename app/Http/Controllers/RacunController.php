@@ -18,7 +18,12 @@ class RacunController extends Controller
 
         $query = $query->where('tip_racuna', Racun::RACUN);
 
-        $paginatedData = $query->paginate();
+        $paginatedData = $query
+            ->with(
+                'partner:id,preduzece_id,fizicko_lice_id',
+                'partner.preduzece:id,kratki_naziv',
+                'partner.fizicko_lice:id,ime,prezime'
+            )->paginate();
         $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
         $data = $ukupnaCijena->merge($paginatedData);
 

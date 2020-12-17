@@ -60,7 +60,6 @@ Route::apiResource('/predracuni', PredracunController::class)->parameters([
     'racuni' => 'racun'
 ]);
 
-
 Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
 ]);
