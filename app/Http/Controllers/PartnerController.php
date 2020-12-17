@@ -15,10 +15,11 @@ class PartnerController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('filter')) {
-            return Partner::with(['preduzece', 'fizicko_lice'])->has($request->filter)->paginate();
-        }
-        return Partner::with(['preduzece', 'fizicko_lice'])->paginate();
+        $query = Partner::filter($request);
+
+        $query = $query->with(['preduzece', 'fizicko_lice']);
+
+        return $query->paginate();
     }
 
     /**

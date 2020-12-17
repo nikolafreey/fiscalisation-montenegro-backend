@@ -7,6 +7,7 @@ use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 use ScoutElastic\Searchable;
 
 class Partner extends Model
@@ -63,15 +64,34 @@ class Partner extends Model
             $array['preduzece_kratki_naziv'] = $preduzece->kratki_naziv;
             $array['preduzece_puni_naziv'] = $preduzece->puni_naziv;
             $array['preduzece_pib'] = $preduzece->pib;
+            $array['tip'] = 'preduzece';
         }
         
         if ($this->fizicko_lice_id) {
             $fizicko_lice = $this->fizicko_lice;
             $array['fizicko_lice_ime'] = $fizicko_lice->ime;
             $array['fizicko_lice_prezime'] = $fizicko_lice->prezime;
+            $array['tip'] = 'fizicko_lice';
         }
 
         return $array;
+    }
+
+    public static function filter(Request $request)
+    {
+        if ($request->has('search')) {
+            $query = Partner::search($request->search . '*');
+        } else {
+            $query = Partner::query();
+        }
+
+        if ($request->has(['filter', 'search'])) {
+            $query = $query->where('tip', $request->filter);
+        } elseif ($request->has(['filter'])) {
+            $query = $query->has($request->filter);
+        }
+        
+        return $query;
     }
 
     protected static function booted()
