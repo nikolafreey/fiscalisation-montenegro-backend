@@ -92,20 +92,13 @@ class Racun extends Model
             $array['preduzece_kratki_naziv'] = $partner->preduzece->kratki_naziv;
             $array['preduzece_puni_naziv'] = $partner->preduzece->puni_naziv;
             $array['preduzece_pib'] = $partner->preduzece->pib;
-        } else {
-            $array['preduzece_kratki_naziv'] = '';
-            $array['preduzece_puni_naziv'] = '';
-            $array['preduzece_pib'] = '';
         }
 
         if ($partner->fizicko_lice_id) {
             $array['fizicko_lice_ime'] = $partner->fizicko_lice->ime;
             $array['fizicko_lice_prezime'] = $partner->fizicko_lice->prezime;
-        } else {
-            $array['fizicko_lice_ime'] = '';
-            $array['fizicko_lice_prezime'] = '';
         }
-
+        
         return $array;
     }
 

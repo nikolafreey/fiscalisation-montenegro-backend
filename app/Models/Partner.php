@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\PartnerIndexConfigurator;
 use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use ScoutElastic\Searchable;
 
 class Partner extends Model
 {
@@ -25,6 +27,52 @@ class Partner extends Model
         'preduzece_id',
         'fizicko_lice_id'
     ];
+
+    use Searchable;
+
+    protected $indexConfigurator = PartnerIndexConfigurator::class;
+
+    protected $searchRules = [
+        //
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'preduzece_kratki_naziv' => [
+                'type' => 'text',
+            ],
+            'preduzece_puni_naziv' => [
+                'type' => 'text',
+            ],
+            'preduzece_pib' => [
+                'type' => 'text',
+            ],
+            'fizicko_lice_ime' => [
+                'type' => 'text',
+            ],
+            'fizicko_lice_prezime' => [
+                'type' => 'text',
+            ],
+        ]
+    ];
+
+    public function toSearchableArray()
+    {
+        if ($this->preduzece_id) {
+            $preduzece = $this->preduzece;
+            $array['preduzece_kratki_naziv'] = $preduzece->kratki_naziv;
+            $array['preduzece_puni_naziv'] = $preduzece->puni_naziv;
+            $array['preduzece_pib'] = $preduzece->pib;
+        }
+        
+        if ($this->fizicko_lice_id) {
+            $fizicko_lice = $this->fizicko_lice;
+            $array['fizicko_lice_ime'] = $fizicko_lice->ime;
+            $array['fizicko_lice_prezime'] = $fizicko_lice->prezime;
+        }
+
+        return $array;
+    }
 
     protected static function booted()
     {
