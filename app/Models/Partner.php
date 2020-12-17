@@ -28,7 +28,7 @@ class Partner extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope(new UserScope);
+        //  static::addGlobalScope(new UserScope);
     }
 
     public function user()

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StavkaRacuna extends Model
+class StavkaUlazniRacun extends Model
 {
     use HasFactory;
 
-    protected $table = 'stavke_racuna';
+    protected $table = 'stavke_ulazni_racuni';
 
     protected $fillable = [
         'naziv',
@@ -17,18 +17,20 @@ class StavkaRacuna extends Model
         'jedinicna_cijena_bez_pdv',
         'kolicina',
         'pdv_iznos',
+        'odbitni_pdv',
+
         'popust_procenat',
         'popust_iznos',
         'popust_na_jedinicnu_cijenu',
         'cijena_sa_pdv',
         'porez_id',
         'jedinica_id',
-        'racun_id',
+        'ulazni_racun_id',
     ];
 
-    public function racun()
+    public function ulazni_racun()
     {
-        return $this->belongsTo('App\Models\Racun', 'racun_id');
+        return $this->belongsTo('App\Models\UlazniRacun', 'ulazni_racun_id');
     }
 
     public function porez()

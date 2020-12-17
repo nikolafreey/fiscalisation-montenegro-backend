@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRacuniTable extends Migration
+class CreateUlazniRacuniTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRacuniTable extends Migration
      */
     public function up()
     {
-        Schema::create('racuni', function (Blueprint $table) {
+        Schema::create('ulazni_racuni', function (Blueprint $table) {
             $table->id();
             $table->string('kod_operatera', 50)->nullable();
             $table->string('kod_poslovnog_prostora', 50)->nullable();
@@ -62,6 +62,6 @@ class CreateRacuniTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('racuni');
+        Schema::dropIfExists('ulazni_racuni');
     }
 }
