@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\UslugaIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use ScoutElastic\Searchable;
 
 class Usluga extends Model
 {
@@ -23,6 +25,29 @@ class Usluga extends Model
         'jedinica_mjere_id',
         'porez_id',
     ];
+
+    use Searchable;
+
+    protected $indexConfigurator = UslugaIndexConfigurator::class;
+
+    protected $searchRules = [
+        //
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'naziv' => [
+                'type' => 'text',
+            ],
+        ]
+    ];
+
+    public function toSearchableArray()
+    {
+        $array = $this->only('naziv');
+
+        return $array;
+    }
 
     public function user()
     {

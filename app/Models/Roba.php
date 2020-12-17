@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\RobaIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use ScoutElastic\Searchable;
 
 class Roba extends Model
 {
@@ -14,6 +16,33 @@ class Roba extends Model
     protected $table = 'robe';
 
     protected $fillable = ['naziv', 'opis', 'detaljni_opis', 'ean', 'interna_sifra_proizvoda', 'status', 'proizvodjac_robe_id', 'jedinica_mjere_id', 'preduzece_id'];
+
+    use Searchable;
+
+    protected $indexConfigurator = RobaIndexConfigurator::class;
+
+    protected $searchRules = [
+        //
+    ];
+
+    protected $mapping = [
+        'properties' => [
+            'naziv' => [
+                'type' => 'text',
+            ],
+            'interna_sifra_proizvoda' => [
+                'type' => 'text',
+            ],
+        ]
+    ];
+
+    public function toSearchableArray()
+    {
+        $array = $this->only('naziv', 'interna_sifra_proizvoda');
+
+        return $array;
+    }
+
 
     public function storeKategorije($kategorije)
     {
