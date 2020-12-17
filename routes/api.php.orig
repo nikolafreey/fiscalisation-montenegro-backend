@@ -52,15 +52,17 @@ Route::apiResource('/racuni', RacunController::class)->parameters([
     'racuni' => 'racun'
 ]);
 
+Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
+    'ulazni_racuni' => 'ulazni_racun'
+]);
+
 <<<<<<< HEAD
 Route::apiResource('/predracuni', PredracunController::class)->parameters([
     'racuni' => 'racun'
-=======
-Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
-    'ulazni_racuni' => 'ulazni_racun'
->>>>>>> a2049b98f63eac709f2e2a53baad83d5dd97b1f9
 ]);
 
+=======
+>>>>>>> a2049b98f63eac709f2e2a53baad83d5dd97b1f9
 
 Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
     'jedinice_mjere' => 'jedinica-mjere'
