@@ -22,6 +22,7 @@ use App\Http\Controllers\RobaController;
 use App\Http\Controllers\KategorijaRobeController;
 use App\Http\Controllers\PodKategorijaRobeController;
 use App\Http\Controllers\RacunController;
+use App\Http\Controllers\PredracunController;
 use App\Http\Controllers\TipoviAtributaController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
@@ -47,6 +48,10 @@ Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->paramet
 ]);
 
 Route::apiResource('/racuni', RacunController::class)->parameters([
+    'racuni' => 'racun'
+]);
+
+Route::apiResource('/predracuni', PredracunController::class)->parameters([
     'racuni' => 'racun'
 ]);
 

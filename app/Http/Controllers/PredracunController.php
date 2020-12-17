@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Racun;
 use Illuminate\Http\Request;
 
-class RacunController extends Controller
+class PredracunController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class RacunController extends Controller
     {
         $query = Racun::filter($request);
 
-        $query = $query->where('tip_racuna', Racun::RACUN);
+        $query = $query->where('tip_racuna', Racun::PREDRACUN);
 
         $paginatedData = $query->paginate();
         $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
@@ -34,7 +34,7 @@ class RacunController extends Controller
     public function store(Request $request)
     {
         $racun = Racun::make($request->validated());
-        $racun->tip_racuna = Racun::RACUN;
+        $racun->tip_racuna = Racun::PREDRACUN;
         $racun->user_id = auth()->id();
         $racun->save();
 

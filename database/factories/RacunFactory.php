@@ -25,11 +25,11 @@ class RacunFactory extends Factory
     public function definition()
     {
         return [
-            'kod_operatera' => $this->faker->asciify('***********'),
-            'kod_poslovnog_prostora' => $this->faker->asciify('***********'),
-            'ikof' => $this->faker->asciify('***********'),
-            'jikr' => $this->faker->asciify('***********'),
-            'tip_racuna' => $this->faker->randomElement(['RACUN', 'PREDRACUN']),
+            'kod_operatera' => $this->faker->lexify('???????????'),
+            'kod_poslovnog_prostora' => $this->faker->lexify('???????????'),
+            'ikof' => $this->faker->lexify('???????????'),
+            'jikr' => $this->faker->lexify('???????????'),
+            'tip_racuna' => $this->faker->randomElement([Racun::RACUN, Racun::PREDRACUN]),
             'vrsta_racuna' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
             'korektivni_racun' => $this->faker->boolean(),
             'korektivni_racun_vrsta' => $this->faker->randomElement(['CORRECTIVE', 'DEBIT', 'CREDIT']),
