@@ -166,7 +166,7 @@ class Racun extends Model
             'popust_na_jedinicnu_cijenu' => $stavka->popust_na_jedinicnu_cijenu,
             'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka->kolicina,
             'porez_id' => $usluga->porez_id,
-            'jedinica_id' => $stavka->jedinica_id,
+            'jedinica_id' => $usluga->jedinica_mjere_id,
             'racun_id' => $this->id,
         ]);
     }
