@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AtributRobeController;
+use App\Http\Controllers\CijenaRobeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DjelatnostController;
@@ -126,6 +127,9 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 Route::apiResource('/usluge', UslugaController::class)->parameters([
     'usluge' => 'usluga'
 ]);
+
+Route::get('robaRacuni', [RobaController::class, 'robaRacuni']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
