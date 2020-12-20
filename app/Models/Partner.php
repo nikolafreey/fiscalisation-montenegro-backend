@@ -29,7 +29,7 @@ class Partner extends Model
         'fizicko_lice_id'
     ];
 
-    use Searchable;
+    //use Searchable;
 
     protected $indexConfigurator = PartnerIndexConfigurator::class;
 
@@ -66,7 +66,7 @@ class Partner extends Model
             $array['preduzece_pib'] = $preduzece->pib;
             $array['tip'] = 'preduzece';
         }
-        
+
         if ($this->fizicko_lice_id) {
             $fizicko_lice = $this->fizicko_lice;
             $array['fizicko_lice_ime'] = $fizicko_lice->ime;
@@ -90,7 +90,7 @@ class Partner extends Model
         } elseif ($request->has(['filter'])) {
             $query = $query->has($request->filter);
         }
-        
+
         return $query;
     }
 
