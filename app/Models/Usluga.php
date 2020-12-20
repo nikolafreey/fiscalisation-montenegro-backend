@@ -59,7 +59,7 @@ class Usluga extends Model
         return $this->belongsTo('App\Models\Grupa', 'grupa_id');
     }
 
-    public function jedinicaMjere()
+    public function jedinica_mjere()
     {
         return $this->belongsTo('App\Models\JedinicaMjere', 'jedinica_mjere_id');
     }

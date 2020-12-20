@@ -15,7 +15,7 @@ class UslugaController extends Controller
      */
     public function index()
     {
-        return Usluga::paginate();
+        return Usluga::with('grupa:id,naziv,opis,popust_procenti,popust_iznos', 'jedinica_mjere:id,naziv', 'porez:id,naziv,stopa')->paginate();
     }
 
     /**
