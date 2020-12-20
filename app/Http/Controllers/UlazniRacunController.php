@@ -18,9 +18,12 @@ class UlazniRacunController extends Controller
 
         $paginatedData = $query->paginate();
 
-        $paginatedData['ukupna_cijena'] = UlazniRacun::izracunajUkupnuCijenu($query);
+        // $paginatedData['ukupna_cijena'] = UlazniRacun::izracunajUkupnuCijenu($query);
 
-        return $paginatedData;
+        $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
+        $data = $ukupnaCijena->merge($paginatedData);
+
+        return $data;
     }
 
     /**

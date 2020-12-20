@@ -5,13 +5,14 @@ namespace App\Models;
 use App\RacuniIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ScoutElastic\Searchable;
 
 class Racun extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'racuni';
 
@@ -98,7 +99,7 @@ class Racun extends Model
             $array['fizicko_lice_ime'] = $partner->fizicko_lice->ime;
             $array['fizicko_lice_prezime'] = $partner->fizicko_lice->prezime;
         }
-        
+
         return $array;
     }
 
