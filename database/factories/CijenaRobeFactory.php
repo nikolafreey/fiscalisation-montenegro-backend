@@ -27,15 +27,17 @@ class CijenaRobeFactory extends Factory
     public function definition()
     {
         $user = User::all()->random();
-
+        $porez = Porez::all()->random();
+        $cijena_bez_pdv =  $this->faker->randomFloat(2, 0, 100);
+        $ukupna_cijena = $cijena_bez_pdv * $porez->stopa + $cijena_bez_pdv;
         return [
-            'nabavna_cijena_bez_pdv' => $this->faker->randomFloat(),
-            'nabavna_cijena_sa_pdv' => $this->faker->randomFloat(),
-            'cijena_bez_pdv' => $this->faker->randomFloat(),
-            'ukupna_cijena' => $this->faker->randomFloat(),
+            'nabavna_cijena_bez_pdv' => $this->faker->randomFloat(2, 0, 100),
+            'nabavna_cijena_sa_pdv' => $this->faker->randomFloat(2, 0, 100),
+            'cijena_bez_pdv' => $cijena_bez_pdv,
+            'ukupna_cijena' => $ukupna_cijena,
             'user_id' => $user->id,
             'preduzece_id' => $user->preduzeca()->first(),
-            'porez_id' => Porez::all()->random()->id,
+            'porez_id' => $porez->id,
             'roba_id' => Roba::all()->random()->id,
             'atribut_id' => AtributRobe::all()->random()->id
 
