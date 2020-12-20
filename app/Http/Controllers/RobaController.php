@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoba;
 use App\Models\Roba;
+use App\Models\RobaKategorijaPodKategorija;
 use Illuminate\Http\Request;
 
 class RobaController extends Controller
@@ -15,9 +16,14 @@ class RobaController extends Controller
      */
     public function index()
     {
-        return Roba::paginate();
+
+        return Roba::with('atributi_roba:id,naziv', 'proizvodjac_robe:id,naziv')->paginate();
     }
 
+    public function robaRacuni()
+    {
+        return RobaKategorijaPodKategorija::with('robe:id,naziv,opis,ean,status', 'kategorije_roba:id,naziv,popust_procenti,popust_iznos', 'podkategorije_roba:id,naziv,popust_procenti,popust_iznos', 'robe.jedinica_mjere:id,naziv', 'robe.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id', 'robe.cijene_roba.porez:id,naziv,stopa')->paginate();
+    }
     /**
      * Store a newly created resource in storage.
      *
