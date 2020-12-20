@@ -15,7 +15,8 @@ class RobaController extends Controller
      */
     public function index()
     {
-        return Roba::paginate();
+
+        return Roba::with('atributi_roba:id,naziv', 'proizvodjac_robe:id,naziv')->paginate();
     }
 
     /**

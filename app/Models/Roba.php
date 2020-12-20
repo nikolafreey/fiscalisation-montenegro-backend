@@ -115,7 +115,7 @@ class Roba extends Model
 
     public function proizvodjac_robe()
     {
-        return $this->hasOne('App\Models\Proizvodjac', 'id');
+        return $this->hasOne('App\Models\ProizvodjacRobe', 'id');
     }
 
     public function jedinica_mjere()

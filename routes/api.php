@@ -123,12 +123,12 @@ Auth::routes();
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 
+Route::apiResource('/usluge', UslugaController::class)->parameters([
+    'usluge' => 'usluga'
+]);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
-    ]);
-    Route::apiResource('/usluge', UslugaController::class)->parameters([
-        'usluge' => 'usluga'
     ]);
 });
