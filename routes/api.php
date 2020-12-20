@@ -128,7 +128,7 @@ Route::apiResource('/usluge', UslugaController::class)->parameters([
     'usluge' => 'usluga'
 ]);
 
-Route::get('robaRacuni', [RobaController::class, 'robaRacuni']);
+Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
