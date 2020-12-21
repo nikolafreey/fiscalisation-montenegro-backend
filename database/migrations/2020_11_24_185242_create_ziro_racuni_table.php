@@ -22,9 +22,15 @@ class CreateZiroRacuniTable extends Migration
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
             $table->foreignId('fizicko_lice_id')
                 ->nullable()
                 ->constrained('fizicka_lica')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->uuid('user_id')
+                ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\FizickoLice;
 use App\Models\Preduzece;
+use App\Models\User;
 use App\Models\ZiroRacun;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +27,8 @@ class ZiroRacunFactory extends Factory
         return [
             'broj_racuna' => $this->faker->unique()->word(),
             'preduzece_id' => Preduzece::all()->random()->id,
-            'fizicko_lice_id' => FizickoLice::all()->random()->id
+            'fizicko_lice_id' => FizickoLice::all()->random()->id,
+            'user_id' => User::all()->random()->id
         ];
     }
 }

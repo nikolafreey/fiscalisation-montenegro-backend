@@ -15,7 +15,7 @@ class CreatePreduzecaTable extends Migration
     {
         Schema::create('preduzeca', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('kratki_naziv', 50);
+            $table->string('kratki_naziv', 100);
             $table->string('puni_naziv', 100)->nullable();
             $table->string('oblik_preduzeca', 50);
             $table->string('adresa', 50)->nullable();
