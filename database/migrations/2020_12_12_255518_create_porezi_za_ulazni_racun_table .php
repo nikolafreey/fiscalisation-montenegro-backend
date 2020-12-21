@@ -17,7 +17,7 @@ class CreatePoreziZaUlazniRacunTable extends Migration
             $table->id();
             $table->decimal('pdv_iznos_ukupno', 15, 2);
             $table->decimal('neodbitni_pdv_ukupno', 15, 2);
-
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreignId('ulazni_racun_id')

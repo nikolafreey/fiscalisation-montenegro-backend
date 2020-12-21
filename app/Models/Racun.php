@@ -12,7 +12,7 @@ use ScoutElastic\Searchable;
 
 class Racun extends Model
 {
-    use HasFactory; //SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'racuni';
 

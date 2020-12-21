@@ -25,6 +25,7 @@ class CreateStavkeUlazniRacuniTable extends Migration
             $table->decimal('popust_iznos', 15, 2)->nullable();
             $table->boolean('popust_na_jedinicnu_cijenu')->nullable();
             $table->decimal('cijena_sa_pdv', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreignId('porez_id')
