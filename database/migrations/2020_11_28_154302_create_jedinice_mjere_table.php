@@ -15,7 +15,7 @@ class CreateJedinicemjereTable extends Migration
     {
         Schema::create('jedinice_mjere', function (Blueprint $table) {
             $table->id();
-            $table->string('naziv', 50)->unique();
+            $table->string('naziv', 50);
             $table->string('kratki_naziv', 50)->nullable();
             $table->softDeletes();
             $table->timestamps();
