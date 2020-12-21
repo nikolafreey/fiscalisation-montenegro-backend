@@ -17,11 +17,7 @@ class Roba extends Model
 
     protected $fillable = ['naziv', 'opis', 'detaljni_opis', 'ean', 'interna_sifra_proizvoda', 'status', 'proizvodjac_robe_id', 'jedinica_mjere_id', 'preduzece_id'];
 
-<<<<<<< HEAD
-    // use Searchable;
-=======
     //use Searchable;
->>>>>>> b9e1125a7020b24c910cef5351a3d488c5f302fa
 
     protected $indexConfigurator = RobaIndexConfigurator::class;
 

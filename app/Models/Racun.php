@@ -12,11 +12,7 @@ use ScoutElastic\Searchable;
 
 class Racun extends Model
 {
-<<<<<<< HEAD
-    use HasFactory;
-=======
     use HasFactory; //SoftDeletes;
->>>>>>> b9e1125a7020b24c910cef5351a3d488c5f302fa
 
     protected $table = 'racuni';
 
@@ -50,11 +46,7 @@ class Racun extends Model
     public const RACUN = 'racun';
     public const PREDRACUN = 'predracun';
 
-<<<<<<< HEAD
-    // use Searchable;
-=======
     //use Searchable;
->>>>>>> b9e1125a7020b24c910cef5351a3d488c5f302fa
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
 
