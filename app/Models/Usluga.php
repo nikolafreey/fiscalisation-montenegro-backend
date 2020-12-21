@@ -26,7 +26,7 @@ class Usluga extends Model
         'porez_id',
     ];
 
-    use Searchable;
+    // use Searchable;
 
     protected $indexConfigurator = UslugaIndexConfigurator::class;
 
