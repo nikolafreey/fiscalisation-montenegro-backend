@@ -21,10 +21,12 @@ class JedinicaMjereFactory extends Factory
      */
     public function definition()
     {
+        $nazivi = array('gr', 'inj', 'kesa', 'kes', 'kg', 'kom', 'komad', 'kut', 'lit', 'm2', 'M', 'M2', 'M3', 'pak', 'par', 'tab', 't', 'vre');
+
         return [
-            'naziv' => $this->faker->unique()->word(),
+            'naziv' => $this->faker->unique()->randomElement($nazivi),
             'kratki_naziv' => $this->faker->word(),
-       
+
         ];
     }
 }

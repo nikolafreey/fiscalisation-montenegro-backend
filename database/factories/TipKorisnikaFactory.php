@@ -21,8 +21,10 @@ class TipKorisnikaFactory extends Factory
      */
     public function definition()
     {
+        $tipKorisnika = array('SuperAdmin', 'Partner', 'UserAdmin', 'User', 'UserKnjigovodja', 'UserGost');
+
         return [
-            'naziv' => $this->faker->unique()->word()
+            'naziv' => $this->faker->randomElement($tipKorisnika)
         ];
     }
 }

@@ -24,9 +24,8 @@ class GrupaFactory extends Factory
         return [
             'naziv' => $this->faker->unique()->word(),
             'opis' => $this->faker->name(),
-            'popust_procenti' => $this->faker->randomFloat(2,0,10),
-            'popust_iznos' => $this->faker->randomFloat(2,0,10),
-           
+            'popust_procenti' => $this->faker->randomFloat(2, 0, 10),
+            'popust_iznos' => $this->faker->randomFloat(2, 0, 10),
         ];
     }
 }

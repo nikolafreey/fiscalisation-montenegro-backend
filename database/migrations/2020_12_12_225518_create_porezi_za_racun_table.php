@@ -16,6 +16,7 @@ class CreatePoreziZaRacunTable extends Migration
         Schema::create('porezi_za_racun', function (Blueprint $table) {
             $table->id();
             $table->decimal('pdv_iznos_ukupno', 15, 2);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreignId('racun_id')
@@ -27,7 +28,6 @@ class CreatePoreziZaRacunTable extends Migration
                 ->constrained('porezi')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
         });
     }
 

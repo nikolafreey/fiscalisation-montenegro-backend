@@ -15,7 +15,8 @@ class ZiroRacun extends Model
     protected $fillable = [
         'broj_racuna',
         'preduzece_id',
-        'fizicko_lice_id'
+        'fizicko_lice_id',
+        'user_id'
     ];
 
     public function preduzece()
@@ -26,5 +27,10 @@ class ZiroRacun extends Model
     public function fizickoLice()
     {
         return $this->belongsTo('App\Models\FizickoLice', 'fizicko_lice_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 }

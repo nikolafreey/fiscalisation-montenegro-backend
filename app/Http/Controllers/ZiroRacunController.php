@@ -27,6 +27,10 @@ class ZiroRacunController extends Controller
     public function store(StoreZiroRacun $request)
     {
         $ziroRacun = ZiroRacun::create($request->all());
+
+        $ziroRacun->user_id = auth()->id();
+        $ziroRacun->save();
+
         return response()->json($ziroRacun, 201);
     }
 

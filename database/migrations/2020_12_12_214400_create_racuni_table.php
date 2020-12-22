@@ -36,6 +36,7 @@ class CreateRacuniTable extends Migration
             $table->decimal('popust_ukupno', 15, 2)->nullable();
             $table->text('opis')->nullable();
             $table->string('status', 20);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->uuid('preduzece_id')
