@@ -26,7 +26,8 @@ class GrupaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $djelatnost = Grupa::create($request->all());
+        return response()->json($djelatnost, 201);
     }
 
     /**
