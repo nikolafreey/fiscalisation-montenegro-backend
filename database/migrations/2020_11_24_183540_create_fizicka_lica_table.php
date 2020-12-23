@@ -38,7 +38,7 @@ class CreateFizickaLicaTable extends Migration
             $table->boolean('status');
 
 
-            $table->uuid('preduzece_id')
+            $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

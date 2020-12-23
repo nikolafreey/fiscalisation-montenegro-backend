@@ -20,7 +20,7 @@ class CreateOvlascenoLicePreduzeceTable extends Migration
                 ->constrained('ovlascena_lica')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->uuid('preduzece_id')
+            $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

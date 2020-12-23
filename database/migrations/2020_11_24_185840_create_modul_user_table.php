@@ -20,7 +20,7 @@ class CreateModulUserTable extends Migration
                 ->constrained('moduli')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->uuid('user_id')
+            $table->foreignUuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

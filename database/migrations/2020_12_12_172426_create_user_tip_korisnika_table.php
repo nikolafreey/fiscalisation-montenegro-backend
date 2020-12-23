@@ -16,12 +16,12 @@ class CreateUserTipKorisnikaTable extends Migration
         Schema::create('user_tip_korisnika', function (Blueprint $table) {
             $table->id();
 
-            $table->uuid('preduzece_id')
+            $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->uuid('user_id')
+            $table->foreignUuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

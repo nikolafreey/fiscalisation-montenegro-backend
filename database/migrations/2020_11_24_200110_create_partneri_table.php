@@ -23,7 +23,7 @@ class CreatePartneriTable extends Migration
             $table->boolean('kontakt_facetime')->nullable();
             $table->text('opis')->nullable();
 
-            $table->uuid('user_id')
+            $table->foreignUuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
@@ -32,7 +32,7 @@ class CreatePartneriTable extends Migration
                 ->constrained('fizicka_lica')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->uuid('preduzece_id')
+            $table->foreignUuid('preduzece_id')
                 ->nullable()
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
