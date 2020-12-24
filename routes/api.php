@@ -120,7 +120,10 @@ Route::apiResource('/partneri', PartnerController::class)->parameters([
     'partneri' => 'partner'
 ]);
 
+Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
+
 Auth::routes();
+
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 

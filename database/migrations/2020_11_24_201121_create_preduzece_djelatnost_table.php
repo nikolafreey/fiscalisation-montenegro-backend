@@ -20,7 +20,7 @@ class CreatePreduzeceDjelatnostTable extends Migration
                 ->constrained('djelatnosti')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->uuid('preduzece_id')
+            $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

@@ -19,9 +19,9 @@ class AtributRobe extends Model
         return $this->belongsTo('App\Models\User', 'id');
     }
 
-    public function tip_atributa_id()
+    public function tip_atributa()
     {
-        return $this->belongsTo('App\Models\TipAtributa', 'id');
+        return $this->belongsTo('App\Models\TipAtributa', 'tip_atributa_id');
     }
 
     public function cijena()

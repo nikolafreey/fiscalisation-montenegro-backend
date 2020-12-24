@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AtributRobe;
+use App\Models\Grupa;
+use App\Models\KategorijaRobe;
 use App\Models\Racun;
 use Illuminate\Http\Request;
 
@@ -80,5 +83,11 @@ class RacunController extends Controller
     public function destroy(Racun $racun)
     {
         //
+    }
+
+    public function getAtributiGrupe() {
+        $tipovi_atributa = AtributRobe::get(['id AS tip_atributa_id', 'naziv'])->toArray();
+        $grupe = Grupa::get(['id AS grupa_id', 'naziv'])->toArray();
+        return array_merge($tipovi_atributa, $grupe);
     }
 }

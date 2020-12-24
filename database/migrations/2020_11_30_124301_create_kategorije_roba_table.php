@@ -23,13 +23,13 @@ class CreateKategorijeRobaTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->uuid('user_id')
+            $table->foreignUuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            
-            $table->uuid('preduzece_id')
+
+            $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
