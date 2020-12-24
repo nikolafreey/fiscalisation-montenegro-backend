@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         OvlascenoLice::factory(10)->create();
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
-        Preduzece::factory(100)->create();
+        Preduzece::factory(200)->create();
         User::factory(10)->create();
         User::factory(1)->create(['email' => 'test@gmail.com']);
 
@@ -58,11 +58,21 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        $naziviPoreza = array('0%', '7%', '21%');
+        $stopePoreza = array(0, 0.07, 0.21);
+
+        for ($i = 0; $i < 3; $i++) {
+            DB::table('porezi')->insert([
+                'naziv' => $naziviPoreza[$i],
+                'stopa' => $stopePoreza[$i]
+            ]);
+        }
+
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
         Partner::factory(5)->create(['preduzece_id' => Preduzece::all()->random()->id]);
         Partner::factory(5)->create(['fizicko_lice_id' => FizickoLice::all()->random()->id]);
-        Porez::factory(10)->create();
+        // Porez::factory(1)->create();
         Grupa::factory(10)->create();
         JedinicaMjere::factory(10)->create();
         Usluga::factory(10)->create();

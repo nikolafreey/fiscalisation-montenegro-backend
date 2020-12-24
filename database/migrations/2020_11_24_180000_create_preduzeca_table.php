@@ -51,6 +51,7 @@ class CreatePreduzecaTable extends Migration
             $table->boolean('status')->nullable();
             $table->boolean('privatnost')->nullable();
             $table->boolean('verifikovan')->nullable();
+            $table->boolean('pdv_obveznik')->nullable();
 
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')

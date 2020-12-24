@@ -20,21 +20,20 @@ class CreateFizickaLicaTable extends Migration
             $table->string('prezime', 50);
             $table->string('jmbg', 13);
             $table->string('ib', 8);
-            $table->string('adresa', 50);
-            $table->string('grad', 50);
-            $table->string('drzava', 50);
-
+            $table->string('adresa', 50)->nullable();
+            $table->string('grad', 50)->nullable();
+            $table->string('drzava', 50)->nullable();
             $table->string('telefon', 50);
-            $table->boolean('telefon_viber');
-            $table->boolean('telefon_whatsapp');
-            $table->boolean('telefon_facetime');
+            $table->boolean('telefon_viber')->nullable();
+            $table->boolean('telefon_whatsapp')->nullable();
+            $table->boolean('telefon_facetime')->nullable();
             $table->string('email', 191);
-            $table->string('zanimanje', 191);
-            $table->string('radno_mjesto', 50);
-            $table->string('drzavljanstvo', 50);
-            $table->string('nacionalnost', 50);
-            $table->string('cv_link', 255);
-            $table->string('avatar', 255);
+            $table->string('zanimanje', 191)->nullable();
+            $table->string('radno_mjesto', 50)->nullable();
+            $table->string('drzavljanstvo', 50)->nullable();
+            $table->string('nacionalnost', 50)->nullable();
+            $table->string('cv_link', 255)->nullable();
+            $table->string('avatar', 255)->nullable();
             $table->boolean('status');
 
 
