@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use ScoutElastic\Searchable;
 
 class RobaAtributRobe extends Model
 {
@@ -16,7 +17,7 @@ class RobaAtributRobe extends Model
 
     protected $table = 'robe_atributi_roba';
 
-    //use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = RobaAtributRobeIndexConfigurator::class;
 
