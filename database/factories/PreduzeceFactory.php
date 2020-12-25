@@ -206,6 +206,7 @@ class PreduzeceFactory extends Factory
             'status' => $this->faker->boolean(),
             'verifikovan' => $this->faker->boolean(),
             'privatnost' => $this->faker->boolean(),
+            'pdv_obveznik' => $this->faker->boolean(),
             'kategorija_id' => Kategorija::all()->random()->id,
             'created_at' => now(),
             'updated_at' => now(),

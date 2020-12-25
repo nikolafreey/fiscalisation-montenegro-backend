@@ -24,13 +24,13 @@ class RobaController extends Controller
     public function robaRacuni(Request $request)
     {
         $query = RobaAtributRobe::filter($request);
-        return $query->with(
+        return $query->with([
             'roba:id,naziv,opis,ean,status', 
             'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
             'roba.jedinica_mjere:id,naziv', 
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id', 
             'roba.cijene_roba.porez:id,naziv,stopa'
-        )->paginate();
+        ])->paginate();
     }
     /**
      * Store a newly created resource in storage.

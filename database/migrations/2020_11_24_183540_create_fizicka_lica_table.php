@@ -23,7 +23,6 @@ class CreateFizickaLicaTable extends Migration
             $table->string('adresa', 50)->nullable();
             $table->string('grad', 50)->nullable();
             $table->string('drzava', 50)->nullable();
-
             $table->string('telefon', 50);
             $table->boolean('telefon_viber')->nullable();
             $table->boolean('telefon_whatsapp')->nullable();
