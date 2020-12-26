@@ -28,8 +28,8 @@ class AtributRobeFactory extends Factory
         return [
             'naziv' => $this->faker->word(),
             'opis' => $this->faker->name(),
-            'popust_procenti' => $this->faker->randomFloat(),
-            'popust_iznos' => $this->faker->randomFloat(),
+            'popust_procenti' => $this->faker->randomFloat(2, 0, 10),
+            'popust_iznos' => $this->faker->randomFloat(2, 0, 10),
             'user_id' => $user->id,
             'preduzece_id' => $user->preduzeca()->first(),
             'tip_atributa_id' => TipAtributa::all()->random()->id

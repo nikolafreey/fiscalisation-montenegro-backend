@@ -22,6 +22,7 @@ use App\Models\Preduzece;
 use App\Models\ProizvodjacRobe;
 use App\Models\Racun;
 use App\Models\Roba;
+use App\Models\RobaAtributRobe;
 use App\Models\StavkaRacuna;
 use App\Models\StavkaUlazniRacun;
 use App\Models\TipAtributa;
@@ -82,7 +83,7 @@ class DatabaseSeeder extends Seeder
         Roba::factory(10)->create();
         TipAtributa::factory(10)->create();
         AtributRobe::factory(10)->create();
-        CijenaRobe::factory(10)->create();
+        //CijenaRobe::factory(10)->create();
         Racun::factory(20)->create();
         UlazniRacun::factory(20)->create();
 
@@ -158,5 +159,17 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
+
+        $cijeneAtributaRoba = [];
+        forEach(RobaAtributRobe::all() as $robaAtributRobe) {
+            $cijeneAtributaRoba[] = CijenaRobe::factory()->make([
+                'roba_id' => $robaAtributRobe->roba_id,
+                'atribut_id' => $robaAtributRobe->atribut_id,
+                'preduzece_id' => Preduzece::all()->random()->id,
+                'porez_id' => Porez::all()->random()->id,
+                'user_id' => User::all()->random()->id
+            ])->toArray();
+        };
+        DB::table('cijene_roba')->insert($cijeneAtributaRoba);
     }
 }
