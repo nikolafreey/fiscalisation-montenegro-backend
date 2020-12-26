@@ -17,7 +17,7 @@ class RobaAtributRobe extends Model
 
     protected $table = 'robe_atributi_roba';
 
-    use Searchable;
+    //use Searchable;
 
     protected $indexConfigurator = RobaAtributRobeIndexConfigurator::class;
 

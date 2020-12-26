@@ -46,6 +46,8 @@ class Racun extends Model
     public const RACUN = 'racun';
     public const PREDRACUN = 'predracun';
 
+    public const GOTOVINSKI = 'gotovinski';
+
     //use Searchable;
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
@@ -141,57 +143,91 @@ class Racun extends Model
         $stavke = [];
 
         foreach ($request->stavke as $stavka) {
-            if ($stavka['usluga_id']) {
+            if (array_key_exists('usluga_id', $stavka)) {
                 $usluga = Usluga::find($stavka['usluga_id']);
                 $stavke[] = $this->kreirajStavkuIzUsluge($usluga, $stavka);
             }
-            if ($stavka['roba_id']) {
+            if (array_key_exists('roba_id', $stavka)) {
                 $roba = Roba::find($stavka['roba_id']);
                 $stavke[] = $this->kreirajStavkuIzRobe($roba, $stavka);
             }
         }
 
-        DB::insert($stavke);
+        DB::table('stavke_racuna')->insert($stavke);
     }
 
     private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka)
     {
+        $grupa = $usluga->grupa;
+
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
             'opis' => $usluga->opis,
             'jedinicna_cijena_bez_pdv' => $usluga->cijena_bez_pdv,
-            'kolicina' => $stavka->kolicina,
+            'kolicina' => $stavka['kolicina'],
             'pdv_iznos' => $usluga->ukupna_cijena - $usluga->cijena_bez_pdv,
-            'popust_procenat' => $stavka->popust_procenat,
-            'popust_iznos' => $stavka->popust_iznos,
-            'popust_na_jedinicnu_cijenu' => $stavka->popust_na_jedinicnu_cijenu,
-            'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka->kolicina,
+            'popust_procenat' => $grupa ? $grupa->popust_procenti : 0,
+            'popust_iznos' => $stavka['kolicina'] * ($grupa ? $grupa->popust_iznos : 0),
+            'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
+            'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka['kolicina'],
             'porez_id' => $usluga->porez_id,
             'jedinica_id' => $usluga->jedinica_mjere_id,
             'racun_id' => $this->id,
-        ]);
+        ])->toArray();
     }
 
     private function kreirajStavkuIzRobe(Roba $roba, $stavka)
     {
         $cijenaRobe = CijenaRobe::where('roba_id', $roba->id)
             ->where('atribut_id', $stavka['atribut_id'])
-            ->get();
+            ->first();
+
+        $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+
+        $popust_na_jedinicnu_cijenu = $atribut 
+            ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
+            : 0;
 
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
             'opis' => $roba->opis,
             'jedinicna_cijena_bez_pdv' => $cijenaRobe->cijena_bez_pdv,
-            'kolicina' => $stavka->kolicina,
-            'pdv_iznos' => $cijenaRobe->ukupna_cijena - $cijenaRobe->cijena_bez_pdv,
-            'popust_procenat' => $stavka->popust_procenat,
-            'popust_iznos' => $stavka->popust_iznos,
-            'popust_na_jedinicnu_cijenu' => $stavka->popust_na_jedinicnu_cijenu,
-            'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka->kolicina,
+            'kolicina' => $stavka['kolicina'],
+            'pdv_iznos' => $stavka['kolicina'] * ($cijenaRobe->ukupna_cijena - $cijenaRobe->cijena_bez_pdv),
+            'popust_procenat' => $atribut ? $atribut->popust_procenti : 0,
+            'popust_iznos' => $stavka['kolicina'] * $popust_na_jedinicnu_cijenu,
+            'popust_na_jedinicnu_cijenu' => $popust_na_jedinicnu_cijenu,
+            'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka['kolicina'],
             'porez_id' => $cijenaRobe->porezi_id,
             'jedinica_id' => $roba->jedinica_mjere_id,
             'racun_id' => $this->id,
-        ]);
+        ])->toArray();
+    }
+
+    public function izracunajUkupneCijene()
+    {
+        $query = StavkaRacuna::where('racun_id', $this->id);
+        $this->ukupna_cijena_sa_pdv = $query->sum('cijena_sa_pdv');
+        $this->ukupan_iznos_pdv = $query->sum('pdv_iznos');
+        $this->ukupna_cijena_bez_pdv = $this->ukupna_cijena_sa_pdv - $this->ukupan_iznos_pdv;
+
+        $this->save();
+    }
+
+    public function izracunajPoreze()
+    {
+        $porezi_za_racun = StavkaRacuna::groupBy('porez_id', 'racun_id')
+            ->selectRaw('sum(pdv_iznos) as pdv_iznos_ukupno, racun_id, porez_id')
+            ->where('racun_id', $this->id)
+            ->get()->toArray();
+        
+        DB::table('porezi_za_racun')->insert($porezi_za_racun);
+    }
+
+    public static function izracunajBrojRacuna()
+    {
+        $broj_racuna = DB::table('racuni')->max('broj_racuna');
+        return $broj_racuna + 1;
     }
 
     public function user()
