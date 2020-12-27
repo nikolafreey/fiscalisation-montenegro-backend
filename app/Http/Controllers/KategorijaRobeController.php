@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKategorijaRobe;
 use App\Models\KategorijaRobe;
+use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
 class KategorijaRobeController extends Controller
@@ -28,6 +29,8 @@ class KategorijaRobeController extends Controller
     {
         $kategorijaRobe = KategorijaRobe::make($request->validated());
         $kategorijaRobe->user_id = auth()->id();
+        $kategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
+
         $kategorijaRobe->save();
 
         return response()->json($kategorijaRobe, 201);
