@@ -37,13 +37,13 @@ class FizickoLice extends Model
         'preduzece_id'
     ];
 
-    // use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = FizickaLicaIndexConfigurator::class;
 
-    // protected $searchRules = [
-    //     //
-    // ];
+    protected $searchRules = [
+        //
+    ];
 
     protected $mapping = [
         'properties' => [

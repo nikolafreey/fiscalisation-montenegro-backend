@@ -46,7 +46,7 @@ class Racun extends Model
     public const RACUN = 'racun';
     public const PREDRACUN = 'predracun';
 
-    //use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
 
