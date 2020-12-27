@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRacun;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\KategorijaRobe;
 use App\Models\Racun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RacunController extends Controller
 {
@@ -39,16 +41,24 @@ class RacunController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRacun $request)
     {
-        $racun = Racun::make($request->validated());
-        $racun->tip_racuna = Racun::RACUN;
-        $racun->user_id = auth()->id();
-        $racun->save();
+        $racun = DB::transaction(function () use ($request) {
+            $racun = Racun::make($request->validated());
+            $racun->tip_racuna = Racun::RACUN;
+            $racun->vrsta_racuna = Racun::GOTOVINSKI;
+            $racun->broj_racuna = Racun::izracunajBrojRacuna();
+            $racun->datum_izdavanja = now();
+            $racun->user_id = auth()->id();
+            $racun->save();
 
-        $racun->kreirajStavke($request);
-
-        return response()->json($racun, 201);
+            $racun->kreirajStavke($request);
+            $racun->izracunajUkupneCijene();
+            $racun->izracunajPoreze();
+            
+            return $racun;
+        });
+        return response()->json($racun->load('porezi', 'stavke'), 201);
     }
 
     /**

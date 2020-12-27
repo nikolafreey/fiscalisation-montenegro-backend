@@ -12,7 +12,7 @@ class KategorijaRobe extends Model
 
     protected $table = 'kategorije_roba';
 
-    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status', 'user_id'];
+    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status', 'user_id', 'preduzece_id'];
 
     public function user()
     {
@@ -24,7 +24,7 @@ class KategorijaRobe extends Model
         return $this->hasMany('App\Models\RobaKategorijaPodKategorija', 'kategorija_robe_id');
     }
 
-    public function podkategorije_robe() 
+    public function podkategorije_robe()
     {
         return $this->hasMany('App\Models\PodKategorijaRobe', 'kategorija_id');
     }

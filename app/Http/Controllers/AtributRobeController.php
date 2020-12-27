@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAtributRobe;
 use App\Models\AtributRobe;
+use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
 class AtributRobeController extends Controller
@@ -28,7 +29,8 @@ class AtributRobeController extends Controller
     {
         $atributRobe = AtributRobe::make($request->validated());
         $atributRobe->user_id = auth()->id();
-        $atributRobe->preduzece_id = 1;
+        $atributRobe->preduzece_id = Preduzece::all()->first()->id;
+
 
         $atributRobe->save();
 

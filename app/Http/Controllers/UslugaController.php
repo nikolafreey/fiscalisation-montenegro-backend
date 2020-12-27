@@ -14,17 +14,22 @@ class UslugaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $query = Usluga::query();
+    {   
+        if ($request->has('search')) {
+            $query = Usluga::search($request->search . '*');
+        } else {
+            $query = Usluga::query();
+        }
+       
         if ($request->has('grupa_id')) {
             $query = $query->where('grupa_id', $request->grupa_id);
         }
         
-        return $query->with(
+        return $query->with([
             'grupa:id,naziv,opis,popust_procenti,popust_iznos', 
             'jedinica_mjere:id,naziv', 
             'porez:id,naziv,stopa'
-        )->paginate();
+        ])->paginate();
     }
 
     /**
