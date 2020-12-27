@@ -160,6 +160,8 @@ class Racun extends Model
     {
         $grupa = $usluga->grupa;
 
+        $jedinica_id = @$stavka['jedinica_id'] ?: $usluga->jedinica_mjere_id;
+
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
             'opis' => $usluga->opis,
@@ -171,7 +173,7 @@ class Racun extends Model
             'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
             'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka['kolicina'],
             'porez_id' => $usluga->porez_id,
-            'jedinica_id' => $usluga->jedinica_mjere_id,
+            'jedinica_id' => $jedinica_id,
             'racun_id' => $this->id,
         ])->toArray();
     }
@@ -188,6 +190,8 @@ class Racun extends Model
             ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
             : 0;
 
+            $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
+
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
             'opis' => $roba->opis,
@@ -199,7 +203,7 @@ class Racun extends Model
             'popust_na_jedinicnu_cijenu' => $popust_na_jedinicnu_cijenu,
             'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka['kolicina'],
             'porez_id' => $cijenaRobe->porezi_id,
-            'jedinica_id' => $roba->jedinica_mjere_id,
+            'jedinica_id' => $jedinica_id,
             'racun_id' => $this->id,
         ])->toArray();
     }
