@@ -43,7 +43,7 @@ class UlazniRacun extends Model
         'partner_id'
     ];
 
-    // use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
 

@@ -186,11 +186,11 @@ class Racun extends Model
 
         $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
 
-        $popust_na_jedinicnu_cijenu = $atribut 
+        $popust_na_jedinicnu_cijenu = $atribut
             ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
             : 0;
 
-            $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
+        $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
 
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
@@ -224,7 +224,7 @@ class Racun extends Model
             ->selectRaw('sum(pdv_iznos) as pdv_iznos_ukupno, racun_id, porez_id')
             ->where('racun_id', $this->id)
             ->get()->toArray();
-        
+
         DB::table('porezi_za_racun')->insert($porezi_za_racun);
     }
 

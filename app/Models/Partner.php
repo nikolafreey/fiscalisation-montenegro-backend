@@ -29,7 +29,7 @@ class Partner extends Model
         'fizicko_lice_id'
     ];
 
-    //use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = PartnerIndexConfigurator::class;
 

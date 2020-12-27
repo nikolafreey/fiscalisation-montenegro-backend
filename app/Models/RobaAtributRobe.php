@@ -17,7 +17,7 @@ class RobaAtributRobe extends Model
 
     protected $table = 'robe_atributi_roba';
 
-    //use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = RobaAtributRobeIndexConfigurator::class;
 
@@ -39,17 +39,18 @@ class RobaAtributRobe extends Model
         ]
     ];
 
-    public static function filter(Request $request) {
+    public static function filter(Request $request)
+    {
         if ($request->has('search')) {
             return RobaAtributRobe::filterElastic($request);
         }
         $query = RobaAtributRobe::query();
-        if($request->has('tip_atributa_id')) {
-          $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
-              $query->where('tip_atributa_id', $request->tip_atributa_id);
-          });
+        if ($request->has('tip_atributa_id')) {
+            $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
+                $query->where('tip_atributa_id', $request->tip_atributa_id);
+            });
         }
-        if($request->has('atribut_id')){
+        if ($request->has('atribut_id')) {
             $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
                 $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
             });
@@ -57,16 +58,17 @@ class RobaAtributRobe extends Model
         return $query;
     }
 
-    private static function filterElastic(Request $request) {
+    private static function filterElastic(Request $request)
+    {
         $query = RobaAtributRobe::search($request->search . '*');
-        if($request->has('tip_atributa_id')) {
+        if ($request->has('tip_atributa_id')) {
             $query = $query->where('tip_atributa_id', $request->tip_atributa_id);
         }
-        if($request->has('atribut_id')){
+        if ($request->has('atribut_id')) {
             $query = $query->where('atribut_id', $request->tip_atributa_id);
         }
         return $query;
-}
+    }
 
     public function toSearchableArray()
     {
