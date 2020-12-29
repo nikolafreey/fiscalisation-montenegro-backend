@@ -61,9 +61,9 @@ class Preduzece extends Model
         return $this->hasMany('App\Models\Partner', 'preduzece_id');
     }
 
-    public function ziroRacuni()
+    public function ziro_racuni()
     {
-        return $this->hasMany('App\Models\ZiroRacun');
+        return $this->hasMany('App\Models\ZiroRacun', 'preduzece_id');
     }
 
     public function djelatnosti()
