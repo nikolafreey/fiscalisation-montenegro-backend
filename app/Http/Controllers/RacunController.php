@@ -9,6 +9,7 @@ use App\Models\KategorijaRobe;
 use App\Models\Racun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use ScoutElastic\Searchable;
 
 class RacunController extends Controller
 {
@@ -17,19 +18,55 @@ class RacunController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    use Searchable;
+
     public function index(Request $request)
     {
-        $query = Racun::filter($request);
+        if ($request->search) {
+            $searchQuery = Racun::search($request->search . '*');
 
-        $query = $query->where('tip_racuna', Racun::RACUN);
+            $paginatedSearch = $searchQuery
+                ->with(
+                    'partner:id,preduzece_id,fizicko_lice_id',
+                    'partner.preduzece:id,kratki_naziv',
+                    'partner.fizicko_lice:id,ime,prezime'
+                )->paginate();
 
-        $paginatedData = $query
+            $ukupnaCijenaSearch =
+                collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
+            $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
+
+            return $searchData;
+        }
+
+        if ($request->status || $request->startDate || $request->endDate) {
+            $query = Racun::filter($request);
+
+            $query = $query->where('tip_racuna', Racun::RACUN);
+
+            $paginatedData = $query
+                ->with(
+                    'partner:id,preduzece_id,fizicko_lice_id',
+                    'partner.preduzece:id,kratki_naziv',
+                    'partner.fizicko_lice:id,ime,prezime'
+                )->paginate();
+            $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
+            $data = $ukupnaCijena->merge($paginatedData);
+
+            return $data;
+        }
+
+        $queryAll = Racun::search('*');
+        $queryAll = $queryAll->where('tip_racuna', Racun::RACUN);
+
+        $paginatedData = $queryAll
             ->with(
                 'partner:id,preduzece_id,fizicko_lice_id',
                 'partner.preduzece:id,kratki_naziv',
                 'partner.fizicko_lice:id,ime,prezime'
             )->paginate();
-        $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
+        $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($queryAll)]);
         $data = $ukupnaCijena->merge($paginatedData);
 
         return $data;
@@ -55,7 +92,7 @@ class RacunController extends Controller
             $racun->kreirajStavke($request);
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
-            
+
             return $racun;
         });
         return response()->json($racun->load('porezi', 'stavke'), 201);
@@ -95,7 +132,8 @@ class RacunController extends Controller
         //
     }
 
-    public function getAtributiGrupe() {
+    public function getAtributiGrupe()
+    {
         $tipovi_atributa = AtributRobe::get(['id AS tip_atributa_id', 'naziv'])->toArray();
         $grupe = Grupa::get(['id AS grupa_id', 'naziv'])->toArray();
         return array_merge($tipovi_atributa, $grupe);

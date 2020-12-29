@@ -48,7 +48,7 @@ class Racun extends Model
 
     public const GOTOVINSKI = 'gotovinski';
 
-    //use Searchable;
+    use Searchable;
 
     protected $indexConfigurator = RacuniIndexConfigurator::class;
 
@@ -124,6 +124,11 @@ class Racun extends Model
         }
 
         return $query;
+    }
+
+    public static function getAll(Request $request)
+    {
+        return Racun::query();
     }
 
     public static function izracunajUkupnuCijenu($query)
