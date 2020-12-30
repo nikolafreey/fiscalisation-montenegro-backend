@@ -57,7 +57,7 @@ class RacunController extends Controller
             return $data;
         }
 
-        $queryAll = Racun::search('*');
+        $queryAll = Racun::query();
         $queryAll = $queryAll->where('tip_racuna', Racun::RACUN);
 
         $paginatedData = $queryAll

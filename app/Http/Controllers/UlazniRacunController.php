@@ -14,13 +14,47 @@ class UlazniRacunController extends Controller
      */
     public function index(Request $request)
     {
-        $query = UlazniRacun::filter($request);
+        if ($request->search) {
+            $searchQuery = UlazniRacun::search($request->search . '*');
 
-        $paginatedData = $query->paginate();
+            $paginatedSearch = $searchQuery
+                ->with(
+                    'partner:id,preduzece_id,fizicko_lice_id',
+                    'partner.preduzece:id,kratki_naziv',
+                    'partner.fizicko_lice:id,ime,prezime'
+                )->paginate();
 
-        // $paginatedData['ukupna_cijena'] = UlazniRacun::izracunajUkupnuCijenu($query);
+            $ukupnaCijenaSearch =
+                collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($searchQuery)]);
+            $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-        $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
+            return $searchData;
+        }
+
+        if ($request->status || $request->startDate || $request->endDate) {
+            $query = UlazniRacun::filter($request);
+
+            $paginatedData = $query
+                ->with(
+                    'partner:id,preduzece_id,fizicko_lice_id',
+                    'partner.preduzece:id,kratki_naziv',
+                    'partner.fizicko_lice:id,ime,prezime'
+                )->paginate();
+            $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
+            $data = $ukupnaCijena->merge($paginatedData);
+
+            return $data;
+        }
+
+        $queryAll = UlazniRacun::query();
+
+        $paginatedData = $queryAll
+            ->with(
+                'partner:id,preduzece_id,fizicko_lice_id',
+                'partner.preduzece:id,kratki_naziv',
+                'partner.fizicko_lice:id,ime,prezime'
+            )->paginate();
+        $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($queryAll)]);
         $data = $ukupnaCijena->merge($paginatedData);
 
         return $data;

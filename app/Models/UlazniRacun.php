@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\RacuniIndexConfigurator;
+use App\UlazniRacuniIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -45,7 +45,7 @@ class UlazniRacun extends Model
 
     use Searchable;
 
-    protected $indexConfigurator = RacuniIndexConfigurator::class;
+    protected $indexConfigurator = UlazniRacuniIndexConfigurator::class;
 
     protected $searchRules = [
         //
