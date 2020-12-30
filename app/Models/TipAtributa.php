@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,11 @@ class TipAtributa extends Model
     protected $table = 'tipovi_atributa_roba';
 
     protected $fillable = ['user_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
+    }
 
     public function user()
     {

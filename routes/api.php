@@ -43,99 +43,97 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/me', [UserController::class, 'me']);
-
-Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([
-    'tipovi-atributa' => 'tip-atributa'
-]);
-
-Route::apiResource('/racuni', RacunController::class)->parameters([
-    'racuni' => 'racun'
-]);
-
-Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
-    'ulazni_racuni' => 'ulazni_racun'
-]);
-
-Route::apiResource('/predracuni', PredracunController::class)->parameters([
-    'racuni' => 'racun'
-]);
-
-Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
-    'jedinice_mjere' => 'jedinica-mjere'
-]);
-
-Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
-    'proizvodjaci-robe' => 'proizvodjaci-robe'
-]);
-
-Route::apiResource('/atribut-roba', AtributRobeController::class)->parameters([
-    'atribut-roba' => 'atribut-robe'
-]);
-
-Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
-    'kategorije-robe' => 'kategorija-robe'
-]);
-
-Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
-    'podkategorije-robe' => 'podkategorija-robe'
-]);
-
-Route::apiResource('/porezi', PorezController::class)->parameters([
-    'porezi' => 'porez'
-]);
-
-Route::apiResource('/grupe', GrupaController::class)->parameters([
-    'grupe' => 'grupa'
-]);
-
-Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
-    'djelatnosti' => 'djelatnost'
-]);
-
-Route::apiResource('/robe', RobaController::class)->parameters([
-    'robe' => 'roba'
-]);
-
-Route::apiResource('/moduli', ModulController::class)->parameters([
-    'moduli' => 'modul'
-]);
-Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class)->parameters([
-    'ovlascena-lica' => 'ovlasceno-lice'
-]);
-Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class)->parameters([
-    'tipovi-korisnika' => 'tip-korisnika'
-]);
-Route::apiResource('/kategorije', KategorijaController::class)->parameters([
-    'kategorije' => 'kategorija'
-]);
-
-Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
-    'preduzeca' => 'preduzece'
-]);
-Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
-    'ziro-racuni' => 'ziro-racun'
-]);
-Route::apiResource('/partneri', PartnerController::class)->parameters([
-    'partneri' => 'partner'
-]);
-
-Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
-
 Auth::routes();
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
-
-
-Route::apiResource('/usluge', UslugaController::class)->parameters([
-    'usluge' => 'usluga'
-]);
-
-Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [UserController::class, 'me']);
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
     ]);
+    Route::apiResource('/usluge', UslugaController::class)->parameters([
+        'usluge' => 'usluga'
+    ]);
+
+    Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
+
+    Route::get('/me', [UserController::class, 'me']);
+
+    Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([
+        'tipovi-atributa' => 'tip-atributa'
+    ]);
+
+    Route::apiResource('/racuni', RacunController::class)->parameters([
+        'racuni' => 'racun'
+    ]);
+
+    Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
+        'ulazni_racuni' => 'ulazni_racun'
+    ]);
+
+    Route::apiResource('/predracuni', PredracunController::class)->parameters([
+        'racuni' => 'racun'
+    ]);
+
+    Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
+        'jedinice_mjere' => 'jedinica-mjere'
+    ]);
+
+    Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
+        'proizvodjaci-robe' => 'proizvodjaci-robe'
+    ]);
+
+    Route::apiResource('/atribut-roba', AtributRobeController::class)->parameters([
+        'atribut-roba' => 'atribut-robe'
+    ]);
+
+    Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
+        'kategorije-robe' => 'kategorija-robe'
+    ]);
+
+    Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
+        'podkategorije-robe' => 'podkategorija-robe'
+    ]);
+
+    Route::apiResource('/porezi', PorezController::class)->parameters([
+        'porezi' => 'porez'
+    ]);
+
+    Route::apiResource('/grupe', GrupaController::class)->parameters([
+        'grupe' => 'grupa'
+    ]);
+
+    Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
+        'djelatnosti' => 'djelatnost'
+    ]);
+
+    Route::apiResource('/robe', RobaController::class)->parameters([
+        'robe' => 'roba'
+    ]);
+
+    Route::apiResource('/moduli', ModulController::class)->parameters([
+        'moduli' => 'modul'
+    ]);
+    Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class)->parameters([
+        'ovlascena-lica' => 'ovlasceno-lice'
+    ]);
+    Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class)->parameters([
+        'tipovi-korisnika' => 'tip-korisnika'
+    ]);
+    Route::apiResource('/kategorije', KategorijaController::class)->parameters([
+        'kategorije' => 'kategorija'
+    ]);
+
+    Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
+        'preduzeca' => 'preduzece'
+    ]);
+    Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
+        'ziro-racuni' => 'ziro-racun'
+    ]);
+    Route::apiResource('/partneri', PartnerController::class)->parameters([
+        'partneri' => 'partner'
+    ]);
+
+    Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
 });

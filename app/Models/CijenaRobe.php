@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,11 @@ class CijenaRobe extends Model
     protected $table = 'cijene_roba';
 
     protected $fillable = ['user_id', 'nabavna_cijena_bez_pdv', 'nabavna_cijena_sa_pdv', 'cijena_bez_pdv', 'porezi_id', 'roba_id', 'atribut_id', 'pdv_iznos', 'ukupna_cijena'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
+    }
 
     public function user()
     {

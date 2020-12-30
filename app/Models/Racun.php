@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\RacuniIndexConfigurator;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -103,6 +104,11 @@ class Racun extends Model
         }
 
         return $array;
+    }
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
     }
 
     public static function filter(Request $request)

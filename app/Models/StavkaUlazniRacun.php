@@ -19,7 +19,6 @@ class StavkaUlazniRacun extends Model
         'kolicina',
         'pdv_iznos',
         'odbitni_pdv',
-
         'popust_procenat',
         'popust_iznos',
         'popust_na_jedinicnu_cijenu',

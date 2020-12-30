@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\RobaIndexConfigurator;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,6 +36,11 @@ class Roba extends Model
             ],
         ]
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
+    }
 
     public function toSearchableArray()
     {

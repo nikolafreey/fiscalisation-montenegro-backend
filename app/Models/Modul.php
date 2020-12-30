@@ -13,7 +13,6 @@ class Modul extends Model
     protected $table = 'moduli';
     protected $fillable = ['naziv'];
 
-
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'modul_user', 'modul_id', 'user_id');

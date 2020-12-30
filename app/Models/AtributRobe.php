@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,11 @@ class AtributRobe extends Model
     protected $table = 'atributi_roba';
 
     protected $fillable = ['user_id', 'tip_atributa_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos'];
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
+    }
 
     public function user()
     {
