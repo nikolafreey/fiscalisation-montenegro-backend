@@ -45,6 +45,11 @@ class RobaAtributRobe extends Model
             return RobaAtributRobe::filterElastic($request);
         }
         $query = RobaAtributRobe::query();
+        
+        $query = $query->whereHas('roba', function ($query) {
+            $query->where('user_id', auth()->id());
+        });
+        
         if ($request->has('tip_atributa_id')) {
             $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
                 $query->where('tip_atributa_id', $request->tip_atributa_id);

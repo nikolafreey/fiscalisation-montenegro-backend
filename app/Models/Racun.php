@@ -92,13 +92,13 @@ class Racun extends Model
 
         $partner = $this->partner;
 
-        if ($partner->preduzece_id) {
+        if ($partner && $partner->preduzece_id) {
             $array['preduzece_kratki_naziv'] = $partner->preduzece->kratki_naziv;
             $array['preduzece_puni_naziv'] = $partner->preduzece->puni_naziv;
             $array['preduzece_pib'] = $partner->preduzece->pib;
         }
 
-        if ($partner->fizicko_lice_id) {
+        if ($partner && $partner->fizicko_lice_id) {
             $array['fizicko_lice_ime'] = $partner->fizicko_lice->ime;
             $array['fizicko_lice_prezime'] = $partner->fizicko_lice->prezime;
         }
@@ -172,6 +172,7 @@ class Racun extends Model
         $grupa = $usluga->grupa;
 
         $jedinica_id = @$stavka['jedinica_id'] ?: $usluga->jedinica_mjere_id;
+        $porez_id = @$stavka['porez_id'] ?: $usluga->porez_id;
 
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
@@ -183,7 +184,7 @@ class Racun extends Model
             'popust_iznos' => $stavka['kolicina'] * ($grupa ? $grupa->popust_iznos : 0),
             'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
             'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka['kolicina'],
-            'porez_id' => $usluga->porez_id,
+            'porez_id' => $porez_id,
             'jedinica_id' => $jedinica_id,
             'racun_id' => $this->id,
         ])->toArray();
@@ -202,6 +203,7 @@ class Racun extends Model
             : 0;
 
         $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
+        $porez_id = @$stavka['porez_id'] ?: $cijenaRobe->porezi_id;
 
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
@@ -213,7 +215,7 @@ class Racun extends Model
             'popust_iznos' => $stavka['kolicina'] * $popust_na_jedinicnu_cijenu,
             'popust_na_jedinicnu_cijenu' => $popust_na_jedinicnu_cijenu,
             'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka['kolicina'],
-            'porez_id' => $cijenaRobe->porezi_id,
+            'porez_id' => $porez_id,
             'jedinica_id' => $jedinica_id,
             'racun_id' => $this->id,
         ])->toArray();
