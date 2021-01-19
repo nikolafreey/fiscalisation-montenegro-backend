@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('jezik', 10)->nullable();
             $table->string('avatar', 255)->nullable();
             $table->boolean('paket')->nullable();
+            $table->date('vazi_do')->nullable();
 
             $table->foreignId('tip_id')
                 ->constrained('tipovi_korisnika')
