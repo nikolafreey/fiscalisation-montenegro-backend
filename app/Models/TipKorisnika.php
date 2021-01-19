@@ -19,10 +19,10 @@ class TipKorisnika extends Model
         return $this->hasMany('App\Models\User', 'tip_id');
     }*/
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function dozvole()
     {

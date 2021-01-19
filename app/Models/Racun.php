@@ -39,8 +39,6 @@ class Racun extends Model
         'popust_ukupno',
         'opis',
         'status',
-        'preduzece_id',
-        'user_id',
         'partner_id'
     ];
 

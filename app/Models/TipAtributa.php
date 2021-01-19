@@ -13,7 +13,7 @@ class TipAtributa extends Model
 
     protected $table = 'tipovi_atributa_roba';
 
-    protected $fillable = ['user_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
+    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
 
     protected static function booted()
     {

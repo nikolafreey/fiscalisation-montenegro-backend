@@ -28,7 +28,6 @@ class User extends Authenticatable
         'jezik',
         'avatar',
         'paket',
-        'preuzece_id',
         'tip_id'
 
     ];
@@ -87,7 +86,7 @@ class User extends Authenticatable
             ->get();
     }
 
-    public function racuni() 
+    public function racuni()
     {
         return $this->hasMany('App\Models\Racun', 'user_id');
     }
