@@ -18,10 +18,10 @@ class ZiroRacun extends Model
         'fizicko_lice_id'
     ];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function preduzece()
     {

@@ -92,10 +92,10 @@ class Partner extends Model
         return $query;
     }
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function user()
     {

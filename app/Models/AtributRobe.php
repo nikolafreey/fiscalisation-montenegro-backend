@@ -15,10 +15,10 @@ class AtributRobe extends Model
 
     protected $fillable = ['tip_atributa_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos'];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function user()
     {
