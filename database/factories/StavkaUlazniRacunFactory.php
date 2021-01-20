@@ -6,6 +6,7 @@ use App\Models\JedinicaMjere;
 use App\Models\Porez;
 use App\Models\UlazniRacun;
 use App\Models\StavkaUlazniRacun;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StavkaUlazniRacunFactory extends Factory
@@ -38,7 +39,7 @@ class StavkaUlazniRacunFactory extends Factory
             'cijena_sa_pdv' => $this->faker->randomFloat(2, 0, 100),
             'porez_id' => Porez::all()->random()->id,
             'jedinica_id' => JedinicaMjere::all()->random()->id,
-            'ulazni_racun_id' => UlazniRacun::all()->random()->id,
+            'ulazni_racun_id' => UlazniRacun::withoutGlobalScope(UserScope::class)->get()->random()->id,
         ];
     }
 }

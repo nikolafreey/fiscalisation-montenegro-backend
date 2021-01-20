@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\AtributRobe;
 use App\Models\TipAtributa;
 use App\Models\User;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AtributRobeFactory extends Factory
@@ -32,7 +33,7 @@ class AtributRobeFactory extends Factory
             'popust_iznos' => $this->faker->randomFloat(2, 0, 10),
             'user_id' => $user->id,
             'preduzece_id' => $user->preduzeca()->first(),
-            'tip_atributa_id' => TipAtributa::all()->random()->id
+            'tip_atributa_id' => TipAtributa::withoutGlobalScope(UserScope::class)->get()->random()->id
         ];
     }
 }

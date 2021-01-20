@@ -31,6 +31,7 @@ use App\Models\UlazniRacun;
 use App\Models\User;
 use App\Models\Usluga;
 use App\Models\ZiroRacun;
+use App\Scopes\UserScope;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -144,8 +145,8 @@ class DatabaseSeeder extends Seeder
 
             DB::table('robe_atributi_roba')->insert(
                 [
-                    'roba_id' => Roba::all()->random()->id,
-                    'atribut_id' => AtributRobe::all()->random()->id,
+                    'roba_id' => Roba::withoutGlobalScope(UserScope::class)->get()->random()->id,
+                    'atribut_id' => AtributRobe::withoutGlobalScope(UserScope::class)->get()->random()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
@@ -153,15 +154,15 @@ class DatabaseSeeder extends Seeder
 
             DB::table('porezi_za_racun')->insert(
                 [
-                    'racun_id' => Racun::all()->random()->id,
+                    'racun_id' => Racun::withoutGlobalScope(UserScope::class)->get()->random()->id,
                     'porez_id' => Porez::all()->random()->id,
-                    'pdv_iznos_ukupno' => Racun::all()->random()->ukupan_iznos_pdv
+                    'pdv_iznos_ukupno' => Racun::withoutGlobalScope(UserScope::class)->get()->random()->ukupan_iznos_pdv
                 ]
             );
         }
 
         $cijeneAtributaRoba = [];
-        forEach(RobaAtributRobe::all() as $robaAtributRobe) {
+        foreach (RobaAtributRobe::all() as $robaAtributRobe) {
             $cijeneAtributaRoba[] = CijenaRobe::factory()->make([
                 'roba_id' => $robaAtributRobe->roba_id,
                 'atribut_id' => $robaAtributRobe->atribut_id,
