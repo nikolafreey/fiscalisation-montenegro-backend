@@ -39,8 +39,6 @@ class UlazniRacun extends Model
         'popust_ukupno',
         'opis',
         'status',
-        'preduzece_id',
-        'user_id',
         'partner_id'
     ];
 
@@ -92,7 +90,7 @@ class UlazniRacun extends Model
 
         $partner = $this->partner;
 
-        if ($partner->preduzece_id) {
+        if ($partner && $partner->preduzece_id) {
             $array['preduzece_kratki_naziv'] = $partner->preduzece->kratki_naziv;
             $array['preduzece_puni_naziv'] = $partner->preduzece->puni_naziv;
             $array['preduzece_pib'] = $partner->preduzece->pib;
@@ -102,7 +100,7 @@ class UlazniRacun extends Model
             $array['preduzece_pib'] = '';
         }
 
-        if ($partner->fizicko_lice_id) {
+        if ($partner && $partner->fizicko_lice_id) {
             $array['fizicko_lice_ime'] = $partner->fizicko_lice->ime;
             $array['fizicko_lice_prezime'] = $partner->fizicko_lice->prezime;
         } else {

@@ -15,9 +15,7 @@ class ZiroRacun extends Model
 
     protected $fillable = [
         'broj_racuna',
-        'preduzece_id',
-        'fizicko_lice_id',
-        'user_id'
+        'fizicko_lice_id'
     ];
 
     protected static function booted()

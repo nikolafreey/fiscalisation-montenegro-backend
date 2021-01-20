@@ -6,6 +6,7 @@ use App\Models\Partner;
 use App\Models\Preduzece;
 use App\Models\UlazniRacun;
 use App\Models\User;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UlazniRacunFactory extends Factory
@@ -48,7 +49,7 @@ class UlazniRacunFactory extends Factory
             'status' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
             'preduzece_id' => Preduzece::all()->random()->id,
             'user_id' => User::all()->random()->id,
-            'partner_id' => Partner::all()->random()->id,
+            'partner_id' => Partner::withoutGlobalScope(UserScope::class)->get()->random()->id,
         ];
     }
 }
