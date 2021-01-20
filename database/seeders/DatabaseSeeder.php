@@ -72,8 +72,14 @@ class DatabaseSeeder extends Seeder
 
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
-        Partner::factory(5)->create(['preduzece_id' => Preduzece::all()->random()->id]);
-        Partner::factory(5)->create(['fizicko_lice_id' => FizickoLice::all()->random()->id]);
+        foreach (Preduzece::all() as $preduzece) {
+
+            Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
+        }
+        foreach (FizickoLice::all() as $fizicko_lice) {
+
+            Partner::factory(1)->create(['fizicko_lice_id' => $fizicko_lice->id]);
+        }
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
         JedinicaMjere::factory(10)->create();
