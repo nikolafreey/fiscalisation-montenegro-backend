@@ -37,10 +37,10 @@ class Roba extends Model
         ]
     ];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function toSearchableArray()
     {

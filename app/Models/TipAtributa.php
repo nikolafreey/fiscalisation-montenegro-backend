@@ -15,10 +15,10 @@ class TipAtributa extends Model
 
     protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function user()
     {
