@@ -66,19 +66,19 @@ class Racun extends Model
             'created_at' => [
                 'type' => 'date',
             ],
-            'preduzece_kratki_naziv' => [
+            'partner.preduzece.kratki_naziv' => [
                 'type' => 'text',
             ],
-            'preduzece_puni_naziv' => [
+            'partner.preduzece.puni_naziv' => [
                 'type' => 'text',
             ],
-            'preduzece_pib' => [
+            'partner.preduzec.pib' => [
                 'type' => 'text',
             ],
-            'fizicko_lice_ime' => [
+            'partner.fizicko_lice.ime' => [
                 'type' => 'text',
             ],
-            'fizicko_lice_prezime' => [
+            'partner.fizicko_lice.prezime' => [
                 'type' => 'text',
             ],
         ]

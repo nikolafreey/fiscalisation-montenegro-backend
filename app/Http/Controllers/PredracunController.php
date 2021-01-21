@@ -20,9 +20,9 @@ class PredracunController extends Controller
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
-                    'partner.preduzece:id,kratki_naziv',
+                    'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
@@ -39,9 +39,9 @@ class PredracunController extends Controller
             $paginatedData = $query
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
-                    'partner.preduzece:id,kratki_naziv',
+                    'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate();
             $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
