@@ -28,7 +28,8 @@ class User extends Authenticatable
         'jezik',
         'avatar',
         'paket',
-        'tip_id'
+        'tip_id',
+        'preduzece_id'
 
     ];
 

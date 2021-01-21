@@ -25,6 +25,7 @@ class Usluga extends Model
         'grupa_id',
         'jedinica_mjere_id',
         'porez_id',
+        'preduzece_id'
     ];
 
     use Searchable;
