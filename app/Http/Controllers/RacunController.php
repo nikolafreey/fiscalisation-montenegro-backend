@@ -106,7 +106,7 @@ class RacunController extends Controller
      */
     public function show(Racun $racun)
     {
-        return $racun->load(['stavke', 'porezi']);
+        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece']);
     }
 
     /**
