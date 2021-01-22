@@ -39,8 +39,7 @@ class UlazniRacun extends Model
         'popust_ukupno',
         'opis',
         'status',
-        'partner_id',
-        'preduzece_id'
+        'partner_id'
     ];
 
     use Searchable;

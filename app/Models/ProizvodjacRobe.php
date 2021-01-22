@@ -13,7 +13,7 @@ class ProizvodjacRobe extends Model
 
     protected $table = 'proizvodjaci_roba';
 
-    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status', 'preduzece_id'];
+    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
 
     protected static function booted()
     {
