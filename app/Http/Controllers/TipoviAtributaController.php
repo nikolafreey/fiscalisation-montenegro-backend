@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTipAtributa;
 use App\Models\Preduzece;
 use App\Models\TipAtributa;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TipoviAtributaController extends Controller
@@ -29,7 +30,9 @@ class TipoviAtributaController extends Controller
     {
         $tipAtributa = TipAtributa::make($request->validated());
         $tipAtributa->user_id = auth()->id();
-        $tipAtributa->preduzece_id = Preduzece::all()->first()->id;
+        $user = User::find(auth()->id())->load('preduzeca');
+        $tipAtributa->preduzece_id = $user['preduzeca'][0]->id;
+        // $tipAtributa->preduzece_id = Preduzece::all()->first()->id;
 
         $tipAtributa->save();
 

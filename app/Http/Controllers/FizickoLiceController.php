@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFizickoLice;
 use App\Models\FizickoLice;
+use App\Models\User;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class FizickoLiceController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->search){
+        if ($request->search) {
             return FizickoLice::search($request->search . '*')->paginate();
         }
         return FizickoLice::paginate();
@@ -33,10 +34,13 @@ class FizickoLiceController extends Controller
         $fizickoLice = FizickoLice::create($request->validated());
 
         $ziro_racuni = $request->ziro_racuni;
-        foreach($ziro_racuni as $ziro_racun) {
+        foreach ($ziro_racuni as $ziro_racun) {
             $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
         }
         $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
+
+        $user = User::find(auth()->id())->load('preduzeca');
+        $fizickoLice->preduzece_id = $user['preduzeca'][0]->id;
 
         return response()->json($fizickoLice, 201);
     }
@@ -65,7 +69,7 @@ class FizickoLiceController extends Controller
 
         $fizickoLice->ziro_racuni()->delete();
         $ziro_racuni = $request->ziro_racuni;
-        foreach($ziro_racuni as $ziro_racun) {
+        foreach ($ziro_racuni as $ziro_racun) {
             $ziro_racuni_objects[] = ZiroRacun::make($ziro_racun);
         }
         $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);

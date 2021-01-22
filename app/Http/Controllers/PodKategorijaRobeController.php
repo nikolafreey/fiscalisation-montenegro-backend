@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePodKategorijaRobe;
 use App\Models\PodKategorijaRobe;
 use App\Models\Preduzece;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PodKategorijaRobeController extends Controller
@@ -29,7 +30,9 @@ class PodKategorijaRobeController extends Controller
     {
         $podKategorijaRobe = PodKategorijaRobe::make($request->validated());
         $podKategorijaRobe->user_id = auth()->id();
-        $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
+        $user = User::find(auth()->id())->load('preduzeca');
+        $podKategorijaRobe->preduzece_id = $user['preduzeca'][0]->id;
+        // $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
 
         $podKategorijaRobe->save();
 

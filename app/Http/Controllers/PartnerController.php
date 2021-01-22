@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePartner;
 use App\Models\Partner;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PartnerController extends Controller
@@ -32,6 +33,8 @@ class PartnerController extends Controller
     {
         $partner = Partner::make($request->validated());
         $partner->user_id = auth()->id();
+        $user = User::find(auth()->id())->load('preduzeca');
+        $partner->preduzece_id = $user['preduzeca'][0]->id;
         $partner->save();
 
         return response()->json($partner, 201);

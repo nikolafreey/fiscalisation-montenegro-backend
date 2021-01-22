@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UlazniRacun;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UlazniRacunController extends Controller
@@ -70,6 +71,8 @@ class UlazniRacunController extends Controller
     {
         $ulazniracun = UlazniRacun::make($request->validated());
         $ulazniracun->user_id = auth()->id();
+        $user = User::find(auth()->id())->load('preduzeca');
+        $ulazniracun->preduzece_id = $user['preduzeca'][0]->id;
         $ulazniracun->save();
 
         $ulazniracun->kreirajStavke($request);
