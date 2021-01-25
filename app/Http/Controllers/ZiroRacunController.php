@@ -28,7 +28,7 @@ class ZiroRacunController extends Controller
     {
         $ziroRacun = ZiroRacun::create($request->all());
 
-        $ziroRacun->user_id = auth()->id();
+        $ziroRacun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $ziroRacun->save();
 
         return response()->json($ziroRacun, 201);

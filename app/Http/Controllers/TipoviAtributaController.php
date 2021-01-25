@@ -28,7 +28,7 @@ class TipoviAtributaController extends Controller
     public function store(StoreTipAtributa $request)
     {
         $tipAtributa = TipAtributa::make($request->validated());
-        $tipAtributa->user_id = auth()->id();
+        $tipAtributa->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $tipAtributa->preduzece_id = Preduzece::all()->first()->id;
 
         $tipAtributa->save();

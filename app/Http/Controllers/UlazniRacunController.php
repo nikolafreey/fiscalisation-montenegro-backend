@@ -69,7 +69,7 @@ class UlazniRacunController extends Controller
     public function store(Request $request)
     {
         $ulazniracun = UlazniRacun::make($request->validated());
-        $ulazniracun->user_id = auth()->id();
+        $ulazniracun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $ulazniracun->save();
 
         $ulazniracun->kreirajStavke($request);

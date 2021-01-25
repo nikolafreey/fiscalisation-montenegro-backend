@@ -27,7 +27,7 @@ class CijenaRobeController extends Controller
     public function store(StoreCijenaRobe $request)
     {
         $cijenaRobe = CijenaRobe::make($request->validated());
-        $cijenaRobe->user_id = auth()->id();
+        $cijenaRobe->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $cijenaRobe->save();
 
         return response()->json($cijenaRobe, 201);

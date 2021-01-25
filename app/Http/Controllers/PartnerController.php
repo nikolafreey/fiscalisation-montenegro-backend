@@ -15,7 +15,15 @@ class PartnerController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Partner::filter($request);
+        if ($request->search) {
+            $query = Partner::filter($request);
+
+            $query = $query->with(['preduzece', 'fizicko_lice']);
+
+            return $query->paginate();
+        }
+
+        $query = Partner::query();
 
         $query = $query->with(['preduzece', 'fizicko_lice']);
 
@@ -31,7 +39,7 @@ class PartnerController extends Controller
     public function store(StorePartner $request)
     {
         $partner = Partner::make($request->validated());
-        $partner->user_id = auth()->id();
+        $partner->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $partner->save();
 
         return response()->json($partner, 201);

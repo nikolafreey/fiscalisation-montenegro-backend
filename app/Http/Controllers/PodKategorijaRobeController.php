@@ -28,7 +28,7 @@ class PodKategorijaRobeController extends Controller
     public function store(StorePodKategorijaRobe $request)
     {
         $podKategorijaRobe = PodKategorijaRobe::make($request->validated());
-        $podKategorijaRobe->user_id = auth()->id();
+        $podKategorijaRobe->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
 
         $podKategorijaRobe->save();

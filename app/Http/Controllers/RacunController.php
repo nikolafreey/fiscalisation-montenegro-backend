@@ -31,7 +31,7 @@ class RacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate(10);
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
@@ -48,9 +48,9 @@ class RacunController extends Controller
             $paginatedData = $query
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
-                    'partner.preduzece_id:id,kratki_naziv',
+                    'partner.preduzece:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
             $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
@@ -65,7 +65,7 @@ class RacunController extends Controller
                 'partner:id,preduzece_id,fizicko_lice_id',
                 'partner.preduzece:id,kratki_naziv',
                 'partner.fizicko_lice:id,ime,prezime'
-            )->paginate();
+            )->paginate(10);
         $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($queryAll)]);
         $data = $ukupnaCijena->merge($paginatedData);
 
@@ -86,7 +86,7 @@ class RacunController extends Controller
             $racun->vrsta_racuna = Racun::GOTOVINSKI;
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
-            $racun->user_id = auth()->id();
+            $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
             $racun->save();
 
             $racun->kreirajStavke($request);

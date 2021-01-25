@@ -28,7 +28,7 @@ class AtributRobeController extends Controller
     public function store(StoreAtributRobe $request)
     {
         $atributRobe = AtributRobe::make($request->validated());
-        $atributRobe->user_id = auth()->id();
+        $atributRobe->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $atributRobe->preduzece_id = Preduzece::all()->first()->id;
 
 

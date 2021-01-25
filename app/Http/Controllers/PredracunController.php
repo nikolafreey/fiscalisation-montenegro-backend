@@ -73,7 +73,7 @@ class PredracunController extends Controller
     {
         $racun = Racun::make($request->validated());
         $racun->tip_racuna = Racun::PREDRACUN;
-        $racun->user_id = auth()->id();
+        $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $racun->save();
 
         $racun->kreirajStavke($request);

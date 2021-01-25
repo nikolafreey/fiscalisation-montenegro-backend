@@ -41,7 +41,7 @@ class UslugaController extends Controller
     public function store(StoreUsluga $request)
     {
         $usluga = Usluga::make($request->validated());
-        $usluga->user_id = auth()->id();
+        $usluga->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $usluga->save();
 
         return response()->json($usluga->save(), 201);

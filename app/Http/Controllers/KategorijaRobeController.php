@@ -28,7 +28,7 @@ class KategorijaRobeController extends Controller
     public function store(StoreKategorijaRobe $request)
     {
         $kategorijaRobe = KategorijaRobe::make($request->validated());
-        $kategorijaRobe->user_id = auth()->id();
+        $kategorijaRobe->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $kategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
 
         $kategorijaRobe->save();
