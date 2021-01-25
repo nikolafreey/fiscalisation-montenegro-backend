@@ -16,11 +16,19 @@ class PartnerController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Partner::filter($request);
+        if ($request->search) {
+            $query = Partner::filter($request);
+
+            $query = $query->with(['preduzece', 'fizicko_lice']);
+
+            return $query->get();
+        }
+
+        $query = Partner::query();
 
         $query = $query->with(['preduzece', 'fizicko_lice']);
 
-        return $query->paginate();
+        return $query->get();
     }
 
     /**
