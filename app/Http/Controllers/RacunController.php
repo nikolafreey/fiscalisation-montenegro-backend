@@ -7,6 +7,7 @@ use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\KategorijaRobe;
 use App\Models\Racun;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ScoutElastic\Searchable;
@@ -86,7 +87,13 @@ class RacunController extends Controller
             $racun->vrsta_racuna = Racun::GOTOVINSKI;
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
+// <<<<<<< HEAD
             $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
+// =======
+//             $racun->user_id = auth()->id();
+//             $user = User::find(auth()->id())->load('preduzeca');
+//             $racun->preduzece_id = $user['preduzeca'][0]->id;
+// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
             $racun->save();
 
             $racun->kreirajStavke($request);

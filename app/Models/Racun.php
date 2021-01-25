@@ -39,8 +39,7 @@ class Racun extends Model
         'popust_ukupno',
         'opis',
         'status',
-        'partner_id',
-        'preduzece_id'
+        'partner_id'
     ];
 
     public const RACUN = 'racun';

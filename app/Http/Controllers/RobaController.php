@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRoba;
 use App\Models\Roba;
 use App\Models\RobaAtributRobe;
 use App\Models\RobaKategorijaPodKategorija;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RobaController extends Controller
@@ -25,10 +26,10 @@ class RobaController extends Controller
     {
         $query = RobaAtributRobe::filter($request);
         return $query->with([
-            'roba:id,naziv,opis,ean,status', 
+            'roba:id,naziv,opis,ean,status',
             'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
-            'roba.jedinica_mjere:id,naziv', 
-            'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id', 
+            'roba.jedinica_mjere:id,naziv',
+            'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
             'roba.cijene_roba.porez:id,naziv,stopa'
         ])->paginate();
     }
@@ -41,7 +42,13 @@ class RobaController extends Controller
     public function store(StoreRoba $request)
     {
         $roba = Roba::make($request->validated());
+// <<<<<<< HEAD
         $roba->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
+// =======
+//         $roba->user_id = auth()->id();
+//         $user = User::find(auth()->id())->load('preduzeca');
+//         $roba->preduzece_id = $user['preduzeca'][0]->id;
+// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
         $roba->save();
 
         $roba->storeKategorije($request->kategorije);

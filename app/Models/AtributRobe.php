@@ -13,7 +13,7 @@ class AtributRobe extends Model
 
     protected $table = 'atributi_roba';
 
-    protected $fillable = ['tip_atributa_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos', 'preduzece_id'];
+    protected $fillable = ['tip_atributa_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos'];
 
     // protected static function booted()
     // {

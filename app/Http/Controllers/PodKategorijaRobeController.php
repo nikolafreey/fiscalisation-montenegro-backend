@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePodKategorijaRobe;
 use App\Models\PodKategorijaRobe;
 use App\Models\Preduzece;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PodKategorijaRobeController extends Controller
@@ -28,8 +29,15 @@ class PodKategorijaRobeController extends Controller
     public function store(StorePodKategorijaRobe $request)
     {
         $podKategorijaRobe = PodKategorijaRobe::make($request->validated());
+// <<<<<<< HEAD
         $podKategorijaRobe->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
+// =======
+        // $podKategorijaRobe->user_id = auth()->id();
+        // $user = User::find(auth()->id())->load('preduzeca');
+        // $podKategorijaRobe->preduzece_id = $user['preduzeca'][0]->id;
+        // $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
+// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
 
         $podKategorijaRobe->save();
 

@@ -16,6 +16,6 @@ class Djelatnost extends Model
 
     public function preduzeca()
     {
-        return $this->belongsToMany('App\Models\Preduzece', 'preduzece_djelatnost', 'djelatnost_id', 'preduzece_id');
+        return $this->belongsToMany('App\Models\Preduzece', 'preduzece_djelatnost', 'djelatnost_id');
     }
 }

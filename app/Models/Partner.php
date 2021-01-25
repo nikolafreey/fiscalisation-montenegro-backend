@@ -24,8 +24,7 @@ class Partner extends Model
         'kontakt_whatsapp',
         'kontakt_facetime',
         'opis',
-        'fizicko_lice_id',
-        'preduzece_id'
+        'fizicko_lice_id'
     ];
 
     use Searchable;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreZiroRacun;
+use App\Models\User;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,13 @@ class ZiroRacunController extends Controller
     {
         $ziroRacun = ZiroRacun::create($request->all());
 
+// <<<<<<< HEAD
         $ziroRacun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
+// =======
+//         $ziroRacun->user_id = auth()->id();
+//         $user = User::find(auth()->id())->load('preduzeca');
+//         $ziroRacun->preduzece_id = $user['preduzeca'][0]->id;
+// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
         $ziroRacun->save();
 
         return response()->json($ziroRacun, 201);
