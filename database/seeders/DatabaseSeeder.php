@@ -95,6 +95,8 @@ class DatabaseSeeder extends Seeder
         ]);
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
+        Partner::factory(1)->create(['fizicko_lice_id' => FizickoLice::get()->first()->id]);
+
         foreach (Preduzece::all() as $preduzece) {
 
             Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
@@ -103,6 +105,7 @@ class DatabaseSeeder extends Seeder
 
             Partner::factory(1)->create(['fizicko_lice_id' => $fizicko_lice->id]);
         }
+
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
         JedinicaMjere::factory(10)->create();

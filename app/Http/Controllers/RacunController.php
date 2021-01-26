@@ -10,6 +10,7 @@ use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use ScoutElastic\Searchable;
 
 class RacunController extends Controller
@@ -24,6 +25,12 @@ class RacunController extends Controller
 
     public function index(Request $request)
     {
+        //  dump(222);
+        // dd(333);
+        //var_dump(333);
+        Log::info('ssssss', array($request->all()));
+        //  dd($request);
+        //    error_log('Some message here.');
         if ($request->search) {
             $searchQuery = Racun::search($request->search . '*');
 
@@ -87,13 +94,13 @@ class RacunController extends Controller
             $racun->vrsta_racuna = Racun::GOTOVINSKI;
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
-// <<<<<<< HEAD
+            // <<<<<<< HEAD
             $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
-// =======
-//             $racun->user_id = auth()->id();
-//             $user = User::find(auth()->id())->load('preduzeca');
-//             $racun->preduzece_id = $user['preduzeca'][0]->id;
-// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
+            // =======
+            //             $racun->user_id = auth()->id();
+            //             $user = User::find(auth()->id())->load('preduzeca');
+            //             $racun->preduzece_id = $user['preduzeca'][0]->id;
+            // >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
             $racun->save();
 
             $racun->kreirajStavke($request);
@@ -123,9 +130,47 @@ class RacunController extends Controller
      * @param  \App\Models\Racun  $racun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Racun $racun)
+
+    public function update(StoreRacun $request, Racun $racun)
     {
-        //
+
+
+
+        //   $racun = DB::transaction(function () use ($request) {
+
+
+        // dd($request);
+        //     $racun = Racun::make($request->validated());
+        //     Log::info('USER: ' . var_export($racun, true));
+        //     $racun->tip_racuna = Racun::RACUN;
+        //     $racun->vrsta_racuna = Racun::GOTOVINSKI;
+
+        //     $racun->broj_racuna = Racun::izracunajBrojRacuna();
+        //     $racun->datum_izdavanja = now();
+        //     // <<<<<<< HEAD
+        //     $racun->user_id = '6d30d8d9-01e8-4b41-ba98-4d06af2aed31';
+        //     $user = User::find('6d30d8d9-01e8-4b41-ba98-4d06af2aed31')->load('preduzeca');
+        //     $racun->preduzece_id = $user['preduzeca'][0]->id;
+        //     Log::info('RACUN: ' . var_export($racun, true));
+        //     // =======
+        //     //             $racun->user_id = auth()->id();
+        //     //             $user = User::find(auth()->id())->load('preduzeca');
+        //     //             $racun->preduzece_id = $user['preduzeca'][0]->id;
+        //     // >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
+        //     $racun->save();
+        //     Log::info('prije: ' . var_export($racun->save(), true));
+
+        //     $racun->kreirajStavke($request);
+        //     $racun->izracunajUkupneCijene();
+        //     $racun->izracunajPoreze();
+        //     Log::info('kraj: ' . var_export($racun, true));
+
+        //     return $racun;
+        // });
+        // return response()->json($racun->load('porezi', 'stavke'), 201);
+
+        $racun->update($request->validated());
+        return response()->json($racun, 200);
     }
 
     /**
