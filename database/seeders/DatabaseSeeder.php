@@ -69,9 +69,34 @@ class DatabaseSeeder extends Seeder
                 'stopa' => $stopePoreza[$i]
             ]);
         }
+        FizickoLice::factory(1)->create([
 
+            'ime' => 'Kupac',
+            'prezime' => 'Kupac',
+            'jmbg' => '1234567890123',
+            'ib' => '2020',
+            'adresa' => 'Adresa bb',
+            'telefon' => '06000000',
+            'telefon_viber' => true,
+            'telefon_whatsapp' => true,
+            'telefon_facetime' => true,
+            'email' => 'kupac@gmail.com',
+            'zanimanje' => 'Kupac',
+            'radno_mjesto' => 'Kupac',
+            'drzavljanstvo' => 'Crna Gora',
+            'grad' => 'Crna Gora',
+            'drzava' => 'Crna Gora',
+            'status' => true,
+            'nacionalnost' => 'Crna Gora',
+            'cv_link' => 'cv_link',
+            'avatar' => 'avatar',
+            'preduzece_id' => Preduzece::all()->random()->id,
+
+        ]);
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
+        Partner::factory(1)->create(['fizicko_lice_id' => FizickoLice::get()->first()->id]);
+
         foreach (Preduzece::all() as $preduzece) {
 
             Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
@@ -80,6 +105,7 @@ class DatabaseSeeder extends Seeder
 
             Partner::factory(1)->create(['fizicko_lice_id' => $fizicko_lice->id]);
         }
+
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
         JedinicaMjere::factory(10)->create();

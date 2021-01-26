@@ -15,9 +15,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
+        \Fruitcake\Cors\HandleCors::class,
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
-        \Fruitcake\Cors\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
@@ -41,10 +41,18 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            EnsureFrontendRequestsAreStateful::class,
+// <<<<<<< HEAD
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            // \App\Http\Middleware\VerifyCsrfToken::class,
+            // EnsureFrontendRequestsAreStateful::class,
+// =======
+//             EnsureFrontendRequestsAreStateful::class,
+//             \App\Http\Middleware\EncryptCookies::class,
+//             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+//             \Illuminate\Session\Middleware\StartSession::class,
+// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
