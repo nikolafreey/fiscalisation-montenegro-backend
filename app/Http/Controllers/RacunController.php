@@ -134,43 +134,18 @@ class RacunController extends Controller
     public function update(StoreRacun $request, Racun $racun)
     {
 
+        $ikof = $request->input('ikof');
+        $jikr = $request->input('jikr');
 
+        Log::info('update1: ' . var_export($request->input('jikr'), true));
 
-        //   $racun = DB::transaction(function () use ($request) {
+        if (($ikof == null || $ikof == '') || ($jikr == null || $jikr == '')) {
 
-
-        // dd($request);
-        //     $racun = Racun::make($request->validated());
-        //     Log::info('USER: ' . var_export($racun, true));
-        //     $racun->tip_racuna = Racun::RACUN;
-        //     $racun->vrsta_racuna = Racun::GOTOVINSKI;
-
-        //     $racun->broj_racuna = Racun::izracunajBrojRacuna();
-        //     $racun->datum_izdavanja = now();
-        //     // <<<<<<< HEAD
-        //     $racun->user_id = '6d30d8d9-01e8-4b41-ba98-4d06af2aed31';
-        //     $user = User::find('6d30d8d9-01e8-4b41-ba98-4d06af2aed31')->load('preduzeca');
-        //     $racun->preduzece_id = $user['preduzeca'][0]->id;
-        //     Log::info('RACUN: ' . var_export($racun, true));
-        //     // =======
-        //     //             $racun->user_id = auth()->id();
-        //     //             $user = User::find(auth()->id())->load('preduzeca');
-        //     //             $racun->preduzece_id = $user['preduzeca'][0]->id;
-        //     // >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
-        //     $racun->save();
-        //     Log::info('prije: ' . var_export($racun->save(), true));
-
-        //     $racun->kreirajStavke($request);
-        //     $racun->izracunajUkupneCijene();
-        //     $racun->izracunajPoreze();
-        //     Log::info('kraj: ' . var_export($racun, true));
-
-        //     return $racun;
-        // });
-        // return response()->json($racun->load('porezi', 'stavke'), 201);
-
-        $racun->update($request->validated());
-        return response()->json($racun, 200);
+            $racun->update($request->validated());
+            return response()->json($racun, 200);
+        } else {
+            return response()->json($racun, 400);
+        }
     }
 
     /**
