@@ -139,7 +139,7 @@ class RacunController extends Controller
 
         Log::info('update1: ' . var_export($request->input('jikr'), true));
 
-        if (($ikof == null || $ikof == '') || ($jikr == null || $jikr == '')) {
+        if (($ikof == null || $ikof == '') && ($jikr == null || $jikr == '')) {
 
             $racun->update($request->validated());
             return response()->json($racun, 200);
