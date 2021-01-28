@@ -42,7 +42,6 @@ class RobaController extends Controller
     public function store(StoreRoba $request)
     {
         $roba = Roba::make($request->validated());
-        $roba->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
         $roba->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
         $roba->preduzece_id = $user['preduzeca'][0]->id;
