@@ -47,93 +47,92 @@ Auth::routes();
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-//Route::middleware('auth:sanctum')->group(function () {
-Route::get('/me', [UserController::class, 'me']);
-Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
-    'fizicka-lica' => 'fizickoLice'
-]);
-Route::apiResource('/usluge', UslugaController::class)->parameters([
-    'usluge' => 'usluga'
-]);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
+        'fizicka-lica' => 'fizickoLice'
+    ]);
+    Route::apiResource('/usluge', UslugaController::class)->parameters([
+        'usluge' => 'usluga'
+    ]);
 
-Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
+    Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
-Route::get('/me', [UserController::class, 'me']);
+    Route::get('/me', [UserController::class, 'me']);
 
-Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([
-    'tipovi-atributa' => 'tip-atributa'
-]);
+    Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([
+        'tipovi-atributa' => 'tip-atributa'
+    ]);
 
-Route::apiResource('/racuni', RacunController::class)->parameters([
-    'racuni' => 'racun'
-]);
+    Route::apiResource('/racuni', RacunController::class)->parameters([
+        'racuni' => 'racun'
+    ]);
 
-Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
-    'ulazni_racuni' => 'ulazni_racun'
-]);
+    Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
+        'ulazni_racuni' => 'ulazni_racun'
+    ]);
 
-Route::apiResource('/predracuni', PredracunController::class)->parameters([
-    'racuni' => 'racun'
-]);
+    Route::apiResource('/predracuni', PredracunController::class)->parameters([
+        'racuni' => 'racun'
+    ]);
 
-Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
-    'jedinice_mjere' => 'jedinica-mjere'
-]);
+    Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
+        'jedinice_mjere' => 'jedinica-mjere'
+    ]);
 
-Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
-    'proizvodjaci-robe' => 'proizvodjaci-robe'
-]);
+    Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
+        'proizvodjaci-robe' => 'proizvodjaci-robe'
+    ]);
 
-Route::apiResource('/atribut-roba', AtributRobeController::class)->parameters([
-    'atribut-roba' => 'atribut-robe'
-]);
+    Route::apiResource('/atribut-roba', AtributRobeController::class)->parameters([
+        'atribut-roba' => 'atribut-robe'
+    ]);
 
-Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
-    'kategorije-robe' => 'kategorija-robe'
-]);
+    Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
+        'kategorije-robe' => 'kategorija-robe'
+    ]);
 
-Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
-    'podkategorije-robe' => 'podkategorija-robe'
-]);
+    Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
+        'podkategorije-robe' => 'podkategorija-robe'
+    ]);
 
-Route::apiResource('/porezi', PorezController::class)->parameters([
-    'porezi' => 'porez'
-]);
+    Route::apiResource('/porezi', PorezController::class)->parameters([
+        'porezi' => 'porez'
+    ]);
 
-Route::apiResource('/grupe', GrupaController::class)->parameters([
-    'grupe' => 'grupa'
-]);
+    Route::apiResource('/grupe', GrupaController::class)->parameters([
+        'grupe' => 'grupa'
+    ]);
 
-Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
-    'djelatnosti' => 'djelatnost'
-]);
+    Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
+        'djelatnosti' => 'djelatnost'
+    ]);
 
-Route::apiResource('/robe', RobaController::class)->parameters([
-    'robe' => 'roba'
-]);
+    Route::apiResource('/robe', RobaController::class)->parameters([
+        'robe' => 'roba'
+    ]);
 
-Route::apiResource('/moduli', ModulController::class)->parameters([
-    'moduli' => 'modul'
-]);
-Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class)->parameters([
-    'ovlascena-lica' => 'ovlasceno-lice'
-]);
-Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class)->parameters([
-    'tipovi-korisnika' => 'tip-korisnika'
-]);
-Route::apiResource('/kategorije', KategorijaController::class)->parameters([
-    'kategorije' => 'kategorija'
-]);
+    Route::apiResource('/moduli', ModulController::class)->parameters([
+        'moduli' => 'modul'
+    ]);
+    Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class)->parameters([
+        'ovlascena-lica' => 'ovlasceno-lice'
+    ]);
+    Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class)->parameters([
+        'tipovi-korisnika' => 'tip-korisnika'
+    ]);
+    Route::apiResource('/kategorije', KategorijaController::class)->parameters([
+        'kategorije' => 'kategorija'
+    ]);
 
-Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
-    'preduzeca' => 'preduzece'
-]);
-Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
-    'ziro-racuni' => 'ziro-racun'
-]);
-Route::apiResource('/partneri', PartnerController::class)->parameters([
-    'partneri' => 'partner'
-]);
+    Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
+        'preduzeca' => 'preduzece'
+    ]);
+    Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
+        'ziro-racuni' => 'ziro-racun'
+    ]);
+    Route::apiResource('/partneri', PartnerController::class)->parameters([
+        'partneri' => 'partner'
+    ]);
 
-Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
-//});
+    Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
+});
