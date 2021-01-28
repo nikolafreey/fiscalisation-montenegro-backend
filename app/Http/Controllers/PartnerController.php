@@ -21,11 +21,7 @@ class PartnerController extends Controller
 
             $query = $query->with(['preduzece', 'fizicko_lice']);
 
-<<<<<<< HEAD
             return $query->get();
-=======
-            return $query->paginate();
->>>>>>> 594a264374eda9c589620ce4cdc54683c995033c
         }
 
         $query = Partner::query();
@@ -44,13 +40,13 @@ class PartnerController extends Controller
     public function store(StorePartner $request)
     {
         $partner = Partner::make($request->validated());
-// <<<<<<< HEAD
+        // <<<<<<< HEAD
         $partner->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
-// =======
-//         $partner->user_id = auth()->id();
-//         $user = User::find(auth()->id())->load('preduzeca');
-//         $partner->preduzece_id = $user['preduzeca'][0]->id;
-// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
+        // =======
+        //         $partner->user_id = auth()->id();
+        //         $user = User::find(auth()->id())->load('preduzeca');
+        //         $partner->preduzece_id = $user['preduzeca'][0]->id;
+        // >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
         $partner->save();
 
         return response()->json($partner, 201);

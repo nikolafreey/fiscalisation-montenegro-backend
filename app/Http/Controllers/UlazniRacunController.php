@@ -23,7 +23,7 @@ class UlazniRacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($searchQuery)]);
@@ -40,7 +40,7 @@ class UlazniRacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preuzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
             $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
@@ -70,13 +70,13 @@ class UlazniRacunController extends Controller
     public function store(Request $request)
     {
         $ulazniracun = UlazniRacun::make($request->validated());
-// <<<<<<< HEAD
+        // <<<<<<< HEAD
         $ulazniracun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
-// =======
-//         $ulazniracun->user_id = auth()->id();
-//         $user = User::find(auth()->id())->load('preduzeca');
-//         $ulazniracun->preduzece_id = $user['preduzeca'][0]->id;
-// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
+        // =======
+        //         $ulazniracun->user_id = auth()->id();
+        //         $user = User::find(auth()->id())->load('preduzeca');
+        //         $ulazniracun->preduzece_id = $user['preduzeca'][0]->id;
+        // >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
         $ulazniracun->save();
 
         $ulazniracun->kreirajStavke($request);
