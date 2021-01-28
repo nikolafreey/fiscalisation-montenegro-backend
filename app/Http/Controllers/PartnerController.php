@@ -21,14 +21,14 @@ class PartnerController extends Controller
 
             $query = $query->with(['preduzece', 'fizicko_lice']);
 
-            return $query->get();
+            return $query->paginate(20);
         }
 
         $query = Partner::query();
 
         $query = $query->with(['preduzece', 'fizicko_lice']);
 
-        return $query->get();
+        return $query->paginate(20);
     }
 
     /**
