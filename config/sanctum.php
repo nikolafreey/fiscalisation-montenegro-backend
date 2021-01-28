@@ -14,8 +14,7 @@ return [
     */
 
     'stateful' => explode(',', env(
-        'SANCTUM_STATEFUL_DOMAINS',
-        'localhost,localhost:3000,http://phpstack-356308-1608796.cloudwaysapps.com/'
+        'SANCTUM_STATEFUL_DOMAINS'
     )),
 
     /*

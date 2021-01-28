@@ -41,18 +41,10 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-// <<<<<<< HEAD
+            EnsureFrontendRequestsAreStateful::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            // \App\Http\Middleware\VerifyCsrfToken::class,
-            // EnsureFrontendRequestsAreStateful::class,
-// =======
-//             EnsureFrontendRequestsAreStateful::class,
-//             \App\Http\Middleware\EncryptCookies::class,
-//             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-//             \Illuminate\Session\Middleware\StartSession::class,
-// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
