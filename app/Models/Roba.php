@@ -136,7 +136,7 @@ class Roba extends Model
 
     public function robe_kategorije()
     {
-        return $this->belongsToMany('App\Models\Kategorija', 'robe_kategorije', 'roba_id', 'kategorija_id');
+        return $this->belongsToMany('App\Models\Kategorija', 'robe_kategorije_podkategorije', 'roba_id', 'kategorija_robe_id');
     }
 
     public function cijene_roba()

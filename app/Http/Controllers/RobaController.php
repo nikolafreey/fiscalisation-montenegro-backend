@@ -30,7 +30,7 @@ class RobaController extends Controller
             'roba.jedinica_mjere:id,naziv',
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
             'roba.cijene_roba.porez:id,naziv,stopa'
-        ])->paginate();
+        ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
     }
     /**
      * Store a newly created resource in storage.
