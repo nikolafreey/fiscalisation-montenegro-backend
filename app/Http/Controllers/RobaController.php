@@ -29,9 +29,7 @@ class RobaController extends Controller
             'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
             'roba.jedinica_mjere:id,naziv',
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-            'roba.cijene_roba.porez:id,naziv,stopa',
-            'roba.proizvodjac_robe',
-            'roba.robe_kategorije'
+            'roba.cijene_roba.porez:id,naziv,stopa'
         ])->paginate();
     }
     /**
