@@ -38,7 +38,6 @@ class FizickoLiceController extends Controller
             $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
         }
         $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
-
         $user = User::find(auth()->id())->load('preduzeca');
         $fizickoLice->preduzece_id = $user['preduzeca'][0]->id;
 

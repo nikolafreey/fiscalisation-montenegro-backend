@@ -28,13 +28,9 @@ class ProizvodjacRobeController extends Controller
     public function store(StoreProizvodjacRobe $request)
     {
         $proizvodjacRobe = ProizvodjacRobe::make($request->validated());
-// <<<<<<< HEAD
-        $proizvodjacRobe->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
-// =======
-//         $proizvodjacRobe->user_id = auth()->id();
-//         $user = User::find(auth()->id())->load('preduzeca');
-//         $proizvodjacRobe->preduzece_id = $user['preduzeca'][0]->id;
-// >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
+        $proizvodjacRobe->user_id = auth()->id();
+        $user = User::find(auth()->id())->load('preduzeca');
+        $proizvodjacRobe->preduzece_id = $user['preduzeca'][0]->id;
         $proizvodjacRobe->save();
 
         return response()->json($proizvodjacRobe, 201);

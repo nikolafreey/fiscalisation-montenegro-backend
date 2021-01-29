@@ -74,13 +74,9 @@ class PredracunController extends Controller
     {
         $racun = Racun::make($request->validated());
         $racun->tip_racuna = Racun::PREDRACUN;
-        // <<<<<<< HEAD
-        $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
-        // =======
-        //         $racun->user_id = auth()->id();
-        //         $user = User::find(auth()->id())->load('preduzeca');
-        //         $racun->preduzece_id = $user['preduzeca'][0]->id;
-        // >>>>>>> 12d9d1ab1979836c1f71029393716ed3125acc53
+        $racun->user_id = auth()->id();
+        $user = User::find(auth()->id())->load('preduzeca');
+        $racun->preduzece_id = $user['preduzeca'][0]->id;
         $racun->save();
 
         $racun->kreirajStavke($request);
