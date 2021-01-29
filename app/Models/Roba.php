@@ -77,7 +77,7 @@ class Roba extends Model
         RobaKategorijaPodKategorija::insert($robaKategorijaPodkategorija);
     }
 
-    public function storeCijene($data)
+    public function storeCijene($data, $preduzece_id)
     {
         $cijenaValues[] = [
             'nabavna_cijena_bez_pdv' => $data['nabavna_cijena_bez_pdv'],
@@ -88,6 +88,7 @@ class Roba extends Model
             'roba_id' => $this->id,
             'atribut_id' => 1,
             'user_id' => auth()->id(),
+            'preduzece_id' => $preduzece_id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
