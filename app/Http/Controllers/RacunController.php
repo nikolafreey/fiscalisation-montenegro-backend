@@ -91,11 +91,10 @@ class RacunController extends Controller
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
             $racun->tip_racuna = Racun::RACUN;
-            $racun->vrsta_racuna = Racun::GOTOVINSKI;
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
             // <<<<<<< HEAD
-//            $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
+            //            $racun->user_id = '60897ef2-14ed-415d-ba62-13e1955afbe3';
             // =======
             $racun->user_id = auth()->id();
             $user = User::find(auth()->id())->load('preduzeca');
@@ -104,6 +103,8 @@ class RacunController extends Controller
             $racun->save();
 
             $racun->kreirajStavke($request);
+            Log::info('suma: ' . var_export($racun->izracunajUkupneCijene(), true));
+
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
 
