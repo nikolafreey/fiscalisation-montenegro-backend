@@ -88,7 +88,6 @@ class Roba extends Model
             'roba_id' => $this->id,
             'atribut_id' => 1,
             'user_id' => auth()->id(),
-
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
