@@ -53,10 +53,10 @@ class FizickoLice extends Model
                 'type' => 'text',
             ],
             'jmbg' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
             'ib' => [
-                'type' => 'text',
+                'type' => 'keyword',
             ],
         ]
     ];
