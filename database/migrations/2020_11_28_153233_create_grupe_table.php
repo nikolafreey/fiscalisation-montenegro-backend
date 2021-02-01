@@ -18,7 +18,7 @@ class CreateGrupeTable extends Migration
             $table->string('naziv', 50)->unique();
             $table->text('opis')->nullable();
             $table->decimal('popust_procenti', 4, 2);
-            $table->decimal('popust_iznos', 15, 2);
+            $table->decimal('popust_iznos', 15, 4);
             $table->softDeletes();
             $table->timestamps();
         });

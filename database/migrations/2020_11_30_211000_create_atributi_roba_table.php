@@ -18,7 +18,7 @@ class CreateAtributiRobaTable extends Migration
             $table->string('naziv', 50);
             $table->string('opis', 255)->nullable();
             $table->decimal('popust_procenti', 15, 2)->nullable();
-            $table->decimal('popust_iznos', 15, 2)->nullable();
+            $table->decimal('popust_iznos', 15, 4)->nullable();
             $table->softDeletes();
             $table->timestamps();
 

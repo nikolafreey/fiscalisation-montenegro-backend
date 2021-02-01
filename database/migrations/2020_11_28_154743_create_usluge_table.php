@@ -17,8 +17,8 @@ class CreateUslugeTable extends Migration
             $table->id();
             $table->string('naziv', 50);
             $table->text('opis')->nullable();
-            $table->decimal('cijena_bez_pdv', 15, 2);
-            $table->decimal('ukupna_cijena', 15, 2);
+            $table->decimal('cijena_bez_pdv', 15, 4);
+            $table->decimal('ukupna_cijena', 15, 4);
             $table->boolean('status');
             $table->softDeletes();
             $table->timestamps();
