@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Preduzece;
 
 class PreduzeceSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class PreduzeceSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Preduzece::factory(200)->create();
     }
 }
