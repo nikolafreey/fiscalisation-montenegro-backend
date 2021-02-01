@@ -157,12 +157,12 @@ class PreduzeceFactory extends Factory
         );
 
         $telefon = array(
-            '+382204581',
-            '+382673154',
-            '+382692267',
-            '+3826798712',
-            '+382684561',
-            '+382401298',
+            '+38220458134',
+            '+38267315425',
+            '+38269226767',
+            '+38267987128',
+            '+38268456109',
+            '+38240129856',
         );
 
         $drzava = array('Crna Gora', 'Srbija', 'Bosna', 'Hrvatska', 'Slovenija', 'Italija', 'Spanija', 'Njemacka');
@@ -171,8 +171,8 @@ class PreduzeceFactory extends Factory
 
         return [
             'kratki_naziv' => $this->faker->randomElement($kompanija),
-            'puni_naziv' => $this->faker->randomElement($kompanija),
-            'oblik_preduzeca' => $this->faker->word(),
+            'puni_naziv' => "Kompanija duži naziv",
+            'oblik_preduzeca' => "Oblik preduzeća",
             'adresa' => $this->faker->randomElement($address),
             'grad' => $this->faker->randomElement($grad),
             'drzava' => $this->faker->randomElement($drzava),
@@ -183,11 +183,11 @@ class PreduzeceFactory extends Factory
             'fax' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail,
             'website' => $this->faker->word(),
-            'pib' => $this->faker->unique()->randomNumber(),
-            'pdv' => $this->faker->unique()->randomNumber(),
-            'djelatnost' => $this->faker->word(),
-            'iban' => $this->faker->unique()->randomNumber(),
-            'bic_swift' => $this->faker->unique()->randomNumber(),
+            'pib' => $this->faker->unique()->numerify('########'),
+            'pdv' => $this->faker->unique()->numerify('%%/#####-##'),
+            'djelatnost' => "Djelatnost preduzeća",
+            'iban' => $this->faker->unique()->numerify('%%%%%%%%%%'),
+            'bic_swift' => $this->faker->unique()->numerify('%%%%%%%%%%'),
             'kontakt_ime' => $this->faker->randomElement($firstName),
             'kontakt_prezime' => $this->faker->randomElement($lastName),
             'kontakt_telefon' => $this->faker->randomElement($telefon),
@@ -200,7 +200,7 @@ class PreduzeceFactory extends Factory
             'facebook_username' => $this->faker->unique()->userName,
             'skype_username' => $this->faker->userName,
             'logotip' => $this->faker->imageUrl(640, 480, 'business'),
-            'opis' => $this->faker->word(),
+            'opis' => $this->faker->sentence(),
             'lokacija_lat' => $this->faker->latitude(),
             'lokacija_long' => $this->faker->longitude(),
             'status' => $this->faker->boolean(),
