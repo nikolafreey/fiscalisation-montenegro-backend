@@ -19,14 +19,18 @@ class UslugaController extends Controller
         if ($request->has('search')) {
             $query = Usluga::search($request->search . '*');
         } else {
-            $query = Usluga::query();
+            $query = Usluga::query()->with([
+                'grupa:id,naziv,opis,popust_procenti,popust_iznos',
+                'jedinica_mjere:id,naziv',
+                'porez:id,naziv,stopa'
+            ])->paginate();
         }
 
         if ($request->has('grupa_id')) {
             $query = $query->where('grupa_id', $request->grupa_id);
         }
 
-        return $query->with([
+        return Usluga::query()->with([
             'grupa:id,naziv,opis,popust_procenti,popust_iznos',
             'jedinica_mjere:id,naziv',
             'porez:id,naziv,stopa'
@@ -58,6 +62,8 @@ class UslugaController extends Controller
      */
     public function show(Usluga $usluga)
     {
+        $usluga = $usluga::with('jedinica_mjere', 'porez', 'grupa')->find($usluga->id);
+
         return response()->json($usluga, 200);
     }
 
