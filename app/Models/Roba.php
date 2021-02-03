@@ -146,7 +146,7 @@ class Roba extends Model
 
     public function tipovi_atributa()
     {
-        return $this->belongsToMany('App\Models\TipAtributa', 'robe_tipovi_atributa', 'roba_id', 'tipovi_atributa_roba_id');
+        return $this->belongsToMany('App\Models\TipAtributa', 'tipovi_atributa_roba', 'roba_id', 'tipovi_atributa_roba_id');
     }
     public function robe_kateogorije_podkategorije()
     {

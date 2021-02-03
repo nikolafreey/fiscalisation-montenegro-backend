@@ -41,10 +41,12 @@ class Usluga extends Model
         $array = $this->only('naziv');
         return $array;
     }
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
