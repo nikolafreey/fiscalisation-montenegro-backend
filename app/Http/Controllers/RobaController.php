@@ -62,6 +62,8 @@ class RobaController extends Controller
      */
     public function show(Roba $roba)
     {
+        $roba = $roba::with('proizvodjac_robe', 'jedinica_mjere')->find($roba->id);
+
         return response()->json($roba, 200);
     }
 
