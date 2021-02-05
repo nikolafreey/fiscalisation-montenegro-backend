@@ -12,9 +12,7 @@ use ScoutElastic\Searchable;
 class Usluga extends Model
 {
     use HasFactory, SoftDeletes;
-
     protected $table = 'usluge';
-
     protected $fillable = [
         'naziv',
         'opis',
@@ -26,15 +24,11 @@ class Usluga extends Model
         'jedinica_mjere_id',
         'porez_id'
     ];
-
     use Searchable;
-
     protected $indexConfigurator = UslugaIndexConfigurator::class;
-
     protected $searchRules = [
         //
     ];
-
     protected $mapping = [
         'properties' => [
             'naziv' => [
@@ -42,11 +36,9 @@ class Usluga extends Model
             ],
         ]
     ];
-
     public function toSearchableArray()
     {
         $array = $this->only('naziv');
-
         return $array;
     }
 
@@ -59,17 +51,14 @@ class Usluga extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
-
     public function grupa()
     {
         return $this->belongsTo('App\Models\Grupa', 'grupa_id');
     }
-
     public function jedinica_mjere()
     {
         return $this->belongsTo('App\Models\JedinicaMjere', 'jedinica_mjere_id');
     }
-
     public function porez()
     {
         return $this->belongsTo('App\Models\Porez', 'porez_id');
