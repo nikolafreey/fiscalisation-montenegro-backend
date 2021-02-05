@@ -148,7 +148,7 @@ class Roba extends Model
     {
         return $this->belongsToMany('App\Models\TipAtributa', 'tipovi_atributa_roba', 'roba_id', 'tipovi_atributa_roba_id');
     }
-    public function robe_kateogorije_podkategorije()
+    public function robe_kategorije_podkategorije()
     {
         return $this->hasMany('App\Models\RobaKategorijaPodKategorija', 'roba_id');
     }
