@@ -75,15 +75,17 @@ class RacunController extends Controller
         return $data;
     }
 
+
+
     public function racuniStatus(Request $request)
     {
         $queryP = Racun::query();
         $queryN = Racun::query();
         $queryC = Racun::query();
 
-        $queryPlacen = $queryP->where('status', 'Plaćen')->get();
-        $queryNenaplativ = $queryN->where('status', 'Nenaplativ')->get();
-        $queryCekaSe = $queryC->where('status', 'Čeka se')->get();
+        $queryPlacen = $queryP->where('status', 'Plaćen')->where('tip_racuna', Racun::RACUN)->get();
+        $queryNenaplativ = $queryN->where('status', 'Nenaplativ')->where('tip_racuna', Racun::RACUN)->get();
+        $queryCekaSe = $queryC->where('status', 'Čeka se')->where('tip_racuna', Racun::RACUN)->get();
 
         $ukupnaCijenaPlacenSuma = 0;
         $ukupnaCijenaNenaplativSuma = 0;
