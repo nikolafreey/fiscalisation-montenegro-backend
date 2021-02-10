@@ -25,12 +25,7 @@ class RacunController extends Controller
 
     public function index(Request $request)
     {
-        //  dump(222);
-        // dd(333);
-        //var_dump(333);
         Log::info('ssssss', array($request->all()));
-        //  dd($request);
-        //    error_log('Some message here.');
         if ($request->search) {
             $searchQuery = Racun::search($request->search . '*');
 
@@ -78,6 +73,44 @@ class RacunController extends Controller
         $data = $ukupnaCijena->merge($paginatedData);
 
         return $data;
+    }
+
+    public function racuniStatus(Request $request)
+    {
+        $query = Racun::query();
+
+        $queryPlacen = $query->where('status', 'Plaćen')->get();
+        $queryNenaplativ = $query->where('status', 'Nenaplativ')->get();
+        $queryCekaSe = $query->where('status', 'Čeka se')->get();
+
+        $ukupnaCijenaPlacenSuma = 0;
+        $ukupnaCijenaNenaplativSuma = 0;
+        $ukupnaCijenaCekaSeSuma = 0;
+
+
+        foreach ($queryPlacen as $racun) {
+            $ukupnaCijenaPlacenSuma += $racun->ukupna_cijena_sa_pdv;
+        }
+
+        foreach ($queryNenaplativ as $racun) {
+            $ukupnaCijenaNenaplativSuma += $racun->ukupna_cijena_sa_pdv;
+        }
+
+        foreach ($queryCekaSe as $racun) {
+            $ukupnaCijenaCekaSeSuma += $racun->ukupna_cijena_sa_pdv;
+        }
+
+
+        $ukupnaCijenaPlacen = collect(["ukupna_cijena_placeni" => $ukupnaCijenaPlacenSuma]);
+        $ukupnaCijenaNenaplativ = collect(["ukupna_cijena_nenaplativ" => $ukupnaCijenaNenaplativSuma]);
+        $ukupnaCijenaCekaSe = collect(["ukupna_cijena_ceka_se" => $ukupnaCijenaCekaSeSuma]);
+
+        return $queryCekaSe;
+
+        // $data = $ukupnaCijenaCekaSe->merge($ukupnaCijenaPlacen);
+        // $data = $ukupnaCijenaCekaSe->merge($ukupnaCijenaNenaplativ);
+
+        // return $ukupnaCijenaNenaplativ;
     }
 
     /**

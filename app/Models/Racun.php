@@ -104,10 +104,10 @@ class Racun extends Model
         return $array;
     }
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public static function filter(Request $request)
     {
