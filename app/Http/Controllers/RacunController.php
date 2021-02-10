@@ -77,11 +77,13 @@ class RacunController extends Controller
 
     public function racuniStatus(Request $request)
     {
-        $query = Racun::query();
+        $queryP = Racun::query();
+        $queryN = Racun::query();
+        $queryC = Racun::query();
 
-        $queryPlacen = $query->where('status', 'Plaćen')->get();
-        $queryNenaplativ = $query->where('status', 'Nenaplativ')->get();
-        $queryCekaSe = $query->where('status', 'Čeka se')->get();
+        $queryPlacen = $queryP->where('status', 'Plaćen')->get();
+        $queryNenaplativ = $queryN->where('status', 'Nenaplativ')->get();
+        $queryCekaSe = $queryC->where('status', 'Čeka se')->get();
 
         $ukupnaCijenaPlacenSuma = 0;
         $ukupnaCijenaNenaplativSuma = 0;
@@ -100,17 +102,15 @@ class RacunController extends Controller
             $ukupnaCijenaCekaSeSuma += $racun->ukupna_cijena_sa_pdv;
         }
 
-
         $ukupnaCijenaPlacen = collect(["ukupna_cijena_placeni" => $ukupnaCijenaPlacenSuma]);
         $ukupnaCijenaNenaplativ = collect(["ukupna_cijena_nenaplativ" => $ukupnaCijenaNenaplativSuma]);
         $ukupnaCijenaCekaSe = collect(["ukupna_cijena_ceka_se" => $ukupnaCijenaCekaSeSuma]);
 
-        return $queryCekaSe;
+        $data = $ukupnaCijenaPlacen;
+        $data = $data->merge($ukupnaCijenaCekaSe);
+        $data = $data->merge($ukupnaCijenaNenaplativ);
 
-        // $data = $ukupnaCijenaCekaSe->merge($ukupnaCijenaPlacen);
-        // $data = $ukupnaCijenaCekaSe->merge($ukupnaCijenaNenaplativ);
-
-        // return $ukupnaCijenaNenaplativ;
+        return $data;
     }
 
     /**
