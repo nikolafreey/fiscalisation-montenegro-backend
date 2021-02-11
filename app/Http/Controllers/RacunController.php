@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use ScoutElastic\Searchable;
+use Carbon\Carbon;
 
 class RacunController extends Controller
 {
@@ -75,7 +76,22 @@ class RacunController extends Controller
         return $data;
     }
 
+    public function racuniPdv(Request $request)
+    {
+        $query = Racun::query();
 
+        $queryPdv = $query->where('datum_izdavanja', '>=', Carbon::now()->subMonth())->where('tip_racuna', Racun::RACUN)->get();
+
+        $ukupnaSuma = 0;
+
+        foreach ($queryPdv as $racun) {
+            $ukupnaSuma += $racun->ukupan_iznos_pdv;
+        }
+
+        $ukupniPdv = collect(["ukupan_iznos_pdv" => $ukupnaSuma]);
+
+        return $ukupniPdv;
+    }
 
     public function racuniStatus(Request $request)
     {
