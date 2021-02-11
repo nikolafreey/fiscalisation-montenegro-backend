@@ -76,6 +76,20 @@ class RacunController extends Controller
         return $data;
     }
 
+    public function najveciKupci(Request $request)
+    {
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id, preduzeca.kratki_naziv, preduzeca.puni_naziv ORDER BY ukupan_promet DESC"));
+
+        return $data;
+    }
+
+    public function najveciDuznici(Request $request)
+    {
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id, preduzeca.kratki_naziv, preduzeca.puni_naziv ORDER BY ukupan_promet DESC"));
+
+        return $data;
+    }
+
     public function racuniPdv(Request $request)
     {
         $query = Racun::query();

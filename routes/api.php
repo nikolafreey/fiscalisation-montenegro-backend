@@ -59,6 +59,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('racuni-status', [RacunController::class, 'racuniStatus']);
 
+    Route::get('racuni-najveci-kupci', [RacunController::class, 'najveciKupci']);
+
+    Route::get('racuni-najveci-duznici', [RacunController::class, 'najveciDuznici']);
+
     Route::get('racuni-pdv', [RacunController::class, 'racuniPdv']);
 
     Route::get('ulazni-racuni-pdv', [UlazniRacunController::class, 'ulazniRacuniPdv']);
