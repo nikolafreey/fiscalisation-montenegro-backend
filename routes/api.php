@@ -59,6 +59,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('racuni-status', [RacunController::class, 'racuniStatus']);
 
+    Route::get('racuni-pdv', [RacunController::class, 'racuniPdv']);
+
+    Route::get('ulazni-racuni-pdv', [UlazniRacunController::class, 'ulazniRacuniPdv']);
+
     Route::get('/me', [UserController::class, 'me']);
 
     Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([

@@ -79,18 +79,25 @@ class RacunController extends Controller
     public function racuniPdv(Request $request)
     {
         $query = Racun::query();
+        $queryAll = Racun::query();
 
+        $queryAllPdv = $queryAll->where('tip_racuna', Racun::RACUN)->get();
         $queryPdv = $query->where('datum_izdavanja', '>=', Carbon::now()->subMonth())->where('tip_racuna', Racun::RACUN)->get();
 
         $ukupnaSuma = 0;
+        $poslednjiMjesecSuma = 0;
 
-        foreach ($queryPdv as $racun) {
-            $ukupnaSuma += $racun->ukupan_iznos_pdv;
+        foreach ($queryAllPdv as $racunPdv) {
+            $ukupnaSuma += $racunPdv->ukupan_iznos_pdv;
         }
 
-        $ukupniPdv = collect(["ukupan_iznos_pdv" => $ukupnaSuma]);
+        foreach ($queryPdv as $racun) {
+            $poslednjiMjesecSuma += $racun->ukupan_iznos_pdv;
+        }
 
-        return $ukupniPdv;
+        $data = collect(["ukupan_iznos_pdv" => $ukupnaSuma, "ukupan_iznos_poslednji_mjesec" => $poslednjiMjesecSuma]);
+
+        return $data;
     }
 
     public function racuniStatus(Request $request)
