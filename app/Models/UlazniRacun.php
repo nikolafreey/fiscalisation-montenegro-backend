@@ -15,6 +15,8 @@ class UlazniRacun extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public const RACUN = 'RACUN';
+
     protected $table = 'ulazni_racuni';
 
     protected $fillable = [
@@ -50,10 +52,10 @@ class UlazniRacun extends Model
         //
     ];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     protected $mapping = [
         'properties' => [

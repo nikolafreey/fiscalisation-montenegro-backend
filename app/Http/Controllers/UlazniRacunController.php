@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\UlazniRacun;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+
+use function GuzzleHttp\Promise\queue;
 
 class UlazniRacunController extends Controller
 {
@@ -57,6 +60,30 @@ class UlazniRacunController extends Controller
             )->paginate();
         $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($queryAll)]);
         $data = $ukupnaCijena->merge($paginatedData);
+
+        return $data;
+    }
+
+    public function ulazniRacuniPdv(Request $request)
+    {
+        $query = UlazniRacun::query();
+        $queryAll = UlazniRacun::query();
+
+        $queryAllPdv = $queryAll->where('tip_racuna', UlazniRacun::RACUN)->get();
+        $queryPdv = $query->where('datum_izdavanja', '>=', Carbon::now()->subMonth())->where('tip_racuna', UlazniRacun::RACUN)->get();
+
+        $ukupnaSuma = 0;
+        $poslednjiMjesecSuma = 0;
+
+        foreach ($queryAllPdv as $racunPdv) {
+            $ukupnaSuma += $racunPdv->ukupan_iznos_pdv;
+        }
+
+        foreach ($queryPdv as $racun) {
+            $poslednjiMjesecSuma += $racun->ukupan_iznos_pdv;
+        }
+
+        $data = collect(["ukupan_iznos_pdv" => $ukupnaSuma, "ukupan_iznos_poslednji_mjesec" => $poslednjiMjesecSuma]);
 
         return $data;
     }
