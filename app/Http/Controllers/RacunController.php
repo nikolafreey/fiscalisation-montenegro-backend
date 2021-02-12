@@ -106,7 +106,6 @@ class RacunController extends Controller
 
         $queryAllPdv = $queryAll->where('tip_racuna', Racun::RACUN)->get();
         $queryPdv = $query->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->get();
-
         $queryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
 
         $ukupnaSuma = 0;

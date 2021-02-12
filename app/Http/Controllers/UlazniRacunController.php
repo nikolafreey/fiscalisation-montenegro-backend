@@ -6,6 +6,7 @@ use App\Models\UlazniRacun;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use function GuzzleHttp\Promise\queue;
 
@@ -68,12 +69,23 @@ class UlazniRacunController extends Controller
     {
         $query = UlazniRacun::query();
         $queryAll = UlazniRacun::query();
+        $queryPoredjenje = UlazniRacun::query();
+
+        $dan = Carbon::now()->day;
+        $mjesec = Carbon::now()->month;
+        $godina = Carbon::now()->year;
+
+        $prviUMjesecu = "{$godina}-{$mjesec}-1 00:00:00";
+        $prviUMjesecu = Carbon::parse($prviUMjesecu);
+        $prethodniMjesec = Carbon::parse($prviUMjesecu)->subMonthNoOverflow();
 
         $queryAllPdv = $queryAll->where('tip_racuna', UlazniRacun::RACUN)->get();
-        $queryPdv = $query->where('datum_izdavanja', '>=', Carbon::now()->subMonth())->where('tip_racuna', UlazniRacun::RACUN)->get();
+        $queryPdv = $query->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', UlazniRacun::RACUN)->get();
+        $queryPoredjenje = DB::select(DB::raw('SELECT * FROM `ulazni_racuni` WHERE datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
 
         $ukupnaSuma = 0;
         $poslednjiMjesecSuma = 0;
+        $poredjenjeSuma = 0;
 
         foreach ($queryAllPdv as $racunPdv) {
             $ukupnaSuma += $racunPdv->ukupan_iznos_pdv;
@@ -83,7 +95,11 @@ class UlazniRacunController extends Controller
             $poslednjiMjesecSuma += $racun->ukupan_iznos_pdv;
         }
 
-        $data = collect(["ukupan_iznos_pdv" => $ukupnaSuma, "ukupan_iznos_poslednji_mjesec" => $poslednjiMjesecSuma]);
+        foreach ($queryPoredjenje as $racun) {
+            $poredjenjeSuma += $racun->ukupan_iznos_pdv;
+        }
+
+        $data = collect(["ukupan_iznos_pdv" => $ukupnaSuma, "ukupan_iznos_poslednji_mjesec" => $poslednjiMjesecSuma, "poredjenje_pdv" => $poredjenjeSuma]);
 
         return $data;
     }
