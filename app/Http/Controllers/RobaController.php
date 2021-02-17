@@ -64,12 +64,12 @@ class RobaController extends Controller
         $roba->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
         $roba->preduzece_id = $user['preduzeca'][0]->id;
-        $roba->save();
 
         $roba->storeKategorije($request->kategorije);
         $roba->storeCijene($request->all(), $roba->preduzece_id);
-
         $roba->storeAtributi($request->atributi);
+
+        $roba->save();
 
         return response()->json($roba, 201);
     }
@@ -97,6 +97,15 @@ class RobaController extends Controller
     public function update(StoreRoba $request, Roba $roba)
     {
         $roba->update($request->validated());
+
+        $roba->user_id = auth()->id();
+        $user = User::find(auth()->id())->load('preduzeca');
+        $roba->preduzece_id = $user['preduzeca'][0]->id;
+
+        $roba->storeKategorije($request->kategorije);
+        $roba->storeCijene($request->all(), $roba->preduzece_id);
+        $roba->storeAtributi($request->atributi);
+
         return response()->json($roba, 200);
     }
 
