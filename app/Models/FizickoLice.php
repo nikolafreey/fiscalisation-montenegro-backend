@@ -33,7 +33,8 @@ class FizickoLice extends Model
         'drzavljanstvo',
         'nacionalnost',
         'cv_link',
-        'avatar'
+        'avatar',
+        "preduzece_id"
     ];
 
     use Searchable;

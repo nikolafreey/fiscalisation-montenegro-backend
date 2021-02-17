@@ -33,13 +33,15 @@ class FizickoLiceController extends Controller
     {
         $fizickoLice = FizickoLice::create($request->validated());
 
+        $user = User::find(auth()->id())->load('preduzeca');
+        $fizickoLice->preduzece_id = $user['preduzeca'][0]->id;
+
         $ziro_racuni = $request->ziro_racuni;
         foreach ($ziro_racuni as $ziro_racun) {
             $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
         }
         $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
-        $user = User::find(auth()->id())->load('preduzeca');
-        $fizickoLice->preduzece_id = $user['preduzeca'][0]->id;
+        $fizickoLice->save();
 
         return response()->json($fizickoLice, 201);
     }
