@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Racun;
 use App\Models\Partner;
 use App\Models\Preduzece;
-use App\Models\Racun;
-use App\Models\User;
 use App\Scopes\UserScope;
+use App\Models\PoslovnaJedinica;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RacunFactory extends Factory
@@ -34,6 +35,7 @@ class RacunFactory extends Factory
             'vrsta_racuna' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
             'korektivni_racun' => $this->faker->boolean(),
             'korektivni_racun_vrsta' => $this->faker->randomElement(['CORRECTIVE', 'DEBIT', 'CREDIT']),
+            'nacin_placanja' => $this->faker->randomElement(['BANKNOTE', 'CARD', 'ORDER', 'OTHER_CASH', 'BUSINESSCARD', 'SVOUCHER', 'COMPANY', 'ADVANCE', 'ACCOUNT', 'FACTORING', 'OTHER']),
             'broj_racuna' => $this->faker->randomNumber(),
             'datum_izdavanja' => $this->faker->date(),
             'datum_za_placanje' => $this->faker->date(),
@@ -44,10 +46,10 @@ class RacunFactory extends Factory
             'popust_procenat' => $this->faker->randomFloat(2, 0, 100),
             'popust_iznos' => $this->faker->randomFloat(2, 0, 100),
             'popust_na_cijenu_bez_pdv' => $this->faker->randomFloat(2, 0, 100),
+            'offline' => rand(0,1),
             'popust_ukupno' => $this->faker->randomFloat(2, 0, 100),
             'opis' => $this->faker->text(),
             'status' => $this->faker->randomElement(['Plaćen', 'Nenaplativ', 'Čeka se', 'Privremeni', 'Nenaplativ dug']),
-            'preduzece_id' => Preduzece::all()->random()->id,
             'user_id' => User::all()->random()->id,
             'partner_id' => Partner::withoutGlobalScope(UserScope::class)->get()->random()->id,
         ];

@@ -250,9 +250,9 @@ class Racun extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function preduzece()
+    public function poslovnaJedinica()
     {
-        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsTo('App\Models\PoslovnaJedinica', 'poslovna_jedinica_id');
     }
 
     public function stavke()

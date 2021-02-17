@@ -1,31 +1,32 @@
 <?php
 
-use App\Http\Controllers\AtributRobeController;
-use App\Http\Controllers\CijenaRobeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DjelatnostController;
-use App\Http\Controllers\ModulController;
-use App\Http\Controllers\OvlascenoLiceController;
-use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\RobaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GrupaController;
+use App\Http\Controllers\ModulController;
+use App\Http\Controllers\PorezController;
+use App\Http\Controllers\RacunController;
+use App\Http\Controllers\UslugaController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\IzvjestajController;
+use App\Http\Controllers\PredracunController;
 use App\Http\Controllers\PreduzeceController;
 use App\Http\Controllers\ZiroRacunController;
+use App\Http\Controllers\CijenaRobeController;
+use App\Http\Controllers\DjelatnostController;
 use App\Http\Controllers\KategorijaController;
-use App\Http\Controllers\TipKorisnikaController;
+use App\Http\Controllers\AtributRobeController;
 use App\Http\Controllers\FizickoLiceController;
-use App\Http\Controllers\UslugaController;
-use App\Http\Controllers\GrupaController;
-use App\Http\Controllers\JedinicaMjereController;
-use App\Http\Controllers\PorezController;
-use App\Http\Controllers\ProizvodjacRobeController;
-use App\Http\Controllers\RobaController;
-use App\Http\Controllers\KategorijaRobeController;
-use App\Http\Controllers\PodKategorijaRobeController;
-use App\Http\Controllers\RacunController;
-use App\Http\Controllers\PredracunController;
-use App\Http\Controllers\TipoviAtributaController;
 use App\Http\Controllers\UlazniRacunController;
+use App\Http\Controllers\TipKorisnikaController;
+use App\Http\Controllers\JedinicaMjereController;
+use App\Http\Controllers\OvlascenoLiceController;
+use App\Http\Controllers\KategorijaRobeController;
+use App\Http\Controllers\TipoviAtributaController;
+use App\Http\Controllers\ProizvodjacRobeController;
+use App\Http\Controllers\PodKategorijaRobeController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -47,13 +48,21 @@ Auth::routes();
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
     ]);
     Route::apiResource('/usluge', UslugaController::class)->parameters([
         'usluge' => 'usluga'
     ]);
+
+    Route::get('izvjestaji/fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
+
+    Route::get('izvjestaji/fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
+
+    Route::get('izvjestaji/periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
+
+
 
     Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
@@ -145,4 +154,4 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
-});
+// });
