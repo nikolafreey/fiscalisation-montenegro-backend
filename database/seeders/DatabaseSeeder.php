@@ -140,7 +140,8 @@ class DatabaseSeeder extends Seeder
             DepozitWithdraw::factory(1)->create([
                 'iznos_depozit' => $randomBoolean ? rand(50,100) : null,
                 'iznos_withdraw' => $randomBoolean ? null : rand(50,100),
-                'poslovna_jedinica_id' => $poslovnaJedinica->id
+                'poslovna_jedinica_id' => $poslovnaJedinica->id,
+                'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);
 
             Racun::factory(10)->create(['poslovna_jedinica_id' => $poslovnaJedinica->id]);

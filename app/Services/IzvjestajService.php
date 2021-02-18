@@ -34,11 +34,21 @@ class IzvjestajService
         ];
     }
 
-    public function getKalkulacije()
+    public function getKalkulacije($tipRacuna = null)
     {
         $racuni = $this->poslovnaJedinica
-            ->racuni
-            ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana]);
+            ->racuni()
+            ->when($tipRacuna, function ($q) use ($tipRacuna) {
+                if ($tipRacuna === 'offline') {
+                    return $q->where('offline', true);
+                }
+
+                if ($tipRacuna === 'korektivni_racun') {
+                    return $q->where('korektivni_racun', true);
+                }
+            })
+            ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
+            ->get();
 
         $ukupanPromet = 0;
         $zbir_osnovica_21 = 0;
@@ -347,12 +357,69 @@ class IzvjestajService
             'ukupno_withdraw' => $ukupanWithdraw,
             'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
+            'racuni' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr')->toArray()
+
+        ];
+    }
+
+    public function getVrijeme()
+    {
+        return [
             'datum_dokumenta' => date('d-m-Y'),
             'vrijeme_dokumenta' => date('H:i:s'),
             'operater' => '', // auth user
+        ];
+    }
 
-            'racuni' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr')->toArray()
+    public function getRacuni($withStavke = false, $withDepozitWithdraw = false)
+    {
+        $racuni = $this->poslovnaJedinica
+            ->racuni()
+            ->when($withStavke, function ($q) {
+                return $q->with('stavke');
+            })
+            ->get();
 
+        if ($withDepozitWithdraw) {
+            $racuni = $racuni->merge($this->poslovnaJedinica->depozitWithdraw);
+        }
+
+        return [
+            'racuni' => $racuni->sortBy('created_at')->toArray()
+        ];
+    }
+
+    public function getOfflineRacuniKalkulacije()
+    {
+        $kalkulacije = $this->getKalkulacije('offline');
+
+        return [
+            'ukupno' => [
+                'ukupno_osnovica_po_stopama_21_7_0' =>  $kalkulacije['ukupno']['ukupno_osnovica_po_stopama_21_7_0'],
+                'ukupno_porez_po_stopama_21_7_0' =>  $kalkulacije['ukupno']['ukupno_porez_po_stopama_21_7_0'],
+                'ukupan_promet' =>  $kalkulacije['ukupno']['ukupan_promet']
+            ],
+
+            'oslobodjeni_promet' => $kalkulacije['oslobodjeni_promet'],
+
+            'ukupan_promet' => $kalkulacije['ukupan_promet']
+        ];
+    }
+
+    public function getKorektivniRacuniKalkulacije()
+    {
+        $kalkulacije = $this->getKalkulacije('korektivni_racun');
+
+        return [
+            'ukupno' => [
+                'ukupno_osnovica_po_stopama_21_7_0' =>  $kalkulacije['ukupno']['ukupno_osnovica_po_stopama_21_7_0'],
+                'ukupno_porez_po_stopama_21_7_0' =>  $kalkulacije['ukupno']['ukupno_porez_po_stopama_21_7_0'],
+                'ukupan_promet' =>  $kalkulacije['ukupno']['ukupan_promet']
+            ],
+
+            'oslobodjeni_promet' => $kalkulacije['oslobodjeni_promet'],
+
+            'ukupan_promet' => $kalkulacije['ukupan_promet']
         ];
     }
 }

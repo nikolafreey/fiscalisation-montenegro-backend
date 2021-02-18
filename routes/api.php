@@ -56,11 +56,24 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'usluge' => 'usluga'
     ]);
 
-    Route::get('izvjestaji/fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
+    Route::prefix('izvjestaji')->group(function() {
+        Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
 
-    Route::get('izvjestaji/fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
+        Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
 
-    Route::get('izvjestaji/periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
+        Route::get('periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
+
+        Route::get('periodični-analiticki-pregled', [IzvjestajController::class, 'periodicniAnalitickiPregled']);
+
+        Route::get('periodicni-analiticki-pregled-offline', [IzvjestajController::class, 'periodicniAnalitickiPregledOffline']);
+
+        Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
+    });
+
+
+
+
+
 
 
 
