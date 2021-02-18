@@ -249,6 +249,29 @@ class IzvjestajService
             }
         }
 
+        $orderRacuni = $racuni->where('order', true);
+
+        $ukupanBrojOrderRacuna = $orderRacuni->count();
+        $ukupanPrometOrderRacuna = 0;
+        $ukupanPorezOrderRacuna = 0;
+
+        foreach ($orderRacuni as $racun) {
+            foreach($racun->stavke as $stavka){
+                $ukupanPrometOrderRacuna += $stavka->cijena_bez_pdv;
+                $ukupanPorezOrderRacuna += $stavka->pdv_iznos;
+            }
+        }
+
+
+
+        $ukupanDepozit = 0;
+        $ukupanWithdraw = 0;
+        foreach($this->poslovnaJedinica->depozitWithdraw as $depozitWithdraw){
+            $ukupanDepozit += $depozitWithdraw->iznos_depozit;
+            $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
+        }
+
+
 
         return [
             'broj_promjena_poreza' => '',
@@ -292,9 +315,9 @@ class IzvjestajService
             ],
 
             'racuni_order' => [
-                'ukupan_broj_racuna' => '',
-                'ukupan_promet' => '',
-                'ukupan_porez' => ''
+                'ukupan_broj_racuna' => $ukupanBrojOrderRacuna,
+                'ukupan_promet' => $ukupanPrometOrderRacuna,
+                'ukupan_porez' => $ukupanPorezOrderRacuna
             ],
 
             'promet_evidentiran_u_gotovini' => [
@@ -315,18 +338,18 @@ class IzvjestajService
                 'other' => $ukupanPrometBezgotovinskihOtherRacuna
             ],
 
-            'withdraw' => '',
+            'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
 
-            'inicijalni_gotovinski_depozit' => '',
+            'inicijalni_gotovinski_depozit' => $ukupanDepozit,
             'ukupan_promet' => $ukupanPromet,
             'non_cash_promet' => $ukupanPrometBezgotovinskihRacuna,
             'card_i_order_promet' => $ukupanPrometGotovinskihRacuna,
-            'ukupno_withdraw' => '',
-            'gotovina_u_enu' => '',
+            'ukupno_withdraw' => $ukupanWithdraw,
+            'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
             'datum_dokumenta' => date('d-m-Y'),
             'vrijeme_dokumenta' => date('H:i:s'),
-            'operater' => '',
+            'operater' => '', // auth user
 
             'racuni' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr')->toArray()
 

@@ -35,6 +35,7 @@ class CreateRacuniTable extends Migration
             $table->decimal('popust_iznos', 15, 4)->nullable();
             $table->boolean('popust_na_cijenu_bez_pdv')->nullable();
             $table->boolean('offline')->nullable();
+            $table->boolean('order')->nullable();
             $table->decimal('popust_ukupno', 15, 4)->nullable();
             $table->text('opis')->nullable();
             $table->string('status', 20)->default('KREIRAN');
