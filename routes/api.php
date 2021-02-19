@@ -25,7 +25,9 @@ use App\Http\Controllers\JedinicaMjereController;
 use App\Http\Controllers\OvlascenoLiceController;
 use App\Http\Controllers\KategorijaRobeController;
 use App\Http\Controllers\TipoviAtributaController;
+use App\Http\Controllers\DepozitWithdrawController;
 use App\Http\Controllers\ProizvodjacRobeController;
+use App\Http\Controllers\PoslovnaJedinicaController;
 use App\Http\Controllers\PodKategorijaRobeController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
@@ -69,13 +71,6 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
         Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
     });
-
-
-
-
-
-
-
 
     Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
@@ -156,9 +151,18 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'kategorije' => 'kategorija'
     ]);
 
+    Route::apiResource('/poslovne-jedinice', PoslovnaJedinicaController::class)->parameters([
+        'poslovne-jedinice' => 'poslovna-jedinica'
+    ]);
+
     Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
         'preduzeca' => 'preduzece'
     ]);
+
+    Route::apiResource('/depozit-withdraws', DepozitWithdrawController::class)->parameters([
+        'depozit-withdraws' => 'depozit-withdraw'
+    ]);
+
     Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
         'ziro-racuni' => 'ziro-racun'
     ]);

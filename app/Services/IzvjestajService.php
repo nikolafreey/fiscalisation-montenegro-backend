@@ -94,6 +94,7 @@ class IzvjestajService
 
         $ukupanPromet = $zbir_prometa_po_stopi_21 + $zbir_prometa_po_stopi_7 + $zbir_prometa_po_stopi_0 + $oslobodjeniPromet;
 
+
         $korektivniRacuni = $racuni->where('korektivni_racun', true);
 
         $brojKorektivnihRacuna = $korektivniRacuni->count();
@@ -106,6 +107,7 @@ class IzvjestajService
                 $ukupanPorezKorektivnihRacuna += $stavka->pdv_iznos;
             }
         }
+
 
         $gotovinskiRacuni = $racuni->where('vrsta_racuna', 'GOTOVINSKI');
         $bezgotovinskiRacuni = $racuni->where('vrsta_racuna', 'BEZGOTOVINSKI');
@@ -203,7 +205,6 @@ class IzvjestajService
             }
         }
 
-
         foreach ($bezgotovinskiRacuni as $racun) {
             if($racun->nacin_placanja === 'BUSINES') {
                 foreach($racun->stavke as $stavka){
@@ -228,9 +229,7 @@ class IzvjestajService
                     $ukupanPrometGotovinskihOthercashRacuna += $stavka->cijena_bez_pdv;
                 }
             }
-
         }
-
 
         foreach ($gotovinskiRacuni as $racun) {
             foreach($racun->stavke as $stavka){
@@ -238,13 +237,12 @@ class IzvjestajService
             }
         }
 
-
-
         foreach ($bezgotovinskiRacuni as $racun) {
             foreach($racun->stavke as $stavka){
                 $ukupanPrometBezgotovinskihRacuna += $stavka->cijena_bez_pdv;
             }
         }
+
 
         $offlineRacuni = $racuni->where('offline', true);
 
@@ -258,6 +256,7 @@ class IzvjestajService
                 $ukupanPorezOfflineRacuna += $stavka->pdv_iznos;
             }
         }
+
 
         $orderRacuni = $racuni->where('order', true);
 
@@ -273,15 +272,12 @@ class IzvjestajService
         }
 
 
-
         $ukupanDepozit = 0;
         $ukupanWithdraw = 0;
         foreach($this->poslovnaJedinica->depozitWithdraw as $depozitWithdraw){
             $ukupanDepozit += $depozitWithdraw->iznos_depozit;
             $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
         }
-
-
 
         return [
             'broj_promjena_poreza' => '',
@@ -357,8 +353,7 @@ class IzvjestajService
             'ukupno_withdraw' => $ukupanWithdraw,
             'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-            'racuni' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr')->toArray()
-
+            'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr')->toArray()
         ];
     }
 
@@ -402,7 +397,9 @@ class IzvjestajService
 
             'oslobodjeni_promet' => $kalkulacije['oslobodjeni_promet'],
 
-            'ukupan_promet' => $kalkulacije['ukupan_promet']
+            'ukupan_promet' => $kalkulacije['ukupan_promet'],
+
+            'racuni_kod' => $kalkulacije['racuni_kod']
         ];
     }
 
@@ -419,7 +416,9 @@ class IzvjestajService
 
             'oslobodjeni_promet' => $kalkulacije['oslobodjeni_promet'],
 
-            'ukupan_promet' => $kalkulacije['ukupan_promet']
+            'ukupan_promet' => $kalkulacije['ukupan_promet'],
+
+            'racuni_kod' => $kalkulacije['racuni_kod']
         ];
     }
 }
