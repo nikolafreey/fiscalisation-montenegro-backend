@@ -35,7 +35,7 @@ class RacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate(10);
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
@@ -52,7 +52,7 @@ class RacunController extends Controller
             $paginatedData = $query
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
-                    'partner.preduzece:id,kratki_naziv',
+                    'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
                 )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
             $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
@@ -218,7 +218,6 @@ class RacunController extends Controller
 
     public function update(StoreRacun $request, Racun $racun)
     {
-
         $ikof = $request->input('ikof');
         $jikr = $request->input('jikr');
 

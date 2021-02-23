@@ -143,7 +143,16 @@ class UlazniRacunController extends Controller
      */
     public function update(Request $request, UlazniRacun $ulazniracun)
     {
-        //
+        $ikof = $request->input('ikof');
+        $jikr = $request->input('jikr');
+
+        if (($ikof == null || $ikof == '') && ($jikr == null || $jikr == '')) {
+
+            $ulazniracun->update($request->validated());
+            return response()->json($ulazniracun, 200);
+        } else {
+            return response()->json($ulazniracun, 400);
+        }
     }
 
     /**

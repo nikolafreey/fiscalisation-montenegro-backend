@@ -104,7 +104,16 @@ class PredracunController extends Controller
      */
     public function update(Request $request, Racun $racun)
     {
-        //
+        $ikof = $request->input('ikof');
+        $jikr = $request->input('jikr');
+
+        if (($ikof == null || $ikof == '') && ($jikr == null || $jikr == '')) {
+
+            $racun->update($request->validated());
+            return response()->json($racun, 200);
+        } else {
+            return response()->json($racun, 400);
+        }
     }
 
     /**
