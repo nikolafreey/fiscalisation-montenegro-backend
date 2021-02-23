@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\Fiskalizuj;
 use Illuminate\Support\Facades\Route;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
@@ -14,8 +15,8 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    Fiskalizuj::dispatch();
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
