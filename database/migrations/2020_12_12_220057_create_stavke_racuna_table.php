@@ -18,6 +18,8 @@ class CreateStavkeRacunaTable extends Migration
             $table->string('naziv', 50);
             $table->text('opis', 50)->nullable();
             $table->decimal('jedinicna_cijena_bez_pdv', 15, 4);
+            $table->integer('bar_code');
+            $table->decimal('jedinicna_cijena_sa_pdv', 15, 4);
             $table->decimal('cijena_bez_pdv', 15, 4);
             $table->decimal('kolicina', 15, 3);
             $table->decimal('pdv_iznos', 15, 4);

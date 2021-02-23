@@ -53,25 +53,34 @@
                 <Items>
                     @foreach($racun->stavke as $stavka)
                         <I
-                            N="{{ $stavka->naziv }}" {{-- Name of item (goods or services) --}}
-                            C="{{ $stavka->naziv }}" {{-- TODO: Code of the item from the barcode or similar representation --}}
-                            U="{{ $stavka->naziv }}" {{-- TODO: Unit of measure --}}
-                            Q="{{ sprintf('%0.2f', $stavka->kolicina) }}" {{-- Quantity --}}
-                            UPB="{{ sprintf('%0.2f', $stavka->cijena_bez_pdv) }}" {{-- Unit price before VAT is applied --}}
-                            UPA="{{ $stavka->naziv }}" {{-- TODO: Unit price after VAT is applied --}}
-                            R="{{ $stavka->naziv }}" {{-- TODO: Percentage of the rebate --}}
-                            RR="{{ $stavka->naziv }}" {{-- TODO: Is rebate reducing tax base amount? (true/false) --}}
-                            PB="{{ $stavka->naziv }}" {{-- TODO: Total price of goods and services before the tax --}}
-                            VR="{{ $stavka->naziv }}" {{-- TODO: VAT Rate --}}
-                            VA="{{ $stavka->naziv }}" {{-- TODO: Amount of VAT for goods and services --}}
-                            PA="{{ $stavka->naziv }}" {{-- TODO: Price after applying VAT --}}
+                            N="{{ $stavka->naziv }}"
+                            C="{{ $stavka->bar_code }}"
+                            U="{{ $stavka->jedinica_mjere->naziv }}"
+                            Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
+                            UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
+                            UPA="{{ $stavka->jedinicna_cijena_sa_pdv }}"
+                            R="{{ $stavka->popust_procenat }}"
+                            RR="{{ (bool) $stavka->popust_iznos }}"
+                            PB="{{ $stavka->cijena_bez_pdv }}"
+                            VR="{{ $stavka->porez->stopa }}"
+                            VA="{{ $stavka->pdv_iznos }}"
+                            PA="{{ $stavka->cijena_sa_pdv }}"
                         />
                     @endforeach
                 </Items>
 
-{{--                TODO--}}
                 <SameTaxes>
-                    <SameTax></SameTax>
+                    @foreach($sameTaxes as $pdv_stopa => $sameTax)
+                        @if ($sameTax['ukupna_kolicina'] > 0)
+                            <SameTax
+                                {{-- TODO: Check if it should be integer ? --}}
+                                NumOfItems="{{ (int) $sameTax['ukupna_kolicina'] }}"
+                                PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
+                                VATRate="{{ $pdv_stopa }}"
+                                VATAmt="{{ sprintf("%.02f", $sameTax['ukupan_iznos_pdv']) }}"
+                            />
+                        @endif
+                    @endforeach
                 </SameTaxes>
             </Invoice>
         </RegisterInvoiceRequest>

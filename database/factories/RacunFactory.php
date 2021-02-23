@@ -35,7 +35,7 @@ class RacunFactory extends Factory
             'vrsta_racuna' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
             'korektivni_racun' => $this->faker->boolean(),
             'korektivni_racun_vrsta' => $this->faker->randomElement(['CORRECTIVE', 'DEBIT', 'CREDIT']),
-            'nacin_placanja' => $this->faker->randomElement(['BANKNOTE', 'CARD', 'ORDER', 'OTHER_CASH', 'BUSINESSCARD', 'SVOUCHER', 'COMPANY', 'ADVANCE', 'ACCOUNT', 'FACTORING', 'OTHER']),
+            'nacin_placanja' => $this->faker->randomElement(['BANKNOTE', 'CARD', 'ORDER', 'OTHER-CASH', 'BUSINESSCARD', 'SVOUCHER', 'COMPANY', 'ADVANCE', 'ACCOUNT', 'FACTORING', 'OTHER']),
             'broj_racuna' => $this->faker->randomNumber(),
             'datum_izdavanja' => $this->faker->date(),
             'datum_za_placanje' => $this->faker->date(),

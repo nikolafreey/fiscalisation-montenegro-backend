@@ -38,6 +38,8 @@ class StavkaRacunaFactory extends Factory
 
             $pdv_iznos = $jedinicna_cijena_bez_pdv * (1 - $popust_procenat / 100) * $kolicina * $porez->stopa;
 
+            $jedinicna_cijena_sa_pdv = $jedinicna_cijena_bez_pdv + $pdv_iznos;
+
             $cijena_bez_pdv = $jedinicna_cijena_bez_pdv *  $kolicina * (1 - $popust_procenat / 100);
 
             $cijena_sa_pdv = $cijena_bez_pdv * $porez_mnozilac;
@@ -46,6 +48,8 @@ class StavkaRacunaFactory extends Factory
             $popust_iznos = $popust_na_jedinicnu_cijenu * $kolicina;
 
             $pdv_iznos =($kolicina*($jedinicna_cijena_bez_pdv - $popust_iznos / $porez_mnozilac) * $porez_mnozilac) - ($kolicina * ($jedinicna_cijena_bez_pdv - $popust_iznos / $porez_mnozilac) * $porez_mnozilac) / $porez_mnozilac;
+
+            $jedinicna_cijena_sa_pdv = $jedinicna_cijena_bez_pdv + $pdv_iznos;
 
             $cijena_bez_pdv = $kolicina*($jedinicna_cijena_bez_pdv-($popust_iznos/$porez_mnozilac));
 
@@ -56,7 +60,9 @@ class StavkaRacunaFactory extends Factory
         return [
             'naziv' => $this->faker->words(3, true),
             'opis' => $this->faker->text(),
+            'bar_code' => $this->faker->numerify('#####-#####'),
             'jedinicna_cijena_bez_pdv' => $jedinicna_cijena_bez_pdv,
+            'jedinicna_cijena_sa_pdv' => $jedinicna_cijena_sa_pdv,
             'cijena_bez_pdv' => $cijena_bez_pdv,
             'kolicina' => $kolicina,
             'popust_procenat' => $popust_procenat,

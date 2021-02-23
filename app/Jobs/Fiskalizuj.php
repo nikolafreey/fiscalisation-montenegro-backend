@@ -49,10 +49,11 @@ class Fiskalizuj implements ShouldQueue
                 'IDType' => 'TIN',
                 'IDNum' => '12345678',
                 'Name' => 'Partner',
-            ]
+            ],
         ];
 
         $this->data['IICData'] = $this->generateIIC();
+        $this->data['sameTaxes'] = $this->calculateSameTaxes();
     }
 
     public function handle()
@@ -73,6 +74,10 @@ class Fiskalizuj implements ShouldQueue
             [
                 'http://www.w3.org/2000/09/xmldsig#enveloped-signature',
                 'http://www.w3.org/2001/10/xml-exc-c14n#',
+            ],
+            [
+                'force_uri' => true,
+                'uri' => 'Request',
             ]
         );
 
@@ -89,8 +94,10 @@ class Fiskalizuj implements ShouldQueue
         $objDSig->add509Cert($this->certificate['cert'], false);
 
         // Append the signature to the XML
-        $objDSig->appendSignature($document->getElementsByTagName('Body')->item(0));
+        $objDSig->appendSignature($document->getElementsByTagName('RegisterInvoiceRequest')->item(0));
 
+        // $document = str_replace(['-----BEGIN PRIVATE KEY-----', '-----END PRIVATE KEY-----', '-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----'], '', $document);
+        // dd($document);
 
         // TODO: Save for testing purposes
         $document->save('signed.xml');
@@ -104,6 +111,8 @@ class Fiskalizuj implements ShouldQueue
                 'body' => $document->saveXML()
             ]);
 
+        $this->parseXml($response->body());
+
         echo $response->body();
 
         // TODO: Parse response
@@ -113,6 +122,15 @@ class Fiskalizuj implements ShouldQueue
             'jikr' => '',
             'qr_url' => '',
         ];
+    }
+
+    private function parseXml($content)
+    {
+dd($content);
+
+        $parsed = simplexml_load_string($content);
+
+        dd($parsed === false);
     }
 
     private function generateIIC()
@@ -145,8 +163,41 @@ class Fiskalizuj implements ShouldQueue
 
         openssl_pkcs12_read($pfx, $key, "123456");
 
-        return $key;
+        return [
+            'pkey' => $key['pkey'],
+            'cert' => str_replace(['-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----'], '', $key['cert']),
+        ];
     }
 
+    public function calculateSameTaxes()
+    {
+        $sameTaxes = [
+            '0.00' => [
+                'ukupna_kolicina' => 0.0,
+                'ukupna_cijena_bez_pdv' => 0.0,
+                'ukupan_iznos_pdv' => 0.0,
+            ],
+            '0.07' => [
+                'ukupna_kolicina' => 0.0,
+                'ukupna_cijena_bez_pdv' => 0.0,
+                'ukupan_iznos_pdv' => 0.0,
+            ],
+            '0.21' => [
+                'ukupna_kolicina' => 0.0,
+                'ukupna_cijena_bez_pdv' => 0.0,
+                'ukupan_iznos_pdv' => 0.0,
+            ],
+        ];
+
+        foreach ($this->data['racun']->stavke as $stavka) {
+            $porez_stopa = $stavka->porez->stopa;
+
+            $sameTaxes[$porez_stopa]['ukupna_kolicina'] += $stavka->kolicina;
+            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv;
+            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos;
+        }
+
+        return $sameTaxes;
+    }
 
 }
