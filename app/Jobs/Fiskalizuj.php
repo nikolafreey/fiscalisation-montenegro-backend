@@ -11,8 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use RobRichards\XMLSecLibs\XMLSecurityDSig;
-use RobRichards\XMLSecLibs\XMLSecurityKey;
+use VertexIT\XMLSecLibs\XMLSecurityDSig;
+use VertexIT\XMLSecLibs\XMLSecurityKey;
 
 class Fiskalizuj implements ShouldQueue
 {
@@ -64,12 +64,12 @@ class Fiskalizuj implements ShouldQueue
         $document->loadXML($xml);
 
         // Create a new Security object
-        $objDSig = new XMLSecurityDSig(false);
+        $objDSig = new XMLSecurityDSig('');
         // Use the c14n exclusive canonicalization
         $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N);
         // Sign using SHA-256
         $objDSig->addReference(
-            $document,
+            $document->getElementsByTagName('RegisterInvoiceRequest')->item(0),
             XMLSecurityDSig::SHA256,
             [
                 'http://www.w3.org/2000/09/xmldsig#enveloped-signature',
@@ -77,7 +77,7 @@ class Fiskalizuj implements ShouldQueue
             ],
             [
                 'force_uri' => true,
-                'uri' => 'Request',
+                'reference_uri' => '#Request',
             ]
         );
 
@@ -96,11 +96,9 @@ class Fiskalizuj implements ShouldQueue
         // Append the signature to the XML
         $objDSig->appendSignature($document->getElementsByTagName('RegisterInvoiceRequest')->item(0));
 
-        // $document = str_replace(['-----BEGIN PRIVATE KEY-----', '-----END PRIVATE KEY-----', '-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----'], '', $document);
-        // dd($document);
+        $xml = $this->envelope($document->saveXML());
 
-        // TODO: Save for testing purposes
-        $document->save('signed.xml');
+        file_put_contents('signed.xml', $xml);
 
         $response = Http::withOptions([
                 'verify' => false,
@@ -108,14 +106,10 @@ class Fiskalizuj implements ShouldQueue
             ->withHeaders([
                 'Content-Type' => 'text/xml; charset=utf-8',
             ])->send('POST', 'https://efitest.tax.gov.me:443/fs-v1', [
-                'body' => $document->saveXML()
+                'body' => $xml,
             ]);
 
-        $this->parseXml($response->body());
-
-        echo $response->body();
-
-        // TODO: Parse response
+        $response = $this->parseXml($response);
 
         return [
             'ikof' => $this->data['IICData']['IIC'],
@@ -124,13 +118,22 @@ class Fiskalizuj implements ShouldQueue
         ];
     }
 
+    private function envelope($xml)
+    {
+        $xml = str_replace("<?xml version=\"1.0\"?>\n",'', $xml);
+
+        return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+    <soapenv:Header/>
+    <soapenv:Body>' . $xml . '</soapenv:Body>
+            </soapenv:Envelope>';
+    }
+
     private function parseXml($content)
     {
-dd($content);
+        dd($content->body());
+        // $xml = simplexml_load_string($content);
 
-        $parsed = simplexml_load_string($content);
-
-        dd($parsed === false);
+        // return json_decode(json_encode((array) $xml), true);
     }
 
     private function generateIIC()
@@ -165,7 +168,7 @@ dd($content);
 
         return [
             'pkey' => $key['pkey'],
-            'cert' => str_replace(['-----BEGIN CERTIFICATE-----', '-----END CERTIFICATE-----'], '', $key['cert']),
+            'cert' => str_replace(["-----BEGIN CERTIFICATE-----\n", "-----END CERTIFICATE-----\n"], '', $key['cert']),
         ];
     }
 

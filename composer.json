@@ -22,8 +22,9 @@
         "laravel/ui": "^3.1",
         "predis/predis": "^1.1",
         "ramsey/uuid": "^4.1",
-        "robrichards/xmlseclibs": "^3.1",
-        "spatie/laravel-activitylog": "^3.16"
+        "selective/xmldsig": "^2.0",
+        "spatie/laravel-activitylog": "^3.16",
+        "vertex-it/xmlseclibs": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
