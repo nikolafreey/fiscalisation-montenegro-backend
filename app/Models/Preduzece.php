@@ -90,4 +90,9 @@ class Preduzece extends Model
     {
         return $this->hasMany('App\Models\PoslovnaJedinica', 'poslovna_jedinica_id');
     }
+
+    public function racuni()
+    {
+        return $this->hasMany('App\Models\Racun', 'preduzece_id');
+    }
 }

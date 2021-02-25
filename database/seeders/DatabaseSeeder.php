@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
         OvlascenoLice::factory(10)->create();
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
-        Preduzece::factory(100)->create();
+        Preduzece::factory(20)->create();
         User::factory(10)->create();
         User::factory(1)->create(['email' => 'test@gmail.com']);
 
@@ -132,7 +132,7 @@ class DatabaseSeeder extends Seeder
         TipAtributa::factory(10)->create();
         AtributRobe::factory(10)->create();
         //CijenaRobe::factory(10)->create();
-        UlazniRacun::factory(2000)->create();
+        UlazniRacun::factory(10)->create();
 
         foreach(PoslovnaJedinica::all() as $poslovnaJedinica) {
             $randomBoolean = rand(0, 1);
@@ -144,14 +144,14 @@ class DatabaseSeeder extends Seeder
                 'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);
 
-            Racun::factory(10)->create(['poslovna_jedinica_id' => $poslovnaJedinica->id]);
+            Racun::factory(2)->create(['poslovna_jedinica_id' => $poslovnaJedinica->id]);
         }
 
         foreach(Racun::all() as $racun) {
             StavkaRacuna::factory(2)->create(['racun_id' => $racun->id]);
         }
 
-        StavkaUlazniRacun::factory(100)->create();
+        StavkaUlazniRacun::factory(10)->create();
 
 
         $djelatnostiIds = DB::table('djelatnosti')->pluck('id')->toArray();

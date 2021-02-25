@@ -269,4 +269,9 @@ class Racun extends Model
     {
         return $this->belongsTo('App\Models\Partner', 'partner_id');
     }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
 }

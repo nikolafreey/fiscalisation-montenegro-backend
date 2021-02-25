@@ -22,13 +22,13 @@ class Fiskalizuj implements ShouldQueue
 
     public $certificate;
 
-    public function __construct()
+    public function __construct($racun)
     {
         $this->certificate = $this->loadCertifacate();
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
-            'racun' => Racun::inRandomOrder()
+            'racun' => $racun
                 ->with([
                     'stavke'
                 ])
@@ -130,7 +130,20 @@ class Fiskalizuj implements ShouldQueue
 
     private function parseXml($content)
     {
-        dd($content->body());
+        $xml = simplexml_load_string($content->body());
+        $json = json_encode($xml);
+
+        $simple = $content->body();
+        $p = xml_parser_create();
+        xml_parse_into_struct($p, $simple, $vals, $index);
+
+        foreach ($vals as $val) {
+            if ($val['tag'] == 'FAULTSTRING') {
+                dd($val['value']);
+            }
+        }
+        // $xml = json_decode($json,TRUE);
+        dd($vals);
         // $xml = simplexml_load_string($content);
 
         // return json_decode(json_encode((array) $xml), true);
@@ -195,9 +208,11 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
 
+
             $sameTaxes[$porez_stopa]['ukupna_kolicina'] += $stavka->kolicina;
             $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv;
             $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos;
+
         }
 
         return $sameTaxes;

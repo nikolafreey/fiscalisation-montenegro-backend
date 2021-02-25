@@ -67,8 +67,9 @@
         </Items>
 
         <SameTaxes>
+
             @foreach($sameTaxes as $pdv_stopa => $sameTax)
-                @if ($sameTax['ukupna_kolicina'] > 0)
+                @if ($sameTax['ukupna_kolicina'] != 0)
                     <SameTax
                         {{-- TODO: Check if it should be integer ? --}}
                         NumOfItems="{{ (int) $sameTax['ukupna_kolicina'] }}"

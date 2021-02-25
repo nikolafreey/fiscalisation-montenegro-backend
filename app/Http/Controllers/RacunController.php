@@ -179,6 +179,8 @@ class RacunController extends Controller
 
             return $racun;
         });
+        Fiskalizuj::dispatch($racun);
+
         return response()->json($racun->load('porezi', 'stavke'), 201);
     }
 

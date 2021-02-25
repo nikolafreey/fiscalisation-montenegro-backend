@@ -42,6 +42,11 @@ class CreateRacuniTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
+            $table->foreignUuid('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->foreignId('poslovna_jedinica_id')
                 ->constrained('poslovna_jedinicas')
                 ->onDelete('cascade')
