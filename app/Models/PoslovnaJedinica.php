@@ -9,6 +9,8 @@ class PoslovnaJedinica extends Model
 {
     use HasFactory;
 
+    protected $table = 'poslovne_jedinice';
+
     public function preduzece()
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');

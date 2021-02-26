@@ -19,6 +19,7 @@ class CreateRacuniTable extends Migration
             $table->string('kod_poslovnog_prostora', 50)->nullable();
             $table->string('ikof', 50)->nullable();
             $table->string('jikr', 50)->nullable();
+            $table->string('qr_url', 200)->nullable();
             $table->string('tip_racuna', 50);
             $table->string('vrsta_racuna', 50);
             $table->boolean('korektivni_racun', 50)->default(false);
@@ -48,7 +49,7 @@ class CreateRacuniTable extends Migration
                 ->onUpdate('cascade');
 
             $table->foreignId('poslovna_jedinica_id')
-                ->constrained('poslovna_jedinicas')
+                ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

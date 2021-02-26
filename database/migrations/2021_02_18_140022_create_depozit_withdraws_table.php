@@ -20,7 +20,7 @@ class CreateDepozitWithdrawsTable extends Migration
             $table->timestamps();
 
             $table->foreignId('poslovna_jedinica_id')
-                ->constrained('poslovna_jedinicas')
+                ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

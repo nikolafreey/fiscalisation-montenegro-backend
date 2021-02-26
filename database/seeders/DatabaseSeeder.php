@@ -144,7 +144,10 @@ class DatabaseSeeder extends Seeder
                 'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);
 
-            Racun::factory(2)->create(['poslovna_jedinica_id' => $poslovnaJedinica->id]);
+            Racun::factory(2)->create([
+                'poslovna_jedinica_id' => $poslovnaJedinica->id,
+                'preduzece_id' => Preduzece::first()->id
+            ]);
         }
 
         foreach(Racun::all() as $racun) {

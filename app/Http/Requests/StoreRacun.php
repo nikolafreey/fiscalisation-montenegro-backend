@@ -30,6 +30,7 @@ class StoreRacun extends FormRequest
             'kod_poslovnog_prostora' => 'nullable',
             'ikof' => 'nullable',
             'jikr' => 'nullable',
+            'qr_url' => 'nullable',
             'tip_racuna' => 'nullable',
             'vrsta_racuna' => 'nullable',
             'korektivni_racun' => 'nullable',

@@ -22,6 +22,7 @@ class Racun extends Model
         'kod_poslovnog_prostora',
         'ikof',
         'jikr',
+        'qr_url',
         'tip_racuna',
         'vrsta_racuna',
         'korektivni_racun',

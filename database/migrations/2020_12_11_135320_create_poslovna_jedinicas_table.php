@@ -13,7 +13,7 @@ class CreatePoslovnaJedinicasTable extends Migration
      */
     public function up()
     {
-        Schema::create('poslovna_jedinicas', function (Blueprint $table) {
+        Schema::create('poslovne_jedinice', function (Blueprint $table) {
             $table->id();
             $table->string('kratki_naziv', 100);
             $table->string('adresa', 50)->nullable();
@@ -42,6 +42,6 @@ class CreatePoslovnaJedinicasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('poslovna_jedinicas');
+        Schema::dropIfExists('poslovne_jedinice');
     }
 }
