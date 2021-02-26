@@ -49,6 +49,7 @@ class CreateRacuniTable extends Migration
                 ->onUpdate('cascade');
 
             $table->foreignId('poslovna_jedinica_id')
+                ->nullable()
                 ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

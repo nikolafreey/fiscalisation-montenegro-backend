@@ -37,10 +37,10 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Preduzece', 'user_tip_korisnika', 'user_id', 'preduzece_id');
     }
 
-    public function poslovne_jedinice()
-    {
-        return $this->belongsToMany('App\Models\PoslovnaJedinica', 'poslovne_jedinice', 'user_id', 'poslovna_jedinica_id');
-    }
+    // public function poslovne_jedinice()
+    // {
+    //     return $this->belongsToMany('App\Models\PoslovnaJedinica', 'poslovne_jedinice', 'user_id', 'poslovna_jedinica_id');
+    // }
 
     public function tip_korisnika()
     {
