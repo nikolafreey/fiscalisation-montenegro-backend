@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRacun;
+use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\KategorijaRobe;
@@ -179,9 +180,10 @@ class RacunController extends Controller
 
             return $racun;
         });
+
         Fiskalizuj::dispatch($racun);
 
-        return response()->json($racun->load('porezi', 'stavke'), 201);
+        return response()->json($racun->fresh()->load('porezi', 'stavke'), 201);
     }
 
     /**

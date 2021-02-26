@@ -28,11 +28,7 @@ class Fiskalizuj implements ShouldQueue
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
-            'racun' => $racun
-                ->with([
-                    'stavke'
-                ])
-                ->first(),
+            'racun' => $racun->load('stavke'),
             // TODO: Check is this data dynamic?
             'taxpayer' => [
                 'TIN' => '12345678', // Taxpayer Identification Number (PIB)
@@ -109,13 +105,13 @@ class Fiskalizuj implements ShouldQueue
                 'body' => $xml,
             ]);
 
-        $response = $this->parseXml($response);
-
-        return [
+        $this->data['racun']->update([
             'ikof' => $this->data['IICData']['IIC'],
-            'jikr' => '',
-            'qr_url' => '',
-        ];
+            'jikr' => $this->parseJikrFromXmlResponse($response),
+            'qr_url' => $this->generateQRCode(),
+        ]);
+
+        return true;
     }
 
     private function envelope($xml)
@@ -128,7 +124,7 @@ class Fiskalizuj implements ShouldQueue
             </soapenv:Envelope>';
     }
 
-    private function parseXml($content)
+    private function parseJikrFromXmlResponse($content)
     {
         $xml = simplexml_load_string($content->body());
         $json = json_encode($xml);
@@ -138,15 +134,12 @@ class Fiskalizuj implements ShouldQueue
         xml_parse_into_struct($p, $simple, $vals, $index);
 
         foreach ($vals as $val) {
-            if ($val['tag'] == 'FAULTSTRING') {
-                dd($val['value']);
+            if ($val['tag'] === 'FIC') {
+                return $val['value'];
             }
         }
-        // $xml = json_decode($json,TRUE);
-        dd($vals);
-        // $xml = simplexml_load_string($content);
 
-        // return json_decode(json_encode((array) $xml), true);
+        abort(500, 'JIKR nije generisan');
     }
 
     private function generateIIC()
@@ -216,6 +209,20 @@ class Fiskalizuj implements ShouldQueue
         }
 
         return $sameTaxes;
+    }
+
+    private function generateQRCode()
+    {
+        return 'https://efitest.tax.gov.me/ic/#/verify?iic=' . implode('&', [
+                $this->data['IICData']['IIC'],
+                'tin=' . $this->data['taxpayer']['TIN'],
+                'crtd=' . $this->data['danasnji_datum'],
+                'ord=' . $this->data['racun']->broj_racuna,
+                'bu=' . $this->data['taxpayer']['BU'],
+                'cr=' . $this->data['taxpayer']['CR'],
+                'sw=' . $this->data['taxpayer']['SW'],
+                'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
+            ]);
     }
 
 }

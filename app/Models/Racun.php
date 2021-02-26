@@ -28,6 +28,7 @@ class Racun extends Model
         'korektivni_racun_vrsta',
         'broj_racuna',
         'datum_izdavanja',
+        'nacin_placanja',
         'datum_za_placanje',
         'kod_poslovnog_prostora_enu',
         'ukupna_cijena_bez_pdv',
@@ -190,9 +191,8 @@ class Racun extends Model
 
     private function kreirajStavkuIzRobe(Roba $roba, $stavka)
     {
-        $cijenaRobe = CijenaRobe::where('roba_id', $roba->id)
-            ->where('atribut_id', $stavka['atribut_id'])
-            ->first();
+        $cijenaRobe = CijenaRobe::
+            first();
 
         $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
 

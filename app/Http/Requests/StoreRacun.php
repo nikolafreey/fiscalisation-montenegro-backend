@@ -34,6 +34,7 @@ class StoreRacun extends FormRequest
             'vrsta_racuna' => 'nullable',
             'korektivni_racun' => 'nullable',
             'korektivni_racun_vrsta' => 'nullable',
+            'nacin_placanja' => 'nullable',
             'broj_racuna' => 'nullable',
             'datum_za_placanje' => 'nullable',
             'kod_poslovnog_prostora_enu' => 'nullable',
