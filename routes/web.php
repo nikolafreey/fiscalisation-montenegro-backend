@@ -1,6 +1,8 @@
 <?php
 
+use App\Jobs\Depozit;
 use App\Jobs\Fiskalizuj;
+use App\Models\DepozitWithdraw;
 use Illuminate\Support\Facades\Route;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
@@ -16,7 +18,7 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 */
 
 Route::get('/', function () {
-    Fiskalizuj::dispatch();
+
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

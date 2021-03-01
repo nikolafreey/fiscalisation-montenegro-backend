@@ -2,17 +2,18 @@
 
 namespace App\Jobs;
 
-use App\Models\Racun;
 use DOMDocument;
+use App\Services\SignXMLService;
+use App\Models\Racun;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Queue\SerializesModels;
+use VertexIT\XMLSecLibs\XMLSecurityKey;
+use Illuminate\Queue\InteractsWithQueue;
+use VertexIT\XMLSecLibs\XMLSecurityDSig;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Http;
-use VertexIT\XMLSecLibs\XMLSecurityDSig;
-use VertexIT\XMLSecLibs\XMLSecurityKey;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class Fiskalizuj implements ShouldQueue
 {
@@ -24,7 +25,7 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        $this->certificate = $this->loadCertifacate();
+        $this->certificate = $this->loadCertifacate('CoreitPecatSoft.pfx', '123456');
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
@@ -56,45 +57,13 @@ class Fiskalizuj implements ShouldQueue
     {
         $xml = view('xml.fiskalizuj', $this->data)->render();
 
-        $document = new DOMDocument();
-        $document->loadXML($xml);
-
-        // Create a new Security object
-        $objDSig = new XMLSecurityDSig('');
-        // Use the c14n exclusive canonicalization
-        $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N);
-        // Sign using SHA-256
-        $objDSig->addReference(
-            $document->getElementsByTagName('RegisterInvoiceRequest')->item(0),
-            XMLSecurityDSig::SHA256,
-            [
-                'http://www.w3.org/2000/09/xmldsig#enveloped-signature',
-                'http://www.w3.org/2001/10/xml-exc-c14n#',
-            ],
-            [
-                'force_uri' => true,
-                'reference_uri' => '#Request',
-            ]
+        $signXMLService = new SignXMLService(
+            $xml,
+            $this->certificate,
+            'RegisterInvoiceRequest'
         );
 
-        // Create a new (private) Security key
-        $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type'=>'private'));
-
-        // Load the private key
-        $objKey->loadKey($this->certificate['pkey']);
-
-        // Sign the XML file
-        $objDSig->sign($objKey);
-
-        // Add the associated public key to the signature
-        $objDSig->add509Cert($this->certificate['cert'], false);
-
-        // Append the signature to the XML
-        $objDSig->appendSignature($document->getElementsByTagName('RegisterInvoiceRequest')->item(0));
-
-        $xml = $this->envelope($document->saveXML());
-
-        file_put_contents('signed.xml', $xml);
+        $signedXML = $signXMLService->getSignedXML();
 
         $response = Http::withOptions([
                 'verify' => false,
@@ -102,7 +71,7 @@ class Fiskalizuj implements ShouldQueue
             ->withHeaders([
                 'Content-Type' => 'text/xml; charset=utf-8',
             ])->send('POST', 'https://efitest.tax.gov.me:443/fs-v1', [
-                'body' => $xml,
+                'body' => $signedXML,
             ]);
 
         $this->data['racun']->update([
@@ -112,16 +81,6 @@ class Fiskalizuj implements ShouldQueue
         ]);
 
         return true;
-    }
-
-    private function envelope($xml)
-    {
-        $xml = str_replace("<?xml version=\"1.0\"?>\n",'', $xml);
-
-        return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-    <soapenv:Header/>
-    <soapenv:Body>' . $xml . '</soapenv:Body>
-            </soapenv:Envelope>';
     }
 
     private function parseJikrFromXmlResponse($content)
@@ -140,6 +99,18 @@ class Fiskalizuj implements ShouldQueue
         }
 
         abort(500, 'JIKR nije generisan');
+    }
+
+    private function loadCertifacate($location, $password)
+    {
+        $pfx = file_get_contents($location);
+
+        openssl_pkcs12_read($pfx, $key, $password);
+
+        return [
+            'pkey' => $key['pkey'],
+            'cert' => str_replace(["-----BEGIN CERTIFICATE-----\n", "-----END CERTIFICATE-----\n"], '', $key['cert']),
+        ];
     }
 
     private function generateIIC()
@@ -163,18 +134,6 @@ class Fiskalizuj implements ShouldQueue
         return [
             'IIC' => hash('md5', $dataString),
             'signature' => bin2hex($signature),
-        ];
-    }
-
-    private function loadCertifacate()
-    {
-        $pfx = file_get_contents('CoreitPecatSoft.pfx');
-
-        openssl_pkcs12_read($pfx, $key, "123456");
-
-        return [
-            'pkey' => $key['pkey'],
-            'cert' => str_replace(["-----BEGIN CERTIFICATE-----\n", "-----END CERTIFICATE-----\n"], '', $key['cert']),
         ];
     }
 

@@ -54,9 +54,16 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         User::factory(1)->create(['email' => 'test@gmail.com']);
 
+        foreach (Preduzece::all() as $preduzece) {
+            PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
+        }
+
         foreach (User::all() as $user) {
+            $preduzece = Preduzece::all()->random();
+
             DB::table('user_tip_korisnika')->insert([
-                'preduzece_id' => Preduzece::all()->random()->id,
+                'preduzece_id' => $preduzece->id,
+                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice->random()->id,
                 'user_id' => $user->id,
                 'tip_korisnika_id' => TipKorisnika::all()->random()->id,
             ]);
@@ -111,10 +118,6 @@ class DatabaseSeeder extends Seeder
             Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
         }
 
-        foreach (Preduzece::all() as $preduzece) {
-
-            PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
-        }
 
         foreach (FizickoLice::all() as $fizicko_lice) {
 

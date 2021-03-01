@@ -168,8 +168,9 @@ class RacunController extends Controller
             $racun->datum_izdavanja = now();
 
             $racun->user_id = auth()->id();
-            $user = User::find(auth()->id())->load('preduzeca');
+            $user = User::find(auth()->id())->load('preduzeca', 'poslovne_jedinice');
             $racun->preduzece_id = $user['preduzeca'][0]->id;
+            $racun->poslovna_jedinica_id = $user['poslovne_jedinice'][0]->id;
 
             $racun->save();
 

@@ -29,6 +29,7 @@ use App\Http\Controllers\DepozitWithdrawController;
 use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\PoslovnaJedinicaController;
 use App\Http\Controllers\PodKategorijaRobeController;
+use App\Models\DepozitWithdraw;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -159,7 +160,7 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'preduzeca' => 'preduzece'
     ]);
 
-    Route::apiResource('/depozit-withdraws', DepozitWithdrawController::class)->parameters([
+    Route::apiResource('depozit-withdraws', DepozitWithdrawController::class)->parameters([
         'depozit-withdraws' => 'depozit-withdraw'
     ]);
 

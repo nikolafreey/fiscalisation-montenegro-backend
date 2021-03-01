@@ -1,31 +1,13 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-    <soapenv:Header/>
-    <soapenv:Body><RegisterInvoiceRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://efi.tax.gov.me/fs/schema" Id="Request" Version="1">
-    <Header SendDateTime="2021-02-24T15:59:14+01:00" UUID="e45740c2-8c3d-4650-86ec-f4f0324f4fd3"/>
+            <soapenv:Header/>
+            <soapenv:Body><RegisterCashDepositRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://efi.tax.gov.me/fs/schema" Id="Request" Version="1">
+    <Header SendDateTime="2021-03-01T18:30:57+01:00" UUID="245012b9-4577-45d3-ab42-af13afc6902a"/>
 
-    <Invoice TypeOfInv="NONCASH" IsSimplifiedInv="false" IssueDateTime="2021-02-24T15:59:14+01:00" InvNum="xx123xx123/44638403/2021/si747we972" InvOrdNum="44638403" TCRCode="si747we972" IsIssuerInVAT="true" TotPriceWoVAT="91.64" TotVATAmt="53.06" TotPrice="11.70" OperatorCode="oo123oo123" BusinUnitCode="xx123xx123" SoftCode="ss123ss123" IIC="df55a812e68af068e2d569fc89933a17" IICSignature="6131001be20b25416128f7b2eb742b9282596ec82469c301e14d6abecb8efcd6738a72c17df93236490e6dfea7329f19dfaa81c596b5394d699041cd8bd394b4bbb7099bd1db35811c3661dd9844209e62f33ed1b8ef64d1d5b1002561270d97c2d9061bacf22da047596ff59b8f27683c3ae491977dbabd6a55c1feb6ccafc7858d70d0428b80b09d6b4afb0d77ee53906cc0bb0d231c66aa612afe57b10649e6d0ac140aec04e01bf667dda6b408cebdcfb918c2b8cf4163dc5936aa4d51ac169bb8e8972040cd4f6ff0e654649f16ff54ff1dfff127bfbf18a318556ec5d9ac203c965095b04db2ac8bb2a61d80759942a97ff2710ce8df88daf33df3a9b6" IsReverseCharge="false">
-        <PayMethods>
-            <PayMethod Type="ACCOUNT" Amt="11.70"/>
-        </PayMethods>
-
-        <Seller IDType="TIN" IDNum="12345678" Name="Test d.o.o."/>
-
-        <Buyer IDType="TIN" IDNum="12345678" Name="Partner"/>
-
-        <Items>
-                            <I N="quia est consequuntur" C="54281" U="par" Q="24.42" UPB="26.61" UPA="26.6100" R="0.07" RR="1" PB="649.3613" VR="0.00" VA="0.0000" PA="649.3613"/>
-                            <I N="facere est ab" C="31105" U="inj" Q="45.90" UPB="31.33" UPA="101.2709" R="76.84" RR="1" PB="333.0517" VR="0.21" VA="69.9409" PA="402.9925"/>
-                    </Items>
-
-        <SameTaxes>
-                                                <SameTax NumOfItems="24" PriceBefVAT="649.36" VATRate="0.00" VATAmt="0.00"/>
-                                                                                            <SameTax NumOfItems="45" PriceBefVAT="333.05" VATRate="0.21" VATAmt="69.94"/>
-                                    </SameTaxes>
-    </Invoice>
+    <CashDeposit CashAmt="91.00" ChangeDateTime="2021-03-01T18:30:57+01:00" IssuerTIN="12345678" Operation="INITIAL" TCRCode="oo123oo123"/>
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
   <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <Reference URI="#Request"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>CL2pk3+QU0CcRc1Bbw4s5wy1Ykodrxr2TnQphj2xSN0=</DigestValue></Reference></SignedInfo><SignatureValue>jZxt+RrRim2LkBA8I1sMkWpL59gMOpg6E2BJIToHR7J3/fCw+SEBLZpLLgc6lVzr3k8XI5TcV3UAMuCujJogOudLddDFcC+PQS4PN/qlz/9RQavYmrgu8243TZ/i4rSUMTm+DUkvqCEgkePr7tl9Xe2+9Q9oqPQ3cvRHhFmv0hUdFM3NDhIGUhjcapdMkTFTIXqETzC3ctc/RFVcxZLuhr1w6YHN1JrE5QKsXX50xT02BTSpozYjLwvA02z8lCeFHltwrxnPW7q3DP1YnFN3xWdZYsEvFEXA40smmRa+4ZSKepd8PuARHUciyOmjud/hPR+jZjgYo/WLkL3MD5y9WQ==</SignatureValue>
+  <Reference URI="#Request"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>pCXfi3vIB2L5YRbZstBxfhEvAdMUsnxBYj5ZsBnHjKg=</DigestValue></Reference></SignedInfo><SignatureValue>chSI5YrS5yBp8HGifs2/rFlriI61q0aMxj+sXyRyGRt65Su4gu5zw4Bc6F6iqMFNVgUaCffPjXRI16EvPLMLe8t+CFR/jAz1bja27BK4Isb6a4ifqoy6Yk5/oEw/UuaOexLc8JGX91xcXP3fz3A8vfotsoMPQ8dCQDRvY2RUKJzdH+IcdczP8br0T/WaHyvJK85mf54yQak1BhufXG+F4Kk13r/eNQt0F44N7/3rn98Ko3Nn3FMmLKCCNSP6MrAdCUC12su4JfZQWmAkf80gKi7m68qOY82h5ZpKZefE7VQRej0fcH0JM9cixoUvMPFMFBIKNcAXReCnlxNPN/PP9w==</SignatureValue>
 <KeyInfo><X509Data><X509Certificate>MIIFoDCCBAigAwIBAgIIAosoHBIRrfUwDQYJKoZIhvcNAQELBQAwTzELMAkGA1UE
 BhMCTUUxDzANBgNVBAoMBkNvcmVpdDEXMBUGA1UEYQwOVkFUTUUtMDI3NzUwMTgx
 FjAUBgNVBAMMDUNvcmVpdCBTdWIgQ0EwHhcNMjAxMDA1MTIxNDQ3WhcNMjMxMDA1
@@ -57,6 +39,6 @@ uBRZ/G+lubDfjGVlcwznQLPpo3VFpExIvS8Ne/5M1KJjBcVhzc2lPC5ObIyu+Tex
 IYNvuj2FwRs9xLGAwkO0LMJNfjYPItWhBoHZej3SUScgBGtI6p9n8xFrMly93tAJ
 +GhBX4Wncz3TAUhkhH8jPvJUJVYil1QGToOCBIp/XD76BbF67Q/DStDSCeU68CqS
 oTQLMw==
-</X509Certificate></X509Data></KeyInfo></Signature></RegisterInvoiceRequest>
+</X509Certificate></X509Data></KeyInfo></Signature></RegisterCashDepositRequest>
 </soapenv:Body>
             </soapenv:Envelope>
