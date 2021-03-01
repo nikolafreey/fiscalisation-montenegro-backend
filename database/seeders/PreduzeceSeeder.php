@@ -14,6 +14,6 @@ class PreduzeceSeeder extends Seeder
      */
     public function run()
     {
-        Preduzece::factory(200)->create();
+        Preduzece::factory(10)->create();
     }
 }

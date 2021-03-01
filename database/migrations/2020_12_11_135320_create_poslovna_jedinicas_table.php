@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTipKorisnikaTable extends Migration
+class CreatePoslovnaJedinicasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateUserTipKorisnikaTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_tip_korisnika', function (Blueprint $table) {
+        Schema::create('poslovne_jedinice', function (Blueprint $table) {
             $table->id();
+            $table->string('kratki_naziv', 100);
+            $table->string('adresa', 50)->nullable();
+            $table->string('grad', 50)->nullable();
+            $table->string('drzava', 50)->nullable();
+
 
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            $table->foreignId('poslovna_jedinica_id')
-                ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
@@ -31,14 +31,7 @@ class CreateUserTipKorisnikaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreignId('tip_korisnika_id')
-                ->constrained('tipovi_korisnika')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
             $table->timestamps();
-            $table->softDeletes();
-            $table->unique(['preduzece_id', 'user_id']);
         });
     }
 
@@ -49,6 +42,6 @@ class CreateUserTipKorisnikaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_tip_korisnika');
+        Schema::dropIfExists('poslovne_jedinice');
     }
 }

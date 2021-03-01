@@ -86,6 +86,11 @@ class Preduzece extends Model
         return $this->belongsTo('App\Models\Roba', 'preduzece_id');
     }
 
+    public function poslovne_jedinice()
+    {
+        return $this->hasMany('App\Models\PoslovnaJedinica', 'preduzece_id');
+    }
+
     public function racuni()
     {
         return $this->hasMany('App\Models\Racun', 'preduzece_id');

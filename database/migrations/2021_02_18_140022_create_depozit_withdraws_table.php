@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTipKorisnikaTable extends Migration
+class CreateDepozitWithdrawsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,32 +13,28 @@ class CreateUserTipKorisnikaTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_tip_korisnika', function (Blueprint $table) {
+        Schema::create('depozit_withdraws', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignUuid('preduzece_id')
-                ->constrained('preduzeca')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->decimal('iznos_depozit', 15, 4)->nullable();
+            $table->decimal('iznos_withdraw', 15, 4)->nullable();
+            $table->timestamps();
 
             $table->foreignId('poslovna_jedinica_id')
                 ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->foreignUuid('preduzece_id')
+                ->nullable()
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+
             $table->foreignUuid('user_id')
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->foreignId('tip_korisnika_id')
-                ->constrained('tipovi_korisnika')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
-            $table->timestamps();
-            $table->softDeletes();
-            $table->unique(['preduzece_id', 'user_id']);
         });
     }
 
@@ -49,6 +45,6 @@ class CreateUserTipKorisnikaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_tip_korisnika');
+        Schema::dropIfExists('depozit_withdraws');
     }
 }

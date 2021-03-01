@@ -22,12 +22,14 @@ class Racun extends Model
         'kod_poslovnog_prostora',
         'ikof',
         'jikr',
+        'qr_url',
         'tip_racuna',
         'vrsta_racuna',
         'korektivni_racun',
         'korektivni_racun_vrsta',
         'broj_racuna',
         'datum_izdavanja',
+        'nacin_placanja',
         'datum_za_placanje',
         'kod_poslovnog_prostora_enu',
         'ukupna_cijena_bez_pdv',
@@ -190,9 +192,8 @@ class Racun extends Model
 
     private function kreirajStavkuIzRobe(Roba $roba, $stavka)
     {
-        $cijenaRobe = CijenaRobe::where('roba_id', $roba->id)
-            ->where('atribut_id', $stavka['atribut_id'])
-            ->first();
+        $cijenaRobe = CijenaRobe::
+            first();
 
         $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
 
@@ -250,9 +251,9 @@ class Racun extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function preduzece()
+    public function poslovnaJedinica()
     {
-        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsTo('App\Models\PoslovnaJedinica', 'poslovna_jedinica_id');
     }
 
     public function stavke()
@@ -268,5 +269,10 @@ class Racun extends Model
     public function partner()
     {
         return $this->belongsTo('App\Models\Partner', 'partner_id');
+    }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 }

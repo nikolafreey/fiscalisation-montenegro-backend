@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRacun;
+use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\KategorijaRobe;
@@ -182,8 +183,10 @@ class RacunController extends Controller
             $racun->datum_izdavanja = now();
 
             $racun->user_id = auth()->id();
-            $user = User::find(auth()->id())->load('preduzeca');
+            $user = User::find(auth()->id())->load('preduzeca', 'poslovne_jedinice');
             $racun->preduzece_id = $user['preduzeca'][0]->id;
+            $racun->poslovna_jedinica_id = $user['poslovne_jedinice'][0]->id;
+
             $racun->save();
 
             $racun->kreirajStavke($request);
@@ -194,7 +197,10 @@ class RacunController extends Controller
 
             return $racun;
         });
-        return response()->json($racun->load('porezi', 'stavke'), 201);
+
+        Fiskalizuj::dispatch($racun);
+
+        return response()->json($racun->fresh()->load('porezi', 'stavke'), 201);
     }
 
     /**

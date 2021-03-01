@@ -1,31 +1,35 @@
 <?php
 
-use App\Http\Controllers\AtributRobeController;
-use App\Http\Controllers\CijenaRobeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DjelatnostController;
-use App\Http\Controllers\ModulController;
-use App\Http\Controllers\OvlascenoLiceController;
-use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\RobaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GrupaController;
+use App\Http\Controllers\ModulController;
+use App\Http\Controllers\PorezController;
+use App\Http\Controllers\RacunController;
+use App\Http\Controllers\UslugaController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\IzvjestajController;
+use App\Http\Controllers\PredracunController;
 use App\Http\Controllers\PreduzeceController;
 use App\Http\Controllers\ZiroRacunController;
+use App\Http\Controllers\CijenaRobeController;
+use App\Http\Controllers\DjelatnostController;
 use App\Http\Controllers\KategorijaController;
-use App\Http\Controllers\TipKorisnikaController;
+use App\Http\Controllers\AtributRobeController;
 use App\Http\Controllers\FizickoLiceController;
-use App\Http\Controllers\UslugaController;
-use App\Http\Controllers\GrupaController;
-use App\Http\Controllers\JedinicaMjereController;
-use App\Http\Controllers\PorezController;
-use App\Http\Controllers\ProizvodjacRobeController;
-use App\Http\Controllers\RobaController;
-use App\Http\Controllers\KategorijaRobeController;
-use App\Http\Controllers\PodKategorijaRobeController;
-use App\Http\Controllers\RacunController;
-use App\Http\Controllers\PredracunController;
-use App\Http\Controllers\TipoviAtributaController;
 use App\Http\Controllers\UlazniRacunController;
+use App\Http\Controllers\TipKorisnikaController;
+use App\Http\Controllers\JedinicaMjereController;
+use App\Http\Controllers\OvlascenoLiceController;
+use App\Http\Controllers\KategorijaRobeController;
+use App\Http\Controllers\TipoviAtributaController;
+use App\Http\Controllers\DepozitWithdrawController;
+use App\Http\Controllers\ProizvodjacRobeController;
+use App\Http\Controllers\PoslovnaJedinicaController;
+use App\Http\Controllers\PodKategorijaRobeController;
+use App\Models\DepozitWithdraw;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
@@ -47,13 +51,27 @@ Auth::routes();
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
     ]);
     Route::apiResource('/usluge', UslugaController::class)->parameters([
         'usluge' => 'usluga'
     ]);
+
+    Route::prefix('izvjestaji')->group(function() {
+        Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
+
+        Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
+
+        Route::get('periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
+
+        Route::get('periodični-analiticki-pregled', [IzvjestajController::class, 'periodicniAnalitickiPregled']);
+
+        Route::get('periodicni-analiticki-pregled-offline', [IzvjestajController::class, 'periodicniAnalitickiPregledOffline']);
+
+        Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
+    });
 
     Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
@@ -134,9 +152,18 @@ Route::middleware('auth:sanctum')->group(function () {
         'kategorije' => 'kategorija'
     ]);
 
+    Route::apiResource('/poslovne-jedinice', PoslovnaJedinicaController::class)->parameters([
+        'poslovne-jedinice' => 'poslovna-jedinica'
+    ]);
+
     Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
         'preduzeca' => 'preduzece'
     ]);
+
+    Route::apiResource('depozit-withdraws', DepozitWithdrawController::class)->parameters([
+        'depozit-withdraws' => 'depozit-withdraw'
+    ]);
+
     Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
         'ziro-racuni' => 'ziro-racun'
     ]);
@@ -145,4 +172,4 @@ Route::middleware('auth:sanctum')->group(function () {
     ]);
 
     Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
-});
+// });

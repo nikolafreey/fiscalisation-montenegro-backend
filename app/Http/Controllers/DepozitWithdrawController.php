@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Jobs\Depozit;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Models\DepozitWithdraw;
+use App\Http\Requests\StoreDepozitWithdraw;
+
+class DepozitWithdrawController extends Controller
+{
+    public function index()
+    {
+        return DepozitWithdraw::paginate();
+    }
+
+    public function store(StoreDepozitWithdraw $request)
+    {
+        $depozitWithdraw = DepozitWithdraw::create($request->validated());
+
+        if($depozitWithdraw->iznos_depozit > 0) {
+            Depozit::dispatch($depozitWithdraw);
+        }
+
+        // if($depozitWithdraw->iznos_withdraw > 0) {
+        //     Withdraw::dispatch($depozitWithdraw);
+        // }
+
+        return response()->json($depozitWithdraw, 201);
+    }
+
+    public function show(DepozitWithdraw $depozitWithdraw)
+    {
+        return response()->json($depozitWithdraw, 200);
+    }
+
+    public function update(StoreDepozitWithdraw $request, DepozitWithdraw $depozitWithdraw)
+    {
+        $depozitWithdraw->update($request->validated());
+        return response()->json($depozitWithdraw, 200);
+    }
+
+    public function destroy(DepozitWithdraw $depozitWithdraw)
+    {
+        $depozitWithdraw->delete();
+        return response()->json($depozitWithdraw, 200);
+    }
+}

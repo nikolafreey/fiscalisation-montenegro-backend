@@ -2,37 +2,39 @@
 
 namespace Database\Seeders;
 
-use App\Models\AtributRobe;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Arr;
-
-use App\Models\CijenaRobe;
-use App\Models\Djelatnost;
-use App\Models\FizickoLice;
-use App\Models\Grupa;
-use App\Models\JedinicaMjere;
-use App\Models\Kategorija;
-use App\Models\KategorijaRobe;
-use App\Models\Modul;
-use App\Models\OvlascenoLice;
-use App\Models\Partner;
-use App\Models\PodKategorijaRobe;
-use App\Models\Porez;
-use App\Models\Preduzece;
-use App\Models\ProizvodjacRobe;
-use App\Models\Racun;
 use App\Models\Roba;
-use App\Models\RobaAtributRobe;
-use App\Models\StavkaRacuna;
-use App\Models\StavkaUlazniRacun;
-use App\Models\TipAtributa;
-use App\Models\TipKorisnika;
-use App\Models\UlazniRacun;
 use App\Models\User;
+use App\Models\Grupa;
+
+use App\Models\Modul;
+use App\Models\Porez;
+use App\Models\Racun;
 use App\Models\Usluga;
+use App\Models\Partner;
+use App\Models\Preduzece;
 use App\Models\ZiroRacun;
 use App\Scopes\UserScope;
+use App\Models\CijenaRobe;
+use App\Models\Djelatnost;
+use App\Models\Kategorija;
+use App\Models\AtributRobe;
+use App\Models\DepozitWithdraw;
+use App\Models\FizickoLice;
+use App\Models\TipAtributa;
+use App\Models\UlazniRacun;
+use Illuminate\Support\Arr;
+use App\Models\StavkaRacuna;
+use App\Models\TipKorisnika;
+use App\Models\JedinicaMjere;
+use App\Models\OvlascenoLice;
+use App\Models\KategorijaRobe;
+use App\Models\ProizvodjacRobe;
+use App\Models\RobaAtributRobe;
 use Illuminate\Database\Seeder;
+use App\Models\PoslovnaJedinica;
+use App\Models\PodKategorijaRobe;
+use App\Models\StavkaUlazniRacun;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -48,17 +50,30 @@ class DatabaseSeeder extends Seeder
         OvlascenoLice::factory(10)->create();
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
-        Preduzece::factory(200)->create();
+        Preduzece::factory(20)->create();
         User::factory(10)->create();
         User::factory(1)->create(['email' => 'test@gmail.com']);
 
+        foreach (Preduzece::all() as $preduzece) {
+            PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
+        }
+
         foreach (User::all() as $user) {
+            $preduzece = Preduzece::all()->random();
+
             DB::table('user_tip_korisnika')->insert([
-                'preduzece_id' => Preduzece::all()->random()->id,
+                'preduzece_id' => $preduzece->id,
+                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice->random()->id,
                 'user_id' => $user->id,
                 'tip_korisnika_id' => TipKorisnika::all()->random()->id,
             ]);
         }
+
+        DB::table('porezi')->insert([
+            'id' => 0,
+            'naziv' => 0,
+            'stopa' => 0
+        ]);
 
         $naziviPoreza = array('0%', '7%', '21%');
         $stopePoreza = array(0, 0.07, 0.21);
@@ -69,6 +84,7 @@ class DatabaseSeeder extends Seeder
                 'stopa' => $stopePoreza[$i]
             ]);
         }
+
         FizickoLice::factory(1)->create([
 
             'ime' => 'Kupac',
@@ -101,6 +117,8 @@ class DatabaseSeeder extends Seeder
 
             Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
         }
+
+
         foreach (FizickoLice::all() as $fizicko_lice) {
 
             Partner::factory(1)->create(['fizicko_lice_id' => $fizicko_lice->id]);
@@ -117,11 +135,29 @@ class DatabaseSeeder extends Seeder
         TipAtributa::factory(10)->create();
         AtributRobe::factory(10)->create();
         //CijenaRobe::factory(10)->create();
-        Racun::factory(20)->create();
-        UlazniRacun::factory(20)->create();
+        UlazniRacun::factory(10)->create();
 
-        StavkaRacuna::factory(100)->create();
-        StavkaUlazniRacun::factory(100)->create();
+        foreach(PoslovnaJedinica::all() as $poslovnaJedinica) {
+            $randomBoolean = rand(0, 1);
+
+            DepozitWithdraw::factory(1)->create([
+                'iznos_depozit' => $randomBoolean ? rand(50,100) : null,
+                'iznos_withdraw' => $randomBoolean ? null : rand(50,100),
+                'poslovna_jedinica_id' => $poslovnaJedinica->id,
+                'preduzece_id' => $poslovnaJedinica->preduzece->id
+            ]);
+
+            Racun::factory(2)->create([
+                'poslovna_jedinica_id' => $poslovnaJedinica->id,
+                'preduzece_id' => Preduzece::first()->id
+            ]);
+        }
+
+        foreach(Racun::all() as $racun) {
+            StavkaRacuna::factory(2)->create(['racun_id' => $racun->id]);
+        }
+
+        StavkaUlazniRacun::factory(10)->create();
 
 
         $djelatnostiIds = DB::table('djelatnosti')->pluck('id')->toArray();

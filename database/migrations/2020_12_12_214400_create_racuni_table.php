@@ -19,10 +19,12 @@ class CreateRacuniTable extends Migration
             $table->string('kod_poslovnog_prostora', 50)->nullable();
             $table->string('ikof', 50)->nullable();
             $table->string('jikr', 50)->nullable();
+            $table->string('qr_url', 200)->nullable();
             $table->string('tip_racuna', 50);
             $table->string('vrsta_racuna', 50);
             $table->boolean('korektivni_racun', 50)->default(false);
             $table->string('korektivni_racun_vrsta', 50)->nullable();
+            $table->string('nacin_placanja', 50)->nullable();
             $table->integer('broj_racuna');
             $table->dateTime('datum_izdavanja');
             $table->dateTime('datum_za_placanje')->nullable();
@@ -33,6 +35,8 @@ class CreateRacuniTable extends Migration
             $table->decimal('popust_procenat', 15, 2)->nullable();
             $table->decimal('popust_iznos', 15, 4)->nullable();
             $table->boolean('popust_na_cijenu_bez_pdv')->nullable();
+            $table->boolean('offline')->nullable();
+            $table->boolean('order')->nullable();
             $table->decimal('popust_ukupno', 15, 4)->nullable();
             $table->text('opis')->nullable();
             $table->string('status', 20)->default('KREIRAN');
@@ -41,6 +45,12 @@ class CreateRacuniTable extends Migration
 
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreignId('poslovna_jedinica_id')
+                ->nullable()
+                ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
