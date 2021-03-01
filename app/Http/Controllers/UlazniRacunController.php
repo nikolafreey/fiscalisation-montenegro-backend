@@ -96,7 +96,7 @@ class UlazniRacunController extends Controller
         }
 
         foreach ($queryPoredjenje as $racun) {
-            $poredjenjeSuma += $racun->ukupan_iznos_pdv;
+            $poredjenjeSuma += $racun->ukupna_cijena_sa_pdv;
         }
 
         $data = collect(["ukupan_iznos_pdv" => $ukupnaSuma, "ukupan_iznos_poslednji_mjesec" => $poslednjiMjesecSuma, "poredjenje_pdv" => $poredjenjeSuma]);

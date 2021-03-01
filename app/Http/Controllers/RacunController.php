@@ -33,7 +33,7 @@ class RacunController extends Controller
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
-                    'partner.preduzece_id:id,kratki_naziv',
+                    'partner.preduzece:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
                 )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
 
@@ -52,7 +52,7 @@ class RacunController extends Controller
             $paginatedData = $query
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
-                    'partner.preduzece_id:id,kratki_naziv',
+                    'partner.preduzece:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
                 )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
             $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
@@ -121,7 +121,7 @@ class RacunController extends Controller
         }
 
         foreach ($queryPoredjenje as $racun) {
-            $poredjenjeSuma += $racun->ukupan_iznos_pdv;
+            $poredjenjeSuma += $racun->ukupna_cijena_sa_pdv;
         }
 
         $data = collect(["ukupan_iznos_pdv" => $ukupnaSuma, "ukupan_iznos_poslednji_mjesec" => $poslednjiMjesecSuma, "poredjenje_pdv" => $poredjenjeSuma]);
