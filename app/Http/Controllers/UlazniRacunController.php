@@ -76,7 +76,7 @@ class UlazniRacunController extends Controller
 
         $queryUlazniRacuniDanas = UlazniRacun::query();
 
-        $queryUlazniRacuniDanas = DB::select(DB::raw('SELECT * FROM `ulazni_racuni` WHERE datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+        $queryUlazniRacuniDanas = DB::select(DB::raw('SELECT * FROM ulazni_racuni WHERE vrsta_racuna = "' . UlazniRacun::GOTOVINSKI . '" AND tip_racuna = "' . UlazniRacun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
 
         $ukupnoUlazniRacuniDanas = 0;
 

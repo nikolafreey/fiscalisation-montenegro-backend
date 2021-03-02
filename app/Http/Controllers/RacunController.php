@@ -102,7 +102,7 @@ class RacunController extends Controller
 
         $queryRacuniDanas = Racun::query();
 
-        $queryRacuniDanas = DB::select(DB::raw('SELECT * FROM `racuni` WHERE datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+        $queryRacuniDanas = DB::select(DB::raw('SELECT * FROM racuni WHERE vrsta_racuna = "' . Racun::GOTOVINSKI . '" AND tip_racuna = "' . Racun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
 
         $ukupnoRacuniDanas = 0;
 
