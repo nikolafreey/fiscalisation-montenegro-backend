@@ -65,6 +65,28 @@ class UlazniRacunController extends Controller
         return $data;
     }
 
+    public function ulazniRacuniDanas(Request $request)
+    {
+        $dan = Carbon::now()->day;
+        $mjesec = Carbon::now()->month;
+        $godina = Carbon::now()->year;
+
+        $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
+        $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
+
+        $queryUlazniRacuniDanas = UlazniRacun::query();
+
+        $queryUlazniRacuniDanas = DB::select(DB::raw('SELECT * FROM `ulazni_racuni` WHERE datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+
+        $ukupnoUlazniRacuniDanas = 0;
+
+        foreach ($queryUlazniRacuniDanas as $racunDanas) {
+            $ukupnoUlazniRacuniDanas += $racunDanas->ukupna_cijena_sa_pdv;
+        }
+
+        return collect(['ukupno_ulazni_racuni_danas' => $ukupnoUlazniRacuniDanas]);
+    }
+
     public function ulazniRacuniPdv(Request $request)
     {
         $query = UlazniRacun::query();

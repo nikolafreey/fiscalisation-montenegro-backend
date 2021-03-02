@@ -51,7 +51,7 @@ Auth::routes();
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
     ]);
@@ -59,7 +59,7 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'usluge' => 'usluga'
     ]);
 
-    Route::prefix('izvjestaji')->group(function() {
+    Route::prefix('izvjestaji')->group(function () {
         Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
 
         Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
@@ -83,7 +83,11 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
     Route::get('racuni-pdv', [RacunController::class, 'racuniPdv']);
 
+    Route::get('racuni-danas', [RacunController::class, 'izlazniRacuniDanas']);
+
     Route::get('ulazni-racuni-pdv', [UlazniRacunController::class, 'ulazniRacuniPdv']);
+
+    Route::get('ulazni-racuni-danas', [UlazniRacunController::class, 'ulazniRacuniDanas']);
 
     Route::get('/me', [UserController::class, 'me']);
 
@@ -164,6 +168,8 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'depozit-withdraws' => 'depozit-withdraw'
     ]);
 
+    Route::get('/get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
+
     Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
         'ziro-racuni' => 'ziro-racun'
     ]);
@@ -172,4 +178,4 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
     ]);
 
     Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
-// });
+});
