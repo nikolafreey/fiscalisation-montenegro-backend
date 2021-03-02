@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class PoslovnaJedinica extends Model
     public function depozitWithdraw()
     {
         return $this->hasMany('App\Models\DepozitWithdraw', 'poslovna_jedinica_id');
+    }
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new UserScope);
     }
 }
