@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
 
             DB::table('user_tip_korisnika')->insert([
                 'preduzece_id' => $preduzece->id,
-                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice->random()->id,
+                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice()->withoutGlobalScopes()->inRandomOrder()->first()->id,
                 'user_id' => $user->id,
                 'tip_korisnika_id' => TipKorisnika::all()->random()->id,
             ]);
@@ -137,7 +137,7 @@ class DatabaseSeeder extends Seeder
         //CijenaRobe::factory(10)->create();
         UlazniRacun::factory(10)->create();
 
-        foreach(PoslovnaJedinica::all() as $poslovnaJedinica) {
+        foreach(PoslovnaJedinica::withoutGlobalScopes()->get() as $poslovnaJedinica) {
             $randomBoolean = rand(0, 1);
 
             DepozitWithdraw::factory(1)->create([

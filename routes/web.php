@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Web\PreduzeceController;
 use App\Jobs\Depozit;
 use App\Jobs\Fiskalizuj;
 use App\Models\DepozitWithdraw;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
@@ -17,8 +19,11 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 |
 */
 
-Route::get('/', function () {
+Auth::routes();
 
-});
+Route::get('/preduzeca', [PreduzeceController::class, 'index']);
+Route::get('/preduzeca/{preduzece}/edit', [PreduzeceController::class, 'edit'])->name('preduzece.edit');
+Route::patch('/preduzeca/edit/{preduzece}/update', [PreduzeceController::class, 'update'])->name('preduzece.update');
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
