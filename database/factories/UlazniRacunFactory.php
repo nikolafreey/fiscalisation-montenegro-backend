@@ -31,7 +31,7 @@ class UlazniRacunFactory extends Factory
             'ikof' => $this->faker->asciify('***********'),
             'jikr' => $this->faker->asciify('***********'),
             'tip_racuna' => $this->faker->randomElement(['RACUN', 'PREDRACUN']),
-            'vrsta_racuna' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
+            'vrsta_racuna' => $this->faker->randomElement(['gotovinski', 'bezgotovinski']),
             'korektivni_racun' => $this->faker->boolean(),
             'korektivni_racun_vrsta' => $this->faker->randomElement(['CORRECTIVE', 'DEBIT', 'CREDIT']),
             'broj_racuna' => $this->faker->randomNumber(),

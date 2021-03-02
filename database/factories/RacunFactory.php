@@ -32,7 +32,7 @@ class RacunFactory extends Factory
             'ikof' => $this->faker->lexify('???????????'),
             'jikr' => $this->faker->lexify('???????????'),
             'tip_racuna' => $this->faker->randomElement([Racun::RACUN, Racun::PREDRACUN]),
-            'vrsta_racuna' => $this->faker->randomElement(['GOTOVINSKI', 'BEZGOTOVINSKI']),
+            'vrsta_racuna' => $this->faker->randomElement(['gotovinski', 'bezgotovinski']),
             'korektivni_racun' => $this->faker->boolean(),
             'korektivni_racun_vrsta' => $this->faker->randomElement(['CORRECTIVE', 'DEBIT', 'CREDIT']),
             'nacin_placanja' => $this->faker->randomElement(['BANKNOTE', 'CARD', 'ORDER', 'OTHER-CASH', 'BUSINESSCARD', 'SVOUCHER', 'COMPANY', 'ADVANCE', 'ACCOUNT', 'FACTORING', 'OTHER']),
