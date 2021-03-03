@@ -10,10 +10,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Traits\GenerateUuid;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes, GenerateUuid; //LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes, GenerateUuid, HasApiTokens; //LogsActivity;
 
     /**
      * The attributes that are mass assignable.

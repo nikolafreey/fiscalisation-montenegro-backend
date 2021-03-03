@@ -29,6 +29,7 @@ use App\Http\Controllers\DepozitWithdrawController;
 use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\PoslovnaJedinicaController;
 use App\Http\Controllers\PodKategorijaRobeController;
+use App\Http\Controllers\MobileAuthController;
 use App\Models\DepozitWithdraw;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
@@ -48,6 +49,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Auth::routes();
+
+//Autentifikacija za mobilnu app
+Route::post("token", [MobileAuthController::class, 'token']);
+Route::post('register', [MobileAuthController::class, 'register']);
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
@@ -72,6 +77,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
     });
+
+    //Mobilna Aplikacija AUTH
+    Route::get('profile', [MobileAuthController::class, 'profile']);
+    Route::get('refresh', [MobileAuthController::class, 'refresh']);
 
     Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
