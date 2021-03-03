@@ -21,9 +21,12 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
 Auth::routes();
 
-Route::get('/preduzeca', [PreduzeceController::class, 'index']);
-Route::get('/preduzeca/{preduzece}/edit', [PreduzeceController::class, 'edit'])->name('preduzece.edit');
-Route::patch('/preduzeca/edit/{preduzece}/update', [PreduzeceController::class, 'update'])->name('preduzece.update');
+// Route::middleware('auth')->group(function () {
+//     Route::resource('preduzeca', PreduzeceController::class);
+    Route::get('preduzeca', [PreduzeceController::class, 'index']);
+    Route::get('preduzeca/{preduzece}/edit', [PreduzeceController::class, 'edit'])->name('preduzece.edit');
+    Route::patch('preduzeca/{preduzece}/update', [PreduzeceController::class, 'update'])->name('preduzece.update');
+// });
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

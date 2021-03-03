@@ -6,8 +6,10 @@ use DOMDocument;
 use App\Services\SignXMLService;
 use App\Models\Racun;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use VertexIT\XMLSecLibs\XMLSecurityKey;
 use Illuminate\Queue\InteractsWithQueue;
 use VertexIT\XMLSecLibs\XMLSecurityDSig;
@@ -25,7 +27,9 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        $this->certificate = $this->loadCertifacate('CoreitPecatSoft.pfx', '123456');
+        $decryptedPassword = decrypt($racun->preduzece->sifra);
+
+        $this->certificate = $this->loadCertifacate(storage_path('app/' . $racun->preduzece->pecat), $decryptedPassword);
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),

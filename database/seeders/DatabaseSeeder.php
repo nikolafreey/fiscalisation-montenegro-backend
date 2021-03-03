@@ -35,6 +35,7 @@ use App\Models\PoslovnaJedinica;
 use App\Models\PodKategorijaRobe;
 use App\Models\StavkaUlazniRacun;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -52,7 +53,11 @@ class DatabaseSeeder extends Seeder
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
         User::factory(10)->create();
-        User::factory(1)->create(['email' => 'test@gmail.com']);
+        User::create([
+            'email' => 'superadmin@test.com',
+            'password' => Hash::make('123456'),
+            'tip_id' => 1,
+        ]);
 
         foreach (Preduzece::all() as $preduzece) {
             PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
@@ -71,7 +76,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('porezi')->insert([
             'id' => 0,
-            'naziv' => 0,
+            'naziv' => 'Oslobodjen',
             'stopa' => 0
         ]);
 

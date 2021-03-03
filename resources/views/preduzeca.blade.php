@@ -15,6 +15,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Naziv preduzeca</th>
+                <th scope="col">Adresa preduzeca</th>
                 <th scope="col">Akcija</th>
             </tr>
             </thead>
@@ -23,13 +24,14 @@
                 <tr>
                     <th scope="row">{{ $preduzece->id  }}</th>
                     <td>{{ $preduzece->kratki_naziv }}</td>
-                    <td><a href="{{ route('preduzece.edit', $preduzece) }}"><button type="button" class="btn btn-primary">Add signature</button></a></td>
+                    <td>{{ $preduzece->adresa }}</td>
+{{--                    @if (! Auth::user()->can('update', $preduzece))--}}
+                        <td><a href="{{ route('preduzece.edit', $preduzece) }}"><button type="button" class="btn btn-primary">Add signature</button></a></td>
+{{--                    @endif--}}
                 </tr>
             @endforeach
             </tbody>
         </table>
     </div>
-
-
 </body>
 </html>

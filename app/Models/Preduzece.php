@@ -7,6 +7,7 @@ use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use ScoutElastic\Searchable;
 
 class Preduzece extends Model
@@ -94,5 +95,15 @@ class Preduzece extends Model
     public function racuni()
     {
         return $this->hasMany('App\Models\Racun', 'preduzece_id');
+    }
+
+    public function setPecatAttribute($value)
+    {
+        return $this->attributes['pecat'] = Storage::disk('local')->putFile('certs', $value);
+    }
+
+    public function setSertifikatAttribute($value)
+    {
+        return $this->attributes['sertifikat'] = Storage::disk('local')->putFile('certs', $value);
     }
 }

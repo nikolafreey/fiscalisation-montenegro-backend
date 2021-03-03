@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use DOMDocument;
+use Illuminate\Support\Facades\App;
 use VertexIT\XMLSecLibs\XMLSecurityKey;
 use VertexIT\XMLSecLibs\XMLSecurityDSig;
 
@@ -62,7 +63,9 @@ class SignXMLService
 
         $signedXML = $this->envelope($document->saveXML());
 
-        file_put_contents('signed.xml', $signedXML);
+        if (App::environment('local')) {
+            file_put_contents('signed.xml', $signedXML);
+        }
 
         return $signedXML;
     }

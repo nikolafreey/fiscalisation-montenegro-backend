@@ -19,7 +19,7 @@ class PreduzecePolicy
      */
     public function before(User $user, $ability)
     {
-        if ($user->tip_korisnika->first()->naziv === 'superadmin') {
+        if ($user->tip_korisnika->first()->naziv === 'SuperAdmin') {
             return true;
         }
     }

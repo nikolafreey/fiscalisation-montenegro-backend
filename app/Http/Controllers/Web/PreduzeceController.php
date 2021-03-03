@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Preduzece;
+use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
 class PreduzeceController extends Controller
@@ -20,7 +23,7 @@ class PreduzeceController extends Controller
 
     public function edit(Preduzece $preduzece)
     {
-        if (! auth()->user()->can('update', $preduzece)) {
+        if (! Auth::user()->can('update', $preduzece)) {
             abort(403);
         }
 
@@ -31,10 +34,16 @@ class PreduzeceController extends Controller
 
     public function update(Preduzece $preduzece, Request $request)
     {
+        if (! Auth::user()->can('update', $preduzece)) {
+            abort(403);
+        }
+
+        $encryptedPassword = encrypt($request->sifra);
+
         $preduzece->update([
             'pecat' => $request->pecat,
             'sertifikat' => $request->sertifikat,
-            'sifra' => Hash::make($request->sifra)
+            'sifra' => $encryptedPassword
         ]);
 
         return back();
