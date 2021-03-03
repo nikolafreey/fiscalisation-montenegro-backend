@@ -64,12 +64,12 @@ class RobaController extends Controller
         $roba->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
         $roba->preduzece_id = $user['preduzeca'][0]->id;
+        $roba->save();
 
-        $roba->storeKategorije($request->kategorije);
         $roba->storeCijene($request->all(), $roba->preduzece_id);
         $roba->storeAtributi($request->atributi);
+        $roba->storeKategorije($request->kategorije);
 
-        $roba->save();
 
         return response()->json($roba, 201);
     }
