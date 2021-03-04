@@ -26,9 +26,4 @@ class PoslovnaJedinica extends Model
     {
         return $this->hasMany('App\Models\DepozitWithdraw', 'poslovna_jedinica_id');
     }
-
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
 }
