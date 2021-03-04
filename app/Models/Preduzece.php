@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
 
 class Preduzece extends Model
@@ -97,13 +98,15 @@ class Preduzece extends Model
         return $this->hasMany('App\Models\Racun', 'preduzece_id');
     }
 
-    public function setPecatAttribute($value)
+    public function setPecatAttribute($file)
     {
-        return $this->attributes['pecat'] = Storage::disk('local')->putFile('certs', $value);
+        return $this->attributes['pecat'] = Storage::disk('local')
+            ->putFileAs('certs', $file, Str::random(40) . '.pfx');
     }
 
-    public function setSertifikatAttribute($value)
+    public function setSertifikatAttribute($file)
     {
-        return $this->attributes['sertifikat'] = Storage::disk('local')->putFile('certs', $value);
+        return $this->attributes['sertifikat'] = Storage::disk('local')
+            ->putFileAs('certs', $file, Str::random(40) . '.pfx');
     }
 }

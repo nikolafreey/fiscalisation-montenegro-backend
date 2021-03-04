@@ -23,7 +23,7 @@
 <body>
     <div class="container">
         <h1>{{ $preduzece->kratki_naziv }}</h1>
-        <form method="POST" action="{{ route('preduzece.update', $preduzece) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('preduzeca.update', $preduzece) }}" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
             <div class="form-group">

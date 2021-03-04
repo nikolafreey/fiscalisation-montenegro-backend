@@ -25,9 +25,7 @@
                     <th scope="row">{{ $preduzece->id  }}</th>
                     <td>{{ $preduzece->kratki_naziv }}</td>
                     <td>{{ $preduzece->adresa }}</td>
-{{--                    @if (! Auth::user()->can('update', $preduzece))--}}
-                        <td><a href="{{ route('preduzece.edit', $preduzece) }}"><button type="button" class="btn btn-primary">Add signature</button></a></td>
-{{--                    @endif--}}
+                    <td><a href="{{ route('preduzeca.edit', $preduzece) }}"><button type="button" class="btn btn-primary">Add signature</button></a></td>
                 </tr>
             @endforeach
             </tbody>

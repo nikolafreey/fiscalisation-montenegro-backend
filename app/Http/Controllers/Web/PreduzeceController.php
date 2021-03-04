@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatePreduzece;
 use App\Models\Preduzece;
 use App\Models\Racun;
 use App\Models\User;
@@ -24,7 +25,7 @@ class PreduzeceController extends Controller
     public function edit(Preduzece $preduzece)
     {
         if (! Auth::user()->can('update', $preduzece)) {
-            abort(403);
+            abort(403, 'Nemate pristup');
         }
 
         return view('update', [
@@ -32,20 +33,14 @@ class PreduzeceController extends Controller
         ]);
     }
 
-    public function update(Preduzece $preduzece, Request $request)
+    public function update(Preduzece $preduzece, UpdatePreduzece $request)
     {
         if (! Auth::user()->can('update', $preduzece)) {
-            abort(403);
+            abort(403, 'Nemate pristup');
         }
 
-        $encryptedPassword = encrypt($request->sifra);
+        $preduzece->update($request->validated());
 
-        $preduzece->update([
-            'pecat' => $request->pecat,
-            'sertifikat' => $request->sertifikat,
-            'sifra' => $encryptedPassword
-        ]);
-
-        return back();
+        return redirect(route('preduzeca.index'));
     }
 }

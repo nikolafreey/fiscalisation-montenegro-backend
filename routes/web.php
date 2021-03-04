@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\AtributRobeController;
 use App\Http\Controllers\Web\PreduzeceController;
 use App\Jobs\Depozit;
 use App\Jobs\Fiskalizuj;
@@ -22,11 +24,9 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 Auth::routes();
 
 // Route::middleware('auth')->group(function () {
-//     Route::resource('preduzeca', PreduzeceController::class);
-    Route::get('preduzeca', [PreduzeceController::class, 'index']);
-    Route::get('preduzeca/{preduzece}/edit', [PreduzeceController::class, 'edit'])->name('preduzece.edit');
-    Route::patch('preduzeca/{preduzece}/update', [PreduzeceController::class, 'update'])->name('preduzece.update');
+    Route::resource('preduzeca', PreduzeceController::class)->parameters([
+        'preduzeca' => 'preduzece'
+    ])->except('store', 'create', 'show', 'destroy');
 // });
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
