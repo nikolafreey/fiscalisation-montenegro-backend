@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RobaController;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,9 @@ use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// TODO: Remove later
+Auth::loginUsingId('6eab1bd7-6ebd-4556-8883-3c63022da768');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

@@ -182,10 +182,12 @@ class RacunController extends Controller
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
 
-            $racun->user_id = auth()->id();
-            $user = User::find(auth()->id())->load('preduzeca', 'poslovne_jedinice');
-            $racun->preduzece_id = $user['preduzeca'][0]->id;
-            $racun->poslovna_jedinica_id = $user['poslovne_jedinice'][0]->id;
+            $user = auth()->user();
+            $racun->user_id = $user->id;
+
+            // TODO: Poslovna jedinica se treba primiti preko request-a
+            $racun->preduzece_id = $user->preduzeca->first()->id;
+            $racun->poslovna_jedinica_id = $user->poslovne_jedinice->first()->id;
 
             $racun->save();
 

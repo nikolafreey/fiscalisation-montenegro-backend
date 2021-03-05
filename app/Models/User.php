@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     public function poslovne_jedinice()
     {
-        return $this->belongsToMany('App\Models\PoslovnaJedinica', 'user_tip_korisnika', 'user_id', 'poslovna_jedinica_id');
+        return $this->hasMany('App\Models\PoslovnaJedinica');
     }
 
     public function tip_korisnika()
