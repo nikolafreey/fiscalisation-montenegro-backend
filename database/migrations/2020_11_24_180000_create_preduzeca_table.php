@@ -55,6 +55,8 @@ class CreatePreduzecaTable extends Migration
             $table->string('pecat', 100)->nullable();
             $table->string('sertifikat', 100)->nullable();
             $table->text('sifra')->nullable();
+            $table->timestamp('vazenje_pecata_do')->nullable();
+            $table->timestamp('vazenje_sertifikata_do')->nullable();
 
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')

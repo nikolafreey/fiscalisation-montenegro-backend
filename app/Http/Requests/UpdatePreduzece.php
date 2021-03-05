@@ -31,9 +31,9 @@ class UpdatePreduzece extends FormRequest
     public function rules()
     {
         return [
+            'sifra' => 'required',
             'pecat' => 'required',
             'sertifikat' => 'required',
-            'sifra' => 'required'
         ];
     }
 }

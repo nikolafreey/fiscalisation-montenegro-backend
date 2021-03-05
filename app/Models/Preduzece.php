@@ -100,13 +100,32 @@ class Preduzece extends Model
 
     public function setPecatAttribute($file)
     {
+        $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(
+            $file->get(),
+            $this->attributes['sifra']
+        );
+
         return $this->attributes['pecat'] = Storage::disk('local')
             ->putFileAs('certs', $file, Str::random(40) . '.pfx');
     }
 
     public function setSertifikatAttribute($file)
     {
+        $this->attributes['vazenje_sertifikata_do'] = $this->getVazenjeDo(
+            $file->get(),
+            $this->attributes['sifra']
+        );
+
         return $this->attributes['sertifikat'] = Storage::disk('local')
             ->putFileAs('certs', $file, Str::random(40) . '.pfx');
+    }
+
+    public function getVazenjeDo($pecat, $sifra)
+    {
+        openssl_pkcs12_read($pecat, $key, decrypt($sifra));
+
+        $cert = openssl_x509_parse($key['cert']);
+
+        return date('Y-m-d H:i:s', $cert['validTo_time_t']);
     }
 }
