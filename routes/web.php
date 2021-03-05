@@ -23,10 +23,8 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
 Auth::routes();
 
-// Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::resource('preduzeca', PreduzeceController::class)->parameters([
         'preduzeca' => 'preduzece'
     ])->except('store', 'create', 'show', 'destroy');
-// });
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
