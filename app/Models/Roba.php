@@ -44,7 +44,8 @@ class Roba extends Model
 
     public function toSearchableArray()
     {
-        $array = $this->only('naziv', 'interna_sifra_proizvoda');
+        $array = $this->only('naziv');
+        // $array = $this->only('naziv', 'interna_sifra_proizvoda');
 
         return $array;
     }

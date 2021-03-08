@@ -17,9 +17,13 @@ class UslugaController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')) {
-            $query = Usluga::search($request->search . '*');
+            return Usluga::search($request->search . '*')->with([
+                'grupa:id,naziv,opis,popust_procenti,popust_iznos',
+                'jedinica_mjere:id,naziv',
+                'porez:id,naziv,stopa'
+            ])->paginate();
         } else {
-            $query = Usluga::query()->with([
+            return Usluga::query()->with([
                 'grupa:id,naziv,opis,popust_procenti,popust_iznos',
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
@@ -27,7 +31,7 @@ class UslugaController extends Controller
         }
 
         if ($request->has('grupa_id')) {
-            $query = $query->where('grupa_id', $request->grupa_id);
+            return Usluga::query()->where('grupa_id', $request->grupa_id)->paginate();
         }
 
         return Usluga::query()->with([

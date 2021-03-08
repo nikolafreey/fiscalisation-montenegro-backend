@@ -30,12 +30,12 @@ class RobaAtributRobe extends Model
             'naziv' => [
                 'type' => 'text',
             ],
-            'atribut_id' => [
-                'type' => 'keyword'
-            ],
-            'tip_atributa_id' => [
-                'type' => 'keyword'
-            ]
+            // 'atribut_id' => [
+            //     'type' => 'keyword'
+            // ],
+            // 'tip_atributa_id' => [
+            //     'type' => 'keyword'
+            // ]
         ]
     ];
 
@@ -45,11 +45,11 @@ class RobaAtributRobe extends Model
             return RobaAtributRobe::filterElastic($request);
         }
         $query = RobaAtributRobe::query();
-        
+
         $query = $query->whereHas('roba', function ($query) {
             $query->where('user_id', auth()->id());
         });
-        
+
         if ($request->has('tip_atributa_id')) {
             $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
                 $query->where('tip_atributa_id', $request->tip_atributa_id);
@@ -78,8 +78,8 @@ class RobaAtributRobe extends Model
     public function toSearchableArray()
     {
         $array['naziv'] = $this->roba->naziv;
-        $array['atribut_id'] = $this->atribut_id;
-        $array['tip_atributa_id'] = $this->atribut_robe->id;
+        // $array['atribut_id'] = $this->atribut_id;
+        // $array['tip_atributa_id'] = $this->atribut_robe->id;
 
         return $array;
     }
