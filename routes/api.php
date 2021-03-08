@@ -44,9 +44,6 @@ use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 |
 */
 
-// TODO: Remove later
-Auth::loginUsingId('6eab1bd7-6ebd-4556-8883-3c63022da768');
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

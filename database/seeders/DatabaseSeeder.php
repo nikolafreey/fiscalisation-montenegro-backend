@@ -36,6 +36,8 @@ use App\Models\PodKategorijaRobe;
 use App\Models\StavkaUlazniRacun;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -52,12 +54,25 @@ class DatabaseSeeder extends Seeder
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
-        User::factory(10)->create();
-        User::create([
+        $users = User::factory(10)->create();
+        $user = User::create([
             'email' => 'superadmin@test.com',
+            'ime' => 'Super Admin',
             'password' => Hash::make('123456'),
             'tip_id' => 1,
         ]);
+
+        Role::create(['name' => 'superadmin']);
+        Role::create(['name' => 'default']);
+
+        Permission::create(['name' => 'edit preduzeca']);
+        Permission::create(['name' => 'edit users']);
+
+        $user->assignRole('superadmin');
+
+        foreach ($users as $user) {
+            $user->assignRole('default');
+        }
 
         foreach (Preduzece::all() as $preduzece) {
             PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);

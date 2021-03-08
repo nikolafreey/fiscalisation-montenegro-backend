@@ -11,35 +11,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Models\Activity;
+use Yajra\DataTables\Facades\DataTables;
 
 class PreduzeceController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('preduzeca', [
-            'preduzeca' => Preduzece::all()
-        ]);
+        if ($request->ajax()) {
+            return DataTables::eloquent(Preduzece::query())
+                ->addColumn('action', function ($preduzece) {
+                    return view('admin.preduzeca.action', compact('preduzece'));
+                })
+                ->make();
+        };
+
+        return view('admin.preduzeca.index');
     }
 
     public function edit(Preduzece $preduzece)
     {
-        // TODO: Uncomment later
-        // if (! Auth::user()->can('update', $preduzece)) {
-        //     abort(403, 'Nemate pristup');
-        // }
+        auth()->user()->can('edit preduzeca');
 
-        return view('update', [
+        return view('admin.preduzeca.edit', [
             'preduzece' => $preduzece
         ]);
     }
 
     public function update(Preduzece $preduzece, UpdatePreduzece $request)
     {
-        // TODO: Uncomment later
-        // if (! Auth::user()->can('update', $preduzece)) {
-        //     abort(403, 'Nemate pristup');
-        // }
+        auth()->user()->can('edit preduzeca');
 
         $preduzece->update($request->validated());
 
