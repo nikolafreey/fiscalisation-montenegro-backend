@@ -36,29 +36,40 @@ class RobaController extends Controller
             return RobaAtributRobe::search($request->search . '*')->with([
                 'roba:id,naziv,opis,ean,status',
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+                'atribut_robe.tip_atributa',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
                 'roba.cijene_roba.porez:id,naziv,stopa',
                 'roba.proizvodjac_robe',
+                'roba.robe_kategorije_podkategorije.podkategorije_roba',
+                'roba.robe_kategorije_podkategorije.kategorije_roba',
+                'roba.robe_kategorije_podkategorije',
             ])->paginate();
         } else {
             return RobaAtributRobe::query()->with([
                 'roba:id,naziv,opis,ean,status',
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+                'atribut_robe.tip_atributa',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
                 'roba.cijene_roba.porez:id,naziv,stopa',
-                'roba.proizvodjac_robe',
+                'roba.robe_kategorije_podkategorije.podkategorije_roba',
+                'roba.robe_kategorije_podkategorije.kategorije_roba',
+                'roba.robe_kategorije_podkategorije',
             ])->paginate();
         }
 
         return RobaAtributRobe::query()->with([
             'roba:id,naziv,opis,ean,status',
             'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+            'atribut_robe.tip_atributa',
             'roba.proizvodjac_robe',
             'roba.jedinica_mjere:id,naziv',
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
             'roba.cijene_roba.porez:id,naziv,stopa',
+            'roba.robe_kategorije_podkategorije.podkategorije_roba',
+            'roba.robe_kategorije_podkategorije.kategorije_roba',
+            'roba.robe_kategorije_podkategorije',
         ])->paginate();
     }
     /**
