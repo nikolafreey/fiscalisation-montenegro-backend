@@ -15,10 +15,10 @@ class ProizvodjacRobe extends Model
 
     protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
 
-    protected static function booted()
-    {
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     public function user()
     {
@@ -27,6 +27,6 @@ class ProizvodjacRobe extends Model
 
     public function roba()
     {
-        return $this->belongsTo('App\Models\Roba', 'proizvodjac_robe_id');
+        return $this->hasOne('App\Models\Roba', 'proizvodjac_robe_id');
     }
 }

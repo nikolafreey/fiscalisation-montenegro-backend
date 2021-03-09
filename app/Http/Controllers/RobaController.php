@@ -38,7 +38,8 @@ class RobaController extends Controller
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-                'roba.cijene_roba.porez:id,naziv,stopa'
+                'roba.cijene_roba.porez:id,naziv,stopa',
+                'roba.proizvodjac_robe',
             ])->paginate();
         } else {
             return RobaAtributRobe::query()->with([
@@ -46,17 +47,19 @@ class RobaController extends Controller
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-                'roba.cijene_roba.porez:id,naziv,stopa'
-            ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
+                'roba.cijene_roba.porez:id,naziv,stopa',
+                'roba.proizvodjac_robe',
+            ])->paginate();
         }
 
         return RobaAtributRobe::query()->with([
             'roba:id,naziv,opis,ean,status',
             'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+            'roba.proizvodjac_robe',
             'roba.jedinica_mjere:id,naziv',
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-            'roba.cijene_roba.porez:id,naziv,stopa'
-        ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
+            'roba.cijene_roba.porez:id,naziv,stopa',
+        ])->paginate();
     }
     /**
      * Store a newly created resource in storage.
