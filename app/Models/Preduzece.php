@@ -10,26 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
-use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\ImaAktivnost;
 
 class Preduzece extends Model
 {
-    use HasFactory, SoftDeletes, GenerateUuid, LogsActivity;
+    use HasFactory, SoftDeletes, GenerateUuid, ImaAktivnost;
 
     protected $table = 'preduzeca';
+
+    protected $naziv = 'kratki_naziv';
 
     protected $fillable = ['kratki_naziv', 'puni_naziv', 'oblik_preduzeca', 'adresa', 'grad', 'drzava', 'telefon', 'telefon_viber', 'telefon_whatsapp', 'telefon_facetime', 'fax', 'email', 'website', 'pib', 'pdv', 'djelatnost', 'iban', 'bic_swift', 'kontakt_ime', 'kontakt_prezime', 'kontakt_telefon', 'kontakt_viber', 'kontakt_whatsapp', 'kontakt_facetime', 'kontakt_email', 'twitter_username', 'instagram_username', 'facebook_username', 'skype_username', 'logotip', 'opis', 'lokacija_lat', 'lokacija_long', 'status', 'privatnost', 'verifikovan', 'pdv_obveznik', 'kategorija_id', 'preduzece_id', 'pecat', 'sertifikat', 'sifra'];
 
     use Searchable;
-
-    protected static $logAttributes = ['pecat', 'sertifikat'];
-
-    protected static $recordEvents = ['updated'];
-
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return ":causer.ime je dodao pecat za :subject.kratki_naziv";
-    }
 
     protected $indexConfigurator = PreduzecaIndexConfigurator::class;
 

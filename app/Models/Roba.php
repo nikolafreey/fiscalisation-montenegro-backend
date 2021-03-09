@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class Roba extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $table = 'robe';
 

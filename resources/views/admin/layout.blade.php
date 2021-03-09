@@ -546,7 +546,7 @@
         --------------------><!--------------------
         START - Main Menu
         -------------------->
-        <div class="menu-w color-scheme-light color-style-transparent menu-position-side menu-side-left menu-layout-compact sub-menu-style-over sub-menu-color-bright selected-menu-color-light menu-activated-on-hover menu-has-selected-link">
+        <div class="menu-w selected-menu-color-light menu-has-selected-link menu-activated-on-click color-scheme-light color-style-transparent sub-menu-color-light menu-position-side menu-side-left menu-layout-compact sub-menu-style-inside">
             <div class="logo-w">
                 <a class="logo" href="index.html">
                     <div class="logo-element"></div>
@@ -609,10 +609,10 @@
             </h1>
             <ul class="main-menu">
                 <li class="sub-header">
-                    <span>Options</span>
+                    <span>Navigacija</span>
                 </li>
                 <li class=" has-sub-menu">
-                    <a href="apps_bank.html">
+                    <a href="{{ route('preduzeca.index') }}">
                         <div class="icon-w">
                             <div class="os-icon os-icon-package"></div>
                         </div>
@@ -634,7 +634,7 @@
                     </div>
                 </li>
                 <li class=" has-sub-menu">
-                    <a href="#">
+                    <a href="{{ route('aktivnosti.index') }}">
                         <div class="icon-w">
                             <div class="os-icon os-icon-file-text"></div>
                         </div>
@@ -657,9 +657,9 @@
                 </li>
                 @can('edit users')
                     <li class=" has-sub-menu">
-                        <a href="#">
+                        <a href="{{ route('users.index') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-life-buoy"></div>
+                                <div class="os-icon os-icon-users"></div>
                             </div>
                             <span>Korisnici</span></a>
                         <div class="sub-menu-w">
@@ -673,6 +673,60 @@
                                 <ul class="sub-menu">
                                     <li>
                                         <a href="{{ route('users.index') }}">Prikazi</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                @endcan
+                @can('edit users')
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('uloge.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-edit-32"></div>
+                            </div>
+                            <span>Uloge</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Uloge
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('uloge.index') }}">Prikazi</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('uloge.create') }}">Dodaj ulogu</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                @endcan
+                @can('edit users')
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('dozvole.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-grid"></div>
+                            </div>
+                            <span>Dozvole</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Dozvole
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('dozvole.index') }}">Prikazi</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('dozvole.create') }}">Dodaj dozvolu</a>
                                     </li>
                                 </ul>
                             </div>

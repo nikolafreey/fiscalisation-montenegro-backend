@@ -6,16 +6,16 @@
         <div class="content-box">
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Aktivnosti
+                    Uloge
                 </h6>
                 <div class="element-box">
                     <table id="example" class="display">
                         <thead>
-                            <tr>
-                                <th>Opis</th>
-                                <th>Vrijeme</th>
-                                <th>Akcija</th>
-                            </tr>
+                        <tr>
+                            <th>Naziv</th>
+                            <th>Dozvole</th>
+                            <th>Akcija</th>
+                        </tr>
                         </thead>
                     </table>
                 </div>
@@ -37,11 +37,11 @@
     <script>
         $('#example').DataTable( {
             ajax: {
-                url: '{{ route('aktivnosti.index') }}',
+                url: '{{ route('uloge.index') }}',
             },
             columns: [
-                { data: 'description' },
-                { data: 'created_at' },
+                { data: 'name' },
+                { data: 'permissions[].name' },
                 {
                     data: 'action',
                     class: 'text-right',

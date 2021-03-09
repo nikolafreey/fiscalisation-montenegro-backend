@@ -14,35 +14,19 @@
                                 <h5 class="form-header">
                                     Dodajte Pecat
                                 </h5>
-                                <div class="form-group">
-                                    <label for="pecat">Pecat</label>
-                                    <input
-                                        class="form-control"
-                                        placeholder="Enter pecat"
-                                        type="file"
-                                        id="pecat"
-                                        name="pecat"
-                                        value="{{ old('pecat') }}"
-                                        required
-                                    >
+                                <div class="custom-file mb-3 mt-4">
+                                    <input type="file" name="pecat" class="custom-file-input" id="validatedCustomFile">
+                                    <label class="custom-file-label" for="validatedCustomFile">Odaberite pecat</label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="sertifikat">Sertifikat</label>
-                                    <input
-                                        class="form-control"
-                                        placeholder="Enter sertifikat"
-                                        type="file"
-                                        id="sertifikat"
-                                        name="sertifikat"
-                                        value="{{ old('sertifikat') }}"
-                                        required
-                                    >
+                                <div class="custom-file mb-3">
+                                    <input type="file" name="sertifikat" class="custom-file-input" id="validatedCustomFile">
+                                    <label class="custom-file-label" for="validatedCustomFile">Odaberite sertifikat</label>
                                 </div>
                                 <div class="form-group">
                                     <label for="sifra">Sifra</label>
                                     <input
                                         class="form-control"
-                                        placeholder="Enter sifra"
+                                        placeholder="Unesite sifru"
                                         type="password"
                                         id="sifra"
                                         name="sifra"

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Web\AktivnostiController;
+use App\Http\Controllers\Web\DozvoleController;
+use App\Http\Controllers\Web\UlogeController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AtributRobeController;
@@ -28,10 +30,19 @@ Auth::routes();
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::resource('preduzeca', PreduzeceController::class)->parameters([
         'preduzeca' => 'preduzece'
-    ])->except('store', 'create', 'show', 'destroy');
+    ])->only('index', 'edit', 'update');
 
-    Route::resource('users', UserController::class)->except('store', 'create', 'show', 'destroy');
+    Route::resource('users', UserController::class)->only('index', 'edit');
     Route::post('users/store/{user}', [UserController::class, 'store'])->name('users.store');
 
-    Route::get('aktivnosti', [AktivnostiController::class, 'index'])->name('aktivnosti.index');
+    Route::resource('aktivnosti', AktivnostiController::class)->only('index', 'show')->parameters([
+        'aktivnosti' => 'activity'
+    ]);;
+
+    Route::resource('dozvole', DozvoleController::class)->only('index', 'create', 'store');
+
+    Route::resource('uloge', UlogeController::class)->only('index', 'create', 'store', 'edit')->parameters([
+        'uloge' => 'role'
+    ]);
+    Route::post('uloge/store/{role}', [UlogeController::class, 'dodajDozvolu'])->name('dodajDozvolu');
 });

@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class RobaAtributRobe extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $fillable = ['roba_id', 'atribut_id'];
 
@@ -45,11 +46,11 @@ class RobaAtributRobe extends Model
             return RobaAtributRobe::filterElastic($request);
         }
         $query = RobaAtributRobe::query();
-        
+
         $query = $query->whereHas('roba', function ($query) {
             $query->where('user_id', auth()->id());
         });
-        
+
         if ($request->has('tip_atributa_id')) {
             $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
                 $query->where('tip_atributa_id', $request->tip_atributa_id);

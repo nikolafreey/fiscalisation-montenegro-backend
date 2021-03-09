@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class UlazniRacun extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
 
     public const RACUN = 'RACUN';
 
