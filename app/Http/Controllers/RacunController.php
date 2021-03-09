@@ -185,9 +185,8 @@ class RacunController extends Controller
             $user = auth()->user();
             $racun->user_id = $user->id;
 
-            // TODO: Poslovna jedinica se treba primiti preko request-a
             $racun->preduzece_id = $user->preduzeca->first()->id;
-            $racun->poslovna_jedinica_id = $user->poslovne_jedinice->first()->id;
+            $racun->poslovna_jedinica_id = $request->poslovna_jedinica_id;
 
             $racun->save();
 

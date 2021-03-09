@@ -6,19 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
-use Yajra\DataTables\DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class AktivnostiController extends Controller
 {
     public function index(Request $request)
     {
-        $aktivnosti = Activity::latest()->get();
-
         if ($request->ajax()) {
-            return DataTables::of($aktivnosti)
+            return DataTables::eloquent(
+                    Activity::latest()
+                )
+                ->addColumn('action', function ($activity) {
+                    return view('admin.aktivnosti.action', compact('activity'));
+                })
                 ->make();
         };
 
         return view('admin.aktivnosti.index');
+    }
+
+    public function show(Activity $activity)
+    {
+        return view('admin.aktivnosti.show', [
+            'aktivnost' => $activity
+        ]);
     }
 }

@@ -32,8 +32,8 @@ class UpdatePreduzece extends FormRequest
     {
         return [
             'sifra' => 'required',
-            'pecat' => 'required',
-            'sertifikat' => 'required',
+            'pecat' => 'required_without:sertifikat',
+            'sertifikat' => 'required_without:pecat',
         ];
     }
 }

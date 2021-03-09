@@ -20,7 +20,9 @@ class PreduzeceController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::eloquent(Preduzece::query())
+            return DataTables::eloquent(
+                    Preduzece::query()
+                )
                 ->addColumn('action', function ($preduzece) {
                     return view('admin.preduzeca.action', compact('preduzece'));
                 })
