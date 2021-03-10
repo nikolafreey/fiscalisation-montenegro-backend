@@ -83,7 +83,7 @@ class Roba extends Model
         $cijenaValues[] = [
             'nabavna_cijena_bez_pdv' => $data['nabavna_cijena_bez_pdv'],
             'nabavna_cijena_sa_pdv' => $data['nabavna_cijena_sa_pdv'],
-            'cijena_bez_pdv' => 2,
+            'cijena_bez_pdv' => $data['cijena_bez_pdv'],
             'ukupna_cijena' => $data['ukupna_cijena'],
             'porez_id' => $data['porez_id'],
             'roba_id' => $this->id,
@@ -93,15 +93,19 @@ class Roba extends Model
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
+
+        $porezStopa = Porez::find($data['porez_id']);
         foreach ($data['cijene'] as $cijena) {
             foreach ($cijena['atribut_id'] as $atribut_id) {
                 $cijenaValues[] = [
                     'nabavna_cijena_bez_pdv' => $data['nabavna_cijena_bez_pdv'],
                     'nabavna_cijena_sa_pdv' => $data['nabavna_cijena_sa_pdv'],
-                    'cijena_bez_pdv' => 2,
-                    'ukupna_cijena' => $cijena['ukupna_cijena'],
-                    'porez_id' => $data->porez_id,
+                    'cijena_bez_pdv' => $data['pdv_ukljucen'] == 1 ? $cijena['ukupna_cijena'] / (1 + $porezStopa->stopa) : $cijena['ukupna_cijena'],
+                    'ukupna_cijena' => $data['pdv_ukljucen'] == 0 ? $cijena['ukupna_cijena'] + $cijena['ukupna_cijena'] * $porezStopa->stopa :  $cijena['ukupna_cijena'],
+                    'porez_id' => $data["porez_id"],
                     'roba_id' => $this->id,
+                    'preduzece_id' => $preduzece_id,
+                    'user_id' => auth()->id(),
                     'atribut_id' => $atribut_id,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
