@@ -9,7 +9,7 @@
                     Preduzeca
                 </h6>
                 <div class="element-box">
-                    <table id="example" class="display">
+                    <table id="data_table" class="table">
                         <thead>
                         <tr>
                             <th>Naziv</th>
@@ -35,7 +35,7 @@
 
 @section('scripts')
     <script>
-        $('#example').DataTable( {
+        $('#data_table').DataTable( {
             ajax: {
                 url: '{{ route('preduzeca.index') }}',
             },

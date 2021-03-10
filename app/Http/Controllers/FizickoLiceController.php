@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFizickoLice;
+use App\Models\Djelatnost;
 use App\Models\FizickoLice;
 use App\Models\User;
 use App\Models\ZiroRacun;
@@ -10,6 +11,11 @@ use Illuminate\Http\Request;
 
 class FizickoLiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(FizickoLice::class, 'fizickoLice');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,6 +26,7 @@ class FizickoLiceController extends Controller
         if ($request->search) {
             return FizickoLice::search($request->search . '*')->paginate();
         }
+
         return FizickoLice::paginate();
     }
 

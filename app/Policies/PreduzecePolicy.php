@@ -11,20 +11,6 @@ class PreduzecePolicy
     use HandlesAuthorization;
 
     /**
-     * Perform pre-authorization checks.
-     *
-     * @param  \App\Models\User  $user
-     * @param  string  $ability
-     * @return void|bool
-     */
-    public function before(User $user, $ability)
-    {
-        if ($user->tip_korisnika->first()->naziv === 'SuperAdmin') {
-            return true;
-        }
-    }
-
-    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
@@ -32,7 +18,7 @@ class PreduzecePolicy
      */
     public function viewAny(User $user)
     {
-        return false;
+        return $user->can('view Preduzece');
     }
 
     /**
@@ -44,7 +30,18 @@ class PreduzecePolicy
      */
     public function view(User $user, Preduzece $preduzece)
     {
-        return false;
+        return $user->can('show Preduzece') && $user->id === $preduzece->user_id;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        return $user->can('create Preduzece');
     }
 
     /**
@@ -56,6 +53,42 @@ class PreduzecePolicy
      */
     public function update(User $user, Preduzece $preduzece)
     {
-        return false;
+        return $user->can('update Preduzece') && in_array($preduzece->id, $user->preduzeca->pluck('id')->toArray());
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Preduzece  $preduzece
+     * @return mixed
+     */
+    public function delete(User $user, Preduzece $preduzece)
+    {
+        return $user->can('delete Preduzece') && in_array($preduzece->id, $user->preduzeca->pluck('id')->toArray());
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Preduzece  $preduzece
+     * @return mixed
+     */
+    public function restore(User $user, Preduzece $preduzece)
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Preduzece  $preduzece
+     * @return mixed
+     */
+    public function forceDelete(User $user, Preduzece $preduzece)
+    {
+        //
     }
 }

@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProizvodjacRobe;
+use App\Models\Preduzece;
 use App\Models\ProizvodjacRobe;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProizvodjacRobeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(ProizvodjacRobe::class, 'proizvodjacRobe');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -70,6 +76,7 @@ class ProizvodjacRobeController extends Controller
     public function destroy(ProizvodjacRobe $proizvodjacRobe)
     {
         $proizvodjacRobe->delete();
+
         return response()->json($proizvodjacRobe, 200);
     }
 }

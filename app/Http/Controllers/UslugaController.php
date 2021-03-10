@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class UslugaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Usluga::class, 'usluga');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -77,6 +82,7 @@ class UslugaController extends Controller
     public function update(StoreUsluga $request, Usluga $usluga)
     {
         $usluga->update($request->validated());
+
         return response()->json($usluga, 200);
     }
 
@@ -89,6 +95,7 @@ class UslugaController extends Controller
     public function destroy(Usluga $usluga)
     {
         $usluga->delete();
+
         return response()->json($usluga, 200);
     }
 }

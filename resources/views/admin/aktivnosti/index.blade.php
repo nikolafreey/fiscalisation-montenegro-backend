@@ -9,7 +9,7 @@
                     Aktivnosti
                 </h6>
                 <div class="element-box">
-                    <table id="example" class="display">
+                    <table id="example" class="table">
                         <thead>
                             <tr>
                                 <th>Opis</th>

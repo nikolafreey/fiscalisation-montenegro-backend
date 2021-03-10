@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePartner;
+use App\Models\OvlascenoLice;
 use App\Models\Partner;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class PartnerController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Partner::class, 'partner');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -69,6 +75,7 @@ class PartnerController extends Controller
     public function update(StorePartner $request, Partner $partner)
     {
         $partner->update($request->validated());
+
         return response()->json($partner, 200);
     }
 
@@ -81,6 +88,7 @@ class PartnerController extends Controller
     public function destroy(Partner $partner)
     {
         $partner->delete();
+
         return response()->json($partner, 200);
     }
 }

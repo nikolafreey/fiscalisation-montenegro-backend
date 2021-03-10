@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreKategorija;
+use App\Models\JedinicaMjere;
 use App\Models\Kategorija;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class KategorijaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Kategorija::class, 'kategorija');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,6 +36,7 @@ class KategorijaController extends Controller
         $kategorija = Kategorija::create($request->all());
         $kategorija->updated_at = Carbon::now()->addHour();
         $kategorija->created_at = Carbon::now()->addHour();
+
         return response()->json($kategorija, 201);
     }
 
@@ -55,6 +62,7 @@ class KategorijaController extends Controller
     {
         $kategorija->update($request->all());
         $kategorija->updated_at = Carbon::now()->addHour();
+
         return response()->json($kategorija, 200);
     }
 
@@ -67,6 +75,7 @@ class KategorijaController extends Controller
     public function destroy(Kategorija $kategorija)
     {
         $kategorija->delete();
+
         return response()->json($kategorija, 200);
     }
 }

@@ -16,6 +16,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PreduzeceController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Preduzece::class, 'preduzece');
+    }
 
     public function index(Request $request)
     {
@@ -34,8 +38,6 @@ class PreduzeceController extends Controller
 
     public function edit(Preduzece $preduzece)
     {
-        auth()->user()->can('edit preduzeca');
-
         return view('admin.preduzeca.edit', [
             'preduzece' => $preduzece
         ]);
@@ -43,8 +45,6 @@ class PreduzeceController extends Controller
 
     public function update(Preduzece $preduzece, UpdatePreduzece $request)
     {
-        auth()->user()->can('edit preduzeca');
-
         $preduzece->update($request->validated());
 
         return redirect(route('preduzeca.index'));

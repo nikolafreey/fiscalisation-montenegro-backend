@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Porez;
 use Illuminate\Http\Request;
 use App\Models\PoslovnaJedinica;
 use App\Http\Requests\StorePoslovnaJedinica;
 
 class PoslovnaJedinicaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(PoslovnaJedinica::class, 'poslovnaJedinica');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +33,7 @@ class PoslovnaJedinicaController extends Controller
     public function store(StorePoslovnaJedinica $request)
     {
         $poslovnaJedinica = PoslovnaJedinica::create($request->validated());
+
         return response()->json($poslovnaJedinica, 201);
     }
 
@@ -51,6 +58,7 @@ class PoslovnaJedinicaController extends Controller
     public function update(StorePoslovnaJedinica $request, PoslovnaJedinica $poslovnaJedinica)
     {
         $poslovnaJedinica->update($request->validated());
+
         return response()->json($poslovnaJedinica, 200);
     }
 
@@ -63,6 +71,7 @@ class PoslovnaJedinicaController extends Controller
     public function destroy(PoslovnaJedinica $poslovnaJedinica)
     {
         $poslovnaJedinica->delete();
+
         return response()->json($poslovnaJedinica, 200);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\Depozit;
+use App\Models\CijenaRobe;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
@@ -10,6 +11,11 @@ use App\Http\Requests\StoreDepozitWithdraw;
 
 class DepozitWithdrawController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(DepozitWithdraw::class, 'depozitWithdraw');
+    }
+
     public function index()
     {
         return DepozitWithdraw::paginate();
@@ -38,12 +44,14 @@ class DepozitWithdrawController extends Controller
     public function update(StoreDepozitWithdraw $request, DepozitWithdraw $depozitWithdraw)
     {
         $depozitWithdraw->update($request->validated());
+
         return response()->json($depozitWithdraw, 200);
     }
 
     public function destroy(DepozitWithdraw $depozitWithdraw)
     {
         $depozitWithdraw->delete();
+
         return response()->json($depozitWithdraw, 200);
     }
 }
