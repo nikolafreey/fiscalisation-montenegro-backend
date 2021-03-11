@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Paket;
 use App\Models\Roba;
 use App\Models\User;
 use App\Models\Grupa;
@@ -54,12 +55,16 @@ class DatabaseSeeder extends Seeder
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
-        $users = User::factory(10)->create();
+
+        foreach (Preduzece::all() as $preduzece) {
+            User::factory(10)->create(['preduzece_id' => $preduzece->id]);
+        }
         $user = User::create([
             'email' => 'superadmin@test.com',
             'ime' => 'Super Admin',
             'password' => Hash::make('123456'),
             'tip_id' => 1,
+            'preduzece_id' => Preduzece::first()->id
         ]);
 
         Role::create(['name' => 'superadmin']);
@@ -69,10 +74,6 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'edit users']);
 
         $user->assignRole('superadmin');
-
-        foreach ($users as $user) {
-            $user->assignRole('default');
-        }
 
         foreach (Preduzece::all() as $preduzece) {
             PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
@@ -89,11 +90,38 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        DB::table('paketi')->insert([
+            'id' => 0,
+            'naziv' => 'Pocetni',
+            'broj_uredjaja' => 1,
+        ]);
+
+        DB::table('paketi')->insert([
+            'id' => 0,
+            'naziv' => 'Srednji',
+            'broj_uredjaja' => 2,
+        ]);
+
+        DB::table('paketi')->insert([
+            'id' => 0,
+            'naziv' => 'Pro',
+            'broj_uredjaja' => 5,
+        ]);
+
         DB::table('porezi')->insert([
             'id' => 0,
             'naziv' => 'Oslobođen PDV-a',
             'stopa' => 0
         ]);
+
+        foreach (Preduzece::all() as $preduzece) {
+            $paket = Paket::all()->random();
+
+            DB::table('paket_preduzece')->insert([
+                'preduzece_id' => $preduzece->id,
+                'paket_id' => $paket->id,
+            ]);
+        }
 
         $naziviPoreza = array('0%', '7%', '21%');
         $stopePoreza = array(0, 0.07, 0.21);
@@ -146,7 +174,16 @@ class DatabaseSeeder extends Seeder
 
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
-        JedinicaMjere::factory(10)->create();
+        // JedinicaMjere::factory(10)->create();
+        DB::table('jedinice_mjere')->insert(
+            [
+                'naziv' => 'kom',
+                'kratki_naziv' => 'gram',
+                'deleted_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
         Usluga::factory(10)->create();
         KategorijaRobe::factory(10)->create();
         PodKategorijaRobe::factory(10)->create();

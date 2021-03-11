@@ -81,6 +81,11 @@ class Preduzece extends Model
         return $this->belongsToMany('App\Models\OvlascenoLice', 'ovlasceno_lice_preduzece', 'preduzece_id', 'ovlasceno_lice_id');
     }
 
+    public function paketi()
+    {
+        return $this->belongsToMany('App\Models\Paket', 'paket_preduzece', 'preduzece_id', 'paket_id');
+    }
+
     public function kategorija()
     {
         return $this->belongsTo('App\Models\Kategorija');
