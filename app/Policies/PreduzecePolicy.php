@@ -53,7 +53,8 @@ class PreduzecePolicy
      */
     public function update(User $user, Preduzece $preduzece)
     {
-        return $user->can('update Preduzece') && in_array($preduzece->id, $user->preduzeca->pluck('id')->toArray());
+        return $user->can('update Preduzece') &&
+            in_array($preduzece, $user->preduzeca->pluck('id')->toArray());
     }
 
     /**
@@ -65,7 +66,7 @@ class PreduzecePolicy
      */
     public function delete(User $user, Preduzece $preduzece)
     {
-        return $user->can('delete Preduzece') && in_array($preduzece->id, $user->preduzeca->pluck('id')->toArray());
+        return $user->can('delete Preduzece') && $user->preduzeca->first()->id === $preduzece->id;
     }
 
     /**
