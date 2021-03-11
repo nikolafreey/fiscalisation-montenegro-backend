@@ -30,6 +30,7 @@ use App\Http\Controllers\DepozitWithdrawController;
 use App\Http\Controllers\ProizvodjacRobeController;
 use App\Http\Controllers\PoslovnaJedinicaController;
 use App\Http\Controllers\PodKategorijaRobeController;
+use App\Http\Controllers\MobileAuthController;
 use App\Models\DepozitWithdraw;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
@@ -50,9 +51,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Auth::routes();
 
+//Autentifikacija za mobilnu app
+Route::post("token", [MobileAuthController::class, 'token']);
+Route::post('register', [MobileAuthController::class, 'register']);
+
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
     ]);
@@ -60,7 +65,7 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'usluge' => 'usluga'
     ]);
 
-    Route::prefix('izvjestaji')->group(function() {
+    Route::prefix('izvjestaji')->group(function () {
         Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
 
         Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
@@ -74,6 +79,10 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
     });
 
+    //Mobilna Aplikacija AUTH
+    Route::get('profile', [MobileAuthController::class, 'profile']);
+    Route::get('refresh', [MobileAuthController::class, 'refresh']);
+
     Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
     Route::get('racuni-status', [RacunController::class, 'racuniStatus']);
@@ -84,7 +93,11 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
     Route::get('racuni-pdv', [RacunController::class, 'racuniPdv']);
 
+    Route::get('racuni-danas', [RacunController::class, 'izlazniRacuniDanas']);
+
     Route::get('ulazni-racuni-pdv', [UlazniRacunController::class, 'ulazniRacuniPdv']);
+
+    Route::get('ulazni-racuni-danas', [UlazniRacunController::class, 'ulazniRacuniDanas']);
 
     Route::get('/me', [UserController::class, 'me']);
 
@@ -165,6 +178,8 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         'depozit-withdraws' => 'depozit-withdraw'
     ]);
 
+    Route::get('/get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
+
     Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
         'ziro-racuni' => 'ziro-racun'
     ]);
@@ -173,4 +188,4 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
     ]);
 
     Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
-// });
+});

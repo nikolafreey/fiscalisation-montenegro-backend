@@ -30,6 +30,7 @@ class StoreRoba extends FormRequest
             'ean' => 'nullable|string',
             'interna_sifra_proizvoda' => 'nullable|string',
             'status' => 'nullable|boolean',
+            'pdv_ukljucen' => 'nullable',
             'proizvodjac_robe_id' => 'nullable',
             'jedinica_mjere_id' => 'nullable',
             'cijena_bez_pdv' => 'nullable',

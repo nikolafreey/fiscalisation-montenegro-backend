@@ -31,12 +31,12 @@ class RobaAtributRobe extends Model
             'naziv' => [
                 'type' => 'text',
             ],
-            'atribut_id' => [
-                'type' => 'keyword'
-            ],
-            'tip_atributa_id' => [
-                'type' => 'keyword'
-            ]
+            // 'atribut_id' => [
+            //     'type' => 'keyword'
+            // ],
+            // 'tip_atributa_id' => [
+            //     'type' => 'keyword'
+            // ]
         ]
     ];
 
@@ -79,8 +79,8 @@ class RobaAtributRobe extends Model
     public function toSearchableArray()
     {
         $array['naziv'] = $this->roba->naziv;
-        $array['atribut_id'] = $this->atribut_id;
-        $array['tip_atributa_id'] = $this->atribut_robe->id;
+        // $array['atribut_id'] = $this->atribut_id;
+        // $array['tip_atributa_id'] = $this->atribut_robe->id;
 
         return $array;
     }

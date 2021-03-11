@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\JedinicaMjere;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 
 class JedinicaMjereFactory extends Factory
 {
@@ -21,12 +22,19 @@ class JedinicaMjereFactory extends Factory
      */
     public function definition()
     {
-        $nazivi = array('gr', 'inj', 'kesa', 'kes', 'kg', 'kom', 'komad', 'kut', 'lit', 'm2', 'M', 'M2', 'M3', 'pak', 'par', 'tab', 't', 'vre');
+        $nazivi = array('kom', 'gr', 'inj', 'kesa', 'pak', 'kg', 'kut', 'lit', 'm', 'm2', 'm3', 'par', 'tab', 't', 'vre', 'pal');
+        $naziviDugi = array('komad', 'gram', 'injekcija', 'kesa', 'paket', 'kilogram', 'kutija', 'litar', 'metar', 'm2', 'm3', 'par', 'tableta', 'tona', 'vreća', 'paleta');
 
-        return [
-            'naziv' => $this->faker->unique()->randomElement($nazivi),
-            'kratki_naziv' => $this->faker->word(),
-
-        ];
+        for ($i = 0; $i < count($nazivi); $i++) {
+            DB::table('jedinice_mjere')->insert(
+                [
+                    'naziv' => $naziviDugi[$i],
+                    'kratki_naziv' => $nazivi[$i],
+                    'deleted_at' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
     }
 }

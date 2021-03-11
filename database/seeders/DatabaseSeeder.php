@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('porezi')->insert([
             'id' => 0,
-            'naziv' => 'Oslobodjen',
+            'naziv' => 'Oslobođen PDV-a',
             'stopa' => 0
         ]);
 
@@ -157,12 +157,12 @@ class DatabaseSeeder extends Seeder
         //CijenaRobe::factory(10)->create();
         UlazniRacun::factory(10)->create();
 
-        foreach(PoslovnaJedinica::withoutGlobalScopes()->get() as $poslovnaJedinica) {
+        foreach (PoslovnaJedinica::all() as $poslovnaJedinica) {
             $randomBoolean = rand(0, 1);
 
             DepozitWithdraw::factory(1)->create([
-                'iznos_depozit' => $randomBoolean ? rand(50,100) : null,
-                'iznos_withdraw' => $randomBoolean ? null : rand(50,100),
+                'iznos_depozit' => $randomBoolean ? rand(50, 100) : null,
+                'iznos_withdraw' => $randomBoolean ? null : rand(50, 100),
                 'poslovna_jedinica_id' => $poslovnaJedinica->id,
                 'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);
@@ -173,7 +173,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        foreach(Racun::all() as $racun) {
+        foreach (Racun::all() as $racun) {
             StavkaRacuna::factory(2)->create(['racun_id' => $racun->id]);
         }
 

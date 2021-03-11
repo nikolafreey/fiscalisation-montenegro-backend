@@ -97,6 +97,28 @@ class RacunController extends Controller
         return $data;
     }
 
+    public function izlazniRacuniDanas(Request $request)
+    {
+        $dan = Carbon::now()->day;
+        $mjesec = Carbon::now()->month;
+        $godina = Carbon::now()->year;
+
+        $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
+        $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
+
+        $queryRacuniDanas = Racun::query();
+
+        $queryRacuniDanas = DB::select(DB::raw('SELECT * FROM racuni WHERE vrsta_racuna = "' . Racun::GOTOVINSKI . '" AND tip_racuna = "' . Racun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+
+        $ukupnoRacuniDanas = 0;
+
+        foreach ($queryRacuniDanas as $racunDanas) {
+            $ukupnoRacuniDanas += $racunDanas->ukupna_cijena_sa_pdv;
+        }
+
+        return collect(['ukupno_izlazni_racuni_danas' => $ukupnoRacuniDanas]);
+    }
+
     public function racuniPdv(Request $request)
     {
         $query = Racun::query();

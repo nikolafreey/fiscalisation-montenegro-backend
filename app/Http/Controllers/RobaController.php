@@ -8,6 +8,7 @@ use App\Models\Roba;
 use App\Models\RobaAtributRobe;
 use App\Models\RobaKategorijaPodKategorija;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RobaController extends Controller
@@ -34,24 +35,42 @@ class RobaController extends Controller
         // ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
 
         if ($request->has('search')) {
-            $query = RobaAtributRobe::search($request->search . '*');
-        } else {
-            $query = RobaAtributRobe::query()->with([
-                'roba:id,naziv,opis,ean,status',
-                'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+            return RobaAtributRobe::search($request->search . '*')->with([
+                'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-                'roba.cijene_roba.porez:id,naziv,stopa'
-            ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
+                'roba.cijene_roba.porez:id,naziv,stopa',
+                'roba.robe_kategorije_podkategorije.podkategorije_roba',
+                'roba.robe_kategorije_podkategorije.kategorije_roba',
+                'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+                'atribut_robe.tip_atributa',
+                'roba.proizvodjac_robe:id,naziv',
+            ])->paginate();
+        } else {
+            return RobaAtributRobe::query()->with([
+                'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
+                'roba.jedinica_mjere:id,naziv',
+                'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
+                'roba.cijene_roba.porez:id,naziv,stopa',
+                'roba.robe_kategorije_podkategorije.podkategorije_roba',
+                'roba.robe_kategorije_podkategorije.kategorije_roba',
+                'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+                'atribut_robe.tip_atributa',
+                'roba.proizvodjac_robe:id,naziv',
+            ])->paginate();
         }
 
         return RobaAtributRobe::query()->with([
-            'roba:id,naziv,opis,ean,status',
-            'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+            'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
             'roba.jedinica_mjere:id,naziv',
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-            'roba.cijene_roba.porez:id,naziv,stopa'
-        ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
+            'roba.cijene_roba.porez:id,naziv,stopa',
+            'roba.robe_kategorije_podkategorije.podkategorije_roba',
+            'roba.robe_kategorije_podkategorije.kategorije_roba',
+            'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+            'atribut_robe.tip_atributa',
+            'roba.proizvodjac_robe:id,naziv',
+        ])->paginate();
     }
     /**
      * Store a newly created resource in storage.
@@ -61,16 +80,19 @@ class RobaController extends Controller
      */
     public function store(StoreRoba $request)
     {
+
         $roba = Roba::make($request->validated());
         $roba->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
         $roba->preduzece_id = $user['preduzeca'][0]->id;
+        $roba->created_at = Carbon::now();
+        $roba->updated_at = Carbon::now();
+        $roba->save();
 
-        $roba->storeKategorije($request->kategorije);
         $roba->storeCijene($request->all(), $roba->preduzece_id);
         $roba->storeAtributi($request->atributi);
+        $roba->storeKategorije($request->kategorije);
 
-        $roba->save();
 
         return response()->json($roba, 201);
     }
@@ -102,6 +124,7 @@ class RobaController extends Controller
         $roba->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
         $roba->preduzece_id = $user['preduzeca'][0]->id;
+        $roba->updated_at = Carbon::now();
 
         $roba->storeKategorije($request->kategorije);
         $roba->storeCijene($request->all(), $roba->preduzece_id);
