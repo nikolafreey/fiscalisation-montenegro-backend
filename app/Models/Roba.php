@@ -126,12 +126,12 @@ class Roba extends Model
 
     public function proizvodjac_robe()
     {
-        return $this->hasOne('App\Models\ProizvodjacRobe', 'id');
+        return $this->belongsTo('App\Models\ProizvodjacRobe', 'proizvodjac_robe_id');
     }
 
     public function jedinica_mjere()
     {
-        return $this->hasOne('App\Models\JedinicaMjere', 'id');
+        return $this->belongsTo('App\Models\JedinicaMjere', 'jedinica_mjere_id');
     }
 
     public function preduzece()

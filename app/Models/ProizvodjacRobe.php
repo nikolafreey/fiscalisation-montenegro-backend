@@ -27,6 +27,6 @@ class ProizvodjacRobe extends Model
 
     public function roba()
     {
-        return $this->hasOne('App\Models\Roba', 'proizvodjac_robe_id');
+        return $this->belongsTo('App\Models\Roba', 'roba_id');
     }
 }

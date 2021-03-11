@@ -43,11 +43,11 @@ class RobaController extends Controller
                 'roba.robe_kategorije_podkategorije.kategorije_roba',
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
                 'atribut_robe.tip_atributa',
-                'roba.proizvodjac_robe:id,naziv',
+                'roba.proizvodjac_robe',
             ])->paginate();
         } else {
             return RobaAtributRobe::query()->with([
-                'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
+                'roba',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
                 'roba.cijene_roba.porez:id,naziv,stopa',
@@ -55,7 +55,7 @@ class RobaController extends Controller
                 'roba.robe_kategorije_podkategorije.kategorije_roba',
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
                 'atribut_robe.tip_atributa',
-                'roba.proizvodjac_robe:id,naziv',
+                'roba.proizvodjac_robe',
             ])->paginate();
         }
 
