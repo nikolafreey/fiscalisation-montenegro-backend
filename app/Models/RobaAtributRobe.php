@@ -46,19 +46,26 @@ class RobaAtributRobe extends Model
         }
         $query = RobaAtributRobe::query();
 
-        $query = $query->whereHas('roba', function ($query) {
-            $query->where('user_id', auth()->id());
-        });
+        // $query = $query->whereHas('roba', function ($query) {
+        //     $query->where('user_id', auth()->id());
+        // });
 
-        if ($request->has('tip_atributa_id')) {
-            $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
-                $query->where('tip_atributa_id', $request->tip_atributa_id);
-            });
-        }
+        // if ($request->has('tip_atributa_id')) {
+        //     $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
+        //         $query->where('tip_atributa_id', $request->tip_atributa_id);
+        //     });
+        // }
         if ($request->has('atribut_id')) {
-            $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
-                $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
-            });
+            // $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
+            //     $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
+            // });
+            $query = $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
+        }
+        if ($request->has('atribut_robe')) {
+            // $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
+            //     $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
+            // });
+            $query = $query->where('robe_atributi_roba.atribut_robe.naziv', $request->atribut_robe);
         }
         return $query;
     }

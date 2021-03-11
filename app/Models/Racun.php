@@ -192,8 +192,7 @@ class Racun extends Model
 
     private function kreirajStavkuIzRobe(Roba $roba, $stavka)
     {
-        $cijenaRobe = CijenaRobe::
-            first();
+        $cijenaRobe = CijenaRobe::first();
 
         $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
 
@@ -242,7 +241,7 @@ class Racun extends Model
 
     public static function izracunajBrojRacuna()
     {
-        $broj_racuna = DB::table('racuni')->max('broj_racuna');
+        $broj_racuna = DB::table('racuni')->where('tip_racuna', Racun::RACUN)->whereNotNull('qr_url')->max('broj_racuna');      #moze i bez provjere za tip_racuna
         return $broj_racuna + 1;
     }
 

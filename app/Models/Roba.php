@@ -7,6 +7,7 @@ use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ScoutElastic\Searchable;
 
@@ -113,11 +114,22 @@ class Roba extends Model
             }
         }
 
-
-
         CijenaRobe::insert($cijenaValues);
     }
 
+    public static function filter(Request $request)
+    {
+        if ($request->has('search')) {
+            $query = Roba::search($request->search . '*');
+        } else {
+            $query = Roba::query();
+        }
+        if ($request->has('atribut')) {
+            return $query;
+            $query = $query->where('atribut_robe.naziv', $request->atribut);
+        }
+        return $query;
+    }
 
     public function storeAtributi($atributi)
     {

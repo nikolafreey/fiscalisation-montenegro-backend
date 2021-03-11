@@ -17,24 +17,15 @@ class RobaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return Roba::with('atributi_roba', 'proizvodjac_robe', 'robe_kategorije')->paginate();
     }
 
     public function robaRacuni(Request $request)
     {
-        // $query = RobaAtributRobe::filter($request);
-        // return $query->with([
-        //     'roba:id,naziv,opis,ean,status',
-        //     'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
-        //     'roba.jedinica_mjere:id,naziv',
-        //     'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-        //     'roba.cijene_roba.porez:id,naziv,stopa'
-        // ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
-
         if ($request->has('search')) {
-            return RobaAtributRobe::search($request->search . '*')->with([
+            $query = RobaAtributRobe::search($request->search . '*')->with([
                 'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
@@ -45,8 +36,9 @@ class RobaController extends Controller
                 'atribut_robe.tip_atributa',
                 'roba.proizvodjac_robe',
             ])->paginate();
+            return $query;
         } else {
-            return RobaAtributRobe::query()->with([
+            $query = RobaAtributRobe::query()->with([
                 'roba',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
@@ -57,6 +49,22 @@ class RobaController extends Controller
                 'atribut_robe.tip_atributa',
                 'roba.proizvodjac_robe',
             ])->paginate();
+        }
+
+        if ($request->has('atribut_robe')) {
+            $query = RobaAtributRobe::filter($request);
+            return $query
+                ->with([
+                    'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
+                    'roba.jedinica_mjere:id,naziv',
+                    'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
+                    'roba.cijene_roba.porez:id,naziv,stopa',
+                    'roba.robe_kategorije_podkategorije.podkategorije_roba',
+                    'roba.robe_kategorije_podkategorije.kategorije_roba',
+                    'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+                    'atribut_robe.tip_atributa',
+                    'roba.proizvodjac_robe',
+                ])->paginate();
         }
 
         return RobaAtributRobe::query()->with([
