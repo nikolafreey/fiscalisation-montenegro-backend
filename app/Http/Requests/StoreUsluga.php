@@ -28,6 +28,8 @@ class StoreUsluga extends FormRequest
             'opis' => 'string|max:255|min:3',
             'cijena_bez_pdv' => array('regex:/^-?[0-9]+(?:\.[0-9]{1,4})?$/', 'min:1', 'max:15'),
             'ukupna_cijena' => array('regex:/^-?[0-9]+(?:\.[0-9]{1,4})?$/', 'min:1', 'max:15'),
+            'cijena_bez_pdv_popust' => array('regex:/^-?[0-9]+(?:\.[0-9]{1,4})?$/', 'min:1', 'max:15'),
+            'cijena_sa_pdv_popust' => array('regex:/^-?[0-9]+(?:\.[0-9]{1,4})?$/', 'min:1', 'max:15'),
             'grupa_id' => 'int',
             'status' => 'boolean',
             'jedinica_mjere_id' => 'int',

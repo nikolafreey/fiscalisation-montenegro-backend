@@ -22,7 +22,10 @@ class Usluga extends Model
         'user_id',
         'grupa_id',
         'jedinica_mjere_id',
-        'porez_id'
+        'porez_id',
+        'iznos_pdv_popust',
+        'cijena_bez_pdv_popust',
+        'cijena_sa_pdv_popust',
     ];
     use Searchable;
     protected $indexConfigurator = UslugaIndexConfigurator::class;
