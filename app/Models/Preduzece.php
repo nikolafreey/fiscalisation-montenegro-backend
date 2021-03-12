@@ -136,4 +136,16 @@ class Preduzece extends Model
 
         return date('Y-m-d H:i:s', $cert['validTo_time_t']);
     }
+
+    public function izracunajBrojUredjaja()
+    {
+        $broj_uredjaja = 0;
+
+        foreach ($this->paketi as $paket) {
+            $broj_uredjaja += $paket->broj_uredjaja;
+        }
+
+        return $broj_uredjaja;
+    }
+
 }
