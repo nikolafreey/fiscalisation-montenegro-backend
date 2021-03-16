@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DozvolaController;
+use App\Http\Controllers\OdaberiPreduzeceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -45,11 +48,13 @@ use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 |
 */
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Auth::routes();
+Route::post('auth/register', [AuthController::class, 'register']);
+Route::post('auth/login', [AuthController::class, 'login']);
 
 //Autentifikacija za mobilnu app
 Route::post("token", [MobileAuthController::class, 'token']);
@@ -58,9 +63,26 @@ Route::post('register', [MobileAuthController::class, 'register']);
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/me', function (Request $request) {
+        return auth()->user();
+    });
+
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+    Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
+    Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
+
+    Route::prefix('preduzece/{preduzece}')->middleware('preduzece')->group(function () {
+        Route::get('show', [PreduzeceController::class, 'show']);
+    });
+
+    Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
+
     Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
         'fizicka-lica' => 'fizickoLice'
     ]);
+
     Route::apiResource('/usluge', UslugaController::class)->parameters([
         'usluge' => 'usluga'
     ]);

@@ -14,8 +14,8 @@
                                     Dodajte dozvole
                                 </h5>
                                 <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Example select</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="dozvola[]" multiple>
+                                    <label for="input-tags">Odaberite dozvole</label>
+                                    <select class="form-control" id="input-tags" name="dozvola[]" multiple>
                                         @foreach($dozvole as $dozvola)
                                             <option value="{{ $dozvola->name }}">{{ $dozvola->name }}</option>
                                         @endforeach
@@ -34,5 +34,24 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+
+    <script>
+        $('#input-tags').selectize({
+            plugins: ['remove_button'],
+            delimiter: ',',
+            persist: false,
+            create: function(input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            }
+        });
+    </script>
 
 @endsection
+
+

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Web\AktivnostiController;
 use App\Http\Controllers\Web\DozvoleController;
 use App\Http\Controllers\Web\UlogeController;
@@ -32,12 +33,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         'preduzeca' => 'preduzece'
     ])->only('index', 'edit', 'update');
 
+
     Route::resource('users', UserController::class)->only('index', 'edit');
     Route::post('users/store/{user}', [UserController::class, 'store'])->name('users.store');
 
     Route::resource('aktivnosti', AktivnostiController::class)->only('index', 'show')->parameters([
         'aktivnosti' => 'activity'
-    ]);;
+    ]);
 
     Route::resource('dozvole', DozvoleController::class)->only('index', 'create', 'store');
 

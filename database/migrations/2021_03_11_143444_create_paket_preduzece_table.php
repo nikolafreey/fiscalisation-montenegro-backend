@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOvlascenoLicePreduzeceTable extends Migration
+class CreatePaketPreduzeceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateOvlascenoLicePreduzeceTable extends Migration
      */
     public function up()
     {
-        Schema::create('ovlasceno_lice_preduzece', function (Blueprint $table) {
+        Schema::create('paket_preduzece', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('ovlasceno_lice_id')
-                ->constrained('ovlascena_lica')
+            $table->foreignId('paket_id')
+                ->constrained('paketi')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
@@ -38,6 +38,6 @@ class CreateOvlascenoLicePreduzeceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ovlasceno_lice_preduzece');
+        Schema::dropIfExists('paket_preduzece');
     }
 }

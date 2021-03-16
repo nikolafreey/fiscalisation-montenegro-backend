@@ -53,7 +53,8 @@ class ModulPolicy
      */
     public function update(User $user, Modul $modul)
     {
-        return $user->can('update Modul') && $user->moduli->first()->id === $modul->id;
+        return $user->can('update Modul') &&
+            in_array($modul, $user->moduli->pluck('id')->toArray());
     }
 
     /**
@@ -65,7 +66,8 @@ class ModulPolicy
      */
     public function delete(User $user, Modul $modul)
     {
-        return $user->can('delete Modul') && $user->moduli->first()->id === $modul->id;
+        return $user->can('delete Modul') &&
+            in_array($modul, $user->moduli->pluck('id')->toArray());
     }
 
     /**

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Spatie\Activitylog\Models\Activity;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,8 +26,8 @@ class PreduzeceController extends Controller
     {
         if ($request->ajax()) {
             return DataTables::eloquent(
-                    Preduzece::query()
-                )
+                Preduzece::query()
+            )
                 ->addColumn('action', function ($preduzece) {
                     return view('admin.preduzeca.action', compact('preduzece'));
                 })
@@ -49,4 +50,5 @@ class PreduzeceController extends Controller
 
         return redirect(route('preduzeca.index'));
     }
+
 }
