@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePodKategorijaRobe;
+use App\Models\Partner;
 use App\Models\PodKategorijaRobe;
 use App\Models\Preduzece;
 use App\Models\User;
@@ -10,6 +11,11 @@ use Illuminate\Http\Request;
 
 class PodKategorijaRobeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(PodKategorijaRobe::class, 'podKategorijaRobe');
+    }
+
     /**
      * Display a listing of the resource.
      *

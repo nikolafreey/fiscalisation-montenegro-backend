@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TipAtributa;
 use App\Models\UlazniRacun;
 use App\Models\User;
 use Carbon\Carbon;
@@ -12,6 +13,11 @@ use function GuzzleHttp\Promise\queue;
 
 class UlazniRacunController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(UlazniRacun::class, 'ulazniRacun');
+    }
+
     /**
      * Display a listing of the resource.
      *

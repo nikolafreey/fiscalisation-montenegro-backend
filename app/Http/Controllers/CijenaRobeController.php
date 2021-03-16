@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCijenaRobe;
+use App\Models\AtributRobe;
 use App\Models\CijenaRobe;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class CijenaRobeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(CijenaRobe::class, 'cijenaRobe');
+    }
+
     /**
      * Display a listing of the resource.
      *

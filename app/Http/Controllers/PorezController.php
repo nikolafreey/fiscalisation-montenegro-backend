@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PodKategorijaRobe;
 use App\Models\Porez;
 use Illuminate\Http\Request;
 
 class PorezController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Porez::class, 'porez');
+    }
+
     /**
      * Display a listing of the resource.
      *

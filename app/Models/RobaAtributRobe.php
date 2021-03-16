@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class RobaAtributRobe extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $fillable = ['roba_id', 'atribut_id'];
 

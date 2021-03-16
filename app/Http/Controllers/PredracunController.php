@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PoslovnaJedinica;
 use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,6 +16,8 @@ class PredracunController extends Controller
      */
     public function index(Request $request)
     {
+        auth()->user()->can('view Predracun');
+
         if ($request->search) {
             $searchQuery = Racun::search($request->search . '*');
 
@@ -72,6 +75,8 @@ class PredracunController extends Controller
      */
     public function store(Request $request)
     {
+        auth()->user()->can('store Predracun');
+
         $racun = Racun::make($request->validated());
         $racun->tip_racuna = Racun::PREDRACUN;
         $racun->user_id = auth()->id();
@@ -92,6 +97,8 @@ class PredracunController extends Controller
      */
     public function show(Racun $racun)
     {
+        auth()->user()->can('show Predracun');
+
         return $racun->load(['stavke', 'porezi']);
     }
 
@@ -104,6 +111,8 @@ class PredracunController extends Controller
      */
     public function update(Request $request, Racun $racun)
     {
+        auth()->user()->can('update Predracun');
+
         $ikof = $request->input('ikof');
         $jikr = $request->input('jikr');
 

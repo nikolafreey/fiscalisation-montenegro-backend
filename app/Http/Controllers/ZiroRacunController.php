@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreZiroRacun;
 use App\Models\User;
+use App\Models\Usluga;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
 
 class ZiroRacunController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(ZiroRacun::class, 'ziroRacun');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -57,6 +63,7 @@ class ZiroRacunController extends Controller
     public function update(StoreZiroRacun $request, ZiroRacun $ziroRacun)
     {
         $ziroRacun->update($request->all());
+
         return response()->json($ziroRacun, 200);
     }
 
@@ -69,6 +76,7 @@ class ZiroRacunController extends Controller
     public function destroy(ZiroRacun $ziroRacun)
     {
         $ziroRacun->delete();
+
         return response()->json($ziroRacun, 200);
     }
 }

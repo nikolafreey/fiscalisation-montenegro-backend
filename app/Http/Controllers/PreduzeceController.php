@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class PreduzeceController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Preduzece::class, 'preduzece');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,6 +36,7 @@ class PreduzeceController extends Controller
     public function store(StorePreduzece $request)
     {
         $preduzece = Preduzece::create($request->validated());
+
         return response()->json($preduzece, 201);
     }
 
@@ -55,6 +61,7 @@ class PreduzeceController extends Controller
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
         $preduzece->update($request->validated());
+
         return response()->json($preduzece, 200);
     }
 
@@ -67,6 +74,7 @@ class PreduzeceController extends Controller
     public function destroy(Preduzece $preduzece)
     {
         $preduzece->delete();
+
         return response()->json($preduzece, 200);
     }
 }

@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grupa;
 use App\Models\JedinicaMjere;
 use Illuminate\Http\Request;
 
 class JedinicaMjereController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(JedinicaMjere::class, 'jedinicaMjere');
+    }
+
     /**
      * Display a listing of the resource.
      *
