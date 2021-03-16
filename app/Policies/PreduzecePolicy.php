@@ -66,7 +66,8 @@ class PreduzecePolicy
      */
     public function delete(User $user, Preduzece $preduzece)
     {
-        return $user->can('delete Preduzece') && $user->preduzeca->first()->id === $preduzece->id;
+        return $user->can('delete Preduzece') &&
+            in_array($preduzece, $user->preduzeca->pluck('id')->toArray());
     }
 
     /**

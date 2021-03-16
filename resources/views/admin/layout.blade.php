@@ -11,6 +11,7 @@
     <link href="{{ asset('admin/favicon.png') }}" rel="shortcut icon">
     <link href="{{ asset('admin/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.css" rel="stylesheet">
     <link href="{{ mix('css/all.css') }}" rel="stylesheet">
 </head>
     <body class="menu-position-side menu-side-left full-screen with-content-panel" style="height: 100%;">
@@ -878,6 +879,8 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="{{ mix('js/all.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.js"></script>
+
 
         @yield('scripts')
     </body>
