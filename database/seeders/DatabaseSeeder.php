@@ -55,16 +55,13 @@ class DatabaseSeeder extends Seeder
         TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
+        User::factory(10)->create();
 
-        foreach (Preduzece::all() as $preduzece) {
-            User::factory(10)->create(['preduzece_id' => $preduzece->id]);
-        }
         $user = User::create([
             'email' => 'superadmin@test.com',
             'ime' => 'Super Admin',
             'password' => Hash::make('123456'),
             'tip_id' => 1,
-            'preduzece_id' => Preduzece::first()->id
         ]);
 
         Role::create(['name' => 'superadmin']);

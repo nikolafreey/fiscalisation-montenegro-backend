@@ -20,7 +20,7 @@ class OdabranoPreduzeceMiddleware
     {
         if (
             DB::table('personal_access_tokens')
-                ->where('token', Auth::user()->currentAccessToken()->token())
+                ->where('token', getAccessToken($request))
                 ->first()
                 ->preduzece_id  === null
         ) {
