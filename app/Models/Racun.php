@@ -174,6 +174,10 @@ class Racun extends Model
         $jedinica_id = @$stavka['jedinica_id'] ?: $usluga->jedinica_mjere_id;
         $porez_id = @$stavka['porez_id'] ?: $usluga->porez_id;
 
+        if (!array_key_exists('kolicina', $stavka)) {
+            $stavka['kolicina'] = 1;
+        }
+
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
             'opis' => $usluga->opis,
@@ -202,6 +206,10 @@ class Racun extends Model
 
         $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
         $porez_id = @$stavka['porez_id'] ?: $cijenaRobe->porezi_id;
+
+        if (!array_key_exists('kolicina', $stavka)) {
+            $stavka['kolicina'] = 1;
+        }
 
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
