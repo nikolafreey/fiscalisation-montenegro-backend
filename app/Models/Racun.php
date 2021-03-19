@@ -179,6 +179,10 @@ class Racun extends Model
             $stavka['kolicina'] = 1;
         }
 
+        if (!$porez_id) {
+            $porez_id = 1;
+        }
+
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
             'opis' => $usluga->opis,
@@ -210,6 +214,10 @@ class Racun extends Model
 
         if (!array_key_exists('kolicina', $stavka)) {
             $stavka['kolicina'] = 1;
+        }
+
+        if (!$porez_id) {
+            $porez_id = 1;
         }
 
         return StavkaRacuna::make([
