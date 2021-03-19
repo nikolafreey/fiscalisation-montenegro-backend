@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoba;
+use App\Models\Racun;
 use App\Models\Roba;
 use App\Models\RobaAtributRobe;
 use App\Models\RobaKategorijaPodKategorija;
@@ -149,6 +150,7 @@ class RobaController extends Controller
     public function destroy(Roba $roba)
     {
         $roba->delete();
+
         return response()->json($roba, 200);
     }
 }

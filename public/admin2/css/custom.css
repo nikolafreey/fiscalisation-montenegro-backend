@@ -1,0 +1,150 @@
+.table td:focus {
+    outline: 0;
+}
+
+.main-menu li {
+    font-weight: 500;
+}
+
+.main-menu li.active {
+    font-weight: 700;
+}
+
+.element-wrapper .toggle .btn + .btn.toggle-off {
+    margin-left: initial;
+}
+
+.element-wrapper .toggle .btn {
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+.voiler.os-dropdown.light a,
+.voiler.os-dropdown.light i,
+.voiler.os-dropdown.light span {
+    color: #3E4B5B;
+}
+
+.logo-w,
+.top-bar {
+    height: 60px;
+}
+
+.table tr > th {
+    font-weight: 700 !important;
+    text-transform: capitalize !important;
+    font-size: 13px !important;
+}
+.table tfoot {
+    border-top: 1px solid rgb(153, 153, 153);
+}
+
+label {
+    font-weight: 500;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.droppable-trash {
+    border: 2px dashed #ccc;
+    margin: 0;
+    padding: 20px;
+}
+
+.droppable-trash img.img-thumbnail {
+    opacity: 0.2;
+}
+
+/* .droppable-trash::before {
+    color: #ccc;
+    font-size: 24px;
+    content: "\e956";
+    font-family: 'osfont';
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+} */
+
+.uploaded-container {
+    height: 150px;
+}
+
+.uploaded-container > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.uploaded-container > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border: 1px solid #dee2e6;
+}
+
+.uploaded-container > a > i {
+    font-size: 50px;
+}
+
+.uploaded-container > a:hover {
+    text-decoration: none;
+}
+
+.btn {
+    line-height: inherit;
+    font-weight: 600;
+}
+
+.os-dropdown {
+    padding: 10px 0;
+    bottom: 0px;
+}
+
+.os-dropdown ul li a {
+    padding: 0.5rem 1.5rem;
+}
+
+.os-dropdown ul li:hover {
+    background-color: #f2f4f8;
+}
+
+.menu-w.color-scheme-light .logo-w {
+    border-bottom: none;
+    padding: 50px 30px 30px 30px;
+}
+
+.dropdown-toggle::after {
+    display:none;
+}
+
+/*.form-control,*/
+/*.custom-file-label,*/
+/*.custom-file-label::after {*/
+/*    border: 1px solid rgba(0, 0, 0, 0.1) !important;*/
+/*}*/
+
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+    border: none !important;
+    content: "";
+}
+
+.custom-file-label {
+    line-height: 1.8;
+}
+
+.custom-file-label::after {
+    height: calc(2.1rem + 2px);
+}
+
+.tox-tinymce {
+    border-radius: 4px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/*.blade-components-icon {*/
+/*    fill: #495057;*/
+/*    height: 15px;*/
+/*}*/

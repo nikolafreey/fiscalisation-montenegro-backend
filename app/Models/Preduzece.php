@@ -7,15 +7,20 @@ use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class Preduzece extends Model
 {
-    use HasFactory, SoftDeletes, GenerateUuid;
+    use HasFactory, SoftDeletes, GenerateUuid, ImaAktivnost;
 
     protected $table = 'preduzeca';
 
-    protected $fillable = ['kratki_naziv', 'puni_naziv', 'oblik_preduzeca', 'adresa', 'grad', 'drzava', 'telefon', 'telefon_viber', 'telefon_whatsapp', 'telefon_facetime', 'fax', 'email', 'website', 'pib', 'pdv', 'djelatnost', 'iban', 'bic_swift', 'kontakt_ime', 'kontakt_prezime', 'kontakt_telefon', 'kontakt_viber', 'kontakt_whatsapp', 'kontakt_facetime', 'kontakt_email', 'twitter_username', 'instagram_username', 'facebook_username', 'skype_username', 'logotip', 'opis', 'lokacija_lat', 'lokacija_long', 'status', 'privatnost', 'verifikovan', 'pdv_obveznik', 'kategorija_id', 'preduzece_id'];
+    protected $naziv = 'kratki_naziv';
+
+    protected $fillable = ['kratki_naziv', 'puni_naziv', 'oblik_preduzeca', 'adresa', 'grad', 'drzava', 'telefon', 'telefon_viber', 'telefon_whatsapp', 'telefon_facetime', 'fax', 'email', 'website', 'pib', 'pdv', 'djelatnost', 'iban', 'bic_swift', 'kontakt_ime', 'kontakt_prezime', 'kontakt_telefon', 'kontakt_viber', 'kontakt_whatsapp', 'kontakt_facetime', 'kontakt_email', 'twitter_username', 'instagram_username', 'facebook_username', 'skype_username', 'logotip', 'opis', 'lokacija_lat', 'lokacija_long', 'status', 'privatnost', 'verifikovan', 'pdv_obveznik', 'kategorija_id', 'preduzece_id', 'pecat', 'sertifikat', 'sifra'];
 
     use Searchable;
 
@@ -76,6 +81,11 @@ class Preduzece extends Model
         return $this->belongsToMany('App\Models\OvlascenoLice', 'ovlasceno_lice_preduzece', 'preduzece_id', 'ovlasceno_lice_id');
     }
 
+    public function paketi()
+    {
+        return $this->belongsToMany('App\Models\Paket', 'paket_preduzece', 'preduzece_id', 'paket_id');
+    }
+
     public function kategorija()
     {
         return $this->belongsTo('App\Models\Kategorija');
@@ -95,4 +105,47 @@ class Preduzece extends Model
     {
         return $this->hasMany('App\Models\Racun', 'preduzece_id');
     }
+
+    public function setPecatAttribute($file)
+    {
+        $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(
+            $file->get(),
+            $this->attributes['sifra']
+        );
+
+        return $this->attributes['pecat'] = Storage::disk('local')
+            ->putFileAs('certs', $file, Str::random(40) . '.pfx');
+    }
+
+    public function setSertifikatAttribute($file)
+    {
+        $this->attributes['vazenje_sertifikata_do'] = $this->getVazenjeDo(
+            $file->get(),
+            $this->attributes['sifra']
+        );
+
+        return $this->attributes['sertifikat'] = Storage::disk('local')
+            ->putFileAs('certs', $file, Str::random(40) . '.pfx');
+    }
+
+    public function getVazenjeDo($pecat, $sifra)
+    {
+        openssl_pkcs12_read($pecat, $key, decrypt($sifra));
+
+        $cert = openssl_x509_parse($key['cert']);
+
+        return date('Y-m-d H:i:s', $cert['validTo_time_t']);
+    }
+
+    public function izracunajBrojUredjaja()
+    {
+        $broj_uredjaja = 0;
+
+        foreach ($this->paketi as $paket) {
+            $broj_uredjaja += $paket->broj_uredjaja;
+        }
+
+        return $broj_uredjaja;
+    }
+
 }

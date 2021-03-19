@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
+use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CijenaRobe extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $table = 'cijene_roba';
 

@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\ImaAktivnost;
 use App\Traits\GenerateUuid;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\NewAccessToken;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes, GenerateUuid, HasApiTokens; //LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes, GenerateUuid, HasApiTokens, HasRoles, ImaAktivnost; //LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -40,7 +42,7 @@ class User extends Authenticatable
 
     public function poslovne_jedinice()
     {
-        return $this->belongsToMany('App\Models\PoslovnaJedinica', 'user_tip_korisnika', 'user_id', 'poslovna_jedinica_id');
+        return $this->hasMany('App\Models\PoslovnaJedinica');
     }
 
     public function tip_korisnika()
@@ -116,4 +118,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getPaketAttribute()
+    {
+        return $this->preduzeca->first()->paketi->sortDesc()->first();
+    }
 }

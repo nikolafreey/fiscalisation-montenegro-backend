@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class AtributRobeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(AtributRobe::class, 'atributRobe');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +22,8 @@ class AtributRobeController extends Controller
      */
     public function index()
     {
+        auth()->user()->can('view AtributRobe');
+
         return AtributRobe::get();
     }
 
@@ -28,6 +35,8 @@ class AtributRobeController extends Controller
      */
     public function store(StoreAtributRobe $request)
     {
+        auth()->user()->can('store AtributRobe');
+
         $atributRobe = AtributRobe::make($request->validated());
         $atributRobe->preduzece_id = Preduzece::all()->first()->id;
         $atributRobe->user_id = auth()->id();
@@ -46,6 +55,8 @@ class AtributRobeController extends Controller
      */
     public function show(AtributRobe $atributRobe)
     {
+        auth()->user()->can('show AtributRobe');
+
         return response()->json($atributRobe, 200);
     }
 
@@ -58,6 +69,8 @@ class AtributRobeController extends Controller
      */
     public function update(StoreAtributRobe $request, AtributRobe $atributRobe)
     {
+        auth()->user()->can('update AtributRobe');
+
         $atributRobe->update($request->validated());
         return response()->json($atributRobe, 200);
     }
@@ -70,6 +83,8 @@ class AtributRobeController extends Controller
      */
     public function destroy(AtributRobe $atributRobe)
     {
+        auth()->user()->can('destroy AtributRobe');
+
         $atributRobe->delete();
         return response()->json($atributRobe, 200);
     }

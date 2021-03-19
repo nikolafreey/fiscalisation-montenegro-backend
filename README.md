@@ -14,9 +14,9 @@ ElasticSearch instalirati lokalno za testiranje.
 ####
 Elasticsearch indexi
 ```
-php artisan elastic:create-index "App\PartnerIndexConfigurator" - za konfiguraciju elastic-a
-php artisan elastic:update-mapping "App\Models\Partner" - za konfiguraciju elastic-a
-php artisan scout:import "App\Models\Partner" - za podatke kad se mijenaju
+php artisan elastic:create-index "App\PartnerIndexConfigurator" // za konfiguraciju elastic-a
+php artisan elastic:update-mapping "App\Models\Partner" // za konfiguraciju elastic-a
+php artisan scout:import "App\Models\Partner" // za podatke kad se mijenaju
 php artisan elastic:create-index "App\RacuniIndexConfigurator"
 php artisan elastic:update-mapping "App\Models\Racun"
 php artisan scout:import "App\Models\Racun"
