@@ -26,7 +26,11 @@ class RobaController extends Controller
     public function robaRacuni(Request $request)
     {
         if ($request->has('search')) {
-            $query = RobaAtributRobe::search($request->search . '*')->with([
+            $queryRoba = Roba::search($request->search . '*')->get()->toArray();
+            foreach ($queryRoba as $roba) {
+                $queryRobaId[] = $roba['id'];
+            }
+            $query = RobaAtributRobe::whereIn('roba_id', $queryRobaId)->with([
                 'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
@@ -38,21 +42,8 @@ class RobaController extends Controller
                 'roba.proizvodjac_robe',
             ])->paginate();
             return $query;
-        } else {
-            $query = RobaAtributRobe::query()->with([
-                'roba',
-                'roba.jedinica_mjere:id,naziv',
-                'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-                'roba.cijene_roba.porez:id,naziv,stopa',
-                'roba.robe_kategorije_podkategorije.podkategorije_roba',
-                'roba.robe_kategorije_podkategorije.kategorije_roba',
-                'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
-                'atribut_robe.tip_atributa',
-                'roba.proizvodjac_robe',
-            ])->paginate();
         }
-
-        if ($request->has('atribut_robe')) {
+        if ($request->has('atribut_id')) {
             $query = RobaAtributRobe::filter($request);
             return $query
                 ->with([

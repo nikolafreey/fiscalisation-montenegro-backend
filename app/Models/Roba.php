@@ -125,9 +125,8 @@ class Roba extends Model
         } else {
             $query = Roba::query();
         }
-        if ($request->has('atribut')) {
-            return $query;
-            $query = $query->where('atribut_robe.naziv', $request->atribut);
+        if ($request->has('atribut_id')) {
+            $query = $query->where('atribut_id', $request->atribut_id);
         }
         return $query;
     }
