@@ -43,6 +43,7 @@ class RobaAtributRobe extends Model
     public static function filter(Request $request)
     {
         if ($request->has('search')) {
+            dd($request);
             return RobaAtributRobe::filterElastic($request);
         }
         $query = RobaAtributRobe::query();
@@ -60,19 +61,19 @@ class RobaAtributRobe extends Model
             // $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
             //     $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
             // });
-            $query = $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
+            $query = $query->where('atribut_id', $request->atribut_id);
         }
         if ($request->has('kategorija_robe_id')) {
             // $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
             //     $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
             // });
-            $query = $query->where('robe_atributi_roba.kategorija_robe_id', $request->atribut_id);
+            $query = $query->where('robe_atributi_roba.kategorija_robe_id', $request->kategorija_robe_id);
         }
         if ($request->has('podkategorija_robe_id')) {
             // $query = $query->whereHas('atribut_robe', function ($query) use ($request) {
             //     $query->where('robe_atributi_roba.atribut_id', $request->atribut_id);
             // });
-            $query = $query->where('robe_atributi_roba.podkategorija_robe_id', $request->atribut_id);
+            $query = $query->where('robe_atributi_roba.podkategorija_robe_id', $request->podkategorija_robe_id);
         }
         if ($request->has('atribut_robe')) {
             // $query = $query->whereHas('atribut_robe', function ($query) use ($request) {

@@ -22,7 +22,7 @@ class PartnerController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->search) {
+        if ($request->has('search') || $request->has('filter')) {
             $query = Partner::filter($request);
 
             $query = $query->with(['preduzece', 'fizicko_lice']);
