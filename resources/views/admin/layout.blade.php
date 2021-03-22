@@ -8,10 +8,12 @@
     <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
     <meta content="Admin dashboard html template" name="description">
     <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('admin/favicon.png') }}" rel="shortcut icon">
     <link href="{{ asset('admin/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.css" rel="stylesheet">
     <link href="{{ mix('css/all.css') }}" rel="stylesheet">
 </head>
     <body class="menu-position-side menu-side-left full-screen with-content-panel" style="height: 100%;">
@@ -725,6 +727,56 @@
                         </div>
                     </li>
                 @endcan
+                <li class=" has-sub-menu">
+                    <a href="{{ route('blogs.index') }}">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-grid"></div>
+                        </div>
+                        <span>Blogovi</span></a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">
+                            Blogovi
+                        </div>
+                        <div class="sub-menu-icon">
+                            <i class="os-icon os-icon-life-buoy"></i>
+                        </div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="{{ route('blogs.index') }}">Prikazi</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('blogs.create') }}">Dodaj blog</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class=" has-sub-menu">
+                    <a href="{{ route('blogCategories.index') }}">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-grid"></div>
+                        </div>
+                        <span>Kategorije blogova</span></a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">
+                            Kategorije blogova
+                        </div>
+                        <div class="sub-menu-icon">
+                            <i class="os-icon os-icon-life-buoy"></i>
+                        </div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="{{ route('blogCategories.index') }}">Prikazi</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('blogCategories.create') }}">Dodaj kategoriju</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
 
@@ -880,7 +932,16 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="{{ mix('js/all.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.js"></script>
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.js" referrerpolicy="origin"></script>
 
+        <script>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        </script>
 
         @yield('scripts')
     </body>

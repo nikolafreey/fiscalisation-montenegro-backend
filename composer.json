@@ -24,7 +24,9 @@
         "ramsey/uuid": "^4.1",
         "selective/xmldsig": "^2.0",
         "spatie/laravel-activitylog": "^3.16",
+        "spatie/laravel-image-optimizer": "^1.6",
         "spatie/laravel-permission": "^4.0",
+        "spatie/laravel-view-models": "^1.3",
         "vertex-it/xmlseclibs": "^4.0",
         "yajra/laravel-datatables-oracle": "~9.0"
     },

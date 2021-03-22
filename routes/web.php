@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Web\AktivnostiController;
+use App\Http\Controllers\Web\BlogCategoryController;
+use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\DozvoleController;
+use App\Http\Controllers\Web\ImageController;
 use App\Http\Controllers\Web\UlogeController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Http\Request;
@@ -47,4 +50,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         'uloge' => 'role'
     ]);
     Route::post('uloge/store/{role}', [UlogeController::class, 'dodajDozvolu'])->name('dodajDozvolu');
+
+    Route::post('cropper/image-upload', [ImageController::class, 'store'])->name('cropper.images');
+
+    Route::resource('blogs', BlogController::class)->except('show');
+
+    Route::resource('blogCategories', BlogCategoryController::class)->except('show');
 });
