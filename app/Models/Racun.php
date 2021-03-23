@@ -63,21 +63,21 @@ class Racun extends Model
             'broj_racuna' => [
                 'type' => 'text',
             ],
-            'status' => [
-                'type' => 'keyword',
-            ],
-            'created_at' => [
-                'type' => 'date',
-            ],
+            // 'status' => [
+            //     'type' => 'keyword',
+            // ],
+            // 'created_at' => [
+            //     'type' => 'date',
+            // ],
             'partner.preduzece.kratki_naziv' => [
                 'type' => 'text',
             ],
-            'partner.preduzece.puni_naziv' => [
-                'type' => 'text',
-            ],
-            'partner.preduzec.pib' => [
-                'type' => 'text',
-            ],
+            // 'partner.preduzece.puni_naziv' => [
+            //     'type' => 'text',
+            // ],
+            // 'partner.preduzece.pib' => [
+            //     'type' => 'text',
+            // ],
             'partner.fizicko_lice.ime' => [
                 'type' => 'text',
             ],
@@ -203,7 +203,9 @@ class Racun extends Model
     {
         $cijenaRobe = CijenaRobe::first();
 
-        $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+        if ($stavka['atribut_id']) {
+            $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+        }
 
         $popust_na_jedinicnu_cijenu = $atribut
             ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100

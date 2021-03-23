@@ -35,15 +35,14 @@ class RacunController extends Controller
     {
         Log::info('ssssss', array($request->all()));
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*');
+            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
-
+                )->paginate(10);
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
@@ -68,7 +67,7 @@ class RacunController extends Controller
             return $data;
         }
 
-        $queryAll = Racun::query();
+        $queryAll = Racun::query()->orderBy('created_at', 'DESC');
         $queryAll = $queryAll->where('tip_racuna', Racun::RACUN);
 
         $paginatedData = $queryAll
