@@ -145,6 +145,7 @@ class RobaController extends Controller
     public function destroy(Roba $roba)
     {
         $roba->delete();
+        RobaAtributRobe::where('roba_id', $roba->id)->delete();
 
         return response()->json($roba, 200);
     }
