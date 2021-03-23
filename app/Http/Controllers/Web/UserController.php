@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdatePreduzece;
-use App\Models\Preduzece;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -24,7 +22,7 @@ class UserController extends Controller
                     return view('admin.users.action', compact('user'));
                 })
                 ->make();
-        };
+        }
 
         return view('admin.users.index');
     }

@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogRequest;
-use App\Http\Requests\UpdatePreduzece;
 use App\Models\Blog;
-use App\Models\BlogCategory;
-use App\Models\Preduzece;
-use App\ViewModels\BlogCategoryViewModel;
 use App\ViewModels\BlogViewModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;

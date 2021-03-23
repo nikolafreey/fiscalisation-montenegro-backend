@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogCategoryRequest;
-use App\Http\Requests\BlogRequest;
-use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\ViewModels\BlogCategoryViewModel;
 use Illuminate\Http\Request;

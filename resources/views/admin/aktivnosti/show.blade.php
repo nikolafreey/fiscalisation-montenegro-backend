@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('content')
+
     <table class="table">
         <thead>
         <tr class="table-primary">
@@ -12,7 +13,7 @@
         <tbody>
         <tr>
             <th scope="row">Pecat</th>
-            <td>{{ $aktivnost['properties']['old']['pecat'] }}</td>
+            <td>{{ $aktivnost['properties']['old']['pecat']  }}</td>
             <td>{{ $aktivnost['properties']['attributes']['pecat'] }}</td>
         </tr>
         <tr>

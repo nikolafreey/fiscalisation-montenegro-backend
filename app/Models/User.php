@@ -55,6 +55,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Modul', 'modul_user', 'user_id', 'modul_id');
     }
 
+
     public function tip_atributa()
     {
         return $this->hasMany('App\Models\TipAtributa', 'user_id');

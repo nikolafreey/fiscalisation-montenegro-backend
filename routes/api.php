@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DozvolaController;
 use App\Http\Controllers\OdaberiPreduzeceController;
 use Illuminate\Http\Request;
@@ -214,9 +216,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
 
+        Route::apiResource('/blogs', BlogController::class);
 
-
+        Route::apiResource('/blogCategories', BlogCategoryController::class);
     });
-
-
 });

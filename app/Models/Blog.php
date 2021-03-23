@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\FileService;
+use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
@@ -14,7 +15,7 @@ class Blog extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['naziv', 'slika', 'tekst', 'blog_category_id'];
 
     public function categories()
     {

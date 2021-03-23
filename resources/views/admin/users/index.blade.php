@@ -11,23 +11,15 @@
                 <div class="element-box">
                     <table id="example" class="table">
                         <thead>
-                        <tr>
-                            <th>Ime</th>
-                            <th>E-mail</th>
-                            <th>Uloga</th>
-                            <th>Action</th>
-                        </tr>
+                            <tr>
+                                <th>Ime</th>
+                                <th>E-mail</th>
+                                <th>Uloga</th>
+                                <th>Action</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
-            </div>
-            <div class="floated-colors-btn floated-btn">
-                <div class="os-toggler-w">
-                    <div class="os-toggler-i">
-                        <div class="os-toggler-pill"></div>
-                    </div>
-                </div>
-                <span>Dark </span><span>Colors</span>
             </div>
         </div>
     </div>

@@ -20,14 +20,6 @@
                     </table>
                 </div>
             </div>
-            <div class="floated-colors-btn floated-btn">
-                <div class="os-toggler-w">
-                    <div class="os-toggler-i">
-                        <div class="os-toggler-pill"></div>
-                    </div>
-                </div>
-                <span>Dark </span><span>Colors</span>
-            </div>
         </div>
     </div>
 
