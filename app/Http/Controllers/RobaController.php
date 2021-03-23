@@ -89,8 +89,12 @@ class RobaController extends Controller
         $roba->save();
 
         $roba->storeCijene($request->all(), $roba->preduzece_id);
-        $roba->storeAtributi($request->atributi);
-        $roba->storeKategorije($request->kategorije);
+        if ($request->atributi) {
+            $roba->storeAtributi($request->atributi);
+        }
+        if ($request->kategorije) {
+            $roba->storeKategorije($request->kategorije);
+        }
 
 
         return response()->json($roba, 201);
