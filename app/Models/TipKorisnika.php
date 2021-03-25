@@ -12,8 +12,14 @@ class TipKorisnika extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'tipovi_korisnika';
-    protected $fillable = ['naziv'];
+
+    protected $fillable = [
+        'naziv'
+    ];
+
     /*
     public function users()
     {

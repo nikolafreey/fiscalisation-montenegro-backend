@@ -16,18 +16,18 @@
                                 @method($method)
                                 @csrf
                                 <h5 class="form-header">
-                                    Izmjenite Kategoriju Bloga
+                                    {{ $action ? 'Izmjenite' : 'Dodajte' }} kategoriju bloga
                                 </h5>
                                 <div class="form-group">
                                     <label for="naziv">Unesite naziv kategorije</label>
-                                    <input type="text" class="form-control" id="naziv" aria-describedby="emailHelp" placeholder="Unesite ime kategorije" name="naziv" value="{{ old('naziv', $blogCategory->naziv) }}">
+                                    <input type="text" class="form-control" id="naziv" aria-describedby="emailHelp" placeholder="Unesite naziv kategorije" name="naziv" value="{{ old('naziv', $blogCategory->naziv) }}">
                                     @error('naziv')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
-                                        Sacuvajte
+                                        {{ $action ? 'Sacuvajte' : 'Dodajte' }}
                                     </button>
                                 </div>
                             </form>
@@ -37,6 +37,5 @@
             </div>
         </div>
     </div>
-
 
 @endsection

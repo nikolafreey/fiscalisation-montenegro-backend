@@ -8,7 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlogCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, ImaAktivnost;
 
-    protected $fillable = ['naziv'];
+    protected $naziv = 'naziv';
+
+    protected $fillable = [
+        'naziv'
+    ];
 }

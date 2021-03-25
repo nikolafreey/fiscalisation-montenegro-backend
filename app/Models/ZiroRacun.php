@@ -12,6 +12,8 @@ class ZiroRacun extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'broj_racuna';
+
     protected $table = 'ziro_racuni';
 
     protected $fillable = [

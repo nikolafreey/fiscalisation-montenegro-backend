@@ -54,7 +54,8 @@ class CreatePreduzecaTable extends Migration
             $table->boolean('pdv_obveznik')->nullable();
             $table->string('pecat', 100)->nullable();
             $table->string('sertifikat', 100)->nullable();
-            $table->text('sifra')->nullable();
+            $table->text('pecatSifra')->nullable();
+            $table->text('sertifikatSifra')->nullable();
             $table->timestamp('vazenje_pecata_do')->nullable();
             $table->timestamp('vazenje_sertifikata_do')->nullable();
 

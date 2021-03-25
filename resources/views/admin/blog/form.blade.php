@@ -15,11 +15,11 @@
                                 @method($method)
                                 @csrf
                                 <h5 class="form-header">
-                                    Dodajte Blog
+                                    {{ $action ? 'Izmjenite' : 'Dodajte' }} Blog
                                 </h5>
                                 <div class="form-group">
-                                    <label for="naziv">Unesite naziv bloga</label>
-                                    <input type="text" class="form-control" id="naziv" aria-describedby="emailHelp" placeholder="Unesite naziv" name="naziv" value="{{ old('naziv', $blog->naziv) }}">
+                                    <label for="naziv">Naziv bloga</label>
+                                    <input type="text" class="form-control" id="naziv" aria-describedby="emailHelp" placeholder="Naziv..." name="naziv" value="{{ old('naziv', $blog->naziv) }}">
                                     @error('naziv')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -27,7 +27,7 @@
 
                                 <div class="form-group row">
                                     <div class="col-sm-12 col-md-6 col-lg-4">
-
+                                        <label for="slika">Naslovna fotografija</label>
                                         <div class="custom-file">
                                             <input
                                                 class="custom-file-input"
@@ -36,7 +36,7 @@
                                                 type="file"
                                             >
                                             <label class="custom-file-label" for="slika">
-                                                <p>Odaberite sliku</p>
+                                                Fotografija...
                                             </label>
                                         </div>
                                         <input
@@ -80,15 +80,15 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="tekst">Unesite tekst</label>
-                                    <textarea class="form-control" id="tekst" rows="3" name="tekst" placeholder="Unesite tekst">{{ old('tekst', $blog->tekst) }}</textarea>
+                                    <label for="tekst">Sadrzaj bloga</label>
+                                    <textarea class="form-control" id="tekst" rows="3" name="tekst" placeholder="Sadrzaj...">{{ old('tekst', $blog->tekst) }}</textarea>
                                     @error('tekst')
                                     <div class="text-danger">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="blog_category_id">Example select</label>
+                                    <label for="blog_category_id">Kategorija bloga</label>
                                     <select class="form-control" id="blog_category_id" name="blog_category_id">
                                         @foreach($blogCategories as $category)
                                             <option
@@ -108,7 +108,7 @@
 
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
-                                        Dodajte
+                                        {{ $action ? 'Sacuvajte' : 'Dodajte' }}
                                     </button>
                                 </div>
                             </form>
@@ -136,42 +136,38 @@
             min_height: 400,
             paste_data_images : true,
             file_picker_types: 'image',
-            file_picker_callback: function (cb, value, meta) {
-                var input = document.createElement('input');
-                input.setAttribute('type', 'file');
-                input.setAttribute('accept', 'image/*');
+            images_upload_handler: function (blobInfo, success, failure) {
+                let xhr, formData;
 
-                /*
-                  Note: In modern browsers input[type="file"] is functional without
-                  even adding it to the DOM, but that might not be the case in some older
-                  or quirky browsers like IE, so you might want to add it to the DOM
-                  just in case, and visually hide it. And do not forget do remove it
-                  once you do not need it anymore.
-                */
+                xhr = new XMLHttpRequest();
+                xhr.withCredentials = false;
+                xhr.open('POST', '{{ route('cropper.images') }}');
+                xhr.setRequestHeader("X-CSRF-Token", "{{ csrf_token() }}");
 
-                input.onchange = function () {
-                    var file = this.files[0];
+                xhr.onload = function() {
+                    var json;
 
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        /*
-                          Note: Now we need to register the blob in TinyMCEs image blob
-                          registry. In the next release this part hopefully won't be
-                          necessary, as we are looking to handle it internally.
-                        */
-                        var id = 'blobid' + (new Date()).getTime();
-                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                        var base64 = reader.result.split(',')[1];
-                        var blobInfo = blobCache.create(id, file, base64);
-                        blobCache.add(blobInfo);
+                    if (xhr.status != 200) {
+                        failure('HTTP Error: ' + xhr.status);
+                        return;
+                    }
 
-                        /* call the callback and populate the Title field with the file name */
-                        cb(blobInfo.blobUri(), { title: file.name });
-                    };
-                    reader.readAsDataURL(file);
+                    json = JSON.parse(xhr.responseText);
+
+                    if (! json) {
+                        failure('Invalid JSON: ' + xhr.responseText);
+
+                        return;
+                    }
+
+                    success(json);
                 };
-                input.click();
-            },
+
+                formData = new FormData();
+                formData.append('image', blobInfo.blob(), blobInfo.filename());
+
+                xhr.send(formData);
+            }
         });
 
         $(document).ready(function () {

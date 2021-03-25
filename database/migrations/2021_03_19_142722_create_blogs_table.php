@@ -17,7 +17,7 @@ class CreateBlogsTable extends Migration
             $table->id();
             $table->string('naziv');
             $table->string('slika');
-            $table->text('tekst');
+            $table->longText('tekst');
             $table->foreignId('blog_category_id')
                 ->constrained('blog_categories')
                 ->onDelete('cascade')

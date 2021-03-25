@@ -37,8 +37,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     ])->only('index', 'edit', 'update');
 
 
-    Route::resource('users', UserController::class)->only('index', 'edit');
-    Route::post('users/store/{user}', [UserController::class, 'store'])->name('users.store');
+    Route::resource('users', UserController::class);
+    Route::get('uloge/{user}', [UserController::class, 'izmjeniteUlogu'])->name('izmjeniteUlogu');
+    Route::put('uloge/{user}', [UserController::class, 'updateUlogu'])->name('updateUlogu');
 
     Route::resource('aktivnosti', AktivnostiController::class)->only('index', 'show')->parameters([
         'aktivnosti' => 'activity'

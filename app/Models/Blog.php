@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ContentDomService;
 use App\Services\FileService;
 use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,9 +14,16 @@ use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
 class Blog extends Model
 {
-    use HasFactory;
+    use HasFactory, ImaAktivnost;
 
-    protected $fillable = ['naziv', 'slika', 'tekst', 'blog_category_id'];
+    protected $naziv = 'naziv';
+
+    protected $fillable = [
+        'naziv',
+        'slika',
+        'tekst',
+        'blog_category_id'
+    ];
 
     public function categories()
     {
@@ -37,6 +45,12 @@ class Blog extends Model
         ImageOptimizer::optimize(storage_path('app/' . $newImage));
 
         $this->attributes['slika'] = $newImage;
+    }
 
+    public function setTekstAttribute($value)
+    {
+        $newImage = ContentDomService::uploadTemporaryImages($value, 'blogs/tekst/');
+
+        $this->attributes['tekst'] = $newImage;
     }
 }

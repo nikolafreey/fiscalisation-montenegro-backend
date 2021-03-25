@@ -17,21 +17,25 @@ class CreateUserTipKorisnikaTable extends Migration
             $table->id();
 
             $table->foreignUuid('preduzece_id')
+                ->nullable()
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreignId('poslovna_jedinica_id')
+                ->nullable()
                 ->constrained('poslovne_jedinice')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreignUuid('user_id')
+                ->nullable()
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
             $table->foreignId('tip_korisnika_id')
+                ->nullable()
                 ->constrained('tipovi_korisnika')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

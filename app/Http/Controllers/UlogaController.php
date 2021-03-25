@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Preduzece;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class DozvolaController extends Controller
+class UlogaController extends Controller
 {
     public function index()
     {
-        return Permission::all();
+        return Role::all();
     }
 }

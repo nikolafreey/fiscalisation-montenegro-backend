@@ -24,10 +24,11 @@ class CreateUsersTable extends Migration
             $table->boolean('paket')->nullable();
             $table->date('vazi_do')->nullable();
 
-            $table->foreignId('tip_id')
-                ->constrained('tipovi_korisnika')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            // $table->foreignId('tip_id')
+            //     ->nullable()
+            //     ->constrained('tipovi_korisnika')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

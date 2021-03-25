@@ -17,7 +17,10 @@ class UlazniRacun extends Model
     use HasFactory, SoftDeletes, ImaAktivnost;
 
     public const RACUN = 'RACUN';
+
     public const GOTOVINSKI = 'GOTOVINSKI';
+
+    protected $naziv = 'vrsta_racuna';
 
     protected $table = 'ulazni_racuni';
 

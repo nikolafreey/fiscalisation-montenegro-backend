@@ -16,6 +16,8 @@ class Racun extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'vrsta_racuna';
+
     protected $table = 'racuni';
 
     protected $fillable = [

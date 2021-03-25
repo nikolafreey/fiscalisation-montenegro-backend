@@ -11,8 +11,13 @@ class Modul extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'moduli';
-    protected $fillable = ['naziv'];
+
+    protected $fillable = [
+        'naziv'
+    ];
 
     public function users()
     {

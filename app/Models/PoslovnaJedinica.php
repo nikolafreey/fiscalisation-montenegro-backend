@@ -11,7 +11,18 @@ class PoslovnaJedinica extends Model
 {
     use HasFactory, ImaAktivnost;
 
+    protected $naziv = 'kratki_naziv';
+
     protected $table = 'poslovne_jedinice';
+
+    protected $fillable = [
+        'kratki_naziv',
+        'adresa',
+        'grad',
+        'drzava',
+        'preduzce_id',
+        'user_id'
+    ];
 
     public function preduzece()
     {

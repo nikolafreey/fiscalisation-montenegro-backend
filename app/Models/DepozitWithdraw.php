@@ -9,7 +9,7 @@ use App\Traits\ImaAktivnost;
 
 class DepozitWithdraw extends Model
 {
-    use HasFactory, ImaAktivnost;
+    use HasFactory;
 
     protected static function booted()
     {

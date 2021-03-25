@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DozvolaController;
 use App\Http\Controllers\OdaberiPreduzeceController;
+use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -66,7 +67,7 @@ Route::post('register', [MobileAuthController::class, 'register']);
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', function (Request $request) {
         return auth()->user();
@@ -77,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
     Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
 
-    Route::middleware('odabranoPreduzece')->group(function () {
+    // Route::middleware('odabranoPreduzece')->group(function () {
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
         // Route::get('show', [PreduzeceController::class, 'show']);
@@ -219,5 +220,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('/blogs', BlogController::class);
 
         Route::apiResource('/blogCategories', BlogCategoryController::class);
-    });
-});
+
+        Route::get('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'index']);
+        Route::post('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'store']);
+    // });
+// });

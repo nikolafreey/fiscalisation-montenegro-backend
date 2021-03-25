@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ImaAktivnost;
 use App\Traits\GenerateUuid;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
@@ -23,6 +24,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    protected $naziv = 'email';
+
     protected $fillable = [
         'email',
         'password',
@@ -120,8 +124,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getPaketAttribute()
-    {
-        return $this->preduzeca->first()->paketi->sortDesc()->first();
-    }
+    // public function setAvatarAttribute($value)
+    // {
+    //     return $this->attributes['avatar'] = Storage::disk('public')->putFile('avatars', $value);
+    // }
 }

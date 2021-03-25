@@ -39,6 +39,7 @@ class CreateRolesAndPermissions extends Command
         Role::firstOrCreate(['name' => 'vlasnik']);
         Role::firstOrCreate(['name' => 'zaposleni']);
         Role::firstOrCreate(['name' => 'knjigovodja']);
+        Role::firstOrCreate(['name' => 'kasir']);
         Role::firstOrCreate(['name' => 'gost']);
 
         Permission::firstOrCreate(['name' => 'edit preduzeca']);

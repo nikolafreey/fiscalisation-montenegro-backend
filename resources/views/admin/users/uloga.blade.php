@@ -7,14 +7,19 @@
                 <div class="col-lg-10">
                     <div class="element-wrapper">
                         <div class="element-box">
-                            <form method="POST" action="{{ route('users.store', $user) }}" enctype="multipart/form-data">
+                            <form
+                                method="POST"
+                                action="{{ route('updateUlogu', $user) }}"
+                                enctype="multipart/form-data"
+                            >
+                                @method('put')
                                 @csrf
                                 <h5 class="form-header">
-                                    Dodajte ulogu
+                                    Izmjenite ulogu
                                 </h5>
                                 <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Uloge</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="role">
+                                    <label for="uloga">Uloga</label>
+                                    <select class="form-control" id="uloga" name="uloga">
                                         @foreach($roles as $role)
                                             <option value="{{ $role->name }}">{{ $role->name }}</option>
                                         @endforeach
@@ -22,7 +27,7 @@
                                 </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
-                                        Dodajte
+                                        Sacuvajte
                                     </button>
                                 </div>
                             </form>
@@ -32,6 +37,5 @@
             </div>
         </div>
     </div>
-
 
 @endsection

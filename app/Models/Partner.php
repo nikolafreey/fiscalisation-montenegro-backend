@@ -15,6 +15,8 @@ class Partner extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'kontakt_ime';
+
     protected $table = 'partneri';
 
     protected $fillable = [

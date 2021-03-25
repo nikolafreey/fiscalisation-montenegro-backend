@@ -11,6 +11,8 @@ class JedinicaMjere extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'jedinice_mjere';
 
     protected $fillable = [

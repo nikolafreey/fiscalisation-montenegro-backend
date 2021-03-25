@@ -34,22 +34,21 @@ class Fiskalizuj implements ShouldQueue
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
-            // TODO: Check is this data dynamic?
             'taxpayer' => [
-                'TIN' => '12345678', // Taxpayer Identification Number (PIB)
-                'BU' => 'xx123xx123', // Business Unit Code (PJ)
                 'CR' => 'si747we972', // Cash Register (ENU)
                 'SW' => 'ss123ss123', // Software Code
-                'OP' => 'oo123oo123', // Operator Code
+                'TIN' => $racun->preduzece->pib,
+                'BU' => $racun->poslovnaJedinica->kratki_naziv,
+                'OP' => $racun->kod_operatera,
             ],
             'seller' => [
                 'IDType' => 'TIN',
-                'Name' => 'Test d.o.o.',
+                'Name' => $racun->preduzece->kratki_naziv,
             ],
             'buyer' => [
                 'IDType' => 'TIN',
-                'IDNum' => '12345678',
-                'Name' => 'Partner',
+                'IDNum' => $racun->partner->preduzece->pib,
+                'Name' => $racun->partner->kontakt_ime,
             ],
         ];
 
@@ -74,7 +73,7 @@ class Fiskalizuj implements ShouldQueue
             ])
             ->withHeaders([
                 'Content-Type' => 'text/xml; charset=utf-8',
-            ])->send('POST', 'https://efitest.tax.gov.me:443/fs-v1', [
+            ])->send('POST', config('third_party_apis.poreska.fiskalizacija_url'), [
                 'body' => $signedXML,
             ]);
 
@@ -176,7 +175,7 @@ class Fiskalizuj implements ShouldQueue
 
     private function generateQRCode()
     {
-        return 'https://efitest.tax.gov.me/ic/#/verify?iic=' . implode('&', [
+        return config('third_party_apis.poreska.qr_code_url') . implode('&', [
                 $this->data['IICData']['IIC'],
                 'tin=' . $this->data['taxpayer']['TIN'],
                 'crtd=' . $this->data['danasnji_datum'],

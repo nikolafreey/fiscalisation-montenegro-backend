@@ -16,11 +16,55 @@ class Preduzece extends Model
 {
     use HasFactory, SoftDeletes, GenerateUuid, ImaAktivnost;
 
-    protected $table = 'preduzeca';
-
     protected $naziv = 'kratki_naziv';
 
-    protected $fillable = ['kratki_naziv', 'puni_naziv', 'oblik_preduzeca', 'adresa', 'grad', 'drzava', 'telefon', 'telefon_viber', 'telefon_whatsapp', 'telefon_facetime', 'fax', 'email', 'website', 'pib', 'pdv', 'djelatnost', 'iban', 'bic_swift', 'kontakt_ime', 'kontakt_prezime', 'kontakt_telefon', 'kontakt_viber', 'kontakt_whatsapp', 'kontakt_facetime', 'kontakt_email', 'twitter_username', 'instagram_username', 'facebook_username', 'skype_username', 'logotip', 'opis', 'lokacija_lat', 'lokacija_long', 'status', 'privatnost', 'verifikovan', 'pdv_obveznik', 'kategorija_id', 'preduzece_id', 'pecat', 'sertifikat', 'sifra'];
+    protected $table = 'preduzeca';
+
+    protected $fillable = [
+        'kratki_naziv',
+        'puni_naziv',
+        'oblik_preduzeca',
+        'adresa',
+        'grad',
+        'drzava',
+        'telefon',
+        'telefon_viber',
+        'telefon_whatsapp',
+        'telefon_facetime',
+        'fax',
+        'email',
+        'website',
+        'pib',
+        'pdv',
+        'djelatnost',
+        'iban',
+        'bic_swift',
+        'kontakt_ime',
+        'kontakt_prezime',
+        'kontakt_telefon',
+        'kontakt_viber',
+        'kontakt_whatsapp',
+        'kontakt_facetime',
+        'kontakt_email',
+        'twitter_username',
+        'instagram_username',
+        'facebook_username',
+        'skype_username',
+        'logotip',
+        'opis',
+        'lokacija_lat',
+        'lokacija_long',
+        'status',
+        'privatnost',
+        'verifikovan',
+        'pdv_obveznik',
+        'kategorija_id',
+        'preduzece_id',
+        'pecat',
+        'sertifikat',
+        'pecatSifra',
+        'sertifikatSifra'
+    ];
 
     use Searchable;
 
@@ -53,7 +97,7 @@ class Preduzece extends Model
 
     public function users()
     {
-        return $this->hasMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User', 'user_tip_korisnika', 'preduzece_id', 'user_id');
     }
 
     public function fizickaLica()
@@ -110,7 +154,7 @@ class Preduzece extends Model
     {
         $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(
             $file->get(),
-            $this->attributes['sifra']
+            $this->attributes['pecatSifra']
         );
 
         return $this->attributes['pecat'] = Storage::disk('local')
@@ -121,7 +165,7 @@ class Preduzece extends Model
     {
         $this->attributes['vazenje_sertifikata_do'] = $this->getVazenjeDo(
             $file->get(),
-            $this->attributes['sifra']
+            $this->attributes['sertifikatSifra']
         );
 
         return $this->attributes['sertifikat'] = Storage::disk('local')

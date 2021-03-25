@@ -15,9 +15,20 @@ class Roba extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'robe';
 
-    protected $fillable = ['naziv', 'opis', 'detaljni_opis', 'ean', 'interna_sifra_proizvoda', 'status', 'proizvodjac_robe_id', 'jedinica_mjere_id'];
+    protected $fillable = [
+        'naziv',
+        'opis',
+        'detaljni_opis',
+        'ean',
+        'interna_sifra_proizvoda',
+        'status',
+        'proizvodjac_robe_id',
+        'jedinica_mjere_id'
+    ];
 
     use Searchable;
 

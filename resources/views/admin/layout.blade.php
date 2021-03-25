@@ -89,10 +89,10 @@
                         <div class="icon-w">
                             <div class="os-icon os-icon-package"></div>
                         </div>
-                        <span>Preduzeca</span></a>
+                        <span>Sertifikati</span></a>
                     <div class="sub-menu-w">
                         <div class="sub-menu-header">
-                            Preduzeca
+                            Sertifikati
                         </div>
                         <div class="sub-menu-icon">
                             <i class="os-icon os-icon-package"></i>
@@ -147,6 +147,9 @@
                                     <li>
                                         <a href="{{ route('users.index') }}">Prikazi</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('users.create') }}">Dodajte korisnika</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -172,7 +175,7 @@
                                         <a href="{{ route('uloge.index') }}">Prikazi</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('uloge.create') }}">Dodaj ulogu</a>
+                                        <a href="{{ route('uloge.create') }}">Dodajte ulogu</a>
                                     </li>
                                 </ul>
                             </div>
@@ -199,7 +202,7 @@
                                         <a href="{{ route('dozvole.index') }}">Prikazi</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('dozvole.create') }}">Dodaj dozvolu</a>
+                                        <a href="{{ route('dozvole.create') }}">Dodajte dozvolu</a>
                                     </li>
                                 </ul>
                             </div>
@@ -225,7 +228,7 @@
                                     <a href="{{ route('blogs.index') }}">Prikazi</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('blogs.create') }}">Dodaj blog</a>
+                                    <a href="{{ route('blogs.create') }}">Dodajte blog</a>
                                 </li>
                             </ul>
                         </div>
@@ -250,7 +253,7 @@
                                     <a href="{{ route('blogCategories.index') }}">Prikazi</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('blogCategories.create') }}">Dodaj kategoriju</a>
+                                    <a href="{{ route('blogCategories.create') }}">Dodajte kategoriju</a>
                                 </li>
                             </ul>
                         </div>
@@ -261,9 +264,7 @@
         <div class="content-w">
             <div class="content-i">
                 <div class="content-box">
-                    <div class="row">
-                        @yield('content')
-                    </div>
+                    @yield('content')
                 </div>
             </div>
         </div>

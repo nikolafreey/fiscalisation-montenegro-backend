@@ -14,6 +14,8 @@ class Usluga extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'usluge';
 
     protected $fillable = [

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class StoreUser extends FormRequest
 {
@@ -16,6 +17,13 @@ class StoreUser extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'password' => empty($this->input('password')) ? Str::random(40) : $this->input('password')
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,8 +32,11 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
+            'ime' => 'nullable',
+            'prezime' => 'nullable',
+            'avatar' => 'nullable',
             'email' => 'required|email',
-            'password' => 'required|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
+            'password' => 'required'
         ];
     }
 }

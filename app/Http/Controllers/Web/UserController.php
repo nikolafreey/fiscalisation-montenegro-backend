@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUser;
+use App\Mail\SendPassword;
 use App\Models\User;
+use App\ViewModels\UserViewModel;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -27,21 +32,58 @@ class UserController extends Controller
         return view('admin.users.index');
     }
 
+    public function create()
+    {
+        $viewModel = new UserViewModel();
+
+        return view('admin.users.form', $viewModel);
+    }
+
+    public function store(StoreUser $request)
+    {
+        // auth()->user()->can('edit users');
+
+        $user = User::create($request->validated());
+
+        $user->syncRoles([$request->uloga]);
+
+        $user->preduzeca()->attach([$request->preduzece]);
+
+        Mail::to($user->email)
+            ->send(new SendPassword($user));
+
+        return redirect(route('users.index'));
+    }
+
     public function edit(User $user)
     {
-        auth()->user()->can('edit users');
+        // auth()->user()->can('edit users');
 
-        return view('admin.users.edit', [
-            'user' => $user,
-            'roles' => Role::all()
+        $viewModel = new UserViewModel($user);
+
+        return view('admin.users.form', $viewModel);
+    }
+
+    public function update(User $user, StoreUser $request)
+    {
+        $user->update($request->validated());
+
+        $user->syncRoles([$request->uloga]);
+
+        return redirect(route('users.index'));
+    }
+
+    public function izmjeniteUlogu(User $user)
+    {
+        return view('admin.users.uloga', [
+            'roles' => Role::all(),
+            'user' => $user
         ]);
     }
 
-    public function store(User $user, Request $request)
+    public function updateUlogu(User $user, Request $request)
     {
-        auth()->user()->can('edit users');
-
-        $user->syncRoles([$request->role]);
+        $user->syncRoles([$request->uloga]);
 
         return redirect(route('users.index'));
     }
