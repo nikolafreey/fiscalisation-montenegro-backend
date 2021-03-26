@@ -26,6 +26,7 @@ class RobaController extends Controller
     public function robaRacuni(Request $request)
     {
         if ($request->has('search')) {
+            $queryRobaId = [];
             $queryRoba = Roba::search($request->search . '*')->get()->toArray();
             foreach ($queryRoba as $roba) {
                 $queryRobaId[] = $roba['id'];

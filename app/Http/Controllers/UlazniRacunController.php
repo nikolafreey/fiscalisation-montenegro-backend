@@ -33,7 +33,7 @@ class UlazniRacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($searchQuery)]);
@@ -50,7 +50,7 @@ class UlazniRacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
             $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
