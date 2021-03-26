@@ -48,8 +48,10 @@ class UserController extends Controller
 
         $user->preduzeca()->attach([$request->preduzece]);
 
-        Mail::to($user->email)
-            ->send(new SendPassword($user));
+        if ($request->check === 'on') {
+            Mail::to($user->email)
+                ->send(new SendPassword($user));
+        }
 
         return redirect(route('users.index'));
     }

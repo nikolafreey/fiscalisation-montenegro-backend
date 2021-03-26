@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DozvolaController;
 use App\Http\Controllers\OdaberiPreduzeceController;
 use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,16 +43,6 @@ use App\Models\DepozitWithdraw;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Laravel\Sanctum\Sanctum;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
@@ -82,8 +73,6 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
     // Route::middleware('odabranoPreduzece')->group(function () {
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
-
-        // Route::get('show', [PreduzeceController::class, 'show']);
 
         Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
 
@@ -225,5 +214,11 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
         Route::get('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'index']);
         Route::post('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'store']);
+
+        Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
+        Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
+        Route::put('uploadUgovor', [UploadController::class, 'uploadUgovora']);
+        Route::put('uploadDokument', [UploadController::class, 'uploadDokumenata']);
+
     // });
 // });

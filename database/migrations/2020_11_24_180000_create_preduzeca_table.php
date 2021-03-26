@@ -56,7 +56,6 @@ class CreatePreduzecaTable extends Migration
             $table->string('sertifikat', 100)->nullable();
             $table->text('pecatSifra')->nullable();
             $table->text('sertifikatSifra')->nullable();
-            $table->string('logotip')->nullable();
             $table->timestamp('vazenje_pecata_do')->nullable();
             $table->timestamp('vazenje_sertifikata_do')->nullable();
 

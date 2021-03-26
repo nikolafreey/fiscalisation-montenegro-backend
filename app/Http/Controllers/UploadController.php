@@ -10,7 +10,9 @@ class UploadController extends Controller
 {
     public function uploadAvataraKorisnika(User $user, UploadAvataraKorisnikaRequest $request)
     {
+        $user->update($request->validated());
 
+        return response()->json($user);
     }
 
     public function uploadUlaznihRacuna()

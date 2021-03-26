@@ -124,8 +124,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    // public function setAvatarAttribute($value)
-    // {
-    //     return $this->attributes['avatar'] = Storage::disk('public')->putFile('avatars', $value);
-    // }
+    public function setAvatarAttribute($value)
+    {
+        return $this->attributes['avatar'] = Storage::disk('public')->putFile('avatars', $value);
+    }
 }

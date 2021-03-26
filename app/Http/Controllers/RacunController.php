@@ -16,10 +16,10 @@ use Carbon\Carbon;
 
 class RacunController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(Racun::class, 'racun');
-    // }
+    public function __construct()
+    {
+        $this->authorizeResource(Racun::class, 'racun');
+    }
 
     /**
      * Display a listing of the resource.
@@ -208,11 +208,22 @@ class RacunController extends Controller
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
 
-            $user = User::first();
+            $user = auth()->user();
             $racun->user_id = $user->id;
 
-            $racun->preduzece_id = $user->preduzeca->first()->id;
-            $racun->poslovna_jedinica_id = $request->poslovna_jedinica_id;
+            $preduzece = $user
+                ->preduzeca
+                ->where('id', $request->preduzece_id)
+                ->firstOrFail();
+
+            $racun->preduzece_id = $preduzece->id;
+
+            $poslovnaJedinica = $preduzece
+                ->poslovne_jedinice
+                ->where('id', $request->poslovna_jedinica_id)
+                ->firstOrFail();
+
+            $racun->poslovna_jedinica_id = $poslovnaJedinica->id;
 
             $racun->save();
 

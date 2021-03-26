@@ -27,7 +27,7 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        $decryptedPassword = decrypt($racun->preduzece->sifra);
+        $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $racun->preduzece->pecat), $decryptedPassword);
 

@@ -194,7 +194,7 @@ class Preduzece extends Model
 
     public function setLogotipAttribute($value)
     {
-        $this->attributes['logotip'] = Storage::putFile('logotipi', $value);
+        $this->attributes['logotip'] = Storage::disk('public')->putFile('logotipi', $value);
     }
 
 }

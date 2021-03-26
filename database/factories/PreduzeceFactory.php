@@ -199,7 +199,7 @@ class PreduzeceFactory extends Factory
             'instagram_username' => $this->faker->unique()->userName,
             'facebook_username' => $this->faker->unique()->userName,
             'skype_username' => $this->faker->userName,
-            'logotip' => $this->faker->imageUrl(640, 480, 'business'),
+            // 'logotip' => $this->faker->imageUrl(640, 480, 'business'),
             'opis' => $this->faker->sentence(),
             'lokacija_lat' => $this->faker->latitude(),
             'lokacija_long' => $this->faker->longitude(),

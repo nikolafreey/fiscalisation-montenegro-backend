@@ -52,16 +52,14 @@ class DatabaseSeeder extends Seeder
         Djelatnost::factory(10)->create();
         Modul::factory(10)->create();
         OvlascenoLice::factory(10)->create();
-        TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
         User::factory(10)->create();
 
         $user = User::create([
-            'email' => 'superadmin@test.com',
+            'email' => 'admin@admin.com',
             'ime' => 'Super Admin',
-            'password' => Hash::make('123456'),
-            'tip_id' => 1,
+            'password' => Hash::make('secret'),
         ]);
 
         Role::create(['name' => 'superadmin']);
@@ -83,7 +81,6 @@ class DatabaseSeeder extends Seeder
                 'preduzece_id' => $preduzece->id,
                 'poslovna_jedinica_id' => $preduzece->poslovne_jedinice()->withoutGlobalScopes()->inRandomOrder()->first()->id,
                 'user_id' => $user->id,
-                'tip_korisnika_id' => TipKorisnika::all()->random()->id,
             ]);
         }
 

@@ -53,6 +53,18 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="form-check">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        id="defaultCheck1"
+                                        {{ 'checked' ? true : false }}
+                                        name="check"
+                                    >
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Posalji lozinku na mail
+                                    </label>
+                                </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
                                         {{ $action ? 'Sacuvajte' : 'Dodajte' }}

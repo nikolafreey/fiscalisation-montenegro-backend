@@ -34,12 +34,6 @@ class CreateUserTipKorisnikaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreignId('tip_korisnika_id')
-                ->nullable()
-                ->constrained('tipovi_korisnika')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['preduzece_id', 'user_id']);
