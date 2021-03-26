@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUser;
+use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
 use App\Models\User;
 use App\ViewModels\UserViewModel;
 use Illuminate\Http\Request;
-use Illuminate\Session\Store;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -39,7 +38,7 @@ class UserController extends Controller
         return view('admin.users.form', $viewModel);
     }
 
-    public function store(StoreUser $request)
+    public function store(UserRequest $request)
     {
         // auth()->user()->can('edit users');
 
@@ -64,7 +63,7 @@ class UserController extends Controller
         return view('admin.users.form', $viewModel);
     }
 
-    public function update(User $user, StoreUser $request)
+    public function update(User $user, UserRequest $request)
     {
         $user->update($request->validated());
 

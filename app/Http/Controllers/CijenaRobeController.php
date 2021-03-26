@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCijenaRobe;
+use App\Http\Requests\Api\StoreCijenaRobe;
 use App\Models\AtributRobe;
 use App\Models\CijenaRobe;
 use App\Models\User;

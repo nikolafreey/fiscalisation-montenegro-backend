@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRacun;
+use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
-use App\Models\KategorijaRobe;
-use App\Models\ProizvodjacRobe;
 use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,10 +16,10 @@ use Carbon\Carbon;
 
 class RacunController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Racun::class, 'racun');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Racun::class, 'racun');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -210,7 +208,7 @@ class RacunController extends Controller
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
 
-            $user = auth()->user();
+            $user = User::first();
             $racun->user_id = $user->id;
 
             $racun->preduzece_id = $user->preduzeca->first()->id;

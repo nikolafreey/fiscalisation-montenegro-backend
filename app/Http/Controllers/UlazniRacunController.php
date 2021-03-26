@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipAtributa;
 use App\Models\UlazniRacun;
 use App\Models\User;
 use Carbon\Carbon;

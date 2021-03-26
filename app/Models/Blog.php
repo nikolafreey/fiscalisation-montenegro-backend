@@ -51,6 +51,8 @@ class Blog extends Model
     {
         $newImage = ContentDomService::uploadTemporaryImages($value, 'blogs/tekst/');
 
-        $this->attributes['tekst'] = $newImage;
+        $image = str_replace("/public", "", $newImage);
+
+        $this->attributes['tekst'] = $image;
     }
 }

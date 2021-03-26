@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Preduzece;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 

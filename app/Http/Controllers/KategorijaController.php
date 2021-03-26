@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreKategorija;
+use App\Http\Requests\Api\StoreKategorija;
 use App\Models\JedinicaMjere;
 use App\Models\Kategorija;
 use Illuminate\Http\Request;

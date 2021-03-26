@@ -51,7 +51,7 @@ class ContentDomService
 
     public static function moveAndOptimizeImage($dir, $value)
     {
-        if ( !file_exists($dir)) {
+        if (! file_exists($dir)) {
             File::makeDirectory($dir, $mode = 0777, true, true);
         }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePartner;
+use App\Http\Requests\Api\StorePartner;
 use App\Models\OvlascenoLice;
 use App\Models\Partner;
 use App\Models\User;

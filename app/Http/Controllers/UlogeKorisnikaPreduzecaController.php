@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UlogaKorisnikaPreduzecaRequest;
+use App\Http\Requests\Web\UlogaKorisnikaPreduzecaRequest;
 use App\Models\Preduzece;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 

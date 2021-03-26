@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFizickoLice;
+use App\Http\Requests\Api\StoreFizickoLice;
 use App\Models\Djelatnost;
 use App\Models\FizickoLice;
 use App\Models\User;

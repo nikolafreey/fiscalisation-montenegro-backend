@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePreduzece;
+use App\Http\Requests\Api\StorePreduzece;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PoslovnaJedinica;
 use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;

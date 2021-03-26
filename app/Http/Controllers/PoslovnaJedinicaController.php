@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Porez;
 use Illuminate\Http\Request;
 use App\Models\PoslovnaJedinica;
-use App\Http\Requests\StorePoslovnaJedinica;
+use App\Http\Requests\Api\StorePoslovnaJedinica;
 
 class PoslovnaJedinicaController extends Controller
 {

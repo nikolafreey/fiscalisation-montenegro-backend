@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAtributRobe;
+use App\Http\Requests\Api\StoreAtributRobe;
 use App\Models\AtributRobe;
 use App\Models\Preduzece;
 use App\Models\User;
