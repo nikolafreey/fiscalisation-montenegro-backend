@@ -67,8 +67,9 @@ Route::post('register', [MobileAuthController::class, 'register']);
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
+// TODO: Uncomment this
 
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', function (Request $request) {
         return auth()->user();
@@ -79,7 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
     Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
 
-    Route::middleware('odabranoPreduzece')->group(function () {
+    // Route::middleware('odabranoPreduzece')->group(function () {
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
         // Route::get('show', [PreduzeceController::class, 'show']);

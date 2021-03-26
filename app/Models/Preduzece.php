@@ -192,4 +192,9 @@ class Preduzece extends Model
         return $broj_uredjaja;
     }
 
+    public function setLogotipAttribute($value)
+    {
+        $this->attributes['logotip'] = Storage::putFile('logotipi', $value);
+    }
+
 }
