@@ -33,9 +33,12 @@ class Roba extends Model
             'naziv' => [
                 'type' => 'text',
             ],
-            // 'interna_sifra_proizvoda' => [
-            //     'type' => 'text',
-            // ],
+            'interna_sifra_proizvoda' => [
+                'type' => 'text',
+            ],
+            'ean' => [
+                'type' => 'text',
+            ],
         ]
     ];
 
