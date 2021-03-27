@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
+use App\Models\Preduzece;
 use App\Models\User;
 use App\ViewModels\UserViewModel;
 use Illuminate\Http\Request;
@@ -40,13 +41,21 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        // auth()->user()->can('edit users');
+        auth()->user()->can('edit users');
 
         $user = User::create($request->validated());
 
         $user->syncRoles([$request->uloga]);
 
-        $user->preduzeca()->attach([$request->preduzece]);
+        foreach ($request->preduzeca as $preduzece) {
+            $user->preduzeca()->attach($preduzece);
+        }
+
+        if ($request->uloga === 'vlasnik') {
+            foreach ($request->preduzeca as $id) {
+                Preduzece::where('id', $id)->firstOrFail()->update(['verifikovan' => true]);
+            }
+        }
 
         if ($request->check === 'on') {
             Mail::to($user->email)

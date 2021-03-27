@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="preduzece">Preduzece</label>
-                                    <select id="preduzece" name="preduzece" multiple>
+                                    <select class="preduzece" name="preduzeca[]" multiple>
                                         @foreach($preduzeca as $preduzece)
                                             <option value="{{ $preduzece->id }}">{{ $preduzece->kratki_naziv }}</option>
                                         @endforeach
@@ -83,7 +83,7 @@
 @section('scripts')
 
     <script>
-        $('#preduzece').selectize({
+        $('.preduzece').selectize({
             plugins: ['remove_button'],
             delimiter: ',',
             persist: false,

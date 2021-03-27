@@ -60,6 +60,15 @@ class PreduzeceController extends Controller
      */
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
+        if (
+            ! auth()->user()-hasRole('vlasnik')
+            &&
+            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        )
+        {
+            abort(403);
+        }
+
         $preduzece->update($request->validated());
 
         return response()->json($preduzece, 200);
@@ -73,6 +82,15 @@ class PreduzeceController extends Controller
      */
     public function destroy(Preduzece $preduzece)
     {
+        if (
+            ! auth()->user()-hasRole('vlasnik')
+            &&
+            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        )
+        {
+            abort(403);
+        }
+
         $preduzece->delete();
 
         return response()->json($preduzece, 200);

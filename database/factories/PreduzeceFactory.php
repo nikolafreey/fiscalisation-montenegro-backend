@@ -204,7 +204,6 @@ class PreduzeceFactory extends Factory
             'lokacija_lat' => $this->faker->latitude(),
             'lokacija_long' => $this->faker->longitude(),
             'status' => $this->faker->boolean(),
-            'verifikovan' => $this->faker->boolean(),
             'privatnost' => $this->faker->boolean(),
             'pdv_obveznik' => $this->faker->boolean(),
             'kategorija_id' => Kategorija::all()->random()->id,

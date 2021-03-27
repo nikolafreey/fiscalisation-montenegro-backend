@@ -50,7 +50,7 @@ class CreatePreduzecaTable extends Migration
             $table->string('lokacija_long', 50)->nullable();
             $table->boolean('status')->nullable();
             $table->boolean('privatnost')->nullable();
-            $table->boolean('verifikovan')->nullable();
+            $table->boolean('verifikovan')->default(false);
             $table->boolean('pdv_obveznik')->nullable();
             $table->string('pecat', 100)->nullable();
             $table->string('sertifikat', 100)->nullable();
