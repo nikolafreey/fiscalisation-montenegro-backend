@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use ScoutElastic\Searchable;
 use App\Traits\ImaAktivnost;
 
@@ -235,5 +236,10 @@ class UlazniRacun extends Model
     public function partner()
     {
         return $this->belongsTo('App\Models\Partner', 'partner_id');
+    }
+
+    public function setFileAttribute($value)
+    {
+        return $this->attributes['file'] = Storage::disk('public')->putFile('ulazniRacuni', $value);
     }
 }

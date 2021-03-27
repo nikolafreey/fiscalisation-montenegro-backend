@@ -6,10 +6,12 @@ use App\Models\AtributRobe;
 use App\Models\CijenaRobe;
 use App\Models\DepozitWithdraw;
 use App\Models\Djelatnost;
+use App\Models\Dokument;
 use App\Models\FizickoLice;
 use App\Models\Grupa;
 use App\Models\JedinicaMjere;
 use App\Models\Kategorija;
+use App\Models\KategorijaDokumenta;
 use App\Models\KategorijaRobe;
 use App\Models\Modul;
 use App\Models\OvlascenoLice;
@@ -31,9 +33,11 @@ use App\Policies\AtributRobePolicy;
 use App\Policies\CijenaRobePolicy;
 use App\Policies\DepozitWithdrawPolicy;
 use App\Policies\DjelatnostPolicy;
+use App\Policies\DokumentPolicy;
 use App\Policies\FizickoLicePolicy;
 use App\Policies\GrupaPolicy;
 use App\Policies\JedinicaMjerePolicy;
+use App\Policies\KategorijaDokumentaPolicy;
 use App\Policies\KategorijaPolicy;
 use App\Policies\KategorijaRobePolicy;
 use App\Policies\ModulPolicy;
@@ -87,7 +91,9 @@ class AuthServiceProvider extends ServiceProvider
         UlazniRacun::class => UlazniRacunPolicy::class,
         User::class => UserPolicy::class,
         Usluga::class => UslugaPolicy::class,
-        ZiroRacun::class => ZiroRacunPolicy::class
+        ZiroRacun::class => ZiroRacunPolicy::class,
+        Dokument::class => DokumentPolicy::class,
+        KategorijaDokumenta::class => KategorijaDokumentaPolicy::class
     ];
 
     /**

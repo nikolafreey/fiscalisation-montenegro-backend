@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\Upload\UploadAvataraKorisnikaRequest;
+use App\Http\Requests\Api\Upload\UploadUlaznihRacunaRequest;
+use App\Models\UlazniRacun;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,22 +14,13 @@ class UploadController extends Controller
     {
         $user->update($request->validated());
 
-        return response()->json($user);
+        return response()->json($user->avatar);
     }
 
-    public function uploadUlaznihRacuna()
+    public function uploadUlaznihRacuna(UploadUlaznihRacunaRequest $request, UlazniRacun $ulazniRacun)
     {
+        $ulazniRacun->update($request->validated());
 
+        return response()->json($ulazniRacun->file);
     }
-
-    public function uploadUgovora()
-    {
-
-    }
-
-    public function uploadDokumenata()
-    {
-
-    }
-
 }

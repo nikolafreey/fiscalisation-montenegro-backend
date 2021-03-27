@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\StoreUlazniRacun;
 use App\Models\UlazniRacun;
 use App\Models\User;
 use Carbon\Carbon;
@@ -137,58 +138,58 @@ class UlazniRacunController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUlazniRacun $request)
     {
-        $ulazniracun = UlazniRacun::make($request->validated());
-        $ulazniracun->user_id = auth()->id();
+        $ulazniRacun = UlazniRacun::make($request->validated());
+        $ulazniRacun->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
-        $ulazniracun->preduzece_id = $user['preduzeca'][0]->id;
-        $ulazniracun->save();
+        $ulazniRacun->preduzece_id = $user['preduzeca'][0]->id;
+        $ulazniRacun->save();
 
-        $ulazniracun->kreirajStavke($request);
+        $ulazniRacun->kreirajStavke($request);
 
-        return response()->json($ulazniracun, 201);
+        return response()->json($ulazniRacun, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\UlazniRacun  $ulazniracun
+     * @param  \App\Models\UlazniRacun  $ulazniRacun
      * @return \Illuminate\Http\Response
      */
-    public function show(UlazniRacun $ulazniracun)
+    public function show(UlazniRacun $ulazniRacun)
     {
-        return $ulazniracun->load(['ulazne_stavke', 'porezi']);
+        return $ulazniRacun->load(['ulazne_stavke', 'porezi']);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UlazniRacun  $ulazniracun
+     * @param  \App\Models\UlazniRacun  $ulazniRacun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UlazniRacun $ulazniracun)
+    public function update(StoreUlazniRacun $request, UlazniRacun $ulazniRacun)
     {
         $ikof = $request->input('ikof');
         $jikr = $request->input('jikr');
 
         if (($ikof == null || $ikof == '') && ($jikr == null || $jikr == '')) {
 
-            $ulazniracun->update($request->validated());
-            return response()->json($ulazniracun, 200);
+            $ulazniRacun->update($request->validated());
+            return response()->json($ulazniRacun, 200);
         } else {
-            return response()->json($ulazniracun, 400);
+            return response()->json($ulazniRacun, 400);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\UlazniRacun  $ulazniracun
+     * @param  \App\Models\UlazniRacun  $ulazniRacun
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UlazniRacun $ulazniracun)
+    public function destroy(UlazniRacun $ulazniRacun)
     {
         //
     }

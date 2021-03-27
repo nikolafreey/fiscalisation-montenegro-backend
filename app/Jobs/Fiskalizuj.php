@@ -5,10 +5,12 @@ namespace App\Jobs;
 use DOMDocument;
 use App\Services\SignXMLService;
 use App\Models\Racun;
+use http\Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use VertexIT\XMLSecLibs\XMLSecurityKey;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,9 +29,19 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
+        if ($racun->vrsta_racuna === 'gotovinski') {
+            $potpis = $racun->preduzece->pecat;
 
-        $this->certificate = $this->loadCertifacate(storage_path('app/' . $racun->preduzece->pecat), $decryptedPassword);
+            $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
+        }
+
+        if ($racun->vrsta_racuna === 'bezgotovinski') {
+            $potpis = $racun->preduzece->sertifikat;
+
+            $decryptedPassword = decrypt($racun->preduzece->setifikatSifra);
+        }
+
+        $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
@@ -95,13 +107,17 @@ class Fiskalizuj implements ShouldQueue
         $p = xml_parser_create();
         xml_parse_into_struct($p, $simple, $vals, $index);
 
-        foreach ($vals as $val) {
-            if ($val['tag'] === 'FIC') {
-                return $val['value'];
-            }
-        }
+        $response = collect($vals)->keyBy('tag');
 
-        abort(500, 'JIKR nije generisan');
+        try {
+            return $response['FIC']['value'];
+        } catch (Exception $e) {
+            $errorMessage = 'Fiskalizacija nije uspjesna: ' . $response['FAULTSTRING']['value'];
+
+            Log::error($errorMessage);
+
+            abort(520, $errorMessage);
+        }
     }
 
     private function loadCertifacate($location, $password)

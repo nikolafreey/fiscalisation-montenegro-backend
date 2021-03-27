@@ -227,6 +227,18 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'update ZiroRacun']);
         Permission::firstOrCreate(['name' => 'delete ZiroRacun']);
 
+        Permission::firstOrCreate(['name' => 'view Dokument']);
+        Permission::firstOrCreate(['name' => 'show Dokument']);
+        Permission::firstOrCreate(['name' => 'create Dokument']);
+        Permission::firstOrCreate(['name' => 'update Dokument']);
+        Permission::firstOrCreate(['name' => 'delete Dokument']);
+
+        Permission::firstOrCreate(['name' => 'view KategorijaDokumenta']);
+        Permission::firstOrCreate(['name' => 'show KategorijaDokumenta']);
+        Permission::firstOrCreate(['name' => 'create KategorijaDokumenta']);
+        Permission::firstOrCreate(['name' => 'update KategorijaDokumenta']);
+        Permission::firstOrCreate(['name' => 'delete KategorijaDokumenta']);
+
 
         User::where('ime', 'Super Admin')->firstOrFail()->syncRoles(['superadmin']);
 

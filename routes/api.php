@@ -3,10 +3,13 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\DokumentController;
 use App\Http\Controllers\DozvolaController;
+use App\Http\Controllers\KategorijaDokumentaController;
 use App\Http\Controllers\OdaberiPreduzeceController;
 use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
 use App\Http\Controllers\UploadController;
+use App\Models\KategorijaDokumenta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -156,6 +159,14 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
             'podkategorije-robe' => 'podkategorija-robe'
         ]);
 
+        Route::apiResource('/kategorije-dokumenta', KategorijaDokumentaController::class)->parameters([
+            'kategorije-dokumenta' => 'kategorija-dokumenta'
+        ]);
+
+        Route::apiResource('/dokumenti', DokumentController::class)->parameters([
+            'dokumenti' => 'dokument'
+        ]);
+
         Route::apiResource('/porezi', PorezController::class)->parameters([
             'porezi' => 'porez'
         ]);
@@ -217,8 +228,6 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
         Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
         Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
-        Route::put('uploadUgovor', [UploadController::class, 'uploadUgovora']);
-        Route::put('uploadDokument', [UploadController::class, 'uploadDokumenata']);
 
     // });
 // });

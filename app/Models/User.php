@@ -36,7 +36,6 @@ class User extends Authenticatable
         'avatar',
         'paket',
         'tip_id'
-
     ];
 
     public function preduzeca()
@@ -103,6 +102,11 @@ class User extends Authenticatable
     public function racuni()
     {
         return $this->hasMany('App\Models\Racun', 'user_id');
+    }
+
+    public function dokumenti()
+    {
+        return $this->hasMany(Dokument::class);
     }
 
     /**

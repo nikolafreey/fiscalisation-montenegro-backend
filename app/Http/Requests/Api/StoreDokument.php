@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Api\Upload;
+namespace App\Http\Requests\Api;
 
-use App\Http\Requests\Api\BaseApiRequest;
-
-class UploadUlaznihRacunaRequest extends BaseApiRequest
+class StoreDokument extends BaseApiRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +12,9 @@ class UploadUlaznihRacunaRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'file' => 'required'
+            'naziv' => 'required',
+            'file' => 'nullable',
+            'opis' => 'nullable'
         ];
     }
 }

@@ -150,6 +150,11 @@ class Preduzece extends Model
         return $this->hasMany('App\Models\Racun', 'preduzece_id');
     }
 
+    public function dokumenti()
+    {
+        return $this->hasMany(Dokument::class);
+    }
+
     public function setPecatAttribute($file)
     {
         $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(

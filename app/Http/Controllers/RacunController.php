@@ -212,15 +212,15 @@ class RacunController extends Controller
             $racun->user_id = $user->id;
 
             $preduzece = $user
-                ->preduzeca
-                ->where('id', $request->preduzece_id)
+                ->preduzeca()
+                ->where('preduzeca.id', $request->preduzece_id)
                 ->firstOrFail();
 
             $racun->preduzece_id = $preduzece->id;
 
             $poslovnaJedinica = $preduzece
-                ->poslovne_jedinice
-                ->where('id', $request->poslovna_jedinica_id)
+                ->poslovne_jedinice()
+                ->where('poslovne_jedinice.id', $request->poslovna_jedinica_id)
                 ->firstOrFail();
 
             $racun->poslovna_jedinica_id = $poslovnaJedinica->id;
