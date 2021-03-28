@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StorePodKategorijaRobe;
-use App\Models\Partner;
 use App\Models\PodKategorijaRobe;
 use App\Models\Preduzece;
 use App\Models\User;

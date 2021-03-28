@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\StoreRacun;
-use App\Jobs\Fiskalizuj;
-use App\Models\AtributRobe;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Grupa;
 use App\Models\Racun;
-use App\Models\User;
+use App\Jobs\Fiskalizuj;
+use App\Mail\PodijeliRacun;
+use App\Models\AtributRobe;
 use Illuminate\Http\Request;
+use ScoutElastic\Searchable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use ScoutElastic\Searchable;
-use Carbon\Carbon;
+use App\Http\Requests\Api\StoreRacun;
+use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 
 class RacunController extends Controller
 {
@@ -292,5 +294,21 @@ class RacunController extends Controller
         $tipovi_atributa = AtributRobe::get(['id AS tip_atributa_id', 'naziv'])->toArray();
         $grupe = Grupa::get(['id AS grupa_id', 'naziv'])->toArray();
         return array_merge($tipovi_atributa, $grupe);
+    }
+
+    public function dijeljenjeRacuna(Racun $racun, DijeljenjeRacunaRequest $request)
+    {
+        if (! User::where('email', $request->email)->exists()) {
+            abort(404);
+        }
+
+        if (! auth()->id() === $racun->user_id) {
+            abort(403);
+        }
+
+        Mail::to($request->email)
+                ->send(new PodijeliRacun($racun));
+
+        return response()->json('Uspjesno ste poslali racun na mejl korisnika');
     }
 }

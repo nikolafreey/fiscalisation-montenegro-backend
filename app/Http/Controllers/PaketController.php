@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\StoreOvlascenoLice;
 use App\Http\Requests\Api\StorePaket;
-use App\Models\OvlascenoLice;
 use App\Models\Paket;
 use Illuminate\Http\Request;
 

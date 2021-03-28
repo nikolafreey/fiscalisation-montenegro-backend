@@ -79,11 +79,11 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
         Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
 
-        Route::apiResource('/fizicka-lica', FizickoLiceController::class)->parameters([
+        Route::apiResource('fizicka-lica', FizickoLiceController::class)->parameters([
             'fizicka-lica' => 'fizickoLice'
         ]);
 
-        Route::apiResource('/usluge', UslugaController::class)->parameters([
+        Route::apiResource('usluge', UslugaController::class)->parameters([
             'usluge' => 'usluga'
         ]);
 
@@ -123,84 +123,86 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
         // Route::get('/me', [UserController::class, 'me']);
 
-        Route::apiResource('/tipovi-atributa', TipoviAtributaController::class)->parameters([
+        Route::apiResource('tipovi-atributa', TipoviAtributaController::class)->parameters([
             'tipovi-atributa' => 'tip-atributa'
         ]);
 
-        Route::apiResource('/racuni', RacunController::class)->parameters([
+        Route::post('dijeljenjeRacuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
+
+        Route::apiResource('racuni', RacunController::class)->parameters([
             'racuni' => 'racun'
         ]);
 
-        Route::apiResource('/ulazni-racuni', UlazniRacunController::class)->parameters([
+        Route::apiResource('ulazni-racuni', UlazniRacunController::class)->parameters([
             'ulazni_racuni' => 'ulazni_racun'
         ]);
 
-        Route::apiResource('/predracuni', PredracunController::class)->parameters([
+        Route::apiResource('predracuni', PredracunController::class)->parameters([
             'racuni' => 'racun'
         ]);
 
-        Route::apiResource('/jedinice_mjere', JedinicaMjereController::class)->parameters([
+        Route::apiResource('jedinice_mjere', JedinicaMjereController::class)->parameters([
             'jedinice_mjere' => 'jedinica-mjere'
         ]);
 
-        Route::apiResource('/proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
+        Route::apiResource('proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
             'proizvodjaci-robe' => 'proizvodjaci-robe'
         ]);
 
-        Route::apiResource('/atribut-roba', AtributRobeController::class)->parameters([
+        Route::apiResource('atribut-roba', AtributRobeController::class)->parameters([
             'atribut-roba' => 'atribut-robe'
         ]);
 
-        Route::apiResource('/kategorije-robe', KategorijaRobeController::class)->parameters([
+        Route::apiResource('kategorije-robe', KategorijaRobeController::class)->parameters([
             'kategorije-robe' => 'kategorija-robe'
         ]);
 
-        Route::apiResource('/podkategorije-robe', PodKategorijaRobeController::class)->parameters([
+        Route::apiResource('podkategorije-robe', PodKategorijaRobeController::class)->parameters([
             'podkategorije-robe' => 'podkategorija-robe'
         ]);
 
-        Route::apiResource('/kategorije-dokumenta', KategorijaDokumentaController::class)->parameters([
+        Route::apiResource('kategorije-dokumenta', KategorijaDokumentaController::class)->parameters([
             'kategorije-dokumenta' => 'kategorija-dokumenta'
         ]);
 
-        Route::apiResource('/dokumenti', DokumentController::class)->parameters([
+        Route::apiResource('dokumenti', DokumentController::class)->parameters([
             'dokumenti' => 'dokument'
         ]);
 
-        Route::apiResource('/porezi', PorezController::class)->parameters([
+        Route::apiResource('porezi', PorezController::class)->parameters([
             'porezi' => 'porez'
         ]);
 
-        Route::apiResource('/grupe', GrupaController::class)->parameters([
+        Route::apiResource('grupe', GrupaController::class)->parameters([
             'grupe' => 'grupa'
         ]);
 
-        Route::apiResource('/djelatnosti', DjelatnostController::class)->parameters([
+        Route::apiResource('djelatnosti', DjelatnostController::class)->parameters([
             'djelatnosti' => 'djelatnost'
         ]);
 
-        Route::apiResource('/robe', RobaController::class)->parameters([
+        Route::apiResource('robe', RobaController::class)->parameters([
             'robe' => 'roba'
         ]);
 
-        Route::apiResource('/moduli', ModulController::class)->parameters([
+        Route::apiResource('moduli', ModulController::class)->parameters([
             'moduli' => 'modul'
         ]);
-        Route::apiResource('/ovlascena-lica', OvlascenoLiceController::class)->parameters([
+        Route::apiResource('ovlascena-lica', OvlascenoLiceController::class)->parameters([
             'ovlascena-lica' => 'ovlasceno-lice'
         ]);
-        Route::apiResource('/tipovi-korisnika', TipKorisnikaController::class)->parameters([
+        Route::apiResource('tipovi-korisnika', TipKorisnikaController::class)->parameters([
             'tipovi-korisnika' => 'tip-korisnika'
         ]);
-        Route::apiResource('/kategorije', KategorijaController::class)->parameters([
+        Route::apiResource('kategorije', KategorijaController::class)->parameters([
             'kategorije' => 'kategorija'
         ]);
 
-        Route::apiResource('/poslovne-jedinice', PoslovnaJedinicaController::class)->parameters([
+        Route::apiResource('poslovne-jedinice', PoslovnaJedinicaController::class)->parameters([
             'poslovne-jedinice' => 'poslovna-jedinica'
         ]);
 
-        Route::apiResource('/preduzeca', PreduzeceController::class)->parameters([
+        Route::apiResource('preduzeca', PreduzeceController::class)->parameters([
             'preduzeca' => 'preduzece'
         ]);
 
@@ -208,20 +210,20 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
             'depozit-withdraws' => 'depozit-withdraw'
         ]);
 
-        Route::get('/get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
+        Route::get('get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
 
-        Route::apiResource('/ziro-racuni', ZiroRacunController::class)->parameters([
+        Route::apiResource('ziro-racuni', ZiroRacunController::class)->parameters([
             'ziro-racuni' => 'ziro-racun'
         ]);
-        Route::apiResource('/partneri', PartnerController::class)->parameters([
+        Route::apiResource('partneri', PartnerController::class)->parameters([
             'partneri' => 'partner'
         ]);
 
-        Route::get('/atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
+        Route::get('atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
 
-        Route::apiResource('/blogs', BlogController::class);
+        Route::apiResource('blogs', BlogController::class);
 
-        Route::apiResource('/blogCategories', BlogCategoryController::class);
+        Route::apiResource('blogCategories', BlogCategoryController::class);
 
         Route::get('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'index']);
         Route::post('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'store']);

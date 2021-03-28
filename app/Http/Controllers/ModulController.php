@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreModul;
-use App\Models\Kategorija;
 use App\Models\Modul;
 use Illuminate\Http\Request;
 

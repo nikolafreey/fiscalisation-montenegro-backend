@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreKategorijaDokumenta;
 use App\Models\KategorijaDokumenta;
-use App\Models\KategorijaRobe;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class KategorijaDokumentaController extends Controller

@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreDokument;
-use App\Http\Requests\Api\StoreKategorijaDokumenta;
 use App\Models\Dokument;
-use App\Models\KategorijaDokumenta;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class DokumentController extends Controller
@@ -52,7 +49,7 @@ class DokumentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\KategorijaRobe  $kategorijaRobe
+     * @param  \App\Models\Dokument  $dokument
      * @return \Illuminate\Http\Response
      */
     public function show(Dokument $dokument)
@@ -63,7 +60,7 @@ class DokumentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\KategorijaRobe  $kategorijaRobe
+     * @param  \App\Models\Dokument  $dokument
      * @return \Illuminate\Http\Response
      */
     public function destroy(Dokument $dokument)

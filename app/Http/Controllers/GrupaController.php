@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreGrupa;
-use App\Models\FizickoLice;
 use App\Models\Grupa;
 use Illuminate\Http\Request;
 
