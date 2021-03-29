@@ -7,6 +7,7 @@ use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\KategorijaRobe;
+use App\Models\Partner;
 use App\Models\ProizvodjacRobe;
 use App\Models\Racun;
 use App\Models\User;
@@ -43,11 +44,22 @@ class RacunController extends Controller
                     'partner.preduzece:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
                 )->paginate(10);
+
+            $partneri = [];
+            foreach ($searchQuery->get()->toArray() as $partner) {
+                $partneri[] = $partner['partner_id'];
+            }
+
+            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
+            // return $queryPartneri;
+
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-            return $searchData;
+            $searchDataAll = $searchData->merge(collect(["partneri" => $queryPartneri]));
+
+            return $searchDataAll;
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
