@@ -230,6 +230,7 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
         Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
         Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
+        Route::post('uploadUgovora', [UploadController::class, 'uploadUgovora']);
 
     // });
 // });

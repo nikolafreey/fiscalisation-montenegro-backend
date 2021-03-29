@@ -14,7 +14,8 @@ class UploadUgovoraRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            //
+            'naziv',
+            'file'
         ];
     }
 }

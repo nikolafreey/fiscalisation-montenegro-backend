@@ -15,6 +15,9 @@ class AktivnostiController extends Controller
             return DataTables::eloquent(
                     Activity::latest()
                 )
+                ->addColumn('created_at_formatted', function (Activity $activity) {
+                    return $activity->created_at->format('h:i\h - d.m.Y');
+                })
                 ->addColumn('action', function ($activity) {
                     return view('admin.aktivnosti.action', compact('activity'));
                 })

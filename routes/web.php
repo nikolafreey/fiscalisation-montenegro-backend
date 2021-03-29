@@ -27,6 +27,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         'preduzeca' => 'preduzece'
     ])->only('index', 'edit', 'update');
 
+    Route::resource('uloge', UlogeController::class)->only('index', 'create', 'store', 'edit')->parameters([
+        'uloge' => 'role'
+    ]);
 
     Route::resource('users', UserController::class);
     Route::get('uloge/{user}', [UserController::class, 'izmjeniteUlogu'])->name('izmjeniteUlogu');
@@ -38,9 +41,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::resource('dozvole', DozvoleController::class)->only('index', 'create', 'store');
 
-    Route::resource('uloge', UlogeController::class)->only('index', 'create', 'store', 'edit')->parameters([
-        'uloge' => 'role'
-    ]);
     Route::post('uloge/store/{role}', [UlogeController::class, 'dodajDozvolu'])->name('dodajDozvolu');
 
     Route::post('cropper/image-upload', [ImageController::class, 'store'])->name('cropper.images');

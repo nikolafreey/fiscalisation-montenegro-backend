@@ -10,6 +10,7 @@ use App\Jobs\Fiskalizuj;
 use App\Mail\PodijeliRacun;
 use App\Models\AtributRobe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use ScoutElastic\Searchable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -229,11 +230,20 @@ class RacunController extends Controller
 
             $racun->save();
 
+            Mail::to($racun->partner->fizicko_lice->email)
+                ->send(new PodijeliRacun($racun));
+
             $racun->kreirajStavke($request);
             Log::info('suma: ' . var_export($racun->izracunajUkupneCijene(), true));
 
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
+
+            if ($request->status === 'Storniran') {
+                $racun->ukupna_cijena_bez_pdv *= -1;
+                $racun->ukupna_cijena_sa_pdv *= -1;
+                $racun->ukupan_iznos_pdv *= -1;
+            }
 
             return $racun;
         });

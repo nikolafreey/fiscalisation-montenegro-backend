@@ -1,13 +1,25 @@
 @extends('admin.layout')
 
+@section('title', $action ? 'Izmjena Bloga' : 'Dodavanje Bloga')
+
 @section('content')
 
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Pocetna</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ route('blogs.index') }}">Blogovi</a>
+        </li>
+        <li class="breadcrumb-item">
+            <span>@yield('title')</span>
+        </li>
+    </ul>
     <div class="content-i">
         <div class="content-box"><div class="row">
                 <div class="col-lg-10">
                     <div class="element-wrapper">
                         <div class="element-box">
-
                             <form
                                 method="POST"
                                 action="{{ $action ? route('blogs.update', $blog) : route('blogs.store') }}" enctype="multipart/form-data"

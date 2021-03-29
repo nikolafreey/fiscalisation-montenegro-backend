@@ -1,7 +1,20 @@
 @extends('admin.layout')
 
+@section('title', $action ? 'Izmjena Korisnika' : 'Dodavanje Korisnika')
+
 @section('content')
 
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Pocetna</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ route('users.index') }}">Korisnici</a>
+        </li>
+        <li class="breadcrumb-item">
+            <span>@yield('title')</span>
+        </li>
+    </ul>
     <div class="content-i">
         <div class="content-box"><div class="row">
                 <div class="col-lg-10">
