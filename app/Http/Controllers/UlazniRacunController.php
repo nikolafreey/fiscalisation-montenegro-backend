@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partner;
 use App\Models\TipAtributa;
 use App\Models\UlazniRacun;
 use App\Models\User;
@@ -35,11 +36,20 @@ class UlazniRacunController extends Controller
                     'partner.fizicko_lice:id,ime,prezime'
                 )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
 
+            $partneri = [];
+            foreach ($searchQuery->get()->toArray() as $partner) {
+                $partneri[] = $partner['partner_id'];
+            }
+
+            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
+
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-            return $searchData;
+            $searchAllData = $searchData->merge(collect(["partneri" => $queryPartneri]));
+
+            return $searchAllData;
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
