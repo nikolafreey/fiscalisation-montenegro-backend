@@ -254,6 +254,11 @@ class Racun extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
+    public function guestUsers()
+    {
+        return $this->belongsToMany('App\Models\User', 'users_racuni', 'racun_id', 'user_id');
+    }
+
     public function poslovnaJedinica()
     {
         return $this->belongsTo('App\Models\PoslovnaJedinica', 'poslovna_jedinica_id');

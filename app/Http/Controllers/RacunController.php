@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PodijeliRacunKorisniku;
+use App\Models\Invite;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Grupa;
 use App\Models\Racun;
 use App\Jobs\Fiskalizuj;
-use App\Mail\PodijeliRacun;
+use App\Mail\PodijeliRacunGostu;
 use App\Models\AtributRobe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -211,10 +214,10 @@ class RacunController extends Controller
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
 
-            $user = auth()->user();
-            $racun->user_id = $user->id;
+            $racun->user_id = auth()->id();
 
-            $preduzece = $user
+            $preduzece = auth()
+                ->user()
                 ->preduzeca()
                 ->where('preduzeca.id', $request->preduzece_id)
                 ->firstOrFail();
@@ -230,8 +233,15 @@ class RacunController extends Controller
 
             $racun->save();
 
+            $invite = Invite::create([
+                'email' => $racun->partner->fizicko_lice->email,
+                'route' => route('racuni.show', $racun),
+                'token' => Str::random(40),
+                'racun_id' => $racun->id,
+            ]);
+
             Mail::to($racun->partner->fizicko_lice->email)
-                ->send(new PodijeliRacun($racun));
+                ->send(new PodijeliRacunGostu($racun, $invite));
 
             $racun->kreirajStavke($request);
             Log::info('suma: ' . var_export($racun->izracunajUkupneCijene(), true));
@@ -261,6 +271,15 @@ class RacunController extends Controller
      */
     public function show(Racun $racun)
     {
+        if (
+            ! in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray())
+            &&
+            ! in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray())
+        )
+        {
+            abort(403, 'Nemate pristup ovom racunu');
+        }
+
         return $racun->load(['stavke', 'porezi', 'partner', 'preduzece']);
     }
 
@@ -308,16 +327,24 @@ class RacunController extends Controller
 
     public function dijeljenjeRacuna(Racun $racun, DijeljenjeRacunaRequest $request)
     {
-        if (! User::where('email', $request->email)->exists()) {
-            abort(404);
-        }
-
         if (! auth()->id() === $racun->user_id) {
             abort(403);
         }
 
-        Mail::to($request->email)
-                ->send(new PodijeliRacun($racun));
+        if (User::where('email', $request->email)->exists()) {
+            Mail::to($request->email)
+                ->send(new PodijeliRacunKorisniku($racun));
+        } else {
+            $invite = Invite::create([
+                'email' => $request->email,
+                'route' => route('racuni.show', $racun),
+                'token' => Str::random(40),
+                'racun_id' => $racun->id,
+            ]);
+
+            Mail::to($request->email)
+                ->send(new PodijeliRacunGostu($racun, $invite));
+        }
 
         return response()->json('Uspjesno ste poslali racun na mejl korisnika');
     }

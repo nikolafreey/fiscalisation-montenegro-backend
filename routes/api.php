@@ -5,6 +5,7 @@ use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\DokumentController;
 use App\Http\Controllers\DozvolaController;
+use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KategorijaDokumentaController;
 use App\Http\Controllers\OdaberiPreduzeceController;
 use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
@@ -231,6 +232,8 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
         Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
         Route::post('uploadUgovora', [UploadController::class, 'uploadUgovora']);
+
+        Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
 
     // });
 // });

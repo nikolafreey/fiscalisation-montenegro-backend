@@ -47,8 +47,8 @@ class Fiskalizuj implements ShouldQueue
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
             'taxpayer' => [
-                'CR' => 'si747we972', // Cash Register (ENU)
-                'SW' => 'ss123ss123', // Software Code
+                'CR' => 'wp886vu280', // Cash Register (ENU)
+                'SW' => 'qk433mq872', // Software Code
                 'TIN' => $racun->preduzece->pib,
                 'BU' => $racun->poslovnaJedinica->kratki_naziv,
                 'OP' => $racun->kod_operatera,

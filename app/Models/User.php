@@ -104,6 +104,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Racun', 'user_id');
     }
 
+    public function guestRacuni()
+    {
+        return $this->belongsToMany('App\Models\Racun', 'users_racuni',  'user_id', 'racun_id');
+    }
+
     public function dokumenti()
     {
         return $this->hasMany(Dokument::class);

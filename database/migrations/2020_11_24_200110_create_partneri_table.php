@@ -27,11 +27,13 @@ class CreatePartneriTable extends Migration
                 ->constrained('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
             $table->foreignId('fizicko_lice_id')
                 ->nullable()
                 ->constrained('fizicka_lica')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
             $table->foreignUuid('preduzece_id')
                 ->nullable()
                 ->constrained('preduzeca')
