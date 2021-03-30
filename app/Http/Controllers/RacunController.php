@@ -216,7 +216,7 @@ class RacunController extends Controller
     {
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
-            $racun->tip_racuna = Racun::RACUN;
+            // $racun->tip_racuna = Racun::RACUN;
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
 

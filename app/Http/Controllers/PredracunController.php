@@ -20,14 +20,14 @@ class PredracunController extends Controller
         auth()->user()->can('view Predracun');
 
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*');
+            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
 
             $partneri = [];
             foreach ($searchQuery->get()->toArray() as $partner) {
