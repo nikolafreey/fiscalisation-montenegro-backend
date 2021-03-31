@@ -66,7 +66,7 @@ class DepozitWithdrawController extends Controller
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
 
-        return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+        return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE deleted_at IS NULL AND created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
         // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
     }
 }
