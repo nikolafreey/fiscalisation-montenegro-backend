@@ -19,12 +19,12 @@
                     Preduzeca
                 </h6>
                 <div class="element-box">
-                    <table id="data_table" class="table">
+                    <table id="data_table" class="table table-hover table-clean">
                         <thead>
                         <tr>
                             <th>Naziv</th>
                             <th>Adresa</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                         </thead>
                     </table>

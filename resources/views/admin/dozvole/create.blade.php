@@ -16,19 +16,20 @@
         </li>
     </ul>
     <div class="content-i">
-        <div class="content-box"><div class="row">
+        <div class="content-box">
+            <div class="row">
                 <div class="col-lg-10">
                     <div class="element-wrapper">
+                        <h6 class="element-header">
+                            @yield('title')
+                        </h6>
                         <div class="element-box">
 
                             <form method="POST" action="{{ route('dozvole.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <h5 class="form-header">
-                                    Dodajte Dozvolu
-                                </h5>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Unesite ime dozvole</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite ime dozvole" name="dozvola">
+                                    <label for="exampleInputEmail1">Unesite ime</label>
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite ime" name="dozvola">
                                 </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">

@@ -1,10 +1,20 @@
-<div class="d-flex justify-content-end">
-    <form action="{{ route('blogCategories.edit', $blogCategory) }}" method="GET">
-        <button class="btn btn-sm btn-primary mr-1">Izmjenite</button>
-    </form>
-    <form action="{{ route('blogCategories.destroy', $blogCategory) }}" method="POST">
-        @method('delete')
-        @csrf
-        <button class="btn btn-sm btn-danger">Izbrisite</button>
-    </form>
+<div class="btn-group">
+    <button class="btn btn-white btn-sm" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+        </svg>
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <a
+            href="{{ route('blogCategories.edit', $blogCategory) }}"
+            class="dropdown-item"
+        >
+            Izmjenite
+        </a>
+        <form action="{{ route('blogCategories.destroy', $blogCategory) }}" method="POST"  >
+            @method('delete')
+            @csrf
+            <button class="dropdown-item btn-delete-amenity">Izbrisite</button>
+        </form>
+    </div>
 </div>

@@ -11,8 +11,20 @@ class DepozitWithdraw extends Model
 {
     use HasFactory;
 
-    protected static function booted()
+    protected $guarded = [];
+
+    public function poslovnaJedinica()
     {
-        static::addGlobalScope(new UserScope);
+        return $this->belongsTo('App\Models\PoslovnaJedinica', 'poslovna_jedinica_id');
     }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 }

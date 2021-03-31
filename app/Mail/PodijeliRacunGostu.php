@@ -18,12 +18,10 @@ class PodijeliRacunGostu extends Mailable
      *
      * @return void
      */
-    public function __construct($racun, $invite)
+    public function __construct($invite)
     {
-        $this->racun = $racun;
         $this->invite = $invite;
     }
-
     /**
      * Build the message.
      *
@@ -31,6 +29,8 @@ class PodijeliRacunGostu extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mail.podijeli-racun-gostu');
+        return $this->view('admin.mail.podijeli-racun-gostu', [
+            'invite' => $this->invite,
+        ]);
     }
 }

@@ -6,15 +6,15 @@
     Version="1"
 >
     <Header
-        SendDateTime="{{ $danasnji_datum }}"
-        UUID="{{ Str::uuid() }}"
+        SendDateTime="2021-03-31T16:40:46+02:00"
+        UUID="2421573d-b690-4db7-b261-0dfdaf42ccc0"
     />
 
     <CashDeposit
-        CashAmt="{{ sprintf("%.02f", $depozit->iznos_depozit) }}"
-        ChangeDateTime="{{ $danasnji_datum }}"
-        IssuerTIN="{{ $taxpayer['TIN'] }}"
+        CashAmt="55.00"
+        ChangeDateTime="2021-03-31T16:40:46+02:00"
+        IssuerTIN="02829258"
         Operation="INITIAL"
-        TCRCode="{{ $taxpayer['CR'] }}"
+        TCRCode="wp886vu280"
     />
 </RegisterCashDepositRequest>

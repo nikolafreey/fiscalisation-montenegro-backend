@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Izmjena Preduzeca')
+@section('title', 'Dodavanje Sertifikata')
 
 @section('content')
 
@@ -16,18 +16,21 @@
         </li>
     </ul>
     <div class="content-i">
-        <div class="content-box"><div class="row">
+        <div class="content-box">
+            <div class="row">
                 <div class="col-lg-10">
                     <div class="element-wrapper">
+                        <h6 class="element-header">
+                            @yield('title')
+                        </h6>
                         <div class="element-box">
-
                             <form method="POST" action="{{ route('preduzeca.update', $preduzece) }}" enctype="multipart/form-data">
                                 @csrf
                                 @method('patch')
-                                <h5 class="form-header">
-                                    Sertifikati
-                                </h5>
-                                <div class="custom-file mb-3 mt-4">
+                                <legend>
+                                    <span>Pecat</span>
+                                </legend>
+                                <div class="custom-file mb-3">
                                     <label for="">Digitalni pecat</label>
                                     <input type="file" name="pecat" class="custom-file-input" id="pecat">
                                     <label class="custom-file-label mt-4" for="pecat">Odaberite pecat</label>
@@ -43,7 +46,10 @@
                                         value="{{ old('pecatSifra') }}"
                                     >
                                 </div>
-                                <div class="custom-file mb-3 mt-3">
+                                <legend>
+                                    <span>Sertifikat</span>
+                                </legend>
+                                <div class="custom-file mb-3">
                                     <label for="sertifikat">Digitalni sertifikat</label>
                                     <input type="file" name="sertifikat" class="custom-file-input" id="sertifikat">
                                     <label class="custom-file-label mt-4" for="sertifikat">Odaberite sertifikat</label>

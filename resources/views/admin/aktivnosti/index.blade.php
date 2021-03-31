@@ -19,12 +19,12 @@
                     Aktivnosti
                 </h6>
                 <div class="element-box">
-                    <table id="example" class="table">
+                    <table id="example" class="table table-hover table-clean">
                         <thead>
                             <tr>
                                 <th>Opis</th>
                                 <th>Vrijeme</th>
-                                <th>Akcija</th>
+                                <th></th>
                             </tr>
                         </thead>
                     </table>

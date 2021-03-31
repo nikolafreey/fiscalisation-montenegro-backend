@@ -19,6 +19,9 @@
         <div class="content-box"><div class="row">
                 <div class="col-lg-10">
                     <div class="element-wrapper">
+                        <h6 class="element-header">
+                            @yield('title')
+                        </h6>
                         <div class="element-box">
                             <form
                                 method="POST"
@@ -27,12 +30,9 @@
                             >
                                 @method('put')
                                 @csrf
-                                <h5 class="form-header">
-                                    Izmjenite ulogu
-                                </h5>
                                 <div class="form-group">
                                     <label for="uloga">Uloga</label>
-                                    <select class="form-control" id="uloga" name="uloga">
+                                    <select class="selectize mt-2" id="uloga" name="uloga">
                                         @foreach($roles as $role)
                                             <option value="{{ $role->name }}">{{ $role->name }}</option>
                                         @endforeach
@@ -50,5 +50,22 @@
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('scripts')
+
+    <script>
+        $('.selectize').selectize({
+            delimiter: ',',
+            persist: false,
+            create: function(input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            }
+        });
+    </script>
 
 @endsection

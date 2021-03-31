@@ -189,11 +189,9 @@ class DatabaseSeeder extends Seeder
         UlazniRacun::factory(10)->create();
 
         foreach (PoslovnaJedinica::all() as $poslovnaJedinica) {
-            $randomBoolean = rand(0, 1);
-
             DepozitWithdraw::factory(1)->create([
-                'iznos_depozit' => $randomBoolean ? rand(50, 100) : null,
-                'iznos_withdraw' => $randomBoolean ? null : rand(50, 100),
+                'iznos_depozit' => rand(50, 100),
+                'iznos_withdraw' => null,
                 'poslovna_jedinica_id' => $poslovnaJedinica->id,
                 'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);

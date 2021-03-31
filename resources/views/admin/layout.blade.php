@@ -15,6 +15,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.css" rel="stylesheet">
     <link href="{{ mix('css/all.css') }}" rel="stylesheet">
+    <style>
+        .table-clean > tbody > tr > :first-child {
+            padding-left: 12px;
+        }
+
+        .table-clean > tbody > tr > :last-child {
+            padding-right: 12px;
+        }
+    </style>
 </head>
 <body class="full-screen with-content-panel menu-position-side menu-side-left" style="height: 100%;">
     <div class="all-wrapper with-side-panel solid-bg-all">

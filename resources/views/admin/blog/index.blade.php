@@ -19,11 +19,11 @@
                     Blogovi
                 </h6>
                 <div class="element-box">
-                    <table id="example" class="table">
+                    <table id="example" class="table table-hover table-clean">
                         <thead>
                         <tr>
                             <th>Naziv</th>
-                            <th>Action</th>
+                            <th></th>
                         </tr>
                         </thead>
                     </table>

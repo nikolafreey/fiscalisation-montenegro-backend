@@ -19,6 +19,9 @@
         <div class="content-box"><div class="row">
                 <div class="col-lg-10">
                     <div class="element-wrapper">
+                        <h6 class="element-header">
+                            @yield('title')
+                        </h6>
                         <div class="element-box">
                             <form
                                 method="POST"
@@ -26,9 +29,6 @@
                             >
                                 @method($method)
                                 @csrf
-                                <h5 class="form-header">
-                                    {{ $action ? 'Izmjenite' : 'Dodajte' }} Blog
-                                </h5>
                                 <div class="form-group">
                                     <label for="naziv">Naziv bloga</label>
                                     <input type="text" class="form-control" id="naziv" aria-describedby="emailHelp" placeholder="Naziv..." name="naziv" value="{{ old('naziv', $blog->naziv) }}">
@@ -101,7 +101,7 @@
 
                                 <div class="form-group">
                                     <label for="blog_category_id">Kategorija bloga</label>
-                                    <select class="form-control" id="blog_category_id" name="blog_category_id">
+                                    <select class="selectize" id="blog_category_id" name="blog_category_id">
                                         @foreach($blogCategories as $category)
                                             <option
                                                 @if(old('blog_category_id') === $category->id)
@@ -289,6 +289,17 @@
                 f = Math.floor(Math.log(a) / Math.log(c));
             return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f];
         }
+
+        $('.selectize').selectize({
+            delimiter: ',',
+            persist: false,
+            create: function(input) {
+            return {
+            value: input,
+            text: input
+        }
+        }
+        });
     </script>
 
 @endsection

@@ -5,7 +5,7 @@ namespace App\Jobs;
 use DOMDocument;
 use App\Services\SignXMLService;
 use App\Models\Racun;
-use http\Exception;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
@@ -29,13 +29,13 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        if ($racun->vrsta_racuna === 'gotovinski') {
+        if ($racun->vrsta_racuna === 'GOTOVINSKI') {
             $potpis = $racun->preduzece->pecat;
 
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
         }
 
-        if ($racun->vrsta_racuna === 'bezgotovinski') {
+        if ($racun->vrsta_racuna === 'BEZGOTOVINSKI') {
             $potpis = $racun->preduzece->sertifikat;
 
             $decryptedPassword = decrypt($racun->preduzece->setifikatSifra);
@@ -49,9 +49,9 @@ class Fiskalizuj implements ShouldQueue
             'taxpayer' => [
                 'CR' => 'wp886vu280', // Cash Register (ENU)
                 'SW' => 'qk433mq872', // Software Code
-                'TIN' => $racun->preduzece->pib,
-                'BU' => $racun->poslovnaJedinica->kratki_naziv,
-                'OP' => $racun->kod_operatera,
+                'TIN' => '02829258',
+                'BU' => 'ya260ri698' ?? $racun->poslovnaJedinica->kratki_naziv,
+                'OP' => 'ia871me776' ?? $racun->kod_operatera,
             ],
             'seller' => [
                 'IDType' => 'TIN',
@@ -59,7 +59,7 @@ class Fiskalizuj implements ShouldQueue
             ],
             'buyer' => [
                 'IDType' => 'TIN',
-                'IDNum' => $racun->partner->preduzece->pib,
+                'IDNum' => '12345678',
                 'Name' => $racun->partner->kontakt_ime,
             ],
         ];

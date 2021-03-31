@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Mail\PodijeliRacunKorisniku;
 use App\Models\Invite;
+use App\Models\PoslovnaJedinica;
+use App\Models\Preduzece;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Grupa;
@@ -233,15 +235,24 @@ class RacunController extends Controller
 
             $racun->save();
 
-            $invite = Invite::create([
-                'email' => $racun->partner->fizicko_lice->email,
-                'route' => route('racuni.show', $racun),
-                'token' => Str::random(40),
-                'racun_id' => $racun->id,
-            ]);
+            $kupacEmail = $racun->partner->fizicko_lice->email;
 
-            Mail::to($racun->partner->fizicko_lice->email)
-                ->send(new PodijeliRacunGostu($racun, $invite));
+            if (User::where('email', $kupacEmail)->exists()) {
+                User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
+
+                Mail::to($kupacEmail)
+                    ->send(new PodijeliRacunKorisniku($racun));
+            } else {
+                $invite = Invite::create([
+                    'email' => $kupacEmail,
+                    'route' => route('racuni.show', $racun),
+                    'token' => Str::random(40),
+                    'racun_id' => $racun->id,
+                ]);
+
+                Mail::to($kupacEmail)
+                    ->send(new PodijeliRacunGostu($invite));
+            }
 
             $racun->kreirajStavke($request);
             Log::info('suma: ' . var_export($racun->izracunajUkupneCijene(), true));
@@ -272,9 +283,9 @@ class RacunController extends Controller
     public function show(Racun $racun)
     {
         if (
-            ! in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray())
+            ! in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
             &&
-            ! in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray())
+            ! in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
         )
         {
             abort(403, 'Nemate pristup ovom racunu');
@@ -332,6 +343,8 @@ class RacunController extends Controller
         }
 
         if (User::where('email', $request->email)->exists()) {
+            User::where('email', $request->email)->first()->guestRacuni()->attach($racun->id);
+
             Mail::to($request->email)
                 ->send(new PodijeliRacunKorisniku($racun));
         } else {
@@ -343,7 +356,7 @@ class RacunController extends Controller
             ]);
 
             Mail::to($request->email)
-                ->send(new PodijeliRacunGostu($racun, $invite));
+                ->send(new PodijeliRacunGostu($invite));
         }
 
         return response()->json('Uspjesno ste poslali racun na mejl korisnika');

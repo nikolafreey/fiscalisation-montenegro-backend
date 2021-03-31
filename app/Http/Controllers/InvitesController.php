@@ -11,21 +11,22 @@ class InvitesController extends Controller
 {
     public function registerFromInvite(Invite $invite, Request $request)
     {
-        $attr = $request->validate([
-            'name' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-            'token' => 'required|string|digits:40',
+        $attributes = $request->validate([
+            'ime' => 'required|string|max:255',
+            'password' => 'required|string|min:6'
         ]);
 
         abort_if($request->token !== $invite->token, 400);
 
         $user = User::create([
-            'name' => $attr['name'],
-            'password' => bcrypt($attr['password']),
+            'ime' => $attributes['ime'],
+            'password' => bcrypt($attributes['password']),
             'email' => $invite->email,
         ]);
 
-        $user->guestRacuni->attach($invite->racun_id);
+        $user->guestRacuni()->attach($invite->racun_id);
+
+        $user->assignRole('gost');
 
         $user->createToken('Api token')->plainTextToken;
 
