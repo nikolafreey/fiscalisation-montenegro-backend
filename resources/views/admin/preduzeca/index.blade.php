@@ -6,7 +6,7 @@
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Pocetna</a>
+            <a href="#">Početna</a>
         </li>
         <li class="breadcrumb-item">
             <span>@yield('title')</span>
@@ -16,7 +16,7 @@
         <div class="content-box">
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Preduzeca
+                    Preduzeća
                 </h6>
                 <div class="element-box">
                     <table id="data_table" class="table table-hover table-clean">

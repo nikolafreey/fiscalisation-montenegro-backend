@@ -114,6 +114,11 @@ class User extends Authenticatable
         return $this->hasMany(Dokument::class);
     }
 
+    public function podesavanje()
+    {
+        return $this->hasOne(Podesavanje::class);
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -136,5 +141,10 @@ class User extends Authenticatable
     public function setAvatarAttribute($value)
     {
         return $this->attributes['avatar'] = Storage::disk('public')->putFile('avatars', $value);
+    }
+
+    public function getPunoImeAttribute()
+    {
+        return "{$this->ime} {$this->prezime}";
     }
 }

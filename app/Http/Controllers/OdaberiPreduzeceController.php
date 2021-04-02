@@ -23,7 +23,7 @@ class OdaberiPreduzeceController extends Controller
             // ->where('last_used_at', '>', now()->subDays(30))
             ->count();
 
-        if ($loggedInUsersIntoPreduzeceCount >= $preduzece->izracunajBrojUredjaja()) {
+        if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
             return ['message' => 'Previse uredjaja je ulogovano na ovo preduzece'];
         }
 

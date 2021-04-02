@@ -56,6 +56,10 @@ class CreatePreduzecaTable extends Migration
             $table->string('sertifikat', 100)->nullable();
             $table->text('pecatSifra')->nullable();
             $table->text('sertifikatSifra')->nullable();
+            $table->string('enu_kod')->default('wp886vu280');
+            $table->string('software_kod')->default('qk433mq872');
+            $table->string('kod_operatera')->default('ia871me776');
+            $table->string('kod_pj')->default('ya260ri698');
             $table->timestamp('vazenje_pecata_do')->nullable();
             $table->timestamp('vazenje_sertifikata_do')->nullable();
 

@@ -33,7 +33,7 @@
                     <a class="logo" href="#">
                         <div class="logo-element"></div>
                         <div class="logo-label">
-                            Racuni
+                            Računi
                         </div>
                     </a>
                 </div>
@@ -90,9 +90,6 @@
                     Page Header
                 </h1>
                 <ul class="main-menu">
-                    <li class="sub-header">
-                        <span>Navigacija</span>
-                    </li>
                     <li class=" has-sub-menu">
                         <a href="{{ route('preduzeca.index') }}">
                             <div class="icon-w">
@@ -109,7 +106,7 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ route('preduzeca.index') }}">Prikazi</a>
+                                        <a href="{{ route('preduzeca.index') }}">Prikaži</a>
                                     </li>
                                 </ul>
                             </div>
@@ -131,7 +128,7 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ route('aktivnosti.index') }}">Prikazi</a>
+                                        <a href="{{ route('aktivnosti.index') }}">Prikaži</a>
                                     </li>
                                 </ul>
                             </div>
@@ -154,7 +151,7 @@
                                 <div class="sub-menu-i">
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="{{ route('users.index') }}">Prikazi</a>
+                                            <a href="{{ route('users.index') }}">Prikaži</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('users.create') }}">Dodajte korisnika</a>
@@ -181,7 +178,7 @@
                                 <div class="sub-menu-i">
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="{{ route('uloge.index') }}">Prikazi</a>
+                                            <a href="{{ route('uloge.index') }}">Prikaži</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('uloge.create') }}">Dodajte ulogu</a>
@@ -208,7 +205,7 @@
                                 <div class="sub-menu-i">
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="{{ route('dozvole.index') }}">Prikazi</a>
+                                            <a href="{{ route('dozvole.index') }}">Prikaži</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('dozvole.create') }}">Dodajte dozvolu</a>
@@ -234,7 +231,7 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ route('blogs.index') }}">Prikazi</a>
+                                        <a href="{{ route('blogs.index') }}">Prikaži</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('blogs.create') }}">Dodajte blog</a>
@@ -259,7 +256,7 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ route('blogCategories.index') }}">Prikazi</a>
+                                        <a href="{{ route('blogCategories.index') }}">Prikaži</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('blogCategories.create') }}">Dodajte kategoriju</a>

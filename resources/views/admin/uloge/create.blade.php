@@ -6,7 +6,7 @@
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Pocetna</a>
+            <a href="#">Početna</a>
         </li>
         <li class="breadcrumb-item">
             <a href="{{ route('uloge.index') }}">Uloge</a>
@@ -26,7 +26,7 @@
                             <form method="POST" action="{{ route('uloge.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Unesite ime</label>
+                                    <label for="exampleInputEmail1">Ime</label>
                                     <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Unesite ime" name="uloga">
                                 </div>
                                 <div class="form-buttons-w">

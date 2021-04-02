@@ -37,7 +37,7 @@ class StoreRacun extends BaseApiRequest
             'status' => 'nullable',
             'partner_id' => 'nullable',
             'preduzece_id' => 'required',
-            'poslovna_jedinica_id' => 'required'
+            'poslovna_jedinica_id' => 'required',
         ];
     }
 }

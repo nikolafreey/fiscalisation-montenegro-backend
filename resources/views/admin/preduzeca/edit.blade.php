@@ -6,10 +6,10 @@
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Pocetna</a>
+            <a href="#">Početna</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('preduzeca.index') }}">Preduzeca</a>
+            <a href="{{ route('preduzeca.index') }}">Preduzeća</a>
         </li>
         <li class="breadcrumb-item">
             <span>@yield('title')</span>
@@ -28,15 +28,15 @@
                                 @csrf
                                 @method('patch')
                                 <legend>
-                                    <span>Pecat</span>
+                                    <span>Pečat</span>
                                 </legend>
                                 <div class="custom-file mb-3">
-                                    <label for="">Digitalni pecat</label>
+                                    <label for="">Digitalni pečat</label>
                                     <input type="file" name="pecat" class="custom-file-input" id="pecat">
-                                    <label class="custom-file-label mt-4" for="pecat">Odaberite pecat</label>
+                                    <label class="custom-file-label mt-4" for="pecat">Odaberite pečat</label>
                                 </div>
                                 <div class="form-group mt-4">
-                                    <label for="pecatSifra">Sifra za pecat</label>
+                                    <label for="pecatSifra">Šifra za pečat</label>
                                     <input
                                         class="form-control"
                                         placeholder="Unesite sifru"
@@ -55,7 +55,7 @@
                                     <label class="custom-file-label mt-4" for="sertifikat">Odaberite sertifikat</label>
                                 </div>
                                 <div class="form-group mt-4">
-                                    <label for="sertifikatSifra">Sifra za sertifikat</label>
+                                    <label for="sertifikatSifra">Šifra za sertifikat</label>
                                     <input
                                         class="form-control"
                                         placeholder="Unesite sifru"

@@ -49,7 +49,7 @@ class Fiskalizuj implements ShouldQueue
             'taxpayer' => [
                 'CR' => 'wp886vu280', // Cash Register (ENU)
                 'SW' => 'qk433mq872', // Software Code
-                'TIN' => '02829258',
+                'TIN' => $racun->preduzece->pib,
                 'BU' => 'ya260ri698' ?? $racun->poslovnaJedinica->kratki_naziv,
                 'OP' => 'ia871me776' ?? $racun->kod_operatera,
             ],

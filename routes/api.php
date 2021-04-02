@@ -8,6 +8,7 @@ use App\Http\Controllers\DozvolaController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KategorijaDokumentaController;
 use App\Http\Controllers\OdaberiPreduzeceController;
+use App\Http\Controllers\PodesavanjeController;
 use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
 use App\Http\Controllers\UploadController;
 use App\Models\KategorijaDokumenta;
@@ -234,6 +235,13 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         Route::post('uploadUgovora', [UploadController::class, 'uploadUgovora']);
 
         Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
+
+        Route::apiResource('podesavanja', PodesavanjeController::class)->parameters([
+            'podesavanja' => 'podesavanje'
+        ]);
+
+        Route::post('podesavanja/dodajKorisnika', [PodesavanjeController::class, 'dodajKorisnika'])
+            ->name('dodajKorisnika');
 
     // });
 // });

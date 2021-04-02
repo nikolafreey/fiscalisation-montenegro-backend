@@ -233,25 +233,38 @@ class RacunController extends Controller
 
             $racun->poslovna_jedinica_id = $poslovnaJedinica->id;
 
+            $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
+
+            $startOfYear = $date->copy()->startOfYear();
+            $endOfYear   = $date->copy()->endOfYear();
+
+            if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
+                $racun->redni_broj = $preduzece->podesavanje->redniBroj;
+            } else {
+                $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
+            }
+
             $racun->save();
 
-            $kupacEmail = $racun->partner->fizicko_lice->email;
+            if ($preduzece->podesavanje->slanjeKupcu) {
+                $kupacEmail = $racun->partner->fizicko_lice->email;
 
-            if (User::where('email', $kupacEmail)->exists()) {
-                User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
+                if (User::where('email', $kupacEmail)->exists()) {
+                    User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
 
-                Mail::to($kupacEmail)
-                    ->send(new PodijeliRacunKorisniku($racun));
-            } else {
-                $invite = Invite::create([
-                    'email' => $kupacEmail,
-                    'route' => route('racuni.show', $racun),
-                    'token' => Str::random(40),
-                    'racun_id' => $racun->id,
-                ]);
+                    Mail::to($kupacEmail)
+                        ->send(new PodijeliRacunKorisniku($racun));
+                } else {
+                    $invite = Invite::create([
+                        'email' => $kupacEmail,
+                        'route' => route('racuni.show', $racun),
+                        'token' => Str::random(40),
+                        'racun_id' => $racun->id,
+                    ]);
 
-                Mail::to($kupacEmail)
-                    ->send(new PodijeliRacunGostu($invite));
+                    Mail::to($kupacEmail)
+                        ->send(new PodijeliRacunGostu($invite));
+                }
             }
 
             $racun->kreirajStavke($request);

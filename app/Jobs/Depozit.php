@@ -31,7 +31,7 @@ class Depozit implements ShouldQueue
             // TODO: Check is this data dynamic?
             'taxpayer' => [
                 'CR' => 'wp886vu280', // Cash Register (ENU)
-                'TIN' => '02829258',
+                'TIN' => $depozit->preduzece->pib,
             ],
         ];
     }

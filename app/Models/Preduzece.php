@@ -155,6 +155,11 @@ class Preduzece extends Model
         return $this->hasMany(Dokument::class);
     }
 
+    public function podesavanje()
+    {
+        return $this->hasOne(Podesavanje::class);
+    }
+
     public function setPecatAttribute($file)
     {
         $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(
@@ -186,15 +191,14 @@ class Preduzece extends Model
         return date('Y-m-d H:i:s', $cert['validTo_time_t']);
     }
 
-    public function izracunajBrojUredjaja()
+    public function getBrojUredjajaAttribute()
     {
-        $broj_uredjaja = 0;
+        return $this->paketi->sum('broj_uredjaja');
+    }
 
-        foreach ($this->paketi as $paket) {
-            $broj_uredjaja += $paket->broj_uredjaja;
-        }
-
-        return $broj_uredjaja;
+    public function getNajjaciPaketAttribute()
+    {
+        return $this->paketi->max('broj_uredjaja');
     }
 
     public function setLogotipAttribute($value)

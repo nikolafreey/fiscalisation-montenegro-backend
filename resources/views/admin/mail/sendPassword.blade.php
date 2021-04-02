@@ -1,1 +1,1 @@
-<h2>Pozdrav {{ $user->ime }} vasa lozinka je {{ $user->password }}</h2>
+<h2>Pozdrav {{ $user->punoIme }} vaša lozinka je {{ $user->password }}</h2>

@@ -6,7 +6,7 @@
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Pocetna</a>
+            <a href="#">Početna</a>
         </li>
         <li class="breadcrumb-item">
             <span>@yield('title')</span>

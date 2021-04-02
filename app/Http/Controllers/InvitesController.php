@@ -26,7 +26,7 @@ class InvitesController extends Controller
 
         $user->guestRacuni()->attach($invite->racun_id);
 
-        $user->assignRole('gost');
+        $user->assignRole('Gost');
 
         $user->createToken('Api token')->plainTextToken;
 

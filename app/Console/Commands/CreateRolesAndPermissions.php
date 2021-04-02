@@ -35,12 +35,12 @@ class CreateRolesAndPermissions extends Command
     {
         $this->info('Starting to sync roles');
 
-        Role::firstOrCreate(['name' => 'superadmin']);
-        Role::firstOrCreate(['name' => 'vlasnik']);
-        Role::firstOrCreate(['name' => 'zaposleni']);
-        Role::firstOrCreate(['name' => 'knjigovodja']);
-        Role::firstOrCreate(['name' => 'kasir']);
-        Role::firstOrCreate(['name' => 'gost']);
+        Role::firstOrCreate(['name' => 'SuperAdmin']);
+        Role::firstOrCreate(['name' => 'Vlasnik']);
+        Role::firstOrCreate(['name' => 'Zaposleni']);
+        Role::firstOrCreate(['name' => 'Knjigovodja']);
+        Role::firstOrCreate(['name' => 'Kasir']);
+        Role::firstOrCreate(['name' => 'Gost']);
 
         Permission::firstOrCreate(['name' => 'edit preduzeca']);
         Permission::firstOrCreate(['name' => 'edit users']);
@@ -240,7 +240,7 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete KategorijaDokumenta']);
 
 
-        User::where('ime', 'Super Admin')->firstOrFail()->syncRoles(['superadmin']);
+        User::where('ime', 'Super Admin')->firstOrFail()->syncRoles(['SuperAdmin']);
 
         $this->info('Done');
 

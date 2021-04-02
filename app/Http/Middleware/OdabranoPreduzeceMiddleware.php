@@ -18,6 +18,10 @@ class OdabranoPreduzeceMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if (auth()->user()->role === 'Gost') {
+            return $next($request);
+        }
+
         if (
             DB::table('personal_access_tokens')
                 ->where('token', getAccessToken($request))

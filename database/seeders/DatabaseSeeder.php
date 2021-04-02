@@ -62,13 +62,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('secret'),
         ]);
 
-        Role::create(['name' => 'superadmin']);
-        Role::create(['name' => 'default']);
+        Role::create(['name' => 'SuperAdmin']);
+        Role::create(['name' => 'Default']);
 
         Permission::create(['name' => 'edit preduzeca']);
         Permission::create(['name' => 'edit users']);
 
-        $user->assignRole('superadmin');
+        $user->assignRole('SuperAdmin');
 
         foreach (Preduzece::all() as $preduzece) {
             PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
@@ -86,13 +86,13 @@ class DatabaseSeeder extends Seeder
 
         DB::table('paketi')->insert([
             'id' => 0,
-            'naziv' => 'Pocetni',
+            'naziv' => 'Osnovni',
             'broj_uredjaja' => 1,
         ]);
 
         DB::table('paketi')->insert([
             'id' => 0,
-            'naziv' => 'Srednji',
+            'naziv' => 'Start',
             'broj_uredjaja' => 2,
         ]);
 

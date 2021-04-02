@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar', 255)->nullable();
             $table->boolean('paket')->nullable();
             $table->date('vazi_do')->nullable();
+            $table->string('kod_operatera')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

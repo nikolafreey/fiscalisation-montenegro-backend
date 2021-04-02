@@ -17,7 +17,7 @@ class UlogeKorisnikaPreduzecaController extends Controller
     public function store(Preduzece $preduzece, UlogaKorisnikaPreduzecaRequest $request)
     {
         if (
-            ! auth()->user()->hasRole('vlasnik')
+            ! auth()->user()->hasRole('Vlasnik')
             || ! $preduzece->users()->where('users.id', auth()->id())->exists()
         ) {
             abort(403);

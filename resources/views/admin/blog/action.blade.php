@@ -14,7 +14,7 @@
         <form action="{{ route('blogs.destroy', $blog) }}" method="POST"  >
             @method('delete')
             @csrf
-            <button class="dropdown-item btn-delete-amenity">Izbrisite</button>
+            <button class="dropdown-item btn-delete-amenity">Izbrišite</button>
         </form>
     </div>
 </div>
