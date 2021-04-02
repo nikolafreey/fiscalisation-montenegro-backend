@@ -17,7 +17,7 @@ use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
 Auth::routes();
 
-Route::middleware('auth')->prefix('admin')->group(function () {
+Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
     Route::resource('preduzeca', PreduzeceController::class)->parameters([
         'preduzeca' => 'preduzece'
     ])->only('index', 'edit', 'update');
