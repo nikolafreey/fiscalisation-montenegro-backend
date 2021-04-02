@@ -11,9 +11,13 @@ class Djelatnost extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = "djelatnosti";
 
-    protected $fillable = array('naziv');
+    protected $fillable = [
+        'naziv'
+    ];
 
     public function preduzeca()
     {

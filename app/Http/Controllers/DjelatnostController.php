@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDjelatnost;
-use App\Models\DepozitWithdraw;
+use App\Http\Requests\Api\StoreDjelatnost;
 use App\Models\Djelatnost;
 use Illuminate\Http\Request;
 

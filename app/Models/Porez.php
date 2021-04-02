@@ -12,6 +12,8 @@ class Porez extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'porezi';
 
     protected $fillable = [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Preduzece;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,36 +14,34 @@ class OdaberiPreduzeceController extends Controller
         return Auth::user()->preduzeca();
     }
 
-    public function show(Request $request)
-    {
-        return ['preduzece' => $request->preduzece];
-    }
-
     public function update(Request $request)
     {
-        $accessToken = Auth::user()->currentAccessToken();
+        $preduzece = Preduzece::findOrFail($request->preduzece_id);
 
         $loggedInUsersIntoPreduzeceCount = DB::table('personal_access_tokens')
-            ->where('preduzece', $request->preduzece)
-            ->where('last_used_at', '>', now()->subDays(30))
+            ->where('preduzece_id', $preduzece->id)
+            // ->where('last_used_at', '>', now()->subDays(30))
             ->count();
 
-        $brojUredjaja = $request->preduzece->izracunajBrojUredjaja();
-
-        if ($loggedInUsersIntoPreduzeceCount >= $brojUredjaja) {
-            return ['message' => 'Previse uredjaja ulogovano na ovo preduzece'];
+        if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
+            return ['message' => 'Previse uredjaja je ulogovano na ovo preduzece'];
         }
 
         DB::table('personal_access_tokens')
-            ->where('id', $accessToken->id)
-            ->where('token', $accessToken->token)
-            ->update(['preduzece_id' => $request->preduzece->id]);
+            ->where('token', getAccessToken($request))
+            ->update(['preduzece_id' => $preduzece->id]);
 
-        return ['message' => 'Preduzece updated'];
+        return ['message' => 'Uspjesno ste odabrali preduzece'];
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-        // leave preduzece
+        $preduzece = Preduzece::findOrFail($request->preduzece_id);
+
+        DB::table('personal_access_tokens')
+            ->where('preduzece_id', $preduzece->id)
+            ->update(['preduzece_id' => null]);
+
+        return ['message' => 'Uspjesno ste se izlogovali iz preduzeca'];
     }
 }

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreZiroRacun;
+use App\Http\Requests\Api\StoreZiroRacun;
 use App\Models\User;
-use App\Models\Usluga;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
 

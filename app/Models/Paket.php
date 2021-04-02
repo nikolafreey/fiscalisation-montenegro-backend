@@ -9,9 +9,14 @@ class Paket extends Model
 {
     use HasFactory;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'paketi';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'naziv',
+        'broj_uredjaja'
+    ];
 
     public function preduzeca()
     {

@@ -52,28 +52,23 @@ class DatabaseSeeder extends Seeder
         Djelatnost::factory(10)->create();
         Modul::factory(10)->create();
         OvlascenoLice::factory(10)->create();
-        TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
+        User::factory(10)->create();
 
-        foreach (Preduzece::all() as $preduzece) {
-            User::factory(10)->create(['preduzece_id' => $preduzece->id]);
-        }
         $user = User::create([
-            'email' => 'superadmin@test.com',
+            'email' => 'admin@admin.com',
             'ime' => 'Super Admin',
-            'password' => Hash::make('123456'),
-            'tip_id' => 1,
-            'preduzece_id' => Preduzece::first()->id
+            'password' => Hash::make('secret'),
         ]);
 
-        Role::create(['name' => 'superadmin']);
-        Role::create(['name' => 'default']);
+        Role::create(['name' => 'SuperAdmin']);
+        Role::create(['name' => 'Default']);
 
         Permission::create(['name' => 'edit preduzeca']);
         Permission::create(['name' => 'edit users']);
 
-        $user->assignRole('superadmin');
+        $user->assignRole('SuperAdmin');
 
         foreach (Preduzece::all() as $preduzece) {
             PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
@@ -86,19 +81,18 @@ class DatabaseSeeder extends Seeder
                 'preduzece_id' => $preduzece->id,
                 'poslovna_jedinica_id' => $preduzece->poslovne_jedinice()->withoutGlobalScopes()->inRandomOrder()->first()->id,
                 'user_id' => $user->id,
-                'tip_korisnika_id' => TipKorisnika::all()->random()->id,
             ]);
         }
 
         DB::table('paketi')->insert([
             'id' => 0,
-            'naziv' => 'Pocetni',
+            'naziv' => 'Osnovni',
             'broj_uredjaja' => 1,
         ]);
 
         DB::table('paketi')->insert([
             'id' => 0,
-            'naziv' => 'Srednji',
+            'naziv' => 'Start',
             'broj_uredjaja' => 2,
         ]);
 
@@ -195,11 +189,9 @@ class DatabaseSeeder extends Seeder
         UlazniRacun::factory(10)->create();
 
         foreach (PoslovnaJedinica::all() as $poslovnaJedinica) {
-            $randomBoolean = rand(0, 1);
-
             DepozitWithdraw::factory(1)->create([
-                'iznos_depozit' => $randomBoolean ? rand(50, 100) : null,
-                'iznos_withdraw' => $randomBoolean ? null : rand(50, 100),
+                'iznos_depozit' => rand(50, 100),
+                'iznos_withdraw' => null,
                 'poslovna_jedinica_id' => $poslovnaJedinica->id,
                 'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);

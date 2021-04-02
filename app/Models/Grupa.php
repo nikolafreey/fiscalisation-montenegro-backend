@@ -11,6 +11,8 @@ class Grupa extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'grupe';
 
     protected $fillable = [

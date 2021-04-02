@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\Depozit;
-use App\Models\CijenaRobe;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
-use App\Http\Requests\StoreDepozitWithdraw;
+use App\Http\Requests\Api\StoreDepozitWithdraw;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DozvolaController extends Controller
 {
     public function index()
     {
-        return Role::all();
+        return Permission::all();
     }
 }

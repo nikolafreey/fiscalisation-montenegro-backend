@@ -16,6 +16,8 @@ class Racun extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'vrsta_racuna';
+
     protected $table = 'racuni';
 
     protected $fillable = [
@@ -267,6 +269,11 @@ class Racun extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+    public function guestUsers()
+    {
+        return $this->belongsToMany('App\Models\User', 'users_racuni', 'racun_id', 'user_id');
     }
 
     public function poslovnaJedinica()

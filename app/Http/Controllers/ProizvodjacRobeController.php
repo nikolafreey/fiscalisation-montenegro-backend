@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProizvodjacRobe;
-use App\Models\Preduzece;
+use App\Http\Requests\Api\StoreProizvodjacRobe;
 use App\Models\ProizvodjacRobe;
 use App\Models\User;
 use Illuminate\Http\Request;

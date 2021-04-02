@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTipKorisnika;
-use App\Models\Racun;
+use App\Http\Requests\Api\StoreTipKorisnika;
 use App\Models\TipKorisnika;
 use Illuminate\Http\Request;
 

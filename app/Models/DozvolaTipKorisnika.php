@@ -9,7 +9,7 @@ use App\Traits\ImaAktivnost;
 
 class DozvolaTipKorisnika extends Model
 {
-    use HasFactory, SoftDeletes, ImaAktivnost;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'dozvole_tip_korisnika';
 

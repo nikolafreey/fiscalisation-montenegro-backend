@@ -1,0 +1,20 @@
+<RegisterCashDepositRequest
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://efi.tax.gov.me/fs/schema"
+    Id="Request"
+    Version="1"
+>
+    <Header
+        SendDateTime="2021-03-31T16:40:46+02:00"
+        UUID="2421573d-b690-4db7-b261-0dfdaf42ccc0"
+    />
+
+    <CashDeposit
+        CashAmt="55.00"
+        ChangeDateTime="2021-03-31T16:40:46+02:00"
+        IssuerTIN="02829258"
+        Operation="INITIAL"
+        TCRCode="wp886vu280"
+    />
+</RegisterCashDepositRequest>

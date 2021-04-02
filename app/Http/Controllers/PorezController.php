@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PodKategorijaRobe;
 use App\Models\Porez;
 use Illuminate\Http\Request;
 

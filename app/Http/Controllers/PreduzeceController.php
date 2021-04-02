@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePreduzece;
+use App\Http\Requests\Api\StorePreduzece;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
@@ -60,6 +60,15 @@ class PreduzeceController extends Controller
      */
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
+        if (
+            ! auth()->user()-hasRole('Vlasnik')
+            &&
+            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        )
+        {
+            abort(403);
+        }
+
         $preduzece->update($request->validated());
 
         return response()->json($preduzece, 200);
@@ -73,6 +82,15 @@ class PreduzeceController extends Controller
      */
     public function destroy(Preduzece $preduzece)
     {
+        if (
+            ! auth()->user()-hasRole('Vlasnik')
+            &&
+            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        )
+        {
+            abort(403);
+        }
+
         $preduzece->delete();
 
         return response()->json($preduzece, 200);

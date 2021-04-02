@@ -36,6 +36,7 @@ class CreateUlazniRacuniTable extends Migration
             $table->decimal('popust_ukupno', 15, 4)->nullable();
             $table->text('opis')->nullable();
             $table->string('status', 20);
+            $table->string('file')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
