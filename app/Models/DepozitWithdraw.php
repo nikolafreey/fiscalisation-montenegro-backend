@@ -11,6 +11,8 @@ class DepozitWithdraw extends Model
 {
     use HasFactory, ImaAktivnost;
 
+    protected $fillable = array('iznos_depozit', 'iznos_withdraw', 'poslovna_jedinica_id');
+
     protected static function booted()
     {
         static::addGlobalScope(new UserScope);

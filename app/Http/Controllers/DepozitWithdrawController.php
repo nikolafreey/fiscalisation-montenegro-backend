@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
 use App\Http\Requests\StoreDepozitWithdraw;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +16,7 @@ class DepozitWithdrawController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(DepozitWithdraw::class, 'depozitWithdraw');
+        // $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
     }
 
     public function index()
@@ -25,7 +26,14 @@ class DepozitWithdrawController extends Controller
 
     public function store(StoreDepozitWithdraw $request)
     {
-        $depozitWithdraw = DepozitWithdraw::create($request->validated());
+        $depozitWithdraw = DepozitWithdraw::create($request->all());
+
+        $depozitWithdraw->user_id = auth()->id();
+        $user = User::find(auth()->id())->load(['preduzeca', 'preduzeca.poslovne_jedinice']);
+
+        $depozitWithdraw->preduzece_id = $user['preduzeca'][0]->id;
+        $depozitWithdraw->poslovna_jedinica_id = $user['preduzeca'][0]['poslovne_jedinice'][0]->id;
+        $depozitWithdraw->save();
 
         if ($depozitWithdraw->iznos_depozit > 0) {
             Depozit::dispatch($depozitWithdraw);
@@ -35,7 +43,7 @@ class DepozitWithdrawController extends Controller
         //     Withdraw::dispatch($depozitWithdraw);
         // }
 
-        return response()->json($depozitWithdraw, 201);
+        return response()->json($depozitWithdraw);
     }
 
     public function show(DepozitWithdraw $depozitWithdraw)
