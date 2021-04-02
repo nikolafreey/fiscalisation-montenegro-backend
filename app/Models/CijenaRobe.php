@@ -16,11 +16,15 @@ class CijenaRobe extends Model
     protected $fillable = [
         'nabavna_cijena_bez_pdv',
         'nabavna_cijena_sa_pdv',
-        'cijena_bez_pdv', 'porezi_id',
+        'cijena_bez_pdv',
+        'porezi_id',
         'roba_id',
         'atribut_id',
         'pdv_iznos',
-        'ukupna_cijena'
+        'ukupna_cijena',
+        'cijena_bez_pdv_popust',
+        'cijena_sa_pdv_popust',
+        'iznos_pdv_popust'
     ];
 
     // protected static function booted()

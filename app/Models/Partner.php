@@ -80,16 +80,21 @@ class Partner extends Model
 
     public static function filter(Request $request)
     {
-        if ($request->has('search')) {
+        if ($request->has(['filter', 'search'])) {
             $query = Partner::search($request->search . '*');
-        } else {
-            $query = Partner::query();
+            return $query;
         }
 
-        if ($request->has(['filter', 'search'])) {
-            $query = $query->where('tip', $request->filter);
-        } elseif ($request->has(['filter'])) {
-            $query = $query->has($request->filter);
+        if ($request->has('search')) {
+            $query = Partner::search($request->search . '*');
+        }
+
+        if ($request->has('filter')) {
+            if ($request->filter == "fizicko_lice") {
+                return Partner::where('preduzece_id', null);
+            } elseif ($request->filter == "preduzece") {
+                return Partner::where('fizicko_lice_id', null);
+            }
         }
 
         return $query;

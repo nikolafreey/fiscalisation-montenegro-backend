@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreCijenaRobe;
 use App\Models\CijenaRobe;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class CijenaRobeController extends Controller
 {

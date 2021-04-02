@@ -7,6 +7,7 @@ use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ScoutElastic\Searchable;
 use App\Traits\ImaAktivnost;
@@ -43,9 +44,12 @@ class Roba extends Model
             'naziv' => [
                 'type' => 'text',
             ],
-            // 'interna_sifra_proizvoda' => [
-            //     'type' => 'text',
-            // ],
+            'interna_sifra_proizvoda' => [
+                'type' => 'text',
+            ],
+            'ean' => [
+                'type' => 'text',
+            ],
         ]
     ];
 
@@ -125,11 +129,21 @@ class Roba extends Model
             }
         }
 
-
-
         CijenaRobe::insert($cijenaValues);
     }
 
+    public static function filter(Request $request)
+    {
+        if ($request->has('search')) {
+            $query = Roba::search($request->search . '*');
+        } else {
+            $query = Roba::query();
+        }
+        if ($request->has('atribut_id')) {
+            $query = $query->where('atribut_id', $request->atribut_id);
+        }
+        return $query;
+    }
 
     public function storeAtributi($atributi)
     {
@@ -138,12 +152,12 @@ class Roba extends Model
 
     public function proizvodjac_robe()
     {
-        return $this->hasOne('App\Models\ProizvodjacRobe', 'id');
+        return $this->belongsTo('App\Models\ProizvodjacRobe', 'proizvodjac_robe_id');
     }
 
     public function jedinica_mjere()
     {
-        return $this->hasOne('App\Models\JedinicaMjere', 'id');
+        return $this->belongsTo('App\Models\JedinicaMjere', 'jedinica_mjere_id');
     }
 
     public function preduzece()

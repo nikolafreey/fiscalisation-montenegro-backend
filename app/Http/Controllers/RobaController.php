@@ -16,24 +16,20 @@ class RobaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return Roba::with('atributi_roba', 'proizvodjac_robe', 'robe_kategorije')->paginate();
     }
 
     public function robaRacuni(Request $request)
     {
-        // $query = RobaAtributRobe::filter($request);
-        // return $query->with([
-        //     'roba:id,naziv,opis,ean,status',
-        //     'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
-        //     'roba.jedinica_mjere:id,naziv',
-        //     'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-        //     'roba.cijene_roba.porez:id,naziv,stopa'
-        // ])->with('roba.robe_kategorije')->with('roba.proizvodjac_robe')->paginate();
-
         if ($request->has('search')) {
-            return RobaAtributRobe::search($request->search . '*')->with([
+            $queryRobaId = [];
+            $queryRoba = Roba::search($request->search . '*')->get()->toArray();
+            foreach ($queryRoba as $roba) {
+                $queryRobaId[] = $roba['id'];
+            }
+            $query = RobaAtributRobe::whereIn('roba_id', $queryRobaId)->with([
                 'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
                 'roba.jedinica_mjere:id,naziv',
                 'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
@@ -42,20 +38,24 @@ class RobaController extends Controller
                 'roba.robe_kategorije_podkategorije.kategorije_roba',
                 'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
                 'atribut_robe.tip_atributa',
-                'roba.proizvodjac_robe:id,naziv',
+                'roba.proizvodjac_robe',
             ])->paginate();
-        } else {
-            return RobaAtributRobe::query()->with([
-                'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
-                'roba.jedinica_mjere:id,naziv',
-                'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
-                'roba.cijene_roba.porez:id,naziv,stopa',
-                'roba.robe_kategorije_podkategorije.podkategorije_roba',
-                'roba.robe_kategorije_podkategorije.kategorije_roba',
-                'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
-                'atribut_robe.tip_atributa',
-                'roba.proizvodjac_robe:id,naziv',
-            ])->paginate();
+            return $query;
+        }
+        if ($request->has('atribut_id')) {
+            $query = RobaAtributRobe::filter($request);
+            return $query
+                ->with([
+                    'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
+                    'roba.jedinica_mjere:id,naziv',
+                    'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',
+                    'roba.cijene_roba.porez:id,naziv,stopa',
+                    'roba.robe_kategorije_podkategorije.podkategorije_roba',
+                    'roba.robe_kategorije_podkategorije.kategorije_roba',
+                    'atribut_robe:id,naziv,tip_atributa_id,popust_procenti,popust_iznos',
+                    'atribut_robe.tip_atributa',
+                    'roba.proizvodjac_robe',
+                ])->paginate();
         }
 
         return RobaAtributRobe::query()->with([
@@ -88,8 +88,12 @@ class RobaController extends Controller
         $roba->save();
 
         $roba->storeCijene($request->all(), $roba->preduzece_id);
-        $roba->storeAtributi($request->atributi);
-        $roba->storeKategorije($request->kategorije);
+        if ($request->atributi) {
+            $roba->storeAtributi($request->atributi);
+        }
+        if ($request->kategorije) {
+            $roba->storeKategorije($request->kategorije);
+        }
 
 
         return response()->json($roba, 201);
@@ -140,6 +144,7 @@ class RobaController extends Controller
     public function destroy(Roba $roba)
     {
         $roba->delete();
+        RobaAtributRobe::where('roba_id', $roba->id)->delete();
 
         return response()->json($roba, 200);
     }

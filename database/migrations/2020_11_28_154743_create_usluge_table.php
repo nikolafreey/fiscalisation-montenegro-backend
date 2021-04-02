@@ -18,6 +18,9 @@ class CreateUslugeTable extends Migration
             $table->string('naziv', 50);
             $table->text('opis')->nullable();
             $table->decimal('cijena_bez_pdv', 15, 4);
+            $table->decimal('iznos_pdv_popust', 15, 4);
+            $table->decimal('cijena_bez_pdv_popust', 15, 4);
+            $table->decimal('cijena_sa_pdv_popust', 15, 4);
             $table->decimal('ukupna_cijena', 15, 4);
             $table->boolean('status');
             $table->softDeletes();

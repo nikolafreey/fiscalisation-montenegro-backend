@@ -65,21 +65,21 @@ class Racun extends Model
             'broj_racuna' => [
                 'type' => 'text',
             ],
-            'status' => [
-                'type' => 'keyword',
-            ],
-            'created_at' => [
-                'type' => 'date',
-            ],
+            // 'status' => [
+            //     'type' => 'keyword',
+            // ],
+            // 'created_at' => [
+            //     'type' => 'date',
+            // ],
             'partner.preduzece.kratki_naziv' => [
                 'type' => 'text',
             ],
-            'partner.preduzece.puni_naziv' => [
-                'type' => 'text',
-            ],
-            'partner.preduzec.pib' => [
-                'type' => 'text',
-            ],
+            // 'partner.preduzece.puni_naziv' => [
+            //     'type' => 'text',
+            // ],
+            // 'partner.preduzece.pib' => [
+            //     'type' => 'text',
+            // ],
             'partner.fizicko_lice.ime' => [
                 'type' => 'text',
             ],
@@ -177,6 +177,14 @@ class Racun extends Model
         $jedinica_id = @$stavka['jedinica_id'] ?: $usluga->jedinica_mjere_id;
         $porez_id = @$stavka['porez_id'] ?: $usluga->porez_id;
 
+        if (!array_key_exists('kolicina', $stavka)) {
+            $stavka['kolicina'] = 1;
+        }
+
+        if (!$porez_id) {
+            $porez_id = 1;
+        }
+
         return StavkaRacuna::make([
             'naziv' => $usluga->naziv,
             'opis' => $usluga->opis,
@@ -195,10 +203,11 @@ class Racun extends Model
 
     private function kreirajStavkuIzRobe(Roba $roba, $stavka)
     {
-        $cijenaRobe = CijenaRobe::
-            first();
+        $cijenaRobe = CijenaRobe::first();
 
-        $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+        if ($stavka['atribut_id']) {
+            $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+        }
 
         $popust_na_jedinicnu_cijenu = $atribut
             ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
@@ -206,6 +215,14 @@ class Racun extends Model
 
         $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
         $porez_id = @$stavka['porez_id'] ?: $cijenaRobe->porezi_id;
+
+        if (!array_key_exists('kolicina', $stavka)) {
+            $stavka['kolicina'] = 1;
+        }
+
+        if (!$porez_id) {
+            $porez_id = 1;
+        }
 
         return StavkaRacuna::make([
             'naziv' => $roba->naziv,
@@ -245,7 +262,7 @@ class Racun extends Model
 
     public static function izracunajBrojRacuna()
     {
-        $broj_racuna = DB::table('racuni')->max('broj_racuna');
+        $broj_racuna = DB::table('racuni')->where('tip_racuna', Racun::RACUN)->whereNotNull('qr_url')->max('broj_racuna');      #moze i bez provjere za tip_racuna
         return $broj_racuna + 1;
     }
 

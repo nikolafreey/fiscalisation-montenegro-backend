@@ -27,16 +27,14 @@ class UslugaController extends Controller
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
             ])->paginate();
-        } else {
-            return Usluga::query()->with([
+        }
+
+        if ($request->has('grupa_id')) {
+            return Usluga::query()->where('grupa_id', $request->grupa_id)->with([
                 'grupa:id,naziv,opis,popust_procenti,popust_iznos',
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
             ])->paginate();
-        }
-
-        if ($request->has('grupa_id')) {
-            return Usluga::query()->where('grupa_id', $request->grupa_id)->paginate();
         }
 
         return Usluga::query()->with([

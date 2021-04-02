@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreUlazniRacun;
+use App\Models\Partner;
 use App\Models\UlazniRacun;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-use function GuzzleHttp\Promise\queue;
 
 class UlazniRacunController extends Controller
 {
@@ -26,20 +25,27 @@ class UlazniRacunController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            $searchQuery = UlazniRacun::search($request->search . '*');
+            $searchQuery = UlazniRacun::search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
+
+            $partneri = [];
+            foreach ($searchQuery->get()->toArray() as $partner) {
+                $partneri[] = $partner['partner_id'];
+            }
+
+            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-            return $searchData;
+            return $searchData->merge(collect(["partneri" => $queryPartneri]));
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
@@ -50,7 +56,7 @@ class UlazniRacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
             $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
@@ -79,8 +85,6 @@ class UlazniRacunController extends Controller
 
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
-
-        $queryUlazniRacuniDanas = UlazniRacun::query();
 
         $queryUlazniRacuniDanas = DB::select(DB::raw('SELECT * FROM ulazni_racuni WHERE vrsta_racuna = "' . UlazniRacun::GOTOVINSKI . '" AND tip_racuna = "' . UlazniRacun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
 
