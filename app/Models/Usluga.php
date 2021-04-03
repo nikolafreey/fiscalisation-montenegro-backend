@@ -17,15 +17,16 @@ class Usluga extends Model
         'naziv',
         'opis',
         'cijena_bez_pdv',
+        'cijena_bez_pdv_popust',
         'ukupna_cijena',
+        'cijena_sa_pdv_popust',
         'status',
         'user_id',
         'grupa_id',
         'jedinica_mjere_id',
         'porez_id',
         'iznos_pdv_popust',
-        'cijena_bez_pdv_popust',
-        'cijena_sa_pdv_popust',
+
     ];
     use Searchable;
     protected $indexConfigurator = UslugaIndexConfigurator::class;
