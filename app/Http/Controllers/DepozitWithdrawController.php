@@ -26,18 +26,22 @@ class DepozitWithdrawController extends Controller
 
     public function store(StoreDepozitWithdraw $request)
     {
-        $depozitWithdraw = DepozitWithdraw::create($request->all());
+        $depozitWithdraw = DepozitWithdraw::make($request->all());
+
+        $depozitLoaded = DepozitWithdraw::firstOrFail();
+        if ($depozitLoaded) {
+            return abort(500, 'Već je dodat depozit za današnji dan!');
+        }
 
         $depozitWithdraw->user_id = auth()->id();
         $user = User::find(auth()->id())->load(['preduzeca', 'preduzeca.poslovne_jedinice']);
-
         $depozitWithdraw->preduzece_id = $user['preduzeca'][0]->id;
         $depozitWithdraw->poslovna_jedinica_id = $user['preduzeca'][0]['poslovne_jedinice'][0]->id;
         $depozitWithdraw->save();
 
-        if ($depozitWithdraw->iznos_depozit > 0) {
-            Depozit::dispatch($depozitWithdraw);
-        }
+        // if ($depozitWithdraw->iznos_depozit > 0) {
+        //     Depozit::dispatch($depozitWithdraw);
+        // }
 
         // if($depozitWithdraw->iznos_withdraw > 0) {
         //     Withdraw::dispatch($depozitWithdraw);
@@ -74,7 +78,7 @@ class DepozitWithdrawController extends Controller
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
 
-        return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE deleted_at IS NULL AND created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+        return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
         // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
     }
 }

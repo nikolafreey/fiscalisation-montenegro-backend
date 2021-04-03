@@ -26,7 +26,7 @@ class StoreDepozitWithdraw extends FormRequest
         return [
             'iznos_depozit' => 'required_without:iznos_withdraw',
             'iznos_withdraw' => 'required_without:iznos_depozit',
-            'poslovna_jedinica_id' => 'required|int',
+            // 'poslovna_jedinica_id' => 'required|int',
             // 'preduzece_id ' => 'required',
             // 'user_id ' => 'required'
         ];
