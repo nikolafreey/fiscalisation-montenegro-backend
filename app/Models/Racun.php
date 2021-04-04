@@ -175,32 +175,30 @@ class Racun extends Model
         //$uslov = ($usluga) ? $usluga['cijena_bez_pdv_popust'] : $stavka['cijena_bez_pdv_popust'];false=gotovinski
 
         if (true) {
+            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+            if ($popust > 0) {
+                // $grupa = $usluga->grupa;
+                if (!array_key_exists('tip_popusta', $stavka)) {
 
-
-            // $grupa = $usluga->grupa;
-            if (!array_key_exists('tip_popusta', $stavka)) {
-                // $popust_iznos = $grupa ? $grupa->popust_iznos : 0;
-                // $popust_procenti = $grupa ? $grupa->popust_procenti : 0;
-
-                $popust_iznos = $stavka['grupa']['popust_iznos'] ? $stavka['grupa']['popust_iznos'] : 0;
-                $popust_procenti = $stavka['grupa']['popust_procenti'] ? $stavka['grupa']['popust_procenti'] : 0;
-                if ($popust_iznos > 0) {
-                    $tip_popusta = 'iznos';
-                }
-                if ($popust_procenti > 0) {
-                    $tip_popusta = 'procenat';
-                }
-                if ($popust_iznos = 0 and $popust_procenti = 0) {
-                    $tip_popusta = 'nema';
+                    $popust_iznos = $stavka['grupa']['popust_iznos'] ? $stavka['grupa']['popust_iznos'] : 0;
+                    $popust_procenti = $stavka['grupa']['popust_procenti'] ? $stavka['grupa']['popust_procenti'] : 0;
+                    if ($popust_iznos > 0) {
+                        $tip_popusta = 'iznos';
+                    }
+                    if ($popust_procenti > 0) {
+                        $tip_popusta = 'procenat';
+                    }
+                } else {
+                    $tip_popusta = $stavka['tip_popusta'];
                 }
             } else {
-                $tip_popusta = $stavka['tip_popusta'];
-            }
+                $tip_popusta = 'nema';
+            };
 
             if (!array_key_exists('kolicina', $stavka)) {
                 $stavka['kolicina'] = 1;
             }
-            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+
 
             return StavkaRacuna::make([
                 'naziv' => $usluga->naziv,
@@ -283,8 +281,8 @@ class Racun extends Model
             // $popust_na_jedinicnu_cijenu = $atribut
             //     ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
             //     : 0;
-
-            if (property_exists('atribut', $roba)) {
+            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+            if ($popust > 0) {
                 $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
 
                 if (!array_key_exists('tip_popusta', $stavka)) {
@@ -308,7 +306,7 @@ class Racun extends Model
             if (!array_key_exists('kolicina', $stavka)) {
                 $stavka['kolicina'] = 1;
             }
-            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+
             return StavkaRacuna::make([
                 'naziv' => $roba->naziv,
                 'opis' => $roba->opis,
