@@ -12,9 +12,17 @@ class ProizvodjacRobe extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'proizvodjaci_roba';
 
-    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
+    protected $fillable = [
+        'naziv',
+        'opis',
+        'popust_procenti',
+        'popust_iznos',
+        'status'
+    ];
 
     // protected static function booted()
     // {

@@ -11,6 +11,8 @@ class StavkaUlazniRacun extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = 'stavke_ulazni_racuni';
 
     protected $fillable = [

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTipAtributa;
-use App\Models\Preduzece;
+use App\Http\Requests\Api\StoreTipAtributa;
 use App\Models\TipAtributa;
-use App\Models\TipKorisnika;
 use App\Models\User;
 use Illuminate\Http\Request;
 

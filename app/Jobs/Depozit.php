@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Exception;
 use Illuminate\Bus\Queueable;
 use App\Services\SignXMLService;
 use Illuminate\Support\Facades\Http;
@@ -9,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Facades\Log;
 
 class Depozit implements ShouldQueue
 {
@@ -21,18 +22,16 @@ class Depozit implements ShouldQueue
 
     public function __construct($depozit)
     {
-        $this->certificate = $this->loadCertifacate('CoreitPecatSoft.pfx', '123456');
+
+        $this->certificate = $this->loadCertifacate(storage_path('app/' . $depozit->preduzece->pecat), decrypt($depozit->preduzece->pecatSifra));
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'depozit' => $depozit,
             // TODO: Check is this data dynamic?
             'taxpayer' => [
-                'TIN' => '12345678', // Taxpayer Identification Number (PIB)
-                'BU' => 'xx123xx123', // Business Unit Code (PJ)
-                'CR' => 'si747we972', // Cash Register (ENU)
-                'SW' => 'ss123ss123', // Software Code
-                'OP' => 'oo123oo123', // Operator Code
+                'CR' => 'wp886vu280', // Cash Register (ENU)
+                'TIN' => $depozit->preduzece->pib,
             ],
         ];
     }
@@ -45,6 +44,8 @@ class Depozit implements ShouldQueue
     public function handle()
     {
         $xml = view('xml.depozit', $this->data)->render();
+
+        file_put_contents('depozit.xml', $xml);
 
         $signXMLService = new SignXMLService(
             $xml,
@@ -75,13 +76,17 @@ class Depozit implements ShouldQueue
         $p = xml_parser_create();
         xml_parse_into_struct($p, $simple, $vals, $index);
 
-        foreach ($vals as $val) {
-            if ($val['tag'] === 'FCDC') {
-                return true;
-            }
-        }
+        $response = collect($vals)->keyBy('tag');
 
-        return abort(500, 'Neuspjesno registrovanje depozita');
+        try {
+            return $response['FCDC']['value'];
+        } catch (Exception $e) {
+            $errorMessage = 'Depozit nije uspjesan: ' . $response['FAULTSTRING']['value'];
+
+            Log::error($errorMessage);
+
+            abort(520, $errorMessage);
+        }
     }
 
     private function loadCertifacate($location, $password)

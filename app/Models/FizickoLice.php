@@ -13,6 +13,8 @@ class FizickoLice extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'ime';
+
     protected $table = 'fizicka_lica';
 
     protected $fillable = [

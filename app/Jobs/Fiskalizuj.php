@@ -5,10 +5,12 @@ namespace App\Jobs;
 use DOMDocument;
 use App\Services\SignXMLService;
 use App\Models\Racun;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use VertexIT\XMLSecLibs\XMLSecurityKey;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,29 +29,38 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        $decryptedPassword = decrypt($racun->preduzece->sifra);
+        if ($racun->vrsta_racuna === 'GOTOVINSKI') {
+            $potpis = $racun->preduzece->pecat;
 
-        $this->certificate = $this->loadCertifacate(storage_path('app/' . $racun->preduzece->pecat), $decryptedPassword);
+            $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
+        }
+
+        if ($racun->vrsta_racuna === 'BEZGOTOVINSKI') {
+            $potpis = $racun->preduzece->sertifikat;
+
+            $decryptedPassword = decrypt($racun->preduzece->setifikatSifra);
+        }
+
+        $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
-            // TODO: Check is this data dynamic?
             'taxpayer' => [
-                'TIN' => '12345678', // Taxpayer Identification Number (PIB)
-                'BU' => 'xx123xx123', // Business Unit Code (PJ)
-                'CR' => 'si747we972', // Cash Register (ENU)
-                'SW' => 'ss123ss123', // Software Code
-                'OP' => 'oo123oo123', // Operator Code
+                'CR' => 'wp886vu280', // Cash Register (ENU)
+                'SW' => 'qk433mq872', // Software Code
+                'TIN' => $racun->preduzece->pib,
+                'BU' => 'ya260ri698' ?? $racun->poslovnaJedinica->kratki_naziv,
+                'OP' => 'ia871me776' ?? $racun->kod_operatera,
             ],
             'seller' => [
                 'IDType' => 'TIN',
-                'Name' => 'Test d.o.o.',
+                'Name' => $racun->preduzece->kratki_naziv,
             ],
             'buyer' => [
                 'IDType' => 'TIN',
                 'IDNum' => '12345678',
-                'Name' => 'Partner',
+                'Name' => $racun->partner->kontakt_ime,
             ],
         ];
 
@@ -74,7 +85,7 @@ class Fiskalizuj implements ShouldQueue
             ])
             ->withHeaders([
                 'Content-Type' => 'text/xml; charset=utf-8',
-            ])->send('POST', 'https://efitest.tax.gov.me:443/fs-v1', [
+            ])->send('POST', config('third_party_apis.poreska.fiskalizacija_url'), [
                 'body' => $signedXML,
             ]);
 
@@ -96,13 +107,17 @@ class Fiskalizuj implements ShouldQueue
         $p = xml_parser_create();
         xml_parse_into_struct($p, $simple, $vals, $index);
 
-        foreach ($vals as $val) {
-            if ($val['tag'] === 'FIC') {
-                return $val['value'];
-            }
-        }
+        $response = collect($vals)->keyBy('tag');
 
-        abort(500, 'JIKR nije generisan');
+        try {
+            return $response['FIC']['value'];
+        } catch (Exception $e) {
+            $errorMessage = 'Fiskalizacija nije uspjesna: ' . $response['FAULTSTRING']['value'];
+
+            Log::error($errorMessage);
+
+            abort(520, $errorMessage);
+        }
     }
 
     private function loadCertifacate($location, $password)
@@ -176,7 +191,7 @@ class Fiskalizuj implements ShouldQueue
 
     private function generateQRCode()
     {
-        return 'https://efitest.tax.gov.me/ic/#/verify?iic=' . implode('&', [
+        return config('third_party_apis.poreska.qr_code_url') . implode('&', [
                 $this->data['IICData']['IIC'],
                 'tin=' . $this->data['taxpayer']['TIN'],
                 'crtd=' . $this->data['danasnji_datum'],

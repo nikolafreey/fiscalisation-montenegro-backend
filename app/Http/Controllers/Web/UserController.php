@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdatePreduzece;
+use App\Http\Requests\Web\UserRequest;
+use App\Mail\SendPassword;
 use App\Models\Preduzece;
 use App\Models\User;
+use App\ViewModels\UserViewModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -24,26 +27,73 @@ class UserController extends Controller
                     return view('admin.users.action', compact('user'));
                 })
                 ->make();
-        };
+        }
 
         return view('admin.users.index');
     }
 
-    public function edit(User $user)
+    public function create()
+    {
+        $viewModel = new UserViewModel();
+
+        return view('admin.users.form', $viewModel);
+    }
+
+    public function store(UserRequest $request)
     {
         auth()->user()->can('edit users');
 
-        return view('admin.users.edit', [
-            'user' => $user,
-            'roles' => Role::all()
+        $user = User::create($request->validated());
+
+        $user->syncRoles([$request->uloga]);
+
+        foreach ($request->preduzeca as $preduzece) {
+            $user->preduzeca()->attach($preduzece);
+        }
+
+        if ($request->uloga === 'Vlasnik') {
+            foreach ($request->preduzeca as $id) {
+                Preduzece::where('id', $id)->firstOrFail()->update(['verifikovan' => true]);
+            }
+        }
+
+        if ($request->check === 'on') {
+            Mail::to($user->email)
+                ->send(new SendPassword($user));
+        }
+
+        return redirect(route('users.index'));
+    }
+
+    public function edit(User $user)
+    {
+        // auth()->user()->can('edit users');
+
+        $viewModel = new UserViewModel($user);
+
+        return view('admin.users.form', $viewModel);
+    }
+
+    public function update(User $user, UserRequest $request)
+    {
+        $user->update($request->validated());
+
+        $user->syncRoles([$request->uloga]);
+
+        return redirect(route('users.index'));
+    }
+
+    public function izmjeniteUlogu(User $user)
+    {
+        return view('admin.users.uloga', [
+            'roles' => Role::all(),
+            'user' => $user
         ]);
     }
 
-    public function store(User $user, Request $request)
+    public function updateUlogu(User $user, Request $request)
     {
-        auth()->user()->can('edit users');
-
-        $user->syncRoles([$request->role]);
+        $user->syncRoles([$request->uloga]);
 
         return redirect(route('users.index'));
     }

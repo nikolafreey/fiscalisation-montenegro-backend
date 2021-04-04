@@ -12,9 +12,13 @@ class Kategorija extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected $naziv = 'naziv';
+
     protected $table = "kategorije";
 
-    protected $fillable = array('naziv');
+    protected $fillable = [
+        'naziv'
+    ];
 
     public function preduzeca()
     {

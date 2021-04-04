@@ -9,9 +9,13 @@ use App\Traits\ImaAktivnost;
 
 class RobaKategorijaPodKategorija extends Model
 {
-    use HasFactory, SoftDeletes, ImaAktivnost;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['roba_id', 'kategorija_robe_id', 'podkategorija_robe_id'];
+    protected $fillable = [
+        'roba_id',
+        'kategorija_robe_id',
+        'podkategorija_robe_id'
+    ];
 
     protected $table = 'robe_kategorije_podkategorije';
 

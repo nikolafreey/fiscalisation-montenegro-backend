@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreModul;
-use App\Models\Kategorija;
+use App\Http\Requests\Api\StoreModul;
 use App\Models\Modul;
 use Illuminate\Http\Request;
 

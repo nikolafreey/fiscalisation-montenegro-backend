@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCijenaRobe;
-use App\Models\AtributRobe;
+use App\Http\Requests\Api\StoreCijenaRobe;
 use App\Models\CijenaRobe;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class CijenaRobeController extends Controller
 {
@@ -75,6 +73,7 @@ class CijenaRobeController extends Controller
     public function destroy(CijenaRobe $cijenaRobe)
     {
         $cijenaRobe->delete();
+
         return response()->json($cijenaRobe, 200);
     }
 }

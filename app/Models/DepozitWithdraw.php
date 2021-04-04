@@ -9,12 +9,22 @@ use App\Traits\ImaAktivnost;
 
 class DepozitWithdraw extends Model
 {
-    use HasFactory, ImaAktivnost;
+    use HasFactory;
 
     protected $fillable = array('iznos_depozit', 'iznos_withdraw', 'poslovna_jedinica_id');
 
-    protected static function booted()
+    public function poslovnaJedinica()
     {
-        static::addGlobalScope(new UserScope);
+        return $this->belongsTo('App\Models\PoslovnaJedinica', 'poslovna_jedinica_id');
     }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new UserScope);
+    // }
 }

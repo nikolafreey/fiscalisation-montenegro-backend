@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOvlascenoLice;
-use App\Models\Modul;
+use App\Http\Requests\Api\StoreOvlascenoLice;
 use App\Models\OvlascenoLice;
 use Illuminate\Http\Request;
 

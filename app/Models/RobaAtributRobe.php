@@ -12,9 +12,12 @@ use App\Traits\ImaAktivnost;
 
 class RobaAtributRobe extends Model
 {
-    use HasFactory, SoftDeletes, ImaAktivnost;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['roba_id', 'atribut_id'];
+    protected $fillable = [
+        'roba_id',
+        'atribut_id'
+    ];
 
     protected $table = 'robe_atributi_roba';
 
