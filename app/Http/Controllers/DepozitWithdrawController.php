@@ -16,7 +16,20 @@ class DepozitWithdrawController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
+        $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
+    }
+
+    public function getDepozitToday()
+    {
+        $dan = Carbon::now()->day;
+        $mjesec = Carbon::now()->month;
+        $godina = Carbon::now()->year;
+
+        $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
+        $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
+
+        return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
+        // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
     }
 
     public function index()
@@ -28,7 +41,7 @@ class DepozitWithdrawController extends Controller
     {
         $depozitWithdraw = DepozitWithdraw::make($request->all());
 
-        $depozitLoaded = DepozitWithdraw::firstOrFail();
+        $depozitLoaded = DepozitWithdrawController::getDepozitToday();
         if ($depozitLoaded) {
             return abort(500, 'Već je dodat depozit za današnji dan!');
         }
@@ -39,9 +52,9 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->poslovna_jedinica_id = $user['preduzeca'][0]['poslovne_jedinice'][0]->id;
         $depozitWithdraw->save();
 
-        // if ($depozitWithdraw->iznos_depozit > 0) {
-        //     Depozit::dispatch($depozitWithdraw);
-        // }
+        if ($depozitWithdraw->iznos_depozit > 0) {
+            Depozit::dispatch($depozitWithdraw);
+        }
 
         // if($depozitWithdraw->iznos_withdraw > 0) {
         //     Withdraw::dispatch($depozitWithdraw);
@@ -67,18 +80,5 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->delete();
 
         return response()->json($depozitWithdraw, 200);
-    }
-
-    public function getDepozitToday()
-    {
-        $dan = Carbon::now()->day;
-        $mjesec = Carbon::now()->month;
-        $godina = Carbon::now()->year;
-
-        $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
-        $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
-
-        return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
-        // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
     }
 }

@@ -78,7 +78,7 @@ class UserController extends Controller
 
     public function me()
     {
-        $user = User::find(auth()->id())->load('preduzeca');
+        $user = User::find(auth()->id())->load('preduzeca', 'preduzeca.ziro_racuni');
         return $user;
         // return auth()->user();
     }
