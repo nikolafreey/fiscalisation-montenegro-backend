@@ -53,7 +53,7 @@
             columns: [
                 { data: 'ime' },
                 { data: 'email' },
-                { data: 'roles', name: 'roles.name'},
+                { data: 'roles[, ].name', name: 'roles.name'},
                 {
                     data: 'action',
                     class: 'text-right',

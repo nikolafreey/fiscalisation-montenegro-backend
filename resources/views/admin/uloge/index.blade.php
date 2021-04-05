@@ -51,7 +51,7 @@
             },
             columns: [
                 { data: 'name' },
-                { data: 'permissions', name: 'permissions.name'},
+                { data: 'permissions[, ].name', name: 'permissions.name'},
                 {
                     data: 'action',
                     class: 'text-right',

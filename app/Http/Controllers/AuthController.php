@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (! Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            dd('Fail');
+            return response()->json('Neuspješno');
         }
 
         return response()->json([
