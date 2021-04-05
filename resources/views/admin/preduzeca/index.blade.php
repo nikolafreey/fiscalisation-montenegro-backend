@@ -39,6 +39,7 @@
 @section('scripts')
     <script>
         $('#data_table').DataTable( {
+            language: language,
             searchDelay: 500,
             processing: true,
             serverSide: true,
