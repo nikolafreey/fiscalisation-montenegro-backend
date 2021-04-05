@@ -7,6 +7,7 @@ use App\Models\Podesavanje;
 use App\Models\Preduzece;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -126,7 +127,7 @@ class PodesavanjeController extends Controller
         $user = User::create([
             'ime' => $trim[0],
             'prezime' => $trim[1],
-            'password' => bcrypt(Str::random(40)),
+            'password' => Hash::make(Str::random(40)),
             'email' => $attributes['email'],
         ]);
 

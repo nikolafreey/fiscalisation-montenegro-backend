@@ -24,6 +24,7 @@
                         <tr>
                             <th>Naziv</th>
                             <th>Adresa</th>
+                            <th>Paket</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -51,6 +52,7 @@
             columns: [
                 { data: 'kratki_naziv' },
                 { data: 'adresa' },
+                { data: 'paketi[].naziv', searchable: false, orderable: false},
                 {
                     data: 'action',
                     class: 'text-right',

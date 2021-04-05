@@ -6,6 +6,7 @@ use App\Models\Invite;
 use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class InvitesController extends Controller
 {
@@ -20,7 +21,7 @@ class InvitesController extends Controller
 
         $user = User::create([
             'ime' => $attributes['ime'],
-            'password' => bcrypt($attributes['password']),
+            'password' => Hash::make($attributes['password']),
             'email' => $invite->email,
         ]);
 

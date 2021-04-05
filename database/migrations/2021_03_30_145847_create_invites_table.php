@@ -13,7 +13,7 @@ class CreateInvitesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invites', function (Blueprint $table) {
+        Schema::create('pozivnice', function (Blueprint $table) {
             $table->id();
             $table->string('email');
             $table->string('route');

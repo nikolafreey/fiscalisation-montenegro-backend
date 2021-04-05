@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserRequest extends FormRequest
@@ -19,8 +20,10 @@ class UserRequest extends FormRequest
 
     public function prepareForValidation()
     {
+        $password = empty($this->input('password')) ? Str::random(40) : $this->input('password');
+
         $this->merge([
-            'password' => empty($this->input('password')) ? Str::random(40) : $this->input('password')
+            'password' =>  Hash::make($password),
         ]);
     }
 

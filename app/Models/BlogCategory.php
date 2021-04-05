@@ -10,6 +10,8 @@ class BlogCategory extends Model
 {
     use HasFactory, ImaAktivnost;
 
+    protected $table = "kategorije_blogova";
+
     protected $naziv = 'naziv';
 
     protected $fillable = [
