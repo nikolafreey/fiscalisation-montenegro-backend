@@ -63,8 +63,6 @@ Route::post('register', [MobileAuthController::class, 'register']);
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-// TODO: Uncomment this
-
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', function (Request $request) {

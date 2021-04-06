@@ -18,7 +18,7 @@ class OdabranoPreduzeceMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role === 'Gost') {
+        if (auth()->user()->hasRole('Gost')) {
             return $next($request);
         }
 
