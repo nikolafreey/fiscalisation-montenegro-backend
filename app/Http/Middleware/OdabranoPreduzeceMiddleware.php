@@ -28,7 +28,7 @@ class OdabranoPreduzeceMiddleware
                 ->first()
                 ->preduzece_id  === null
         ) {
-            return route('odabir.preduzeca');
+            return response()->json('Nije odabrano preduzece', 401);
         }
 
         return $next($request);

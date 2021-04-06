@@ -24,7 +24,7 @@ class OdaberiPreduzeceController extends Controller
             ->count();
 
         if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
-            return ['message' => 'Previse uredjaja je ulogovano na ovo preduzece'];
+            return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece']);
         }
 
         DB::table('personal_access_tokens')

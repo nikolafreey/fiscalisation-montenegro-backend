@@ -126,7 +126,7 @@ class PodesavanjeController extends Controller
 
         $user = User::create([
             'ime' => $trim[0],
-            'prezime' => $trim[1],
+            'prezime' => $trim[1] ?? '',
             'password' => Hash::make(Str::random(40)),
             'email' => $attributes['email'],
         ]);
