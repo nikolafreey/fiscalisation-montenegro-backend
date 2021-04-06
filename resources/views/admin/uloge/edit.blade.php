@@ -28,7 +28,18 @@
                                 <label for="input-tags">Odaberite dozvole</label>
                                 <select id="input-tags" name="dozvola[]" multiple>
                                     @foreach($dozvole as $dozvola)
-                                        <option value="{{ $dozvola->name }}">{{ $dozvola->name }}</option>
+                                        <option
+                                            @if(in_array(
+                                                $dozvola->name,
+                                                $role->permissions->pluck('name')->toArray(),
+                                                true
+                                                ))
+                                            selected
+                                            @endif
+                                            value="{{ $dozvola->name }}"
+                                        >
+                                            {{ $dozvola->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <div class="form-buttons-w">
