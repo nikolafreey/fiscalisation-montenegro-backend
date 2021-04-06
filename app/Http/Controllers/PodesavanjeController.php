@@ -123,18 +123,9 @@ class PodesavanjeController extends Controller
 
         $trim = explode(' ', trim($attributes['puno_ime']));
 
-        if (count($trim) == 1) {
-            $user = User::create([
-                'ime' => $trim[0],
-                'prezime' => $trim[0],
-                'password' => bcrypt(Str::random(40)),
-                'email' => $attributes['email'],
-            ]);
-        }
-
         $user = User::create([
             'ime' => $trim[0],
-            'prezime' => $trim[1],
+            'prezime' => (isset($trim[1]) && $trim[1]) ? $trim[1] : null,
             'password' => bcrypt(Str::random(40)),
             'email' => $attributes['email'],
         ]);
