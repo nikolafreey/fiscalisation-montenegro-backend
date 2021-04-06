@@ -1,7 +1,7 @@
 @can('edit preduzeca')
     <div class="d-flex flex-row-reverse bd-highlight">
-        <form action="{{ route('aktivnosti.show', $activity) }}" method="GET">
+        <a href="{{ route('aktivnosti.show', $activity) }}">
             <button class="btn btn-sm btn-warning">Prikaži aktivnost</button>
-        </form>
+        </a>
     </div>
 @endcan

@@ -24,7 +24,6 @@ use App\Models\ProizvodjacRobe;
 use App\Models\Racun;
 use App\Models\Roba;
 use App\Models\TipAtributa;
-use App\Models\TipKorisnika;
 use App\Models\UlazniRacun;
 use App\Models\User;
 use App\Models\Usluga;
@@ -86,14 +85,13 @@ class AuthServiceProvider extends ServiceProvider
         ProizvodjacRobe::class => ProizvodjacRobePolicy::class,
         Racun::class => RacunPolicy::class,
         Roba::class => RobaPolicy::class,
-        TipKorisnika::class => TipKorisnikaPolicy::class,
         TipAtributa::class => TipAtributaPolicy::class,
         UlazniRacun::class => UlazniRacunPolicy::class,
         User::class => UserPolicy::class,
         Usluga::class => UslugaPolicy::class,
         ZiroRacun::class => ZiroRacunPolicy::class,
         Dokument::class => DokumentPolicy::class,
-        KategorijaDokumenta::class => KategorijaDokumentaPolicy::class
+        KategorijaDokumenta::class => KategorijaDokumentaPolicy::class,
     ];
 
     /**
@@ -106,7 +104,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function ($user, $ability) {
-            return $user->hasRole('SuperAdmin');
+            return $user->hasRole('SuperAdmin') ? true : null;
         });
     }
 }

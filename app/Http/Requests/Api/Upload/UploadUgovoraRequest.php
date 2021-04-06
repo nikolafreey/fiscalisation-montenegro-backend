@@ -14,8 +14,8 @@ class UploadUgovoraRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'naziv',
-            'file'
+            'naziv' => 'required',
+            'file' => 'required'
         ];
     }
 }

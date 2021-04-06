@@ -63,9 +63,7 @@ Route::post('register', [MobileAuthController::class, 'register']);
 
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
-// TODO: Uncomment this
-
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', function (Request $request) {
         return auth()->user();
@@ -76,7 +74,7 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
     Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
     Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
 
-    // Route::middleware('odabranoPreduzece')->group(function () {
+    Route::middleware('odabranoPreduzece')->group(function () {
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
         Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
@@ -243,5 +241,5 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
         Route::post('podesavanja/dodajKorisnika', [PodesavanjeController::class, 'dodajKorisnika'])
             ->name('dodajKorisnika');
 
-    // });
-// });
+    });
+});

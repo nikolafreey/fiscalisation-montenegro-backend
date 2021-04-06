@@ -16,6 +16,8 @@ class Blog extends Model
 {
     use HasFactory, ImaAktivnost;
 
+    protected $table = 'blogovi';
+
     protected $naziv = 'naziv';
 
     protected $fillable = [
