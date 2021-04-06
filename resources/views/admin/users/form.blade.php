@@ -66,9 +66,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="preduzece">Preduzece</label>
-                                    <select class="preduzece" name="preduzeca[]" multiple>
+                                    <select class="preduzece" name="preduzeca[]" id="preduzece" multiple>
                                         @foreach($preduzeca as $preduzece)
-                                            <option value="{{ $preduzece->id }}">
+                                            <option
+                                                @if(in_array(
+                                                   $preduzece->id,
+                                                   $user->preduzeca->pluck('id')->toArray(),
+                                                   true
+                                               ))
+                                                selected
+                                                @endif
+                                                value="{{ $preduzece->id }}"
+                                            >
                                                 {{ $preduzece->kratki_naziv }}
                                             </option>
                                         @endforeach

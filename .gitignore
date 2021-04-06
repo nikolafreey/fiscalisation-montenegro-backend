@@ -12,3 +12,6 @@ npm-debug.log
 yarn-error.log
 sftp.json
 launch.json
+/resources/docs
+/public/vendor/scribe
+/resources/views/scribe

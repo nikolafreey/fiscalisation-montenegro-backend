@@ -18,7 +18,7 @@ class OdabranoPreduzeceMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role === 'Gost') {
+        if (auth()->user()->hasRole('Gost')) {
             return $next($request);
         }
 
@@ -28,7 +28,7 @@ class OdabranoPreduzeceMiddleware
                 ->first()
                 ->preduzece_id  === null
         ) {
-            return route('odabir.preduzeca');
+            return response()->json('Nije odabrano preduzece', 401);
         }
 
         return $next($request);

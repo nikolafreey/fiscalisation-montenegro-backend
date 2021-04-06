@@ -75,7 +75,7 @@
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
-                                        <i class="os-icon os-icon-signs-11"></i> {{ __('Logout') }}
+                                        <i class="os-icon os-icon-signs-11"></i> {{ __('Odjava') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -290,6 +290,29 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        let language = {
+            "emptyTable": "Nema podataka u tabeli",
+                "info": "Prikaz _START_ do _END_ od ukupno _TOTAL_ zapisa",
+                "infoEmpty": "Prikaz 0 do 0 od ukupno 0 zapisa",
+                "infoFiltered": "(filtrirano od ukupno _MAX_ zapisa)",
+                "infoThousands": ".",
+                "lengthMenu": "Prikaži _MENU_ zapisa",
+                "loadingRecords": "Učitavanje...",
+                "processing": "Obrada...",
+                "search": "Pretraga:",
+                "zeroRecords": "Nisu pronađeni odgovarajući zapisi",
+                "paginate": {
+                "first": "Početna",
+                    "last": "Poslednja",
+                    "next": "Sledeća",
+                    "previous": "Prethodna"
+            },
+            "aria": {
+                "sortAscending": ": aktivirajte da sortirate kolonu uzlazno",
+                    "sortDescending": ": aktivirajte da sortirate kolonu silazno"
+            }
+        }
     </script>
 
     @yield('scripts')

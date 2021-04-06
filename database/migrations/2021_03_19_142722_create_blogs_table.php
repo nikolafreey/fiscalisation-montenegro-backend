@@ -13,14 +13,14 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $table) {
+        Schema::create('blogovi', function (Blueprint $table) {
             $table->id();
             $table->string('naziv');
             $table->string('slika');
             $table->longText('tekst');
 
             $table->foreignId('blog_category_id')
-                ->constrained('blog_categories')
+                ->constrained('kategorije_blogova')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

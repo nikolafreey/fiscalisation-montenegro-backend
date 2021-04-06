@@ -9,6 +9,8 @@ class Invite extends Model
 {
     use HasFactory;
 
+    protected $table = "pozivnice";
+
     protected $fillable = [
         'email',
         'route',

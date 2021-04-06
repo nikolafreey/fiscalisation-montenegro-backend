@@ -54,7 +54,9 @@ class DatabaseSeeder extends Seeder
         OvlascenoLice::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
-        User::factory(10)->create();
+        $users = User::factory(10)->create();
+
+
 
         $user = User::create([
             'email' => 'admin@admin.com',
@@ -64,6 +66,10 @@ class DatabaseSeeder extends Seeder
 
         Role::create(['name' => 'SuperAdmin']);
         Role::create(['name' => 'Default']);
+
+        // foreach ($users as $user) {
+        //     $user->assignRole('Default');
+        // }
 
         Permission::create(['name' => 'edit preduzeca']);
         Permission::create(['name' => 'edit users']);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
+use Illuminate\Foundation\Http\FormRequest;
+
 class StoreUsluga extends FormRequest
 {
     /**

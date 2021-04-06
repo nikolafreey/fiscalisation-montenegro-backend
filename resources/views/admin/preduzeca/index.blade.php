@@ -24,6 +24,7 @@
                         <tr>
                             <th>Naziv</th>
                             <th>Adresa</th>
+                            <th>Paketi</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -38,6 +39,7 @@
 @section('scripts')
     <script>
         $('#data_table').DataTable( {
+            language: language,
             searchDelay: 500,
             processing: true,
             serverSide: true,
@@ -51,6 +53,7 @@
             columns: [
                 { data: 'kratki_naziv' },
                 { data: 'adresa' },
+                { data: 'paketi[, ].naziv', name:'paketi.naziv'},
                 {
                     data: 'action',
                     class: 'text-right',
