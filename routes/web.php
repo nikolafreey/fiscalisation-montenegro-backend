@@ -30,6 +30,9 @@ Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
     Route::get('uloge/{user}', [UserController::class, 'izmjeniteUlogu'])->name('izmjeniteUlogu');
     Route::put('uloge/{user}', [UserController::class, 'updateUlogu'])->name('updateUlogu');
 
+    Route::get('paket/{preduzece}', [PreduzeceController::class, 'izmjenitePaket'])->name('izmjenitePaket');
+    Route::put('paket/{preduzece}', [PreduzeceController::class, 'updatePaket'])->name('updatePaket');
+
     Route::resource('aktivnosti', AktivnostiController::class)->only('index', 'show')->parameters([
         'aktivnosti' => 'activity'
     ]);

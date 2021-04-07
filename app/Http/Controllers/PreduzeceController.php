@@ -6,6 +6,13 @@ use App\Http\Requests\Api\StorePreduzece;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
+/**
+ * @group Preduzece
+ *
+ * Class PreduzeceController
+ * @package App\Http\Controllers
+ */
+
 class PreduzeceController extends Controller
 {
     public function __construct()
@@ -14,7 +21,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Izlistavanje resursa
      *
      * @return \Illuminate\Http\Response
      */
@@ -28,7 +35,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Čuvanje resursa
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -41,7 +48,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Prikaz resursa
      *
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
@@ -52,7 +59,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Izmjena resursa
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Preduzece  $preduzece
@@ -75,7 +82,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Brisanje resursa
      *
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response

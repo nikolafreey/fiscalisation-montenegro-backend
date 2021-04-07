@@ -39,6 +39,7 @@
 @section('scripts')
     <script>
         $('#example').DataTable( {
+            language: language,
             searchDelay: 500,
             processing: true,
             serverSide: true,
@@ -52,7 +53,7 @@
             columns: [
                 { data: 'ime' },
                 { data: 'email' },
-                { data: 'roles[].name' },
+                { data: 'roles[, ].name', name: 'roles.name'},
                 {
                     data: 'action',
                     class: 'text-right',

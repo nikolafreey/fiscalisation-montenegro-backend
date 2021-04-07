@@ -38,6 +38,7 @@
 @section('scripts')
     <script>
         $('#example').DataTable( {
+            language: language,
             searchDelay: 500,
             processing: true,
             serverSide: true,
@@ -57,7 +58,7 @@
                     orderable: false,
                     searchable: false,
                 }
-            ]
+            ],
         } );
     </script>
 @endsection
