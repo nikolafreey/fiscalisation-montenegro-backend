@@ -6,6 +6,7 @@ use App\Http\Requests\Api\StoreTipAtributa;
 use App\Models\TipAtributa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TipoviAtributaController extends Controller
 {
@@ -34,9 +35,13 @@ class TipoviAtributaController extends Controller
     {
         $tipAtributa = TipAtributa::make($request->validated());
         $tipAtributa->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $tipAtributa->preduzece_id = $user['preduzeca'][0]->id;
-        // $tipAtributa->preduzece_id = Preduzece::all()->first()->id;
+
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $tipAtributa->preduzece_id = $preduzece_id;
         $tipAtributa->save();
 
         return response()->json($tipAtributa, 201);

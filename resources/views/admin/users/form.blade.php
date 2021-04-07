@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password..." name="password" value="{{ old('password', $user->password) }}">
+                                    <input type="password" class="form-control" id="password" placeholder="Password..." name="password" value="{{ old('password') }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="ime">Ime</label>
@@ -57,6 +57,13 @@
                                     <select class="selectize" id="uloga" name="uloga">
                                         @foreach($roles as $role)
                                             <option
+                                                @if(in_array(
+                                                    $role->name,
+                                                    $user->roles->pluck('name')->toArray(),
+                                                    true
+                                                ))
+                                                    selected
+                                                @endif
                                                 value="{{ $role->name }}"
                                             >
                                                 {{ $role->name }}
@@ -66,7 +73,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="preduzece">Preduzece</label>
-                                    <select class="preduzece" name="preduzeca[]" id="preduzece" multiple>
+                                    <select class="preduzece" name="preduzece_id[]" id="preduzece" multiple>
                                         @foreach($preduzeca as $preduzece)
                                             <option
                                                 @if(in_array(

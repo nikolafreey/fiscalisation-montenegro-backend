@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreCijenaRobe;
 use App\Models\CijenaRobe;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class CijenaRobeController extends Controller
 {
@@ -33,8 +34,12 @@ class CijenaRobeController extends Controller
     {
         $cijenaRobe = CijenaRobe::make($request->validated());
         $cijenaRobe->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $cijenaRobe->preduzece_id = $user['preduzeca'][0]->id;
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $cijenaRobe->preduzece_id = $preduzece_id;
         $cijenaRobe->save();
 
         return response()->json($cijenaRobe, 201);

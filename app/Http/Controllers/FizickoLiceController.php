@@ -7,6 +7,7 @@ use App\Models\FizickoLice;
 use App\Models\User;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FizickoLiceController extends Controller
 {
@@ -39,8 +40,12 @@ class FizickoLiceController extends Controller
     {
         $fizickoLice = FizickoLice::create($request->validated());
 
-        $user = User::find(auth()->id())->load('preduzeca');
-        $fizickoLice->preduzece_id = $user['preduzeca'][0]->id;
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $fizickoLice->preduzece_id = $preduzece_id;
 
         $ziro_racuni = $request->ziro_racuni;
         foreach ($ziro_racuni as $ziro_racun) {

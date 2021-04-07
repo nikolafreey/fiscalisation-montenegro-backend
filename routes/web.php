@@ -8,6 +8,7 @@ use App\Http\Controllers\Web\DozvoleController;
 use App\Http\Controllers\Web\ImageController;
 use App\Http\Controllers\Web\UlogeController;
 use App\Http\Controllers\Web\UserController;
+use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Web\PreduzeceController;
 use Illuminate\Support\Carbon;

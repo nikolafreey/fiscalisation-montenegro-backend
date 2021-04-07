@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\Podesavanja\DodavanjeKorisnikaRequest;
 use App\Http\Requests\Api\Podesavanja\PodesavanjaRequest;
-use App\Mail\SendPassword;
 use App\Models\Podesavanje;
 use App\Models\Preduzece;
 use App\Models\User;
+use App\Notifications\AccountRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -127,19 +127,20 @@ class PodesavanjeController extends Controller
 
         $trim = explode(' ', trim($request->puno_ime));
 
+        $password = Str::random(40);
+
         $user = User::create([
             'ime' => $trim[0],
             'prezime' => (isset($trim[1]) && $trim[1]) ? $trim[1] : null,
-            'password' => Hash::make(Str::random(40)),
-            'email' => $attributes['email'],
+            'password' => Hash::make($password),
+            'email' => $request->email,
         ]);
 
         $user->preduzeca()->attach($request->preduzece_id);
 
         $user->syncRoles($request->uloga);
 
-        Mail::to($user->email)
-            ->send(new SendPassword($user));
+        $user->notify(new AccountRegistered($request, $password));
 
         return response()->json([
             'status' => 'Success',

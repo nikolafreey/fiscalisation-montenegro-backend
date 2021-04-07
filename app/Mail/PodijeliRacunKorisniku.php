@@ -31,7 +31,7 @@ class PodijeliRacunKorisniku extends Mailable
     public function build()
     {
         return $this->view('admin.mail.podijeli-racun-korisniku', [
-            'racun' => $this-racun
+            'racun' => $this->racun,
         ]);
     }
 }

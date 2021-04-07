@@ -35,13 +35,6 @@
                                     <select class="selectize mt-2" id="paket" name="paket[]" multiple>
                                         @foreach($paketi as $paket)
                                             <option
-                                                @if(in_array(
-                                                    $paket->id,
-                                                    $preduzece->paketi->pluck('id')->toArray(),
-                                                    true
-                                                ))
-                                                selected
-                                                @endif
                                                 value="{{ $paket->id }}"
                                             >
                                                 {{ $paket->naziv }}
@@ -68,6 +61,7 @@
 
     <script>
         $('.selectize').selectize({
+            plugins: ['remove_button'],
             delimiter: ',',
             persist: false,
             create: function(input) {

@@ -8,6 +8,13 @@ U .env fajlu podesiti naziv baze i ostale parametre
 Nakon toga:
 ```php artisan migrate:fresh --seed```
 
+## API dokumentacija
+Da generisete API dokumentaciju izvrsite komandu: 
+```
+php artisan scribe:generate
+```
+Zatim otvorite putanju `/docs`
+
 ### Dodatno
 ElasticSearch instalirati lokalno za testiranje.
 

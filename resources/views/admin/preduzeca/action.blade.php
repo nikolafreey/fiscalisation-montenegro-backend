@@ -10,7 +10,7 @@
                 href="{{ route('preduzeca.edit', $preduzece) }}"
                 class="dropdown-item"
             >
-                Izmjenite Pecat
+                Izmjenite Sertifikate
             </a>
             <a
                 class="dropdown-item btn-delete-amenity"

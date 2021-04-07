@@ -232,12 +232,12 @@ class RacunController extends Controller
 
             $racun->preduzece_id = $preduzece->id;
 
-            $poslovnaJedinica = $preduzece
-                ->poslovne_jedinice()
-                ->where('poslovne_jedinice.id', $request->poslovna_jedinica_id)
-                ->firstOrFail();
+            $poslovna_jedinica_id = DB::table('personal_access_tokens')
+                ->where('token', getAccessToken($request))
+                ->first()
+                ->poslovna_jedinica_id;
 
-            $racun->poslovna_jedinica_id = $poslovnaJedinica->id;
+            $racun->poslovna_jedinica_id = $poslovna_jedinica_id;
 
             $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
 

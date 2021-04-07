@@ -18,9 +18,10 @@ class SendPassword extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($request, $password)
     {
-        $this->user = $user;
+        $this->request = $request;
+        $this->password = $password;
     }
 
     /**
@@ -30,6 +31,9 @@ class SendPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('admin.mail.sendPassword');
+        return $this->view('admin.mail.sendPassword', [
+            'request' => $this->request,
+            'password' => $this->password,
+        ]);
     }
 }

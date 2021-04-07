@@ -8,6 +8,7 @@ use App\Models\RobaAtributRobe;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RobaController extends Controller
 {
@@ -81,8 +82,13 @@ class RobaController extends Controller
 
         $roba = Roba::make($request->validated());
         $roba->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $roba->preduzece_id = $user['preduzeca'][0]->id;
+
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $roba->preduzece_id = $preduzece_id;
         $roba->created_at = Carbon::now();
         $roba->updated_at = Carbon::now();
         $roba->save();

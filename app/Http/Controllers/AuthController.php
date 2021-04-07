@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\Api\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         if (! Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return response()->json('Neuspješno');
@@ -24,18 +26,12 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $attr = $request->validate([
-            'ime' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:6'
-        ]);
-
         $user = User::create([
-            'ime' => $attr['ime'],
-            'password' => Hash::make($attr['password']),
-            'email' => $attr['email']
+            'ime' => $request->ime,
+            'password' => Hash::make($request->password),
+            'email' => $request->email
         ]);
 
         return response()->json([

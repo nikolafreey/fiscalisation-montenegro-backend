@@ -7,8 +7,11 @@ use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
 use App\Models\Preduzece;
 use App\Models\User;
+use App\Notifications\AccountRegistered;
 use App\ViewModels\UserViewModel;
+use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,13 +46,11 @@ class UserController extends Controller
     {
         auth()->user()->can('edit users');
 
-        $user = User::create($request->validated());
+        $user = User::create(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
 
         $user->syncRoles([$request->uloga]);
 
-        foreach ($request->preduzeca as $preduzece) {
-            $user->preduzeca()->attach($preduzece);
-        }
+        $user->preduzeca()->attach($request->preduzece_id);
 
         if ($request->uloga === 'Vlasnik') {
             foreach ($request->preduzeca as $id) {
@@ -57,9 +58,10 @@ class UserController extends Controller
             }
         }
 
+        $password = $request->password;
+
         if ($request->check === 'on') {
-            Mail::to($user->email)
-                ->send(new SendPassword($user));
+            $user->notify(new AccountRegistered($request, $password));
         }
 
         return redirect(route('users.index'));
@@ -79,6 +81,8 @@ class UserController extends Controller
         $user->update($request->validated());
 
         $user->syncRoles([$request->uloga]);
+
+        $user->preduzeca()->sync($request->preduzece_id);
 
         return redirect(route('users.index'));
     }

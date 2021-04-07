@@ -6,6 +6,7 @@ use App\Http\Requests\Api\StoreProizvodjacRobe;
 use App\Models\ProizvodjacRobe;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProizvodjacRobeController extends Controller
 {
@@ -34,8 +35,13 @@ class ProizvodjacRobeController extends Controller
     {
         $proizvodjacRobe = ProizvodjacRobe::make($request->validated());
         $proizvodjacRobe->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $proizvodjacRobe->preduzece_id = $user['preduzeca'][0]->id;
+
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $proizvodjacRobe->preduzece_id = $preduzece_id;
         $proizvodjacRobe->save();
 
         return response()->json($proizvodjacRobe, 201);
