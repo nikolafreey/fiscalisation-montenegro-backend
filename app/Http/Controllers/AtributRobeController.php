@@ -7,6 +7,7 @@ use App\Models\AtributRobe;
 use App\Models\Preduzece;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AtributRobeController extends Controller
 {
@@ -34,10 +35,13 @@ class AtributRobeController extends Controller
     public function store(StoreAtributRobe $request)
     {
         $atributRobe = AtributRobe::make($request->validated());
-        $atributRobe->preduzece_id = Preduzece::all()->first()->id;
         $atributRobe->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $atributRobe->preduzece_id = $user['preduzeca'][0]->id;
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $atributRobe->preduzece_id = $preduzece_id;
         $atributRobe->save();
 
         return response()->json($atributRobe, 201);

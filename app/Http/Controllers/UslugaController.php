@@ -6,6 +6,7 @@ use App\Http\Requests\Api\StoreUsluga;
 use App\Models\Usluga;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UslugaController extends Controller
 {
@@ -54,8 +55,13 @@ class UslugaController extends Controller
     {
         $usluga = Usluga::make($request->validated());
         $usluga->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $usluga->preduzece_id = $user['preduzeca'][0]->id;
+
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $usluga->preduzece_id = $preduzece_id;
         $usluga->save();
 
         return response()->json($usluga->save(), 201);

@@ -16,6 +16,10 @@ class OdaberiPreduzeceController extends Controller
 
     public function update(Request $request)
     {
+        if (! in_array($request->preduzece_id, auth()->user()->preduzeca()->pluck('preduzeca.id')->toArray(), true)) {
+            return response()->json('Unauthorized', 403);
+        }
+
         $preduzece = Preduzece::findOrFail($request->preduzece_id);
 
         $loggedInUsersIntoPreduzeceCount = DB::table('personal_access_tokens')

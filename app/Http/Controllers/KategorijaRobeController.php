@@ -6,6 +6,7 @@ use App\Http\Requests\Api\StoreKategorijaRobe;
 use App\Models\KategorijaRobe;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KategorijaRobeController extends Controller
 {
@@ -34,9 +35,13 @@ class KategorijaRobeController extends Controller
     {
         $kategorijaRobe = KategorijaRobe::make($request->validated());
         $kategorijaRobe->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $kategorijaRobe->preduzece_id = $user['preduzeca'][0]->id;
-        // $kategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
+
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $kategorijaRobe->preduzece_id = $preduzece_id;
         $kategorijaRobe->save();
 
         return response()->json($kategorijaRobe, 201);

@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="preduzece">Preduzece</label>
-                                    <select class="preduzece" name="preduzeca[]" id="preduzece" multiple>
+                                    <select class="preduzece" name="preduzece_id[]" id="preduzece" multiple>
                                         @foreach($preduzeca as $preduzece)
                                             <option
                                                 @if(in_array(

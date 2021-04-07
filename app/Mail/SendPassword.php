@@ -18,9 +18,9 @@ class SendPassword extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($request)
     {
-        $this->user = $user;
+        $this->request = $request;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Http\Requests\Api\StoreZiroRacun;
 use App\Models\User;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ZiroRacunController extends Controller
 {
@@ -34,8 +35,13 @@ class ZiroRacunController extends Controller
     {
         $ziroRacun = ZiroRacun::create($request->all());
         $ziroRacun->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $ziroRacun->preduzece_id = $user['preduzeca'][0]->id;
+
+        $preduzece_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->preduzece_id;
+
+        $ziroRacun->preduzece_id = $preduzece_id;
         $ziroRacun->save();
 
         return response()->json($ziroRacun, 201);

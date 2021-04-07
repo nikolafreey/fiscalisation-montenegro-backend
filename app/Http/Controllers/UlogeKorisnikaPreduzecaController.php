@@ -20,7 +20,7 @@ class UlogeKorisnikaPreduzecaController extends Controller
             ! auth()->user()->hasRole('Vlasnik')
             || ! $preduzece->users()->where('users.id', auth()->id())->exists()
         ) {
-            abort(403);
+            return response()->json('Nemate dozvolu', 403);
         }
 
         $user = $preduzece->users()->where('users.id', $request->user_id)->firstOrFail();

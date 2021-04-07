@@ -131,15 +131,15 @@ class PodesavanjeController extends Controller
             'ime' => $trim[0],
             'prezime' => (isset($trim[1]) && $trim[1]) ? $trim[1] : null,
             'password' => Hash::make(Str::random(40)),
-            'email' => $attributes['email'],
+            'email' => $request->email,
         ]);
 
         $user->preduzeca()->attach($request->preduzece_id);
 
         $user->syncRoles($request->uloga);
 
-        Mail::to($user->email)
-            ->send(new SendPassword($user));
+        Mail::to($request->email)
+            ->send(new SendPassword($request));
 
         return response()->json([
             'status' => 'Success',

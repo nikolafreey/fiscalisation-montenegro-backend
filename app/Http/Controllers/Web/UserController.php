@@ -47,9 +47,7 @@ class UserController extends Controller
 
         $user->syncRoles([$request->uloga]);
 
-        foreach ($request->preduzeca as $preduzece) {
-            $user->preduzeca()->attach($preduzece);
-        }
+        $user->preduzeca()->attach($request->preduzece_id);
 
         if ($request->uloga === 'Vlasnik') {
             foreach ($request->preduzeca as $id) {
@@ -58,8 +56,8 @@ class UserController extends Controller
         }
 
         if ($request->check === 'on') {
-            Mail::to($user->email)
-                ->send(new SendPassword($user));
+            Mail::to($request->email)
+                ->send(new SendPassword($request));
         }
 
         return redirect(route('users.index'));
@@ -79,6 +77,8 @@ class UserController extends Controller
         $user->update($request->validated());
 
         $user->syncRoles([$request->uloga]);
+
+        $user->preduzeca()->sync($request->preduzece_id);
 
         return redirect(route('users.index'));
     }

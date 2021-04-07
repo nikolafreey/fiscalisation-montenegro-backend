@@ -17,7 +17,9 @@ class InvitesController extends Controller
             'password' => 'required|string|min:6'
         ]);
 
-        abort_if($request->token !== $invite->token, 400);
+        if ($request->token !== $invite->token) {
+            return response()->json('Neodgovarajuci token', 400);
+    }
 
         $user = User::create([
             'ime' => $attributes['ime'],
