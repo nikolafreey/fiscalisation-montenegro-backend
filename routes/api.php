@@ -79,12 +79,9 @@ Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->nam
 // Route::middleware('odabranoPreduzece')->group(function () {
 Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
-<<<<<<< HEAD
 Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
-=======
     Route::middleware('odabranoPreduzece')->group(function () {
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
->>>>>>> 4423bef9d622ff41833318d07d1899e7c6290d2a
 
 Route::apiResource('fizicka-lica', FizickoLiceController::class)->parameters([
     'fizicka-lica' => 'fizickoLice'
