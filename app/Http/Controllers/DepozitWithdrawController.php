@@ -54,8 +54,12 @@ class DepozitWithdrawController extends Controller
 
         $depozitWithdraw->preduzece_id = $preduzece_id;
 
-        // TODO: Fix later
-        $depozitWithdraw->poslovna_jedinica_id = $user['preduzeca'][0]['poslovne_jedinice'][0]->id;
+        $poslovna_jedinica_id = DB::table('personal_access_tokens')
+            ->where('token', getAccessToken($request))
+            ->first()
+            ->poslovna_jedinica_id;
+
+        $depozitWithdraw->poslovna_jedinica_id = $poslovna_jedinica_id;
         $depozitWithdraw->save();
 
         if ($depozitWithdraw->iznos_depozit > 0) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\OdaberiPreduzeceRequest;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +15,10 @@ class OdaberiPreduzeceController extends Controller
         return Auth::user()->preduzeca();
     }
 
-    public function update(Request $request)
+    public function update(OdaberiPreduzeceRequest $request)
     {
+        // Preduzece mora da pripada trenutno ulogovanom korisniku
+
         if (! in_array($request->preduzece_id, auth()->user()->preduzeca()->pluck('preduzeca.id')->toArray(), true)) {
             return response()->json('Unauthorized', 403);
         }
@@ -35,7 +38,7 @@ class OdaberiPreduzeceController extends Controller
             ->where('token', getAccessToken($request))
             ->update(['preduzece_id' => $preduzece->id]);
 
-        return ['message' => 'Uspjesno ste odabrali preduzece'];
+        return response()->json(['message' => 'Uspjesno ste odabrali preduzece']);
     }
 
     public function destroy(Request $request)
@@ -46,6 +49,6 @@ class OdaberiPreduzeceController extends Controller
             ->where('preduzece_id', $preduzece->id)
             ->update(['preduzece_id' => null]);
 
-        return ['message' => 'Uspjesno ste se izlogovali iz preduzeca'];
+        return response()->json(['message' => 'Uspjesno ste se izlogovali iz preduzeca']);
     }
 }

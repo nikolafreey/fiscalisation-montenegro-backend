@@ -17,6 +17,7 @@ class CreatePersonalAccessTokensTable extends Migration
             $table->bigIncrements('id');
             $table->uuidMorphs('tokenable');
             $table->foreignUuid('preduzece_id')->nullable();
+            $table->foreignId('poslovna_jedinica_id')->nullable();
             $table->string('name');
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();

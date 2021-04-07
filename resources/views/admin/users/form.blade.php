@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Password..." name="password" value="{{ old('password', $user->password) }}">
+                                    <input type="password" class="form-control" id="password" placeholder="Password..." name="password" value="{{ old('password') }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="ime">Ime</label>
