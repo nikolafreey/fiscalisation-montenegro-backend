@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreOvlascenoLice;
+use App\Http\Requests\Api\StoreOvlascenoLice;
 use App\Models\OvlascenoLice;
 use Illuminate\Http\Request;
 
 class OvlascenoLiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(OvlascenoLice::class, 'ovlascenoLice');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +32,7 @@ class OvlascenoLiceController extends Controller
     public function store(StoreOvlascenoLice $request)
     {
         $ovlascenoLice = OvlascenoLice::create($request->all());
+
         return response()->json($ovlascenoLice, 201);
     }
 
@@ -51,6 +57,7 @@ class OvlascenoLiceController extends Controller
     public function update(StoreOvlascenoLice $request, OvlascenoLice $ovlascenoLice)
     {
         $ovlascenoLice->update($request->all());
+
         return response()->json($ovlascenoLice, 200);
     }
 
@@ -63,6 +70,7 @@ class OvlascenoLiceController extends Controller
     public function destroy(OvlascenoLice $ovlascenoLice)
     {
         $ovlascenoLice->delete();
+
         return response()->json($ovlascenoLice, 200);
     }
 }

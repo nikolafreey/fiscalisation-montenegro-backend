@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePreduzece;
+use App\Http\Requests\Api\StorePreduzece;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
+/**
+ * @group Preduzece
+ *
+ * Class PreduzeceController
+ * @package App\Http\Controllers
+ */
+
 class PreduzeceController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Preduzece::class, 'preduzece');
+    }
+
     /**
-     * Display a listing of the resource.
+     * Izlistavanje resursa
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,7 +35,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Čuvanje resursa
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -31,11 +43,12 @@ class PreduzeceController extends Controller
     public function store(StorePreduzece $request)
     {
         $preduzece = Preduzece::create($request->validated());
+
         return response()->json($preduzece, 201);
     }
 
     /**
-     * Display the specified resource.
+     * Prikaz resursa
      *
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
@@ -46,7 +59,7 @@ class PreduzeceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Izmjena resursa
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Preduzece  $preduzece
@@ -54,19 +67,39 @@ class PreduzeceController extends Controller
      */
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
+        if (
+            ! auth()->user()-hasRole('Vlasnik')
+            &&
+            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        )
+        {
+            abort(403);
+        }
+
         $preduzece->update($request->validated());
+
         return response()->json($preduzece, 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Brisanje resursa
      *
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
      */
     public function destroy(Preduzece $preduzece)
     {
+        if (
+            ! auth()->user()-hasRole('Vlasnik')
+            &&
+            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        )
+        {
+            abort(403);
+        }
+
         $preduzece->delete();
+
         return response()->json($preduzece, 200);
     }
 }

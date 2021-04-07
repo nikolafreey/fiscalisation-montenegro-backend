@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDjelatnost;
+use App\Http\Requests\Api\StoreDjelatnost;
 use App\Models\Djelatnost;
 use Illuminate\Http\Request;
 
 class DjelatnostController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Djelatnost::class, 'djelatnost');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +32,7 @@ class DjelatnostController extends Controller
     public function store(StoreDjelatnost $request)
     {
         $djelatnost = Djelatnost::create($request->all());
+
         return response()->json($djelatnost, 201);
     }
 
@@ -51,6 +57,7 @@ class DjelatnostController extends Controller
     public function update(StoreDjelatnost $request, Djelatnost $djelatnost)
     {
         $djelatnost->update($request->all());
+
         return response()->json($djelatnost, 200);
     }
 
@@ -63,6 +70,7 @@ class DjelatnostController extends Controller
     public function destroy(Djelatnost $djelatnost)
     {
         $djelatnost->delete();
+
         return response()->json($djelatnost, 200);
     }
 }

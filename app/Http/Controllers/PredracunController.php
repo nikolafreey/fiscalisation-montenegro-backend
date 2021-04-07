@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partner;
 use App\Models\Racun;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,21 +16,32 @@ class PredracunController extends Controller
      */
     public function index(Request $request)
     {
+        auth()->user()->can('view Predracun');
+
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*');
+            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
+
+            $partneri = [];
+            foreach ($searchQuery->get()->toArray() as $partner) {
+                $partneri[] = $partner['partner_id'];
+            }
+
+            $partneriQuery = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-            return $searchData;
+            $searchAllData = $searchData->merge(collect(["partneri" => $partneriQuery]));
+
+            return $searchAllData;
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
@@ -72,6 +84,8 @@ class PredracunController extends Controller
      */
     public function store(Request $request)
     {
+        auth()->user()->can('store Predracun');
+
         $racun = Racun::make($request->validated());
         $racun->tip_racuna = Racun::PREDRACUN;
         $racun->user_id = auth()->id();
@@ -92,6 +106,8 @@ class PredracunController extends Controller
      */
     public function show(Racun $racun)
     {
+        auth()->user()->can('show Predracun');
+
         return $racun->load(['stavke', 'porezi']);
     }
 
@@ -104,6 +120,8 @@ class PredracunController extends Controller
      */
     public function update(Request $request, Racun $racun)
     {
+        auth()->user()->can('update Predracun');
+
         $ikof = $request->input('ikof');
         $jikr = $request->input('jikr');
 

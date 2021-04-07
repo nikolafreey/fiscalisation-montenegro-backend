@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCijenaRobe;
+use App\Http\Requests\Api\StoreCijenaRobe;
 use App\Models\CijenaRobe;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class CijenaRobeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(CijenaRobe::class, 'cijenaRobe');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -69,6 +73,7 @@ class CijenaRobeController extends Controller
     public function destroy(CijenaRobe $cijenaRobe)
     {
         $cijenaRobe->delete();
+
         return response()->json($cijenaRobe, 200);
     }
 }

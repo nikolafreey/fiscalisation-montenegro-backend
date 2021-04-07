@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTipAtributa;
-use App\Models\Preduzece;
+use App\Http\Requests\Api\StoreTipAtributa;
 use App\Models\TipAtributa;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class TipoviAtributaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(TipAtributa::class, 'tipAtributa');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,6 +63,7 @@ class TipoviAtributaController extends Controller
     public function update(StoreTipAtributa $request, TipAtributa $tipAtributa)
     {
         $tipAtributa->update($request->validated());
+
         return response()->json($tipAtributa, 200);
     }
 
@@ -71,6 +76,7 @@ class TipoviAtributaController extends Controller
     public function destroy(TipAtributa $tipAtributa)
     {
         $tipAtributa->delete();
+
         return response()->json($tipAtributa, 200);
     }
 }

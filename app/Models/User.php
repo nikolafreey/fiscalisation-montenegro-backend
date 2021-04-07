@@ -2,25 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\ImaAktivnost;
 use App\Traits\GenerateUuid;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\NewAccessToken;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes, GenerateUuid, HasApiTokens; //LogsActivity;
+    use HasFactory, Notifiable, SoftDeletes, GenerateUuid, HasApiTokens, HasRoles, ImaAktivnost; //LogsActivity;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
+    protected $naziv = 'email';
+
     protected $fillable = [
         'email',
         'password',
@@ -30,7 +36,6 @@ class User extends Authenticatable
         'avatar',
         'paket',
         'tip_id'
-
     ];
 
     public function preduzeca()
@@ -40,7 +45,7 @@ class User extends Authenticatable
 
     public function poslovne_jedinice()
     {
-        return $this->belongsToMany('App\Models\PoslovnaJedinica', 'user_tip_korisnika', 'user_id', 'poslovna_jedinica_id');
+        return $this->hasMany('App\Models\PoslovnaJedinica');
     }
 
     public function tip_korisnika()
@@ -52,6 +57,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Models\Modul', 'modul_user', 'user_id', 'modul_id');
     }
+
 
     public function tip_atributa()
     {
@@ -98,6 +104,21 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Racun', 'user_id');
     }
 
+    public function guestRacuni()
+    {
+        return $this->belongsToMany('App\Models\Racun', 'users_racuni',  'user_id', 'racun_id');
+    }
+
+    public function dokumenti()
+    {
+        return $this->hasMany(Dokument::class);
+    }
+
+    public function podesavanje()
+    {
+        return $this->hasOne(Podesavanje::class);
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -116,4 +137,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setAvatarAttribute($value)
+    {
+        return $this->attributes['avatar'] = Storage::disk('public')->putFile('avatars', $value);
+    }
+
+    public function getPunoImeAttribute()
+    {
+        return "{$this->ime} {$this->prezime}";
+    }
 }

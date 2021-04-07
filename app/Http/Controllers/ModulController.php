@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreModul;
+use App\Http\Requests\Api\StoreModul;
 use App\Models\Modul;
 use Illuminate\Http\Request;
 
 class ModulController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Modul::class, 'modul');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +32,7 @@ class ModulController extends Controller
     public function store(StoreModul $request)
     {
         $modul = Modul::create($request->all());
+
         return response()->json($modul, 201);
     }
 
@@ -51,6 +57,7 @@ class ModulController extends Controller
     public function update(StoreModul $request, Modul $modul)
     {
         $modul->update($request->all());
+
         return response()->json($modul, 200);
     }
 
@@ -63,6 +70,7 @@ class ModulController extends Controller
     public function destroy(Modul $modul)
     {
         $modul->delete();
+
         return response()->json($modul, 200);
     }
 }

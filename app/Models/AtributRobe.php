@@ -2,18 +2,26 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
+use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AtributRobe extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $table = 'atributi_roba';
 
-    protected $fillable = ['tip_atributa_id', 'naziv', 'opis', 'popust_procenti', 'popust_iznos'];
+    protected $naziv = 'naziv';
+
+    protected $fillable = [
+        'tip_atributa_id',
+        'naziv',
+        'opis',
+        'popust_procenti',
+        'popust_iznos'
+    ];
 
     // protected static function booted()
     // {

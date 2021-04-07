@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\StoreUlazniRacun;
+use App\Models\Partner;
 use App\Models\UlazniRacun;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use function GuzzleHttp\Promise\queue;
-
 class UlazniRacunController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(UlazniRacun::class, 'ulazniRacun');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,20 +25,27 @@ class UlazniRacunController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            $searchQuery = UlazniRacun::search($request->search . '*');
+            $searchQuery = UlazniRacun::search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
+
+            $partneri = [];
+            foreach ($searchQuery->get()->toArray() as $partner) {
+                $partneri[] = $partner['partner_id'];
+            }
+
+            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-            return $searchData;
+            return $searchData->merge(collect(["partneri" => $queryPartneri]));
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
@@ -44,7 +56,7 @@ class UlazniRacunController extends Controller
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece_id:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.preduzece:id,ime,prezime')->paginate();
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate();
             $ukupnaCijena = collect(["ukupna_cijena" => UlazniRacun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
@@ -73,8 +85,6 @@ class UlazniRacunController extends Controller
 
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
-
-        $queryUlazniRacuniDanas = UlazniRacun::query();
 
         $queryUlazniRacuniDanas = DB::select(DB::raw('SELECT * FROM ulazni_racuni WHERE vrsta_racuna = "' . UlazniRacun::GOTOVINSKI . '" AND tip_racuna = "' . UlazniRacun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
 
@@ -132,58 +142,58 @@ class UlazniRacunController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUlazniRacun $request)
     {
-        $ulazniracun = UlazniRacun::make($request->validated());
-        $ulazniracun->user_id = auth()->id();
+        $ulazniRacun = UlazniRacun::make($request->validated());
+        $ulazniRacun->user_id = auth()->id();
         $user = User::find(auth()->id())->load('preduzeca');
-        $ulazniracun->preduzece_id = $user['preduzeca'][0]->id;
-        $ulazniracun->save();
+        $ulazniRacun->preduzece_id = $user['preduzeca'][0]->id;
+        $ulazniRacun->save();
 
-        $ulazniracun->kreirajStavke($request);
+        $ulazniRacun->kreirajStavke($request);
 
-        return response()->json($ulazniracun, 201);
+        return response()->json($ulazniRacun, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\UlazniRacun  $ulazniracun
+     * @param  \App\Models\UlazniRacun  $ulazniRacun
      * @return \Illuminate\Http\Response
      */
-    public function show(UlazniRacun $ulazniracun)
+    public function show(UlazniRacun $ulazniRacun)
     {
-        return $ulazniracun->load(['ulazne_stavke', 'porezi']);
+        return $ulazniRacun->load(['ulazne_stavke', 'porezi']);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UlazniRacun  $ulazniracun
+     * @param  \App\Models\UlazniRacun  $ulazniRacun
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UlazniRacun $ulazniracun)
+    public function update(StoreUlazniRacun $request, UlazniRacun $ulazniRacun)
     {
         $ikof = $request->input('ikof');
         $jikr = $request->input('jikr');
 
         if (($ikof == null || $ikof == '') && ($jikr == null || $jikr == '')) {
 
-            $ulazniracun->update($request->validated());
-            return response()->json($ulazniracun, 200);
+            $ulazniRacun->update($request->validated());
+            return response()->json($ulazniRacun, 200);
         } else {
-            return response()->json($ulazniracun, 400);
+            return response()->json($ulazniRacun, 400);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\UlazniRacun  $ulazniracun
+     * @param  \App\Models\UlazniRacun  $ulazniRacun
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UlazniRacun $ulazniracun)
+    public function destroy(UlazniRacun $ulazniRacun)
     {
         //
     }

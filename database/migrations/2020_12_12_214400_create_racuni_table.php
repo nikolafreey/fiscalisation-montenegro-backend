@@ -40,6 +40,7 @@ class CreateRacuniTable extends Migration
             $table->decimal('popust_ukupno', 15, 4)->nullable();
             $table->text('opis')->nullable();
             $table->string('status', 20)->default('KREIRAN');
+            $table->integer('redni_broj')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

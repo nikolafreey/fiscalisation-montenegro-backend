@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Paket;
 use App\Models\Roba;
 use App\Models\User;
 use App\Models\Grupa;
@@ -35,6 +36,9 @@ use App\Models\PoslovnaJedinica;
 use App\Models\PodKategorijaRobe;
 use App\Models\StavkaUlazniRacun;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -48,11 +52,29 @@ class DatabaseSeeder extends Seeder
         Djelatnost::factory(10)->create();
         Modul::factory(10)->create();
         OvlascenoLice::factory(10)->create();
-        TipKorisnika::factory(10)->create();
         Kategorija::factory(10)->create();
         Preduzece::factory(20)->create();
-        User::factory(10)->create();
-        User::factory(1)->create(['email' => 'test@gmail.com']);
+        $users = User::factory(10)->create();
+
+
+
+        $user = User::create([
+            'email' => 'admin@admin.com',
+            'ime' => 'Super Admin',
+            'password' => Hash::make('secret'),
+        ]);
+
+        Role::create(['name' => 'SuperAdmin']);
+        Role::create(['name' => 'Default']);
+
+        // foreach ($users as $user) {
+        //     $user->assignRole('Default');
+        // }
+
+        Permission::create(['name' => 'edit preduzeca']);
+        Permission::create(['name' => 'edit users']);
+
+        $user->assignRole('SuperAdmin');
 
         foreach (Preduzece::all() as $preduzece) {
             PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
@@ -63,17 +85,43 @@ class DatabaseSeeder extends Seeder
 
             DB::table('user_tip_korisnika')->insert([
                 'preduzece_id' => $preduzece->id,
-                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice->random()->id,
+                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice()->withoutGlobalScopes()->inRandomOrder()->first()->id,
                 'user_id' => $user->id,
-                'tip_korisnika_id' => TipKorisnika::all()->random()->id,
             ]);
         }
+
+        DB::table('paketi')->insert([
+            'id' => 0,
+            'naziv' => 'Osnovni',
+            'broj_uredjaja' => 1,
+        ]);
+
+        DB::table('paketi')->insert([
+            'id' => 0,
+            'naziv' => 'Start',
+            'broj_uredjaja' => 2,
+        ]);
+
+        DB::table('paketi')->insert([
+            'id' => 0,
+            'naziv' => 'Pro',
+            'broj_uredjaja' => 5,
+        ]);
 
         DB::table('porezi')->insert([
             'id' => 0,
             'naziv' => 'Oslobođen PDV-a',
             'stopa' => 0
         ]);
+
+        foreach (Preduzece::all() as $preduzece) {
+            $paket = Paket::all()->random();
+
+            DB::table('paket_preduzece')->insert([
+                'preduzece_id' => $preduzece->id,
+                'paket_id' => $paket->id,
+            ]);
+        }
 
         $naziviPoreza = array('0%', '7%', '21%');
         $stopePoreza = array(0, 0.07, 0.21);
@@ -126,7 +174,16 @@ class DatabaseSeeder extends Seeder
 
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
-        JedinicaMjere::factory(10)->create();
+        // JedinicaMjere::factory(10)->create();
+        DB::table('jedinice_mjere')->insert(
+            [
+                'naziv' => 'kom',
+                'kratki_naziv' => 'gram',
+                'deleted_at' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
         Usluga::factory(10)->create();
         KategorijaRobe::factory(10)->create();
         PodKategorijaRobe::factory(10)->create();
@@ -138,11 +195,9 @@ class DatabaseSeeder extends Seeder
         UlazniRacun::factory(10)->create();
 
         foreach (PoslovnaJedinica::all() as $poslovnaJedinica) {
-            $randomBoolean = rand(0, 1);
-
             DepozitWithdraw::factory(1)->create([
-                'iznos_depozit' => $randomBoolean ? rand(50, 100) : null,
-                'iznos_withdraw' => $randomBoolean ? null : rand(50, 100),
+                'iznos_depozit' => rand(50, 100),
+                'iznos_withdraw' => null,
                 'poslovna_jedinica_id' => $poslovnaJedinica->id,
                 'preduzece_id' => $poslovnaJedinica->preduzece->id
             ]);

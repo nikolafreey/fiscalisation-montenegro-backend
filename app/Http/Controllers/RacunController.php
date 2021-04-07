@@ -2,21 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRacun;
+use App\Http\Requests\Api\DijeljenjeRacunaRequest;
+use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
+use App\Mail\PodijeliRacunGostu;
+use App\Mail\PodijeliRacunKorisniku;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
-use App\Models\KategorijaRobe;
+use App\Models\Invite;
+use App\Models\Partner;
 use App\Models\Racun;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
-use Carbon\Carbon;
 
 class RacunController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Racun::class, 'racun');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,20 +40,29 @@ class RacunController extends Controller
     {
         Log::info('ssssss', array($request->all()));
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*');
+            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
                     'partner:id,preduzece_id,fizicko_lice_id',
                     'partner.preduzece:id,kratki_naziv',
                     'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
+                )->paginate(10);
+
+            $partneri = [];
+            foreach ($searchQuery->get()->toArray() as $partner) {
+                $partneri[] = $partner['partner_id'];
+            }
+
+            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
             $searchData = $ukupnaCijenaSearch->merge($paginatedSearch);
 
-            return $searchData;
+            $searchDataAll = $searchData->merge(collect(["partneri" => $queryPartneri]));
+
+            return $searchDataAll;
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
@@ -62,7 +82,7 @@ class RacunController extends Controller
             return $data;
         }
 
-        $queryAll = Racun::query();
+        $queryAll = Racun::query()->orderBy('created_at', 'DESC');
         $queryAll = $queryAll->where('tip_racuna', Racun::RACUN);
 
         $paginatedData = $queryAll
@@ -79,14 +99,14 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE deleted_at IS NULL AND tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
 
     public function najveciDuznici(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE deleted_at IS NULL AND tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
@@ -100,9 +120,7 @@ class RacunController extends Controller
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
 
-        $queryRacuniDanas = Racun::query();
-
-        $queryRacuniDanas = DB::select(DB::raw('SELECT * FROM racuni WHERE vrsta_racuna = "' . Racun::GOTOVINSKI . '" AND tip_racuna = "' . Racun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
+        $queryRacuniDanas = DB::select(DB::raw('SELECT * FROM racuni WHERE deleted_at IS NULL AND vrsta_racuna = "' . Racun::GOTOVINSKI . '" AND tip_racuna = "' . Racun::RACUN . '" AND datum_izdavanja BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '"'));
 
         $ukupnoRacuniDanas = 0;
 
@@ -129,7 +147,7 @@ class RacunController extends Controller
 
         $queryAllPdv = $queryAll->where('tip_racuna', Racun::RACUN)->get();
         $queryPdv = $query->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->get();
-        $queryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
+        $queryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE deleted_at IS NULL AND datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
 
         $ukupnaSuma = 0;
         $poslednjiMjesecSuma = 0;
@@ -200,22 +218,72 @@ class RacunController extends Controller
     {
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
-            $racun->tip_racuna = Racun::RACUN;
+            // $racun->tip_racuna = Racun::RACUN;
             $racun->broj_racuna = Racun::izracunajBrojRacuna();
             $racun->datum_izdavanja = now();
 
             $racun->user_id = auth()->id();
-            $user = User::find(auth()->id())->load('preduzeca', 'poslovne_jedinice');
-            $racun->preduzece_id = $user['preduzeca'][0]->id;
-            $racun->poslovna_jedinica_id = $user['poslovne_jedinice'][0]->id;
+
+            $preduzece = auth()
+                ->user()
+                ->preduzeca()
+                ->where('preduzeca.id', $request->preduzece_id)
+                ->firstOrFail();
+
+            $racun->preduzece_id = $preduzece->id;
+
+            $poslovnaJedinica = $preduzece
+                ->poslovne_jedinice()
+                ->where('poslovne_jedinice.id', $request->poslovna_jedinica_id)
+                ->firstOrFail();
+
+            $racun->poslovna_jedinica_id = $poslovnaJedinica->id;
+
+            $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
+
+            $startOfYear = $date->copy()->startOfYear();
+            $endOfYear   = $date->copy()->endOfYear();
+
+            if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
+                $racun->redni_broj = $preduzece->podesavanje->redniBroj;
+            } else {
+                $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
+            }
 
             $racun->save();
+
+            if ($preduzece->podesavanje->slanjeKupcu) {
+                $kupacEmail = $racun->partner->fizicko_lice->email;
+
+                if (User::where('email', $kupacEmail)->exists()) {
+                    User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
+
+                    Mail::to($kupacEmail)
+                        ->send(new PodijeliRacunKorisniku($racun));
+                } else {
+                    $invite = Invite::create([
+                        'email' => $kupacEmail,
+                        'route' => route('racuni.show', $racun),
+                        'token' => Str::random(40),
+                        'racun_id' => $racun->id,
+                    ]);
+
+                    Mail::to($kupacEmail)
+                        ->send(new PodijeliRacunGostu($invite));
+                }
+            }
 
             $racun->kreirajStavke($request);
             Log::info('suma: ' . var_export($racun->izracunajUkupneCijene(), true));
 
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
+
+            if ($request->status === 'Storniran') {
+                $racun->ukupna_cijena_bez_pdv *= -1;
+                $racun->ukupna_cijena_sa_pdv *= -1;
+                $racun->ukupan_iznos_pdv *= -1;
+            }
 
             return $racun;
         });
@@ -233,6 +301,15 @@ class RacunController extends Controller
      */
     public function show(Racun $racun)
     {
+        if (
+            ! in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
+            &&
+            ! in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
+        )
+        {
+            abort(403, 'Nemate pristup ovom racunu');
+        }
+
         return $racun->load(['stavke', 'porezi', 'partner', 'preduzece']);
     }
 
@@ -276,5 +353,31 @@ class RacunController extends Controller
         $tipovi_atributa = AtributRobe::get(['id AS tip_atributa_id', 'naziv'])->toArray();
         $grupe = Grupa::get(['id AS grupa_id', 'naziv'])->toArray();
         return array_merge($tipovi_atributa, $grupe);
+    }
+
+    public function dijeljenjeRacuna(Racun $racun, DijeljenjeRacunaRequest $request)
+    {
+        if (! auth()->id() === $racun->user_id) {
+            abort(403);
+        }
+
+        if (User::where('email', $request->email)->exists()) {
+            User::where('email', $request->email)->first()->guestRacuni()->attach($racun->id);
+
+            Mail::to($request->email)
+                ->send(new PodijeliRacunKorisniku($racun));
+        } else {
+            $invite = Invite::create([
+                'email' => $request->email,
+                'route' => route('racuni.show', $racun),
+                'token' => Str::random(40),
+                'racun_id' => $racun->id,
+            ]);
+
+            Mail::to($request->email)
+                ->send(new PodijeliRacunGostu($invite));
+        }
+
+        return response()->json('Uspjesno ste poslali racun na mejl korisnika');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAtributRobe;
+use App\Http\Requests\Api\StoreAtributRobe;
 use App\Models\AtributRobe;
 use App\Models\Preduzece;
 use App\Models\User;
@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class AtributRobeController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(AtributRobe::class, 'atributRobe');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,6 +64,7 @@ class AtributRobeController extends Controller
     public function update(StoreAtributRobe $request, AtributRobe $atributRobe)
     {
         $atributRobe->update($request->validated());
+
         return response()->json($atributRobe, 200);
     }
 
@@ -71,6 +77,7 @@ class AtributRobeController extends Controller
     public function destroy(AtributRobe $atributRobe)
     {
         $atributRobe->delete();
+
         return response()->json($atributRobe, 200);
     }
 }

@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGrupa;
+use App\Http\Requests\Api\StoreGrupa;
 use App\Models\Grupa;
 use Illuminate\Http\Request;
 
 class GrupaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Grupa::class, 'grupa');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +32,7 @@ class GrupaController extends Controller
     public function store(Request $request)
     {
         $djelatnost = Grupa::create($request->all());
+
         return response()->json($djelatnost, 201);
     }
 
@@ -50,7 +56,7 @@ class GrupaController extends Controller
      */
     public function update(Request $request, Grupa $grupa)
     {
-        //
+
     }
 
     /**
@@ -61,6 +67,6 @@ class GrupaController extends Controller
      */
     public function destroy(Grupa $grupa)
     {
-        //
+
     }
 }

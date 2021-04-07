@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUsluga;
+use App\Http\Requests\Api\StoreUsluga;
 use App\Models\Usluga;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UslugaController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Usluga::class, 'usluga');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,16 +27,14 @@ class UslugaController extends Controller
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
             ])->paginate();
-        } else {
-            return Usluga::query()->with([
+        }
+
+        if ($request->has('grupa_id')) {
+            return Usluga::query()->where('grupa_id', $request->grupa_id)->with([
                 'grupa:id,naziv,opis,popust_procenti,popust_iznos',
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
             ])->paginate();
-        }
-
-        if ($request->has('grupa_id')) {
-            return Usluga::query()->where('grupa_id', $request->grupa_id)->paginate();
         }
 
         return Usluga::query()->with([
@@ -81,6 +84,7 @@ class UslugaController extends Controller
     public function update(StoreUsluga $request, Usluga $usluga)
     {
         $usluga->update($request->validated());
+
         return response()->json($usluga, 200);
     }
 
@@ -93,6 +97,7 @@ class UslugaController extends Controller
     public function destroy(Usluga $usluga)
     {
         $usluga->delete();
+
         return response()->json($usluga, 200);
     }
 }

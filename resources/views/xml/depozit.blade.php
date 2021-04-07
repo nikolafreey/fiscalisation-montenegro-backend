@@ -15,6 +15,6 @@
         ChangeDateTime="{{ $danasnji_datum }}"
         IssuerTIN="{{ $taxpayer['TIN'] }}"
         Operation="INITIAL"
-        TCRCode="{{ $taxpayer['OP'] }}"
+        TCRCode="{{ $taxpayer['CR'] }}"
     />
 </RegisterCashDepositRequest>

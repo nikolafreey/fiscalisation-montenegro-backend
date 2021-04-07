@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class Partner extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
+
+    protected $naziv = 'kontakt_ime';
 
     protected $table = 'partneri';
 
@@ -77,16 +80,21 @@ class Partner extends Model
 
     public static function filter(Request $request)
     {
-        if ($request->has('search')) {
+        if ($request->has(['filter', 'search'])) {
             $query = Partner::search($request->search . '*');
-        } else {
-            $query = Partner::query();
+            return $query;
         }
 
-        if ($request->has(['filter', 'search'])) {
-            $query = $query->where('tip', $request->filter);
-        } elseif ($request->has(['filter'])) {
-            $query = $query->has($request->filter);
+        if ($request->has('search')) {
+            $query = Partner::search($request->search . '*');
+        }
+
+        if ($request->has('filter')) {
+            if ($request->filter == "fizicko_lice") {
+                return Partner::where('preduzece_id', null);
+            } elseif ($request->filter == "preduzece") {
+                return Partner::where('fizicko_lice_id', null);
+            }
         }
 
         return $query;

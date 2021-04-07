@@ -18,16 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('email', 50)->unique();
             $table->string('password');
             $table->string('ime', 50);
-            $table->string('prezime', 50);
+            $table->string('prezime', 50)->nullable();
             $table->string('jezik', 10)->nullable();
             $table->string('avatar', 255)->nullable();
             $table->boolean('paket')->nullable();
             $table->date('vazi_do')->nullable();
-
-            $table->foreignId('tip_id')
-                ->constrained('tipovi_korisnika')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->string('kod_operatera')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

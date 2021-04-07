@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,6 +32,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = User::create($request->all());
+
         return response()->json($user, 201);
     }
 
@@ -52,6 +57,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $user->update($request->all());
+
         return response()->json($user, 200);
     }
 
@@ -64,12 +70,13 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return response()->json($user, 200);
     }
 
     public function me()
     {
-        $user = User::find(auth()->id())->load('preduzeca');
+        $user = User::find(auth()->id())->load('preduzeca', 'preduzeca.ziro_racuni', 'preduzeca.users');
         return $user;
         // return auth()->user();
     }

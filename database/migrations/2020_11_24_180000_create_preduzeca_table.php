@@ -50,8 +50,18 @@ class CreatePreduzecaTable extends Migration
             $table->string('lokacija_long', 50)->nullable();
             $table->boolean('status')->nullable();
             $table->boolean('privatnost')->nullable();
-            $table->boolean('verifikovan')->nullable();
+            $table->boolean('verifikovan')->default(false);
             $table->boolean('pdv_obveznik')->nullable();
+            $table->string('pecat', 100)->nullable();
+            $table->string('sertifikat', 100)->nullable();
+            $table->text('pecatSifra')->nullable();
+            $table->text('sertifikatSifra')->nullable();
+            $table->string('enu_kod')->default('wp886vu280');
+            $table->string('software_kod')->default('qk433mq872');
+            $table->string('kod_operatera')->default('ia871me776');
+            $table->string('kod_pj')->default('ya260ri698');
+            $table->timestamp('vazenje_pecata_do')->nullable();
+            $table->timestamp('vazenje_sertifikata_do')->nullable();
 
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')

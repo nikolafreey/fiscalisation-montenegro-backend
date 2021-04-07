@@ -5,12 +5,24 @@ namespace App\Models;
 use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ImaAktivnost;
 
 class PoslovnaJedinica extends Model
 {
-    use HasFactory;
+    use HasFactory, ImaAktivnost;
+
+    protected $naziv = 'kratki_naziv';
 
     protected $table = 'poslovne_jedinice';
+
+    protected $fillable = [
+        'kratki_naziv',
+        'adresa',
+        'grad',
+        'drzava',
+        'preduzce_id',
+        'user_id'
+    ];
 
     public function preduzece()
     {

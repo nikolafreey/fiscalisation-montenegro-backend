@@ -11,10 +11,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ScoutElastic\Searchable;
 use Illuminate\Support\Facades\Log;
+use App\Traits\ImaAktivnost;
 
 class Racun extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
+
+    protected $naziv = 'vrsta_racuna';
 
     protected $table = 'racuni';
 
@@ -65,21 +68,21 @@ class Racun extends Model
             'broj_racuna' => [
                 'type' => 'text',
             ],
-            'status' => [
-                'type' => 'keyword',
-            ],
-            'created_at' => [
-                'type' => 'date',
-            ],
+            // 'status' => [
+            //     'type' => 'keyword',
+            // ],
+            // 'created_at' => [
+            //     'type' => 'date',
+            // ],
             'partner.preduzece.kratki_naziv' => [
                 'type' => 'text',
             ],
-            'partner.preduzece.puni_naziv' => [
-                'type' => 'text',
-            ],
-            'partner.preduzec.pib' => [
-                'type' => 'text',
-            ],
+            // 'partner.preduzece.puni_naziv' => [
+            //     'type' => 'text',
+            // ],
+            // 'partner.preduzece.pib' => [
+            //     'type' => 'text',
+            // ],
             'partner.fizicko_lice.ime' => [
                 'type' => 'text',
             ],
@@ -415,6 +418,11 @@ class Racun extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+    public function guestUsers()
+    {
+        return $this->belongsToMany('App\Models\User', 'users_racuni', 'racun_id', 'user_id');
     }
 
     public function poslovnaJedinica()

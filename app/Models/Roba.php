@@ -10,14 +10,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use ScoutElastic\Searchable;
+use App\Traits\ImaAktivnost;
 
 class Roba extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
+
+    protected $naziv = 'naziv';
 
     protected $table = 'robe';
 
-    protected $fillable = ['naziv', 'opis', 'detaljni_opis', 'ean', 'interna_sifra_proizvoda', 'status', 'proizvodjac_robe_id', 'jedinica_mjere_id'];
+    protected $fillable = [
+        'naziv',
+        'opis',
+        'detaljni_opis',
+        'ean',
+        'interna_sifra_proizvoda',
+        'status',
+        'proizvodjac_robe_id',
+        'jedinica_mjere_id'
+    ];
 
     use Searchable;
 
@@ -32,9 +44,12 @@ class Roba extends Model
             'naziv' => [
                 'type' => 'text',
             ],
-            // 'interna_sifra_proizvoda' => [
-            //     'type' => 'text',
-            // ],
+            'interna_sifra_proizvoda' => [
+                'type' => 'text',
+            ],
+            'ean' => [
+                'type' => 'text',
+            ],
         ]
     ];
 
@@ -124,9 +139,8 @@ class Roba extends Model
         } else {
             $query = Roba::query();
         }
-        if ($request->has('atribut')) {
-            return $query;
-            $query = $query->where('atribut_robe.naziv', $request->atribut);
+        if ($request->has('atribut_id')) {
+            $query = $query->where('atribut_id', $request->atribut_id);
         }
         return $query;
     }

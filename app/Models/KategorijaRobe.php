@@ -6,14 +6,23 @@ use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\ImaAktivnost;
 
 class KategorijaRobe extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, ImaAktivnost;
+
+    protected $naziv = 'naziv';
 
     protected $table = 'kategorije_roba';
 
-    protected $fillable = ['naziv', 'opis', 'popust_procenti', 'popust_iznos', 'status'];
+    protected $fillable = [
+        'naziv',
+        'opis',
+        'popust_procenti',
+        'popust_iznos',
+        'status'
+    ];
 
     // protected static function booted()
     // {
