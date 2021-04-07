@@ -57,6 +57,13 @@
                                     <select class="selectize" id="uloga" name="uloga">
                                         @foreach($roles as $role)
                                             <option
+                                                @if(in_array(
+                                                    $role->name,
+                                                    $user->roles->pluck('name')->toArray(),
+                                                    true
+                                                ))
+                                                    selected
+                                                @endif
                                                 value="{{ $role->name }}"
                                             >
                                                 {{ $role->name }}

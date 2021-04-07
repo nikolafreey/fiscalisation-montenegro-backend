@@ -39,7 +39,8 @@ class UserRequest extends FormRequest
             'prezime' => 'nullable',
             'avatar' => 'nullable',
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'preduzece_id' => 'required',
         ];
     }
 }

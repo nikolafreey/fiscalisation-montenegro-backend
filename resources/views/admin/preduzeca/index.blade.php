@@ -53,7 +53,7 @@
             columns: [
                 { data: 'kratki_naziv' },
                 { data: 'adresa' },
-                { data: 'paketi[, ].naziv', name:'paketi.naziv'},
+                { data: 'paketi[, ].naziv', name:'paketi.naziv', orderable: false},
                 {
                     data: 'action',
                     class: 'text-right',

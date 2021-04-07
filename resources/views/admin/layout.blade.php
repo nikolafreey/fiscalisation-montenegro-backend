@@ -95,10 +95,10 @@
                             <div class="icon-w">
                                 <div class="os-icon os-icon-package"></div>
                             </div>
-                            <span>Sertifikati</span></a>
+                            <span>Preduzeća</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Sertifikati
+                                Preduzeća
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-package"></i>
@@ -281,7 +281,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ mix('js/all.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.js"></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.js" referrerpolicy="origin"></script>
 
     <script>
