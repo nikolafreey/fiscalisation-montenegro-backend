@@ -41,11 +41,11 @@ class PodesavanjeController extends Controller
             'boja' => $request->boja,
             'jezik' => $request->jezik,
             'mod' => $request->mod,
-            'user_id' => User::first()->id,
-            'preduzece_id' => Preduzece::first()->id,
+            'user_id' => auth()->id(),
+            'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        $preduzece = Preduzece::where('id', $podesavanje->preduzece_id)->first();
+        $preduzece = Preduzece::find(getAuthPreduzeceId($request))->first();
 
         if ($request->pecat != null && $request->sertifikat != null) {
             $preduzece->update([
@@ -62,9 +62,7 @@ class PodesavanjeController extends Controller
             'kod_pj' => $request->kod_pj
         ]);
 
-        $user = User::where('id', $podesavanje->user_id)->first();
-
-        $user->update([
+        auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
 
@@ -80,11 +78,11 @@ class PodesavanjeController extends Controller
             'boja' => $request->boja,
             'jezik' => $request->jezik,
             'mod' => $request->mod,
-            'user_id' => User::first()->id,
-            'preduzece_id' => Preduzece::first()->id,
+            'user_id' => auth()->id(),
+            'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        $preduzece = Preduzece::where('id', $podesavanje->preduzece_id)->first();
+        $preduzece = Preduzece::find(getAuthPreduzeceId($request));
 
         if ($request->pecat != null && $request->sertifikat != null) {
             $preduzece->update([
@@ -101,9 +99,7 @@ class PodesavanjeController extends Controller
             'kod_pj' => $request->kod_pj,
         ]);
 
-        $user = User::where('id', $podesavanje->user_id)->first();
-
-        $user->update([
+        auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
 

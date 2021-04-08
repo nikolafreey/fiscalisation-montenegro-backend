@@ -51,13 +51,31 @@ class PreduzeceController extends Controller
     {
         return view('admin.preduzeca.dodavanjePaketa', [
             'paketi' => Paket::all(),
-            'preduzece' => $preduzece
+            'preduzece' => $preduzece,
+            'osnovniCount' => $preduzece->paketi->where('naziv', 'Osnovni')->count(),
+            'startCount' => $preduzece->paketi->where('naziv', 'Start')->count(),
+            'proCount' => $preduzece->paketi->where('naziv', 'Pro')->count(),
         ]);
     }
 
     public function updatePaket(Preduzece $preduzece, Request $request)
     {
-        $preduzece->paketi()->attach($request->paket);
+        $preduzece->paketi()->sync([]);
+
+        $osnovni = Paket::where('naziv', 'Osnovni')->first()->id;
+        for ($a = 1; $a <= $request->osnovni; $a++) {
+            $preduzece->paketi()->attach($osnovni);
+        }
+
+        $start = Paket::where('naziv', 'Start')->first()->id;
+        for ($b = 1; $b <= $request->start; $b++) {
+            $preduzece->paketi()->attach($start);
+        }
+
+        $pro = Paket::where('naziv', 'Pro')->first()->id;
+        for ($c = 1; $c <= $request->pro; $c++) {
+            $preduzece->paketi()->attach($pro);
+        }
 
         return redirect(route('preduzeca.index'));
     }

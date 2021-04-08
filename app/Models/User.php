@@ -35,7 +35,8 @@ class User extends Authenticatable
         'jezik',
         'avatar',
         'paket',
-        'tip_id'
+        'tip_id',
+        'kod_operatera'
     ];
 
     public function preduzeca()

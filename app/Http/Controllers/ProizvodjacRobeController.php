@@ -35,13 +35,7 @@ class ProizvodjacRobeController extends Controller
     {
         $proizvodjacRobe = ProizvodjacRobe::make($request->validated());
         $proizvodjacRobe->user_id = auth()->id();
-
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $proizvodjacRobe->preduzece_id = $preduzece_id;
+        $proizvodjacRobe->preduzece_id = getAuthPreduzeceId($request);
         $proizvodjacRobe->save();
 
         return response()->json($proizvodjacRobe, 201);

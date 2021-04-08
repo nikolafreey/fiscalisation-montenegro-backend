@@ -36,12 +36,7 @@ class DokumentController extends Controller
 
         $dokument->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $dokument->preduzece_id = $preduzece_id;
+        $dokument->preduzece_id = getAuthPreduzeceId($request);
 
         $dokument->kategorija_dokumenta_id = $request->kategorija_dokumenta_id;
 

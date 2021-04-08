@@ -77,12 +77,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('odabranoPreduzece')->group(function () {
 
+        Route::get('/authPreduzece', function (Request $request) {
+            return getAuthPreduzeceId($request);
+        });
+
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
         Route::put('odabirPoslovneJedinice/update', [OdaberiPoslovnuJedinicuController::class, 'update']);
         Route::get('odabirPoslovneJedinice', [OdaberiPoslovnuJedinicuController::class, 'index'])->name('odabir.poslovneJedinice');
 
         Route::middleware('odabranaPoslovnaJedinica')->group(function () {
+
+            Route::get('/authPoslovnaJedinica', function (Request $request) {
+                return getAuthPoslovnaJedinicaId($request);
+            });
 
             Route::post('odabirPoslovneJedinice/destroy', [OdaberiPoslovnuJedinicuController::class, 'destroy']);
 

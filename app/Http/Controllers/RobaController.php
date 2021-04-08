@@ -83,12 +83,7 @@ class RobaController extends Controller
         $roba = Roba::make($request->validated());
         $roba->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $roba->preduzece_id = $preduzece_id;
+        $roba->preduzece_id = getAuthPreduzeceId($request);
         $roba->created_at = Carbon::now();
         $roba->updated_at = Carbon::now();
         $roba->save();

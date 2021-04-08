@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Dodavanje paketa')
+@section('title') Dodavanje paketa preduzeću "{{ $preduzece->kratki_naziv }}" @endsection
 
 @section('content')
 
@@ -23,6 +23,7 @@
                             @yield('title')
                         </h6>
                         <div class="element-box">
+                            <h2 class="mb-4"></h2>
                             <form
                                 method="POST"
                                 action="{{ route('updatePaket', $preduzece) }}"
@@ -31,16 +32,16 @@
                                 @method('put')
                                 @csrf
                                 <div class="form-group">
-                                    <label for="paket">Paket</label>
-                                    <select class="selectize mt-2" id="paket" name="paket[]" multiple>
-                                        @foreach($paketi as $paket)
-                                            <option
-                                                value="{{ $paket->id }}"
-                                            >
-                                                {{ $paket->naziv }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <label for="paket">Osnovni</label>
+                                    <input type="number" class="form-control col-lg-3" id="paket" name="osnovni" placeholder="Unesite broj Osnovnih paketa" value="{{ $osnovniCount ?? 0 }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="paket">Start</label>
+                                    <input type="number" class="form-control col-lg-3" id="paket" name="start" placeholder="Unesite broj Start paketa" value="{{$startCount ?? 0}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="paket">Pro</label>
+                                    <input type="number" class="form-control col-lg-3" id="paket" name="pro" placeholder="Unesite broj Pro paketa" value="{{ $proCount ?? 0 }}">
                                 </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
@@ -54,23 +55,5 @@
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('scripts')
-
-    <script>
-        $('.selectize').selectize({
-            plugins: ['remove_button'],
-            delimiter: ',',
-            persist: false,
-            create: function(input) {
-                return {
-                    value: input,
-                    text: input
-                }
-            }
-        });
-    </script>
 
 @endsection

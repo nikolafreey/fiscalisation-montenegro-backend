@@ -36,12 +36,7 @@ class KategorijaRobeController extends Controller
         $kategorijaRobe = KategorijaRobe::make($request->validated());
         $kategorijaRobe->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $kategorijaRobe->preduzece_id = $preduzece_id;
+        $kategorijaRobe->preduzece_id = getAuthPreduzeceId($request);
         $kategorijaRobe->save();
 
         return response()->json($kategorijaRobe, 201);

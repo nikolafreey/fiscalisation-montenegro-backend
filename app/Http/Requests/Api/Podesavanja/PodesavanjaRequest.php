@@ -14,14 +14,12 @@ class PodesavanjaRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'redni_broj' => 'nullable',
-            'slanje_kupcu' => 'nullable',
-            'izgled_racuna' => 'nullable',
+            'redni_broj' => 'required',
+            'slanje_kupcu' => 'required',
+            'izgled_racuna' => 'required',
             'boja' => 'nullable',
-            'mod' => 'nullable',
-            'jezik' => 'nullable',
-            'user_id' => 'required',
-            'preduzece_id' => 'required',
+            'mod' => 'required',
+            'jezik' => 'required',
             'pecat' => 'nullable',
             'sertifikat' => 'nullable',
             'sertifikat_sifra' => 'nullable',

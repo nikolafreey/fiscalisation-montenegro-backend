@@ -40,12 +40,7 @@ class FizickoLiceController extends Controller
     {
         $fizickoLice = FizickoLice::create($request->validated());
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $fizickoLice->preduzece_id = $preduzece_id;
+        $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
 
         $ziro_racuni = $request->ziro_racuni;
         foreach ($ziro_racuni as $ziro_racun) {

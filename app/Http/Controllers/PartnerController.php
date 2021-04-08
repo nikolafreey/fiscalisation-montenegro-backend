@@ -48,12 +48,7 @@ class PartnerController extends Controller
         $partner = Partner::make($request->validated());
         $partner->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $partner->preduzece_id = $preduzece_id;
+        $partner->preduzece_id = getAuthPreduzeceId($request);
         $partner->save();
 
         return response()->json($partner, 201);

@@ -56,12 +56,7 @@ class UslugaController extends Controller
         $usluga = Usluga::make($request->validated());
         $usluga->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $usluga->preduzece_id = $preduzece_id;
+        $usluga->preduzece_id = getAuthPreduzeceId($request);
         $usluga->save();
 
         return response()->json($usluga->save(), 201);

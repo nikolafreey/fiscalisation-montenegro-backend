@@ -36,12 +36,7 @@ class AtributRobeController extends Controller
     {
         $atributRobe = AtributRobe::make($request->validated());
         $atributRobe->user_id = auth()->id();
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $atributRobe->preduzece_id = $preduzece_id;
+        $atributRobe->preduzece_id = getAuthPreduzeceId($request);
         $atributRobe->save();
 
         return response()->json($atributRobe, 201);

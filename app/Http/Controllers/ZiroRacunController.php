@@ -36,12 +36,7 @@ class ZiroRacunController extends Controller
         $ziroRacun = ZiroRacun::create($request->all());
         $ziroRacun->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $ziroRacun->preduzece_id = $preduzece_id;
+        $ziroRacun->preduzece_id = getAuthPreduzeceId($request);
         $ziroRacun->save();
 
         return response()->json($ziroRacun, 201);

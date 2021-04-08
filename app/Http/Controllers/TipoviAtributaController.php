@@ -36,12 +36,7 @@ class TipoviAtributaController extends Controller
         $tipAtributa = TipAtributa::make($request->validated());
         $tipAtributa->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $tipAtributa->preduzece_id = $preduzece_id;
+        $tipAtributa->preduzece_id = getAuthPreduzeceId($request);
         $tipAtributa->save();
 
         return response()->json($tipAtributa, 201);

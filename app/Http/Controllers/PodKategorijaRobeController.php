@@ -37,12 +37,7 @@ class PodKategorijaRobeController extends Controller
         $podKategorijaRobe = PodKategorijaRobe::make($request->validated());
         $podKategorijaRobe->user_id = auth()->id();
 
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $podKategorijaRobe->preduzece_id = $preduzece_id;
+        $podKategorijaRobe->preduzece_id = getAuthPreduzeceId($request);
         $podKategorijaRobe->save();
 
         return response()->json($podKategorijaRobe, 201);

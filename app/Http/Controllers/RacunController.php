@@ -224,20 +224,9 @@ class RacunController extends Controller
 
             $racun->user_id = auth()->id();
 
-            $preduzece = auth()
-                ->user()
-                ->preduzeca()
-                ->where('preduzeca.id', $request->preduzece_id)
-                ->firstOrFail();
+            $racun->preduzece_id = getAuthPreduzeceId($request);
 
-            $racun->preduzece_id = $preduzece->id;
-
-            $poslovna_jedinica_id = DB::table('personal_access_tokens')
-                ->where('token', getAccessToken($request))
-                ->first()
-                ->poslovna_jedinica_id;
-
-            $racun->poslovna_jedinica_id = $poslovna_jedinica_id;
+            $racun->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
             $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
 

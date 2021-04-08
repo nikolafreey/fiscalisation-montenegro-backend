@@ -34,12 +34,7 @@ class CijenaRobeController extends Controller
     {
         $cijenaRobe = CijenaRobe::make($request->validated());
         $cijenaRobe->user_id = auth()->id();
-        $preduzece_id = DB::table('personal_access_tokens')
-            ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
-
-        $cijenaRobe->preduzece_id = $preduzece_id;
+        $cijenaRobe->preduzece_id = getAuthPreduzeceId($request);
         $cijenaRobe->save();
 
         return response()->json($cijenaRobe, 201);
