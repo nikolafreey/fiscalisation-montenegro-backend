@@ -27,9 +27,11 @@ class PodesavanjeController extends Controller
         return Podesavanje::all();
     }
 
-    public function show(Podesavanje $podesavanje)
+    public function show(Request $request)
     {
-        return response()->json(200, $podesavanje);
+        $preduzece = getAuthPreduzece($request);
+
+        return response()->json(200, $preduzece->podesavanje);
     }
 
     public function store(PodesavanjaRequest $request)
