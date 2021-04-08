@@ -15,9 +15,9 @@ class CreatePodesavanjasTable extends Migration
     {
         Schema::create('podesavanja', function (Blueprint $table) {
             $table->id();
-            $table->integer('redniBroj')->nullable();
-            $table->boolean('slanjeKupcu')->default(false);
-            $table->string('izgledRacuna')->nullable();
+            $table->integer('redni_broj')->nullable();
+            $table->boolean('slanje_kupcu')->default(false);
+            $table->string('izgled_racuna')->nullable();
             $table->enum('jezik', ['Crnogorski', 'English']);
             $table->string('boja')->nullable();
             $table->enum('mod', ['Svijetli', 'Tamni', 'Automatski']);

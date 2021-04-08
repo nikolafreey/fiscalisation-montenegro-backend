@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Preduzece;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,10 +28,18 @@ class OdabranaPoslovnaJedinicaMiddleware
             ->poslovna_jedinica_id;
 
         if ($odabranaPoslovnaJedinicaID === null) {
-            $brojPoslovnihJedinica = auth()->user()->poslovne_jedinice()->count();
+
+            $preduzece_id = DB::table('personal_access_tokens')
+                ->where('token', getAccessToken($request))
+                ->first()
+                ->preduzece_id;
+
+            $preduzece = Preduzece::find($preduzece_id)->first();
+
+            $brojPoslovnihJedinica = $preduzece->poslovne_jedinice()->count();
 
             if ($brojPoslovnihJedinica === 1) {
-                $poslovnaJedinica = auth()->user()->poslovne_jedinice()->first();
+                $poslovnaJedinica = $preduzece->poslovne_jedinice()->first();
 
                 DB::table('personal_access_tokens')
                     ->where('token', getAccessToken($request))
