@@ -78,7 +78,7 @@ class UserController extends Controller
 
     public function update(User $user, UserRequest $request)
     {
-        $user->update($request->validated());
+        $user->update(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
 
         $user->syncRoles([$request->uloga]);
 

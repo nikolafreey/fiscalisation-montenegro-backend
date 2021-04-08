@@ -245,14 +245,14 @@ class RacunController extends Controller
             $endOfYear   = $date->copy()->endOfYear();
 
             if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
-                $racun->redni_broj = $preduzece->podesavanje->redniBroj;
+                $racun->redni_broj = $preduzece->podesavanje->redni_broj;
             } else {
                 $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
             }
 
             $racun->save();
 
-            if ($preduzece->podesavanje->slanjeKupcu) {
+            if ($preduzece->podesavanje->slanje_kupcu) {
                 $kupacEmail = $racun->partner->fizicko_lice->email;
 
                 if (User::where('email', $kupacEmail)->exists()) {

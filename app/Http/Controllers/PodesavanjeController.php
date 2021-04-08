@@ -35,9 +35,9 @@ class PodesavanjeController extends Controller
     public function store(PodesavanjaRequest $request)
     {
         $podesavanje = Podesavanje::create([
-            'redniBroj' => $request->redni_broj,
-            'slanjeKupcu' => $request->slanje_kupcu,
-            'izgledRacuna' => $request->izgled_racuna,
+            'redni_broj' => $request->redni_broj,
+            'slanje_kupcu' => $request->slanje_kupcu,
+            'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
             'mod' => $request->mod,
@@ -74,9 +74,9 @@ class PodesavanjeController extends Controller
     public function update(Podesavanje $podesavanje, PodesavanjaRequest $request)
     {
         $podesavanje->update([
-            'redniBroj' => $request->redniBroj,
-            'slanjeKupcu' => $request->slanjeKupcu,
-            'izgledRacuna' => $request->izgledRacuna,
+            'redni_broj' => $request->redni_broj,
+            'slanje_kupcu' => $request->slanje_kupcu,
+            'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
             'mod' => $request->mod,
