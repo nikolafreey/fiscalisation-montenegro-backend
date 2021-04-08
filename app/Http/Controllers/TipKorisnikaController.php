@@ -20,8 +20,6 @@ class TipKorisnikaController extends Controller
      */
     public function index()
     {
-        auth()->user()->can('view TipKorisnika');
-
         return TipKorisnika::paginate();
     }
 
@@ -33,8 +31,6 @@ class TipKorisnikaController extends Controller
      */
     public function store(StoreTipKorisnika $request)
     {
-        auth()->user()->can('store TipKorisnika');
-
         $tipKorisnika = TipKorisnika::create($request->all());
 
         return response()->json($tipKorisnika, 201);
@@ -48,8 +44,6 @@ class TipKorisnikaController extends Controller
      */
     public function show(TipKorisnika $tipKorisnika)
     {
-        auth()->user()->can('show TipKorisnika');
-
         return response()->json($tipKorisnika, 200);
     }
 
@@ -62,8 +56,6 @@ class TipKorisnikaController extends Controller
      */
     public function update(StoreTipKorisnika $request, TipKorisnika $tipKorisnika)
     {
-        auth()->user()->can('update TipKorisnika');
-
         $tipKorisnika->update($request->all());
 
         return response()->json($tipKorisnika, 200);
@@ -77,8 +69,6 @@ class TipKorisnikaController extends Controller
      */
     public function destroy(TipKorisnika $tipKorisnika)
     {
-        auth()->user()->can('destroy TipKorisnika');
-
         $tipKorisnika->delete();
 
         return response()->json($tipKorisnika, 200);

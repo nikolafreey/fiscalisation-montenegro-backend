@@ -37,6 +37,8 @@ class BlogController extends Controller
     {
         Blog::create($request->validated());
 
+        $request->session()->flash('success', 'Uspješno ste dodali blog');
+
         return redirect(route('blogs.index'));
     }
 
@@ -51,12 +53,16 @@ class BlogController extends Controller
     {
         $blog->update($request->validated());
 
+        $request->session()->flash('success', 'Uspješno ste izmijenili blog');
+
         return redirect(route('blogs.index'));
     }
 
-    public function destroy(Blog $blog)
+    public function destroy(Blog $blog, Request $request)
     {
         $blog->delete();
+
+        $request->session()->flash('success', 'Uspješno ste obrisali blog');
 
         return back();
     }

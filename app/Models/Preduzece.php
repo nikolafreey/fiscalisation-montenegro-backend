@@ -63,7 +63,12 @@ class Preduzece extends Model
         'pecat',
         'sertifikat',
         'pecatSifra',
-        'sertifikatSifra'
+        'sertifikatSifra',
+        'enu_kod',
+        'software_kod',
+        'kod_operatera',
+        'kod_pj',
+        'vazenje_paketa_do'
     ];
 
     use Searchable;

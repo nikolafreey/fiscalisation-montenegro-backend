@@ -221,10 +221,13 @@ return [
      * Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
      */
     'intro_text' => <<<INTRO
-This documentation aims to provide all the information you need to work with our API.
+Ova dokumentacija vam pruza uputstvo da koristite API aplikacije.
 
-<aside>As you scroll, you'll see code examples for working with the API in different programming languages in the dark area to the right (or as part of the content on mobile).
-You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).</aside>
+Da zapocnete koristiti API ispratite sledece korake
+
+1. Korisnik mora da se uloguje na <a href="#apiauthlogin"><code>/api/auth/login</code></a> i da dobije token koji se salje na svaki request
+2. Korisnik mora da izabere preduzece koje on posjeduje na <a href="#apiodabirpreduzecaupdate"><code>/api/odabirPreduzeca/update</code></a>
+3. Korisnik mora da izabere poslovnu jedinicu koja pripada preduzecu na <a href="#apiodabirposlovnejediniceupdate"><code>/api/odabirPoslovneJedinice/update</code></a>.
 INTRO
     ,
 

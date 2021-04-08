@@ -14,8 +14,6 @@ class CreatePaketPreduzeceTable extends Migration
     public function up()
     {
         Schema::create('paket_preduzece', function (Blueprint $table) {
-            $table->id();
-
             $table->foreignId('paket_id')
                 ->constrained('paketi')
                 ->onDelete('cascade')
@@ -25,9 +23,6 @@ class CreatePaketPreduzeceTable extends Migration
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-
-            $table->softDeletes();
-            $table->timestamps();
         });
     }
 

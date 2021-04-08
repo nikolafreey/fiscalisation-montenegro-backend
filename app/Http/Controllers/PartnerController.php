@@ -6,6 +6,7 @@ use App\Http\Requests\Api\StorePartner;
 use App\Models\Partner;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
@@ -46,8 +47,8 @@ class PartnerController extends Controller
     {
         $partner = Partner::make($request->validated());
         $partner->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $partner->preduzece_id = $user['preduzeca'][0]->id;
+
+        $partner->preduzece_id = getAuthPreduzeceId($request);
         $partner->save();
 
         return response()->json($partner, 201);

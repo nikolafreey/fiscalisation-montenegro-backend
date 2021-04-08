@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\Podesavanja\DodavanjeKorisnikaRequest;
 use App\Http\Requests\Api\Podesavanja\PodesavanjaRequest;
-use App\Mail\SendPassword;
 use App\Models\Podesavanje;
 use App\Models\Preduzece;
 use App\Models\User;
+use App\Notifications\AccountRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -35,20 +35,18 @@ class PodesavanjeController extends Controller
     public function store(PodesavanjaRequest $request)
     {
         $podesavanje = Podesavanje::create([
-            'redniBroj' => $request->redni_broj,
-            'slanjeKupcu' => $request->slanje_kupcu,
-            'izgledRacuna' => $request->izgled_racuna,
+            'redni_broj' => $request->redni_broj,
+            'slanje_kupcu' => $request->slanje_kupcu,
+            'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
             'mod' => $request->mod,
-            'user_id' => User::first()->id,
-            'preduzece_id' => Preduzece::first()->id,
+            'user_id' => auth()->id(),
+            'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        $preduzece = Preduzece::where('id', $podesavanje->preduzece_id)->first();
-
         if ($request->pecat != null && $request->sertifikat != null) {
-            $preduzece->update([
+            getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
                 'sertifikat' => $request->sertifikat,
                 'pecatSifra' => $request->pecat_sifra,
@@ -56,15 +54,13 @@ class PodesavanjeController extends Controller
             ]);
         }
 
-        $preduzece->update([
+        getAuthPreduzece($request)->update([
             'enu_kod' => $request->enu_kod,
             'software_kod' => $request->software_kod,
             'kod_pj' => $request->kod_pj
         ]);
 
-        $user = User::where('id', $podesavanje->user_id)->first();
-
-        $user->update([
+        auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
 
@@ -74,20 +70,18 @@ class PodesavanjeController extends Controller
     public function update(Podesavanje $podesavanje, PodesavanjaRequest $request)
     {
         $podesavanje->update([
-            'redniBroj' => $request->redniBroj,
-            'slanjeKupcu' => $request->slanjeKupcu,
-            'izgledRacuna' => $request->izgledRacuna,
+            'redni_broj' => $request->redni_broj,
+            'slanje_kupcu' => $request->slanje_kupcu,
+            'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
             'mod' => $request->mod,
-            'user_id' => User::first()->id,
-            'preduzece_id' => Preduzece::first()->id,
+            'user_id' => auth()->id(),
+            'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        $preduzece = Preduzece::where('id', $podesavanje->preduzece_id)->first();
-
         if ($request->pecat != null && $request->sertifikat != null) {
-            $preduzece->update([
+            getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
                 'sertifikat' => $request->sertifikat,
                 'pecatSifra' => $request->pecatSifra,
@@ -95,15 +89,13 @@ class PodesavanjeController extends Controller
             ]);
         }
 
-        $preduzece->update([
+        getAuthPreduzece($request)->update([
             'enu_kod' => $request->enu_kod,
             'software_kod' => $request->software_kod,
             'kod_pj' => $request->kod_pj,
         ]);
 
-        $user = User::where('id', $podesavanje->user_id)->first();
-
-        $user->update([
+        auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
 
@@ -127,19 +119,20 @@ class PodesavanjeController extends Controller
 
         $trim = explode(' ', trim($request->puno_ime));
 
+        $password = Str::random(40);
+
         $user = User::create([
             'ime' => $trim[0],
             'prezime' => (isset($trim[1]) && $trim[1]) ? $trim[1] : null,
-            'password' => Hash::make(Str::random(40)),
-            'email' => $attributes['email'],
+            'password' => Hash::make($password),
+            'email' => $request->email,
         ]);
 
         $user->preduzeca()->attach($request->preduzece_id);
 
         $user->syncRoles($request->uloga);
 
-        Mail::to($user->email)
-            ->send(new SendPassword($user));
+        $user->notify(new AccountRegistered($request, $password));
 
         return response()->json([
             'status' => 'Success',

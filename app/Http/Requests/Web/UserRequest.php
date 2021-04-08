@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
         $password = empty($this->input('password')) ? Str::random(40) : $this->input('password');
 
         $this->merge([
-            'password' =>  Hash::make($password),
+            'password' =>  $password,
         ]);
     }
 
@@ -35,7 +35,7 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'ime' => 'nullable',
+            'ime' => 'required',
             'prezime' => 'nullable',
             'avatar' => 'nullable',
             'email' => 'required|email',

@@ -7,8 +7,11 @@ use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
 use App\Models\Preduzece;
 use App\Models\User;
+use App\Notifications\AccountRegistered;
 use App\ViewModels\UserViewModel;
+use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,13 +46,11 @@ class UserController extends Controller
     {
         auth()->user()->can('edit users');
 
-        $user = User::create($request->validated());
+        $user = User::create(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
 
         $user->syncRoles([$request->uloga]);
 
-        foreach ($request->preduzeca as $preduzece) {
-            $user->preduzeca()->attach($preduzece);
-        }
+        $user->preduzeca()->attach($request->preduzece_id);
 
         if ($request->uloga === 'Vlasnik') {
             foreach ($request->preduzeca as $id) {
@@ -57,10 +58,13 @@ class UserController extends Controller
             }
         }
 
+        $password = $request->password;
+
         if ($request->check === 'on') {
-            Mail::to($user->email)
-                ->send(new SendPassword($user));
+            $user->notify(new AccountRegistered($request, $password));
         }
+
+        $request->session()->flash('success', 'Uspješno ste dodali korisnika');
 
         return redirect(route('users.index'));
     }
@@ -76,9 +80,13 @@ class UserController extends Controller
 
     public function update(User $user, UserRequest $request)
     {
-        $user->update($request->validated());
+        $user->update(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
 
         $user->syncRoles([$request->uloga]);
+
+        $user->preduzeca()->sync($request->preduzece_id);
+
+        $request->session()->flash('success', 'Uspješno ste izmijenili korisnika');
 
         return redirect(route('users.index'));
     }
@@ -86,7 +94,7 @@ class UserController extends Controller
     public function izmjeniteUlogu(User $user)
     {
         return view('admin.users.uloga', [
-            'roles' => Role::all(),
+            'roles' => Role::orderBy('name')->get(),
             'user' => $user
         ]);
     }
@@ -94,6 +102,8 @@ class UserController extends Controller
     public function updateUlogu(User $user, Request $request)
     {
         $user->syncRoles([$request->uloga]);
+
+        $request->session()->flash('success', 'Uspješno ste dodijelili ulogu');
 
         return redirect(route('users.index'));
     }

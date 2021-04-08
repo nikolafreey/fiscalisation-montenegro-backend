@@ -42,13 +42,13 @@ class DepozitWithdrawController extends Controller
 
         $depozitLoaded = DepozitWithdrawController::getDepozitToday();
         if ($depozitLoaded) {
-            return abort(500, 'Već je dodat depozit za današnji dan!');
+            return response()->json('Već je dodat depozit za današnji dan!', 400);
         }
 
         $depozitWithdraw->user_id = auth()->id();
         $user = User::find(auth()->id())->load(['preduzeca', 'preduzeca.poslovne_jedinice']);
-        $depozitWithdraw->preduzece_id = $user['preduzeca'][0]->id;
-        $depozitWithdraw->poslovna_jedinica_id = $user['preduzeca'][0]['poslovne_jedinice'][0]->id;
+        $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
+        $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
         $depozitWithdraw->save();
 
         if ($depozitWithdraw->iznos_depozit > 0) {

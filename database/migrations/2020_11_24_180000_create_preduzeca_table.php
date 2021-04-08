@@ -44,7 +44,7 @@ class CreatePreduzecaTable extends Migration
             $table->string('instagram_username', 100)->unique();
             $table->string('facebook_username', 100)->unique();
             $table->string('skype_username', 100)->unique();
-            $table->string('logotip', 255)->nullable();
+            $table->string('logotip')->nullable();
             $table->text('opis')->nullable();
             $table->string('lokacija_lat', 50)->nullable();
             $table->string('lokacija_long', 50)->nullable();
@@ -52,16 +52,17 @@ class CreatePreduzecaTable extends Migration
             $table->boolean('privatnost')->nullable();
             $table->boolean('verifikovan')->default(false);
             $table->boolean('pdv_obveznik')->nullable();
-            $table->string('pecat', 100)->nullable();
-            $table->string('sertifikat', 100)->nullable();
+            $table->string('pecat')->nullable();
+            $table->string('sertifikat')->nullable();
             $table->text('pecatSifra')->nullable();
             $table->text('sertifikatSifra')->nullable();
             $table->string('enu_kod')->default('wp886vu280');
             $table->string('software_kod')->default('qk433mq872');
             $table->string('kod_operatera')->default('ia871me776');
             $table->string('kod_pj')->default('ya260ri698');
-            $table->timestamp('vazenje_pecata_do')->nullable();
-            $table->timestamp('vazenje_sertifikata_do')->nullable();
+            $table->date('vazenje_pecata_do')->nullable();
+            $table->date('vazenje_sertifikata_do')->nullable();
+            $table->date('vazenje_paketa_do')->nullable();
 
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ScoutElastic\Searchable;
+use Illuminate\Support\Facades\Log;
 use App\Traits\ImaAktivnost;
 
 class Racun extends Model
@@ -37,6 +38,8 @@ class Racun extends Model
         'kod_poslovnog_prostora_enu',
         'ukupna_cijena_bez_pdv',
         'ukupna_cijena_sa_pdv',
+        'ukupna_cijena_bez_pdv_popust',
+        'ukupna_cijena_sa_pdv_popust',
         'ukupan_iznos_pdv',
         'popust_procenat',
         'popust_iznos',
@@ -172,81 +175,227 @@ class Racun extends Model
 
     private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka)
     {
-        $grupa = $usluga->grupa;
+        //$uslov = ($usluga) ? $usluga['cijena_bez_pdv_popust'] : $stavka['cijena_bez_pdv_popust'];false=gotovinski
 
-        $jedinica_id = @$stavka['jedinica_id'] ?: $usluga->jedinica_mjere_id;
-        $porez_id = @$stavka['porez_id'] ?: $usluga->porez_id;
+        if (true) {
+            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+            if ($popust > 0) {
+                // $grupa = $usluga->grupa;
+                if (!array_key_exists('tip_popusta', $stavka)) {
 
-        if (!array_key_exists('kolicina', $stavka)) {
-            $stavka['kolicina'] = 1;
+                    $popust_iznos = $stavka['grupa']['popust_iznos'] ? $stavka['grupa']['popust_iznos'] : 0;
+                    $popust_procenti = $stavka['grupa']['popust_procenti'] ? $stavka['grupa']['popust_procenti'] : 0;
+                    if ($popust_iznos > 0) {
+                        $tip_popusta = 'iznos';
+                    }
+                    if ($popust_procenti > 0) {
+                        $tip_popusta = 'procenat';
+                    }
+                } else {
+                    $tip_popusta = $stavka['tip_popusta'];
+                }
+            } else {
+                $tip_popusta = 'nema';
+            };
+
+            if (!array_key_exists('kolicina', $stavka)) {
+                $stavka['kolicina'] = 1;
+            }
+
+
+            return StavkaRacuna::make([
+                'naziv' => $usluga->naziv,
+                'opis' => $usluga->opis,
+                'jedinicna_cijena_bez_pdv' => round($stavka['cijena_bez_pdv'], 2),
+                'cijena_bez_pdv_popust' => round($stavka['cijena_bez_pdv_popust'], 2),
+                'cijena_sa_pdv' => round($stavka['ukupna_cijena'], 2),
+                'cijena_sa_pdv_popust' => round($stavka['cijena_sa_pdv_popust'], 2),
+                'kolicina' => $stavka['kolicina'],
+                'pdv_iznos' => round(($stavka['cijena_sa_pdv_popust'] - $stavka['cijena_bez_pdv_popust']), 2),
+                'pdv_iznos_ukupno' => round(($stavka['cijena_sa_pdv_popust'] - $stavka['cijena_bez_pdv_popust']) * $stavka['kolicina'], 2),
+                'popust_procenat' => $tip_popusta == 'procenat' ? round($popust, 2) : 0,
+                'popust_iznos' => $tip_popusta == 'iznos' ? round($popust, 2) : 0,
+                'popust_na_jedinicnu_cijenu' =>  round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2),
+                'ukupna_bez_pdv' => round($stavka['cijena_bez_pdv']  * $stavka['kolicina'], 2),
+                'ukupna_sa_pdv' => round($stavka['ukupna_cijena'] * $stavka['kolicina'], 2),
+                'ukupna_bez_pdv_popust' => round($stavka['cijena_bez_pdv_popust'] * $stavka['kolicina'], 2),
+                'ukupna_sa_pdv_popust' => round($stavka['cijena_sa_pdv_popust'] * $stavka['kolicina'], 2),
+                'porez_id' => $stavka['porez_id'],
+                'jedinica_id' => $stavka['jedinica_mjere_id'],
+                'jedinica_naziv' => $stavka['jedinica_mjere']['naziv'],
+                'racun_id' => $this->id,
+            ])->toArray();
+        } else {
+            //Log::info($usluga, $stavka);
+            $grupa = $usluga->grupa;
+
+            $jedinica_id = @$stavka['jedinica_id'] ?: $usluga->jedinica_mjere_id;
+            $porez_id = @$stavka['porez_id'] ?: $usluga->porez_id;
+
+            if (property_exists('grupa', $usluga)) {
+                $popust_procenat = $grupa ? $grupa->popust_procenti : 0;
+                $popust_iznos = $grupa ? $grupa->popust_iznos : 0;
+
+                if ($popust_procenat > 0) {
+                    $cijena_bez_pdv_popust = $usluga->cijena_bez_pdv * (100 - $popust_procenat) / 100;
+                    $cijena_sa_pdv_popust = $usluga->ukupna_cijena * (100 - $popust_procenat) / 100;
+                } else {
+
+                    $cijena_sa_pdv_popust = $usluga->ukupna_cijena - $popust_iznos;
+                    $cijena_bez_pdv_popust =  $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']);
+                }
+            } else {
+                $popust_procenat =  0;
+                $popust_iznos =  0;
+                $cijena_sa_pdv_popust = $usluga->ukupna_cijena;
+                $cijena_bez_pdv_popust =  $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']);
+            }
+            return StavkaRacuna::make([
+                'naziv' => $usluga->naziv,
+                'opis' => $usluga->opis,
+                'jedinicna_cijena_bez_pdv' => $usluga->cijena_bez_pdv,
+                'cijena_bez_pdv_popust' => $cijena_bez_pdv_popust,
+                'cijena_sa_pdv' => $usluga->ukupna_cijena,
+                'cijena_sa_pdv_popust' => $cijena_sa_pdv_popust,
+                'kolicina' => $stavka['kolicina'],
+                'pdv_iznos' => $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']) * $stavka['pdv_iznos'],
+                'pdv_iznos_ukupno' => $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']) * $stavka['pdv_iznos'] * $stavka['kolicina'],
+                'popust_procenat' => $popust_procenat,
+                'popust_iznos' =>   $popust_iznos,
+                //'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
+                'ukupna_bez_pdv' => $usluga->cijena_bez_pdv * $stavka['kolicina'],
+                'ukupna_sa_pdv' => $usluga->ukupna_cijena * $stavka['kolicina'],
+                'ukupna_bez_pdv_popust' => $cijena_bez_pdv_popust * $stavka['kolicina'],
+                'ukupna_sa_pdv_popust' => $cijena_sa_pdv_popust * $stavka['kolicina'],
+                'porez_id' => $porez_id,
+                'jedinica_id' => $jedinica_id,
+                'racun_id' => $this->id,
+            ])->toArray();
         }
-
-        if (!$porez_id) {
-            $porez_id = 1;
-        }
-
-        return StavkaRacuna::make([
-            'naziv' => $usluga->naziv,
-            'opis' => $usluga->opis,
-            'jedinicna_cijena_bez_pdv' => $usluga->cijena_bez_pdv,
-            'kolicina' => $stavka['kolicina'],
-            'pdv_iznos' => $usluga->ukupna_cijena - $usluga->cijena_bez_pdv,
-            'popust_procenat' => $grupa ? $grupa->popust_procenti : 0,
-            'popust_iznos' => $stavka['kolicina'] * ($grupa ? $grupa->popust_iznos : 0),
-            'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
-            'cijena_sa_pdv' => $usluga->ukupna_cijena * $stavka['kolicina'],
-            'porez_id' => $porez_id,
-            'jedinica_id' => $jedinica_id,
-            'racun_id' => $this->id,
-        ])->toArray();
     }
-
+    //roba!!!
     private function kreirajStavkuIzRobe(Roba $roba, $stavka)
     {
-        $cijenaRobe = CijenaRobe::first();
+        if (true) {
+            // $cijenaRobe = CijenaRobe::first();
 
-        if ($stavka['atribut_id']) {
-            $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+            // $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+
+            // $popust_na_jedinicnu_cijenu = $atribut
+            //     ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
+            //     : 0;
+            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+            if ($popust > 0) {
+                $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+
+                if (!array_key_exists('tip_popusta', $stavka)) {
+                    $popust_iznos = $atribut ? $atribut->popust_iznos : 0;
+                    $popust_procenti = $atribut ? $atribut->popust_procenti : 0;
+                    // $popust_iznos = $stavka['grupa']['popust_iznos'] ? $stavka['grupa']['popust_iznos'] : 0;
+                    // $popust_procenti = $stavka['grupa']['popust_procenti'] ? $stavka['grupa']['popust_procenti'] : 0;
+                    if ($popust_iznos > 0) {
+                        $tip_popusta = 'iznos';
+                    }
+                    if ($popust_procenti > 0) {
+                        $tip_popusta = 'procenat';
+                    }
+                } else {
+                    $tip_popusta = $stavka['tip_popusta'];
+                }
+            } else {
+                $tip_popusta = 'nema_popusta';
+            }
+
+            if (!array_key_exists('kolicina', $stavka)) {
+                $stavka['kolicina'] = 1;
+            }
+
+            return StavkaRacuna::make([
+                'naziv' => $roba->naziv,
+                'opis' => $roba->opis,
+                'jedinicna_cijena_bez_pdv' => round($stavka['cijena_bez_pdv'], 2),
+                'cijena_bez_pdv_popust' => round($stavka['cijena_bez_pdv_popust'], 2),
+                'cijena_sa_pdv' => round($stavka['ukupna_cijena'], 2),
+                'cijena_sa_pdv_popust' => round($stavka['cijena_sa_pdv_popust'], 2),
+                'kolicina' => $stavka['kolicina'],
+                'pdv_iznos' => round(($stavka['cijena_sa_pdv_popust'] - $stavka['cijena_bez_pdv_popust']), 2),
+                'pdv_iznos_ukupno' => round(($stavka['cijena_sa_pdv_popust'] - $stavka['cijena_bez_pdv_popust']) * $stavka['kolicina'], 2),
+                'popust_procenat' => $tip_popusta == 'procenat' ? round($popust, 2) : 0,
+                'popust_iznos' => $tip_popusta == 'iznos' ? round($popust, 2) : 0,
+                'popust_na_jedinicnu_cijenu' =>  round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2),
+                'ukupna_bez_pdv' => round($stavka['cijena_bez_pdv']  * $stavka['kolicina'], 2),
+                'ukupna_sa_pdv' => round($stavka['ukupna_cijena'] * $stavka['kolicina'], 2),
+                'ukupna_bez_pdv_popust' => round($stavka['cijena_bez_pdv_popust'] * $stavka['kolicina'], 2),
+                'ukupna_sa_pdv_popust' => round($stavka['cijena_sa_pdv_popust'] * $stavka['kolicina'], 2),
+                'porez_id' => $stavka['porez_id'],
+                'jedinica_id' => $stavka['jedinica_mjere_id'],
+                'jedinica_naziv' => $stavka['jedinica_mjere']['naziv'],
+                'racun_id' => $this->id,
+            ])->toArray();
+        } else {
+            $cijenaRobe = CijenaRobe::first();
+            // $popust_na_jedinicnu_cijenu = $atribut
+            //     ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
+            //     : 0;
+
+            $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
+            $porez_id = @$stavka['porez_id'] ?: $roba->porez_id;
+
+            if (property_exists('atribut', $roba)) {
+                $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
+
+                $popust_procenat =  $atribut->popust_procenti;
+                $popust_iznos =  $atribut->popust_iznos;
+
+                if ($popust_procenat > 0) {
+                    $cijena_bez_pdv_popust =  $cijenaRobe->cijena_bez_pdv * (100 - $popust_procenat) / 100;
+                    $cijena_sa_pdv_popust =  $cijenaRobe->ukupna_cijena * (100 - $popust_procenat) / 100;
+                } else {
+                    $cijena_sa_pdv_popust =  $cijenaRobe->ukupna_cijena - $popust_iznos;
+                    $cijena_bez_pdv_popust =  $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']);
+                }
+            } else {
+                $popust_procenat =  0;
+                $popust_iznos =  0;
+                $cijena_sa_pdv_popust =  $cijenaRobe->ukupna_cijena;
+                $cijena_bez_pdv_popust =  $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']);
+            }
+
+            return StavkaRacuna::make([
+                'naziv' => $roba->naziv,
+                'opis' => $roba->opis,
+                'jedinicna_cijena_bez_pdv' => $cijenaRobe->cijena_bez_pdv,
+                'cijena_bez_pdv_popust' => $cijena_bez_pdv_popust,
+                'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena,
+                'cijena_sa_pdv_popust' => $cijena_sa_pdv_popust,
+                'kolicina' => $stavka['kolicina'],
+                'pdv_iznos' => $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']) * $stavka['pdv_iznos'],
+                'pdv_iznos_ukupno' => $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']) * $stavka['pdv_iznos'] * $stavka['kolicina'],
+                'popust_procenat' => $popust_procenat,
+                'popust_iznos' =>   $popust_iznos,
+                //'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
+                'ukupna_bez_pdv' => $cijenaRobe->cijena_bez_pdv * $stavka['kolicina'],
+                'ukupna_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka['kolicina'],
+                'ukupna_bez_pdv_popust' => $cijena_bez_pdv_popust * $stavka['kolicina'],
+                'ukupna_sa_pdv_popust' => $cijena_sa_pdv_popust * $stavka['kolicina'],
+                'porez_id' => $porez_id,
+                'jedinica_id' => $jedinica_id,
+                'racun_id' => $this->id,
+            ])->toArray();
         }
-
-        $popust_na_jedinicnu_cijenu = $atribut
-            ? $atribut->popust_procenti * $cijenaRobe->ukupna_cijena / 100
-            : 0;
-
-        $jedinica_id = @$stavka['jedinica_id'] ?: $roba->jedinica_mjere_id;
-        $porez_id = @$stavka['porez_id'] ?: $cijenaRobe->porezi_id;
-
-        if (!array_key_exists('kolicina', $stavka)) {
-            $stavka['kolicina'] = 1;
-        }
-
-        if (!$porez_id) {
-            $porez_id = 1;
-        }
-
-        return StavkaRacuna::make([
-            'naziv' => $roba->naziv,
-            'opis' => $roba->opis,
-            'jedinicna_cijena_bez_pdv' => $cijenaRobe->cijena_bez_pdv,
-            'kolicina' => $stavka['kolicina'],
-            'pdv_iznos' => $stavka['kolicina'] * ($cijenaRobe->ukupna_cijena - $cijenaRobe->cijena_bez_pdv),
-            'popust_procenat' => $atribut ? $atribut->popust_procenti : 0,
-            'popust_iznos' => $stavka['kolicina'] * $popust_na_jedinicnu_cijenu,
-            'popust_na_jedinicnu_cijenu' => $popust_na_jedinicnu_cijenu,
-            'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena * $stavka['kolicina'],
-            'porez_id' => $porez_id,
-            'jedinica_id' => $jedinica_id,
-            'racun_id' => $this->id,
-        ])->toArray();
     }
 
     public function izracunajUkupneCijene()
     {
         $query = StavkaRacuna::where('racun_id', $this->id);
-        $this->ukupna_cijena_sa_pdv = $query->sum('cijena_sa_pdv');
-        $this->ukupan_iznos_pdv = $query->sum('pdv_iznos');
-        $this->ukupna_cijena_bez_pdv = $this->ukupna_cijena_sa_pdv - $this->ukupan_iznos_pdv;
-
+        $this->ukupna_cijena_bez_pdv = $query->sum('ukupna_bez_pdv');
+        $this->ukupna_cijena_sa_pdv = $query->sum('ukupna_sa_pdv');
+        $this->ukupna_cijena_bez_pdv_popust = $query->sum('ukupna_bez_pdv_popust');
+        $this->ukupna_cijena_sa_pdv_popust = $query->sum('ukupna_sa_pdv_popust');
+        $this->ukupan_iznos_pdv = $query->sum('pdv_iznos_ukupno');
+        //$this->ukupna_cijena_bez_pdv = $this->ukupna_cijena_sa_pdv - $this->ukupan_iznos_pdv;
+        $this->popust_ukupno =  $this->ukupna_cijena_sa_pdv -  $this->ukupna_cijena_sa_pdv_popust;
+        //$this->popust_ukupno = $query->sum('popust_na_jedinicnu_cijenu');
         $this->save();
     }
 

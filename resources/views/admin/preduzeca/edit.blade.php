@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Dodavanje Sertifikata')
+@section('title') Dodavanje sertifikata preduzeću "{{ $preduzece->kratki_naziv }}" @endsection
 
 @section('content')
 

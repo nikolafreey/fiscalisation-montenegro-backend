@@ -7,6 +7,7 @@ use App\Http\Controllers\DokumentController;
 use App\Http\Controllers\DozvolaController;
 use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\KategorijaDokumentaController;
+use App\Http\Controllers\OdaberiPoslovnuJedinicuController;
 use App\Http\Controllers\OdaberiPreduzeceController;
 use App\Http\Controllers\PodesavanjeController;
 use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
@@ -48,16 +49,12 @@ use App\Models\DepozitWithdraw;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Laravel\Sanctum\Sanctum;
 
-
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Auth::routes();
-
-Route::post('auth/register', [AuthController::class, 'register']);
-Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
 //Autentifikacija za mobilnu app
 Route::post("token", [MobileAuthController::class, 'token']);
@@ -67,189 +64,205 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    // Route::get('/me', function (Request $request) {
-    //     return auth()->user()->load('preduzeca', '');
-    // });
+    Route::get('/me', function (Request $request) {
+        return auth()->user();
+    });
 
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
     Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
     Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
 
     Route::middleware('odabranoPreduzece')->group(function () {
 
-        Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
-
-        Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
-
-        Route::apiResource('fizicka-lica', FizickoLiceController::class)->parameters([
-            'fizicka-lica' => 'fizickoLice'
-        ]);
-
-        Route::apiResource('users', UserController::class)->parameters([
-            'users' => 'user'
-        ]);
-
-        Route::apiResource('fizicka-lica', FizickoLiceController::class)->parameters([
-            'fizicka-lica' => 'fizickoLice'
-        ]);
-
-        Route::apiResource('usluge', UslugaController::class)->parameters([
-            'usluge' => 'usluga'
-        ]);
-
-        Route::prefix('izvjestaji')->group(function () {
-            Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
-
-            Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
-
-            Route::get('periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
-
-            Route::get('periodični-analiticki-pregled', [IzvjestajController::class, 'periodicniAnalitickiPregled']);
-
-            Route::get('periodicni-analiticki-pregled-offline', [IzvjestajController::class, 'periodicniAnalitickiPregledOffline']);
-
-            Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
+        Route::get('/authPreduzece', function (Request $request) {
+            return getAuthPreduzece($request);
         });
 
-        //Mobilna Aplikacija AUTH
-        Route::get('profile', [MobileAuthController::class, 'profile']);
-        Route::get('refresh', [MobileAuthController::class, 'refresh']);
+        Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
-        Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
+        Route::put('odabirPoslovneJedinice/update', [OdaberiPoslovnuJedinicuController::class, 'update']);
+        Route::get('odabirPoslovneJedinice', [OdaberiPoslovnuJedinicuController::class, 'index'])->name('odabir.poslovneJedinice');
 
-        Route::get('racuni-status', [RacunController::class, 'racuniStatus']);
+        Route::middleware('odabranaPoslovnaJedinica')->group(function () {
 
-        Route::get('racuni-najveci-kupci', [RacunController::class, 'najveciKupci']);
+            Route::get('/authPoslovnaJedinica', function (Request $request) {
+                return getAuthPoslovnaJedinica($request);
+            });
 
-        Route::get('racuni-najveci-duznici', [RacunController::class, 'najveciDuznici']);
+            Route::post('odabirPoslovneJedinice/destroy', [OdaberiPoslovnuJedinicuController::class, 'destroy']);
 
-        Route::get('racuni-pdv', [RacunController::class, 'racuniPdv']);
+            Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
 
-        Route::get('racuni-danas', [RacunController::class, 'izlazniRacuniDanas']);
+            Route::apiResource('fizicka-lica', FizickoLiceController::class)->parameters([
+                'fizicka-lica' => 'fizickoLice'
+            ]);
 
-        Route::get('ulazni-racuni-pdv', [UlazniRacunController::class, 'ulazniRacuniPdv']);
+            Route::apiResource('users', UserController::class)->parameters([
+                'users' => 'user'
+            ]);
 
-        Route::get('ulazni-racuni-danas', [UlazniRacunController::class, 'ulazniRacuniDanas']);
+            Route::apiResource('fizicka-lica', FizickoLiceController::class)->parameters([
+                'fizicka-lica' => 'fizickoLice'
+            ]);
 
-        Route::get('/me', [UserController::class, 'me']);
+            Route::apiResource('usluge', UslugaController::class)->parameters([
+                'usluge' => 'usluga'
+            ]);
 
-        Route::apiResource('tipovi-atributa', TipoviAtributaController::class)->parameters([
-            'tipovi-atributa' => 'tip-atributa'
-        ]);
+            Route::prefix('izvjestaji')->group(function () {
+                Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
 
-        Route::post('dijeljenjeRacuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
+                Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
 
-        Route::apiResource('racuni', RacunController::class)->parameters([
-            'racuni' => 'racun'
-        ]);
+                Route::get('periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
 
-        Route::apiResource('ulazni-racuni', UlazniRacunController::class)->parameters([
-            'ulazni_racuni' => 'ulazni_racun'
-        ]);
+                Route::get('periodični-analiticki-pregled', [IzvjestajController::class, 'periodicniAnalitickiPregled']);
 
-        Route::apiResource('predracuni', PredracunController::class)->parameters([
-            'racuni' => 'racun'
-        ]);
+                Route::get('periodicni-analiticki-pregled-offline', [IzvjestajController::class, 'periodicniAnalitickiPregledOffline']);
 
-        Route::apiResource('jedinice_mjere', JedinicaMjereController::class)->parameters([
-            'jedinice_mjere' => 'jedinica-mjere'
-        ]);
+                Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
+            });
 
-        Route::apiResource('proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
-            'proizvodjaci-robe' => 'proizvodjaci-robe'
-        ]);
+            //Mobilna Aplikacija AUTH
+            Route::get('profile', [MobileAuthController::class, 'profile']);
+            Route::get('refresh', [MobileAuthController::class, 'refresh']);
 
-        Route::apiResource('atribut-roba', AtributRobeController::class)->parameters([
-            'atribut-roba' => 'atribut-robe'
-        ]);
+            Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
-        Route::apiResource('kategorije-robe', KategorijaRobeController::class)->parameters([
-            'kategorije-robe' => 'kategorija-robe'
-        ]);
+            Route::get('racuni-status', [RacunController::class, 'racuniStatus']);
 
-        Route::apiResource('podkategorije-robe', PodKategorijaRobeController::class)->parameters([
-            'podkategorije-robe' => 'podkategorija-robe'
-        ]);
+            Route::get('racuni-najveci-kupci', [RacunController::class, 'najveciKupci']);
 
-        Route::apiResource('kategorije-dokumenta', KategorijaDokumentaController::class)->parameters([
-            'kategorije-dokumenta' => 'kategorija-dokumenta'
-        ]);
+            Route::get('racuni-najveci-duznici', [RacunController::class, 'najveciDuznici']);
 
-        Route::apiResource('dokumenti', DokumentController::class)->parameters([
-            'dokumenti' => 'dokument'
-        ]);
+            Route::get('racuni-pdv', [RacunController::class, 'racuniPdv']);
 
-        Route::apiResource('porezi', PorezController::class)->parameters([
-            'porezi' => 'porez'
-        ]);
+            Route::get('racuni-danas', [RacunController::class, 'izlazniRacuniDanas']);
 
-        Route::apiResource('grupe', GrupaController::class)->parameters([
-            'grupe' => 'grupa'
-        ]);
+            Route::get('ulazni-racuni-pdv', [UlazniRacunController::class, 'ulazniRacuniPdv']);
 
-        Route::apiResource('djelatnosti', DjelatnostController::class)->parameters([
-            'djelatnosti' => 'djelatnost'
-        ]);
+            Route::get('ulazni-racuni-danas', [UlazniRacunController::class, 'ulazniRacuniDanas']);
 
-        Route::apiResource('robe', RobaController::class)->parameters([
-            'robe' => 'roba'
-        ]);
+            Route::get('/me', [UserController::class, 'me']);
 
-        Route::apiResource('moduli', ModulController::class)->parameters([
-            'moduli' => 'modul'
-        ]);
-        Route::apiResource('ovlascena-lica', OvlascenoLiceController::class)->parameters([
-            'ovlascena-lica' => 'ovlasceno-lice'
-        ]);
-        Route::apiResource('tipovi-korisnika', TipKorisnikaController::class)->parameters([
-            'tipovi-korisnika' => 'tip-korisnika'
-        ]);
-        Route::apiResource('kategorije', KategorijaController::class)->parameters([
-            'kategorije' => 'kategorija'
-        ]);
+            Route::apiResource('tipovi-atributa', TipoviAtributaController::class)->parameters([
+                'tipovi-atributa' => 'tip-atributa'
+            ]);
 
-        Route::apiResource('poslovne-jedinice', PoslovnaJedinicaController::class)->parameters([
-            'poslovne-jedinice' => 'poslovna-jedinica'
-        ]);
+            Route::post('dijeljenjeRacuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
 
-        Route::apiResource('preduzeca', PreduzeceController::class)->parameters([
-            'preduzeca' => 'preduzece'
-        ]);
+            Route::apiResource('racuni', RacunController::class)->parameters([
+                'racuni' => 'racun'
+            ]);
 
-        Route::apiResource('depozit-withdraws', DepozitWithdrawController::class)->parameters([
-            'depozit-withdraws' => 'depozit-withdraw'
-        ]);
+            Route::apiResource('ulazni-racuni', UlazniRacunController::class)->parameters([
+                'ulazni_racuni' => 'ulazni_racun'
+            ]);
 
-        Route::get('get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
+            Route::apiResource('predracuni', PredracunController::class)->parameters([
+                'racuni' => 'racun'
+            ]);
 
-        Route::apiResource('ziro-racuni', ZiroRacunController::class)->parameters([
-            'ziro-racuni' => 'ziro-racun'
-        ]);
-        Route::apiResource('partneri', PartnerController::class)->parameters([
-            'partneri' => 'partner'
-        ]);
+            Route::apiResource('jedinice_mjere', JedinicaMjereController::class)->parameters([
+                'jedinice_mjere' => 'jedinica-mjere'
+            ]);
 
-        Route::get('atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
+            Route::apiResource('proizvodjaci-robe', ProizvodjacRobeController::class)->parameters([
+                'proizvodjaci-robe' => 'proizvodjaci-robe'
+            ]);
 
-        Route::apiResource('blogs', BlogController::class);
+            Route::apiResource('atribut-roba', AtributRobeController::class)->parameters([
+                'atribut-roba' => 'atribut-robe'
+            ]);
 
-        Route::apiResource('blogCategories', BlogCategoryController::class);
+            Route::apiResource('kategorije-robe', KategorijaRobeController::class)->parameters([
+                'kategorije-robe' => 'kategorija-robe'
+            ]);
 
-        Route::get('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'index']);
-        Route::post('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'store']);
+            Route::apiResource('podkategorije-robe', PodKategorijaRobeController::class)->parameters([
+                'podkategorije-robe' => 'podkategorija-robe'
+            ]);
 
-        Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
-        Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
-        Route::post('uploadUgovora', [UploadController::class, 'uploadUgovora']);
+            Route::apiResource('kategorije-dokumenta', KategorijaDokumentaController::class)->parameters([
+                'kategorije-dokumenta' => 'kategorija-dokumenta'
+            ]);
 
-        Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
+            Route::apiResource('dokumenti', DokumentController::class)->parameters([
+                'dokumenti' => 'dokument'
+            ]);
 
-        Route::apiResource('podesavanja', PodesavanjeController::class)->parameters([
-            'podesavanja' => 'podesavanje'
-        ]);
+            Route::apiResource('porezi', PorezController::class)->parameters([
+                'porezi' => 'porez'
+            ]);
 
-        Route::post('podesavanja/dodajKorisnika', [PodesavanjeController::class, 'dodajKorisnika'])
-            ->name('dodajKorisnika');
+            Route::apiResource('grupe', GrupaController::class)->parameters([
+                'grupe' => 'grupa'
+            ]);
+
+            Route::apiResource('djelatnosti', DjelatnostController::class)->parameters([
+                'djelatnosti' => 'djelatnost'
+            ]);
+
+            Route::apiResource('robe', RobaController::class)->parameters([
+                'robe' => 'roba'
+            ]);
+
+            Route::apiResource('moduli', ModulController::class)->parameters([
+                'moduli' => 'modul'
+            ]);
+            Route::apiResource('ovlascena-lica', OvlascenoLiceController::class)->parameters([
+                'ovlascena-lica' => 'ovlasceno-lice'
+            ]);
+            Route::apiResource('tipovi-korisnika', TipKorisnikaController::class)->parameters([
+                'tipovi-korisnika' => 'tip-korisnika'
+            ]);
+            Route::apiResource('kategorije', KategorijaController::class)->parameters([
+                'kategorije' => 'kategorija'
+            ]);
+
+            Route::apiResource('poslovne-jedinice', PoslovnaJedinicaController::class)->parameters([
+                'poslovne-jedinice' => 'poslovna-jedinica'
+            ]);
+
+            Route::apiResource('preduzeca', PreduzeceController::class)->parameters([
+                'preduzeca' => 'preduzece'
+            ]);
+
+            Route::apiResource('depozit-withdraws', DepozitWithdrawController::class)->parameters([
+                'depozit-withdraws' => 'depozit-withdraw'
+            ]);
+
+            Route::get('get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
+
+            Route::apiResource('ziro-racuni', ZiroRacunController::class)->parameters([
+                'ziro-racuni' => 'ziro-racun'
+            ]);
+            Route::apiResource('partneri', PartnerController::class)->parameters([
+                'partneri' => 'partner'
+            ]);
+
+            Route::get('atributi-grupe', [RacunController::class, 'getAtributiGrupe']);
+
+            Route::apiResource('blogs', BlogController::class);
+
+            Route::apiResource('blogCategories', BlogCategoryController::class);
+
+            Route::get('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'index']);
+            Route::post('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'store']);
+
+            Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
+            Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
+            Route::post('uploadUgovora', [UploadController::class, 'uploadUgovora']);
+
+            Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
+
+            Route::apiResource('podesavanja', PodesavanjeController::class)->parameters([
+                'podesavanja' => 'podesavanje'
+            ]);
+
+            Route::post('podesavanja/dodajKorisnika', [PodesavanjeController::class, 'dodajKorisnika'])
+                ->name('dodajKorisnika');
+        });
     });
 });

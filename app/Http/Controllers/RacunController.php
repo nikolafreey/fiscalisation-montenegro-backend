@@ -11,6 +11,7 @@ use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\Invite;
 use App\Models\Partner;
+use App\Models\Preduzece;
 use App\Models\Racun;
 use App\Models\User;
 use Carbon\Carbon;
@@ -224,35 +225,26 @@ class RacunController extends Controller
 
             $racun->user_id = auth()->id();
 
-            $preduzece = auth()
-                ->user()
-                ->preduzeca()
-                ->where('preduzeca.id', $request->preduzece_id)
-                ->firstOrFail();
+            $racun->preduzece_id = getAuthPreduzeceId($request);
 
-            $racun->preduzece_id = $preduzece->id;
-
-            $poslovnaJedinica = $preduzece
-                ->poslovne_jedinice()
-                ->where('poslovne_jedinice.id', $request->poslovna_jedinica_id)
-                ->firstOrFail();
-
-            $racun->poslovna_jedinica_id = $poslovnaJedinica->id;
+            $racun->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
             $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
 
             $startOfYear = $date->copy()->startOfYear();
             $endOfYear   = $date->copy()->endOfYear();
 
+            $preduzece = Preduzece::find(getAuthPreduzeceId($request));
+
             if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
-                $racun->redni_broj = $preduzece->podesavanje->redniBroj;
+                $racun->redni_broj = $preduzece->podesavanje->redni_broj;
             } else {
                 $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
             }
 
             $racun->save();
 
-            if ($preduzece->podesavanje->slanjeKupcu) {
+            if ($preduzece->podesavanje->slanje_kupcu) {
                 $kupacEmail = $racun->partner->fizicko_lice->email;
 
                 if (User::where('email', $kupacEmail)->exists()) {

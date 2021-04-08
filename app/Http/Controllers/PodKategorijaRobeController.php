@@ -7,6 +7,7 @@ use App\Models\PodKategorijaRobe;
 use App\Models\Preduzece;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PodKategorijaRobeController extends Controller
 {
@@ -34,11 +35,9 @@ class PodKategorijaRobeController extends Controller
     public function store(StorePodKategorijaRobe $request)
     {
         $podKategorijaRobe = PodKategorijaRobe::make($request->validated());
-        $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
         $podKategorijaRobe->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $podKategorijaRobe->preduzece_id = $user['preduzeca'][0]->id;
-        // $podKategorijaRobe->preduzece_id = Preduzece::all()->first()->id;
+
+        $podKategorijaRobe->preduzece_id = getAuthPreduzeceId($request);
         $podKategorijaRobe->save();
 
         return response()->json($podKategorijaRobe, 201);

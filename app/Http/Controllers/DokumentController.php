@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreDokument;
 use App\Models\Dokument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DokumentController extends Controller
 {
@@ -33,11 +34,9 @@ class DokumentController extends Controller
     {
         $dokument = Dokument::make($request->validated());
 
-        $user = auth()->user();
+        $dokument->user_id = auth()->id();
 
-        $dokument->user_id = $user->id;
-
-        $dokument->preduzece_id = $user->preduzeca()->where('preduzeca.id', $request->preduzece_id)->firstOrFail()->id;
+        $dokument->preduzece_id = getAuthPreduzeceId($request);
 
         $dokument->kategorija_dokumenta_id = $request->kategorija_dokumenta_id;
 

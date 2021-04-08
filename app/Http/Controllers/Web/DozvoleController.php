@@ -34,6 +34,8 @@ class DozvoleController extends Controller
 
         Permission::create(['name' => $request->dozvola]);
 
+        $request->session()->flash('success', 'Uspješno ste dodali dozvolu');
+
         return redirect(route('dozvole.index'));
     }
 }

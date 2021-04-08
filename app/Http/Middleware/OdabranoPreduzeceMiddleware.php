@@ -47,7 +47,7 @@ class OdabranoPreduzeceMiddleware
                 return $next($request);
             }
 
-            return response()->json('Nije odabrano preduzece', 401);
+            return response()->json('Nije odabrano Preduzece', 401);
         }
 
         return $next($request);

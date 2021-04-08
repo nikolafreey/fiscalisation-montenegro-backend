@@ -146,8 +146,8 @@ class UlazniRacunController extends Controller
     {
         $ulazniRacun = UlazniRacun::make($request->validated());
         $ulazniRacun->user_id = auth()->id();
-        $user = User::find(auth()->id())->load('preduzeca');
-        $ulazniRacun->preduzece_id = $user['preduzeca'][0]->id;
+
+        $ulazniRacun->preduzece_id = getAuthPreduzeceId($request);
         $ulazniRacun->save();
 
         $ulazniRacun->kreirajStavke($request);
