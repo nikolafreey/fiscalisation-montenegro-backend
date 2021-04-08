@@ -38,6 +38,8 @@ class UlogeController extends Controller
 
         Role::create(['name' => $request->uloga]);
 
+        $request->session()->flash('success', 'Uspješno ste dodali ulogu');
+
         return redirect(route('uloge.index'));
     }
 
@@ -54,6 +56,8 @@ class UlogeController extends Controller
     public function dodajDozvolu(Role $role, Request $request)
     {
         $role->givePermissionTo([$request->dozvola]);
+
+        $request->session()->flash('success', 'Uspješno ste dodijelili dozvolu');
 
         return redirect(route('uloge.index'));
     }

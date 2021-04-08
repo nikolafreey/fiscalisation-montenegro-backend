@@ -64,6 +64,8 @@ class UserController extends Controller
             $user->notify(new AccountRegistered($request, $password));
         }
 
+        $request->session()->flash('success', 'Uspješno ste dodali korisnika');
+
         return redirect(route('users.index'));
     }
 
@@ -84,6 +86,8 @@ class UserController extends Controller
 
         $user->preduzeca()->sync($request->preduzece_id);
 
+        $request->session()->flash('success', 'Uspješno ste izmijenili korisnika');
+
         return redirect(route('users.index'));
     }
 
@@ -98,6 +102,8 @@ class UserController extends Controller
     public function updateUlogu(User $user, Request $request)
     {
         $user->syncRoles([$request->uloga]);
+
+        $request->session()->flash('success', 'Uspješno ste dodijelili ulogu');
 
         return redirect(route('users.index'));
     }

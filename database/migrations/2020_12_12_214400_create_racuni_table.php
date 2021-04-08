@@ -22,7 +22,7 @@ class CreateRacuniTable extends Migration
             $table->string('qr_url', 200)->nullable();
             $table->string('tip_racuna', 50);
             $table->string('vrsta_racuna', 50);
-            $table->boolean('korektivni_racun', 50)->default(false);
+            $table->boolean('korektivni_racun')->default(false);
             $table->string('korektivni_racun_vrsta', 50)->nullable();
             $table->string('nacin_placanja', 50)->nullable();
             $table->integer('broj_racuna');

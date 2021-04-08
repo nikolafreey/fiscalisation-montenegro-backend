@@ -44,6 +44,8 @@ class PreduzeceController extends Controller
     {
         $preduzece->update($request->validated());
 
+        $request->session()->flash('success', 'Uspješno ste izmijenili sertifikat preduzeća');
+
         return redirect(route('preduzeca.index'));
     }
 
@@ -76,6 +78,8 @@ class PreduzeceController extends Controller
         for ($c = 1; $c <= $request->pro; $c++) {
             $preduzece->paketi()->attach($pro);
         }
+
+        $request->session()->flash('success', 'Uspješno ste izmijenili pakete preduzeća');
 
         return redirect(route('preduzeca.index'));
     }

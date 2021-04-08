@@ -11,6 +11,7 @@ use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\Invite;
 use App\Models\Partner;
+use App\Models\Preduzece;
 use App\Models\Racun;
 use App\Models\User;
 use Carbon\Carbon;
@@ -232,6 +233,8 @@ class RacunController extends Controller
 
             $startOfYear = $date->copy()->startOfYear();
             $endOfYear   = $date->copy()->endOfYear();
+
+            $preduzece = Preduzece::find(getAuthPreduzeceId($request));
 
             if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
                 $racun->redni_broj = $preduzece->podesavanje->redni_broj;

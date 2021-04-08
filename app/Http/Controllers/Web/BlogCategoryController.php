@@ -37,6 +37,8 @@ class BlogCategoryController extends Controller
     {
         BlogCategory::create($request->validated());
 
+        $request->session()->flash('success', 'Uspješno ste dodali kategoriju bloga');
+
         return redirect(route('blogCategories.index'));
     }
 
@@ -51,12 +53,16 @@ class BlogCategoryController extends Controller
     {
         $blogCategory->update($request->validated());
 
+        $request->session()->flash('success', 'Uspješno ste izmijenili kategoriju bloga');
+
         return redirect(route('blogCategories.index'));
     }
 
-    public function destroy(BlogCategory $blogCategory)
+    public function destroy(BlogCategory $blogCategory, Request $request)
     {
         $blogCategory->delete();
+
+        $request->session()->flash('success', 'Uspješno ste obrisali kategoriju bloga');
 
         return back();
     }

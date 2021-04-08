@@ -39,7 +39,7 @@ class StorePreduzece extends BaseApiRequest
             'twitter_username ' => 'string|max:100|min:3',
             'instagram_username ' => 'string|max:100|min:3',
             'facebook_username ' => 'string|max:100|min:3',
-            'logotip ' => 'string|max:255|min:3',
+            'logotip ' => 'nullable',
             'opis ' => 'required|string|max:255|min:3',
             'lokacija_lat ' => 'string|max:50|min:3',
             'lokacija_long ' => 'string|max:50|min:3',
