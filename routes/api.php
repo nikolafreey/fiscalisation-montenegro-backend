@@ -53,8 +53,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('auth/register', [AuthController::class, 'register'])->name('auth.register');
-Route::post('auth/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
 //Autentifikacija za mobilnu app
 Route::post("token", [MobileAuthController::class, 'token']);
@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return auth()->user();
     });
 
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
     Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
     Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
