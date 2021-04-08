@@ -31,7 +31,10 @@ class PodesavanjeController extends Controller
     {
         $preduzece = getAuthPreduzece($request);
 
-        return response()->json(200, $preduzece->podesavanje);
+        return response()->json(
+            200,
+            $preduzece->load('podesavanje')->toArray()
+        );
     }
 
     public function store(PodesavanjaRequest $request)
