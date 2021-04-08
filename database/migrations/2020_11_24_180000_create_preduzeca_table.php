@@ -60,8 +60,9 @@ class CreatePreduzecaTable extends Migration
             $table->string('software_kod')->default('qk433mq872');
             $table->string('kod_operatera')->default('ia871me776');
             $table->string('kod_pj')->default('ya260ri698');
-            $table->timestamp('vazenje_pecata_do')->nullable();
-            $table->timestamp('vazenje_sertifikata_do')->nullable();
+            $table->date('vazenje_pecata_do')->nullable();
+            $table->date('vazenje_sertifikata_do')->nullable();
+            $table->date('vazenje_paketa_do')->nullable();
 
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')

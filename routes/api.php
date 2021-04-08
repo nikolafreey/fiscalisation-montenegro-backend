@@ -66,9 +66,9 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    // Route::get('/me', function (Request $request) {
-    //     return auth()->user()->load('preduzeca', '');
-    // });
+    Route::get('/me', function (Request $request) {
+        return auth()->user();
+    });
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
@@ -78,7 +78,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('odabranoPreduzece')->group(function () {
 
         Route::get('/authPreduzece', function (Request $request) {
-            return getAuthPreduzeceId($request);
+            return getAuthPreduzece($request);
         });
 
         Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
@@ -89,7 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::middleware('odabranaPoslovnaJedinica')->group(function () {
 
             Route::get('/authPoslovnaJedinica', function (Request $request) {
-                return getAuthPoslovnaJedinicaId($request);
+                return getAuthPoslovnaJedinica($request);
             });
 
             Route::post('odabirPoslovneJedinice/destroy', [OdaberiPoslovnuJedinicuController::class, 'destroy']);

@@ -32,16 +32,26 @@
                                 @method('put')
                                 @csrf
                                 <div class="form-group">
-                                    <label for="paket">Osnovni</label>
-                                    <input type="number" class="form-control col-lg-3" id="paket" name="osnovni" placeholder="Unesite broj Osnovnih paketa" value="{{ $osnovniCount ?? 0 }}">
+                                    <label for="osnovni">Osnovni</label>
+                                    <input type="number" class="form-control col-lg-3" id="osnovni" name="osnovni" placeholder="Unesite broj Osnovnih paketa" value="{{ $osnovniCount ?? 0 }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="paket">Start</label>
-                                    <input type="number" class="form-control col-lg-3" id="paket" name="start" placeholder="Unesite broj Start paketa" value="{{$startCount ?? 0}}">
+                                    <label for="start">Start</label>
+                                    <input type="number" class="form-control col-lg-3" id="start" name="start" placeholder="Unesite broj Start paketa" value="{{$startCount ?? 0}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="paket">Pro</label>
-                                    <input type="number" class="form-control col-lg-3" id="paket" name="pro" placeholder="Unesite broj Pro paketa" value="{{ $proCount ?? 0 }}">
+                                    <label for="pro">Pro</label>
+                                    <input type="number" class="form-control col-lg-3" id="pro" name="pro" placeholder="Unesite broj Pro paketa" value="{{ $proCount ?? 0 }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="datepicker">Vazenje paketa do</label>
+                                    <input
+                                        type="text"
+                                        class="form-control col-lg-3 datepicker"
+                                        id="datepicker"
+                                        name="datum"
+                                        value="{{ $preduzece->vazenje_paketa_do }}"
+                                    >
                                 </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
@@ -55,5 +65,17 @@
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('scripts')
+
+    <script type="text/javascript">
+        $(".datepicker").flatpickr({
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+        });
+    </script>
 
 @endsection

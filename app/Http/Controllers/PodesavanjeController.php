@@ -45,10 +45,8 @@ class PodesavanjeController extends Controller
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        $preduzece = Preduzece::find(getAuthPreduzeceId($request))->first();
-
         if ($request->pecat != null && $request->sertifikat != null) {
-            $preduzece->update([
+            getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
                 'sertifikat' => $request->sertifikat,
                 'pecatSifra' => $request->pecat_sifra,
@@ -56,7 +54,7 @@ class PodesavanjeController extends Controller
             ]);
         }
 
-        $preduzece->update([
+        getAuthPreduzece($request)->update([
             'enu_kod' => $request->enu_kod,
             'software_kod' => $request->software_kod,
             'kod_pj' => $request->kod_pj
@@ -82,10 +80,8 @@ class PodesavanjeController extends Controller
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        $preduzece = Preduzece::find(getAuthPreduzeceId($request));
-
         if ($request->pecat != null && $request->sertifikat != null) {
-            $preduzece->update([
+            getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
                 'sertifikat' => $request->sertifikat,
                 'pecatSifra' => $request->pecatSifra,
@@ -93,7 +89,7 @@ class PodesavanjeController extends Controller
             ]);
         }
 
-        $preduzece->update([
+        getAuthPreduzece($request)->update([
             'enu_kod' => $request->enu_kod,
             'software_kod' => $request->software_kod,
             'kod_pj' => $request->kod_pj,

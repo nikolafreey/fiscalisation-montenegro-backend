@@ -15,6 +15,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="{{ mix('css/all.css') }}" rel="stylesheet">
     <style>
         .table-clean > tbody > tr > :first-child {
@@ -284,6 +285,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/4.1.0/cropper.js" referrerpolicy="origin"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <script>
         $.ajaxSetup({
@@ -301,7 +303,8 @@
                 "lengthMenu": "Prikaži _MENU_ zapisa",
                 "loadingRecords": "Učitavanje...",
                 "processing": "Obrada...",
-                "search": "Pretraga:",
+                "search": "",
+                "searchPlaceholder": "Pretraga...",
                 "zeroRecords": "Nisu pronađeni odgovarajući zapisi",
                 "paginate": {
                 "first": "Početna",

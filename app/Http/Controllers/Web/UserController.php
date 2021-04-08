@@ -94,7 +94,7 @@ class UserController extends Controller
     public function izmjeniteUlogu(User $user)
     {
         return view('admin.users.uloga', [
-            'roles' => Role::all(),
+            'roles' => Role::orderBy('name')->get(),
             'user' => $user
         ]);
     }

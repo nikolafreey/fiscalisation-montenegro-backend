@@ -8,6 +8,7 @@ use App\Models\Paket;
 use App\Models\Preduzece;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -78,6 +79,10 @@ class PreduzeceController extends Controller
         for ($c = 1; $c <= $request->pro; $c++) {
             $preduzece->paketi()->attach($pro);
         }
+
+        $preduzece->update([
+            'vazenje_paketa_do' => $request->datum
+        ]);
 
         $request->session()->flash('success', 'Uspješno ste izmijenili pakete preduzeća');
 

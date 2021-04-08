@@ -67,7 +67,8 @@ class Preduzece extends Model
         'enu_kod',
         'software_kod',
         'kod_operatera',
-        'kod_pj'
+        'kod_pj',
+        'vazenje_paketa_do'
     ];
 
     use Searchable;
