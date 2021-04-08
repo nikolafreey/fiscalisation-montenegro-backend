@@ -37,4 +37,18 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $e)
+    {
+        if ($request->is('api*') || $request->header('Content-Type') === 'application/json') {
+            $errorMessage = $e->getMessage();
+            if ($errorMessage === '') {
+                $errorMessage = 'Something went wrong';
+            }
+
+            return response()->json(['error' => $errorMessage], 500);
+        }
+
+        return parent::render($request, $e);
+    }
 }
