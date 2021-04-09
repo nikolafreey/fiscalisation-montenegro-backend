@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use ScoutElastic\Searchable;
 use App\Traits\ImaAktivnost;
 
@@ -208,7 +209,19 @@ class Preduzece extends Model
 
     public function setLogotipAttribute($value)
     {
-        $this->attributes['logotip'] = Storage::disk('public')->putFile('logotipi', $value);
+        if (! Storage::exists('public/logotipi')) {
+            Storage::makeDirectory('public/logotipi');
+        }
+
+        $name = Str::random(40);
+
+        $directory = 'public/logotipi';
+
+        $path = storage_path('app/'. $directory .'/'. $name .'.jpg');
+
+        Image::make($value)->resize(800, 600)->save($path);
+
+        $this->attributes['logotip'] = 'logotipi/'. $name .'.jpg';
     }
 
 }
