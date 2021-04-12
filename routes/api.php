@@ -261,6 +261,8 @@ Route::middleware('auth:sanctum')->group(function () {
                 'podesavanja' => 'podesavanje'
             ]);
 
+            Route::get('podesavanja/show', [PodesavanjeController::class, 'show'])->name('podesavanja.show');
+
             Route::post('podesavanja/dodajKorisnika', [PodesavanjeController::class, 'dodajKorisnika'])
                 ->name('dodajKorisnika');
         });
