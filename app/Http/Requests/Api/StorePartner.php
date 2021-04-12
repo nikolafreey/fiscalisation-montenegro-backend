@@ -20,7 +20,6 @@ class StorePartner extends BaseApiRequest
             'kontakt_facetime' => 'nullable|boolean',
             'opis' => 'nullable|string',
             'fizicko_lice_id' => 'nullable|exists:fizicka_lica,id',
-            'preduzece_id' => 'nullable|exists:preduzeca,id',
         ];
     }
 }

@@ -108,7 +108,7 @@ class PodesavanjeController extends Controller
             abort(403, "Nemate pravo za dodjeljivanje ove uloge");
         }
 
-        $preduzece = Preduzece::find($request->preduzece_id);
+        $preduzece = getAuthPreduzece($request);
 
         if (
             $preduzece->najjaciPaket === 1

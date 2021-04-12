@@ -16,7 +16,6 @@ class DodavanjeKorisnikaRequest extends BaseApiRequest
         return [
             'puno_ime' => 'required',
             'email' => 'required',
-            'preduzece_id' => 'required',
             'uloga' => 'required'
         ];
     }
