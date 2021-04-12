@@ -7,6 +7,7 @@ use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -213,15 +214,19 @@ class Preduzece extends Model
             Storage::makeDirectory('public/logotipi');
         }
 
-        $name = Str::random(40);
+        if ($value->getClientOriginalExtension() === 'svg') {
+            $this->attributes['logotip'] = Storage::disk('public')->putFile('logotipi', $value);
+        } else {
+            $name = Str::random(40);
 
-        $directory = 'public/logotipi';
+            $directory = 'public/logotipi';
 
-        $path = storage_path('app/'. $directory .'/'. $name .'.jpg');
+            $path = storage_path('app/'. $directory .'/'. $name .'.'. $value->getClientOriginalExtension());
 
-        Image::make($value)->resize(800, 600)->save($path);
+            Image::make($value)->resize(800, 600)->save($path);
 
-        $this->attributes['logotip'] = 'logotipi/'. $name .'.jpg';
+            $this->attributes['logotip'] = 'logotipi/'. $name .'.'. $value->getClientOriginalExtension();
+        }
     }
 
 }

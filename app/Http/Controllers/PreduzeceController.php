@@ -68,7 +68,7 @@ class PreduzeceController extends Controller
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
         if (
-            ! auth()->user()-hasRole('Vlasnik')
+            ! auth()->user()->hasRole('Vlasnik')
             &&
             ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
         )
