@@ -19,7 +19,7 @@ class OdaberiPreduzeceController extends Controller
     {
         // Preduzece mora da pripada trenutno ulogovanom korisniku
 
-        if (! in_array($request->preduzece_id, auth()->user()->preduzeca()->pluck('preduzeca.id')->toArray(), true)) {
+        if (!in_array($request->preduzece_id, auth()->user()->preduzeca()->pluck('preduzeca.id')->toArray(), true)) {
             return response()->json('Unauthorized', 403);
         }
 
@@ -31,7 +31,7 @@ class OdaberiPreduzeceController extends Controller
             ->count();
 
         if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
-            return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece']);
+            return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece'], 401);
         }
 
         DB::table('personal_access_tokens')

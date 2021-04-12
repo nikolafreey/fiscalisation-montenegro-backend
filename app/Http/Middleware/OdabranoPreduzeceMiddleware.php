@@ -37,7 +37,7 @@ class OdabranoPreduzeceMiddleware
                     ->count();
 
                 if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
-                    return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece']);
+                    return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece'], 403);
                 }
 
                 DB::table('personal_access_tokens')
