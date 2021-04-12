@@ -38,7 +38,7 @@ class Fiskalizuj implements ShouldQueue
         if ($racun->vrsta_racuna === 'BEZGOTOVINSKI') {
             $potpis = $racun->preduzece->sertifikat;
 
-            $decryptedPassword = decrypt($racun->preduzece->setifikatSifra);
+            $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);

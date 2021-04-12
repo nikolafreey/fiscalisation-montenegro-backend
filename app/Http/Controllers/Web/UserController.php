@@ -7,7 +7,7 @@ use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
 use App\Models\Preduzece;
 use App\Models\User;
-use App\Notifications\AccountRegistered;
+use App\Notifications\NalogRegistrovan;
 use App\ViewModels\UserViewModel;
 use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
@@ -61,7 +61,7 @@ class UserController extends Controller
         $password = $request->password;
 
         if ($request->check === 'on') {
-            $user->notify(new AccountRegistered($request, $password));
+            $user->notify(new NalogRegistrovan($request, $password));
         }
 
         $request->session()->flash('success', 'Uspješno ste dodali korisnika');

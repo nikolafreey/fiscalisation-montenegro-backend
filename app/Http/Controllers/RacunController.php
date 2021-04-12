@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
-use App\Mail\PodijeliRacunGostu;
-use App\Mail\PodijeliRacunKorisniku;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\Invite;
@@ -14,11 +12,15 @@ use App\Models\Partner;
 use App\Models\Preduzece;
 use App\Models\Racun;
 use App\Models\User;
+use App\Notifications\NalogRegistrovan;
+use App\Notifications\PodijeliRacunGostu;
+use App\Notifications\PodijeliRacunKorisniku;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
 
@@ -250,8 +252,9 @@ class RacunController extends Controller
                 if (User::where('email', $kupacEmail)->exists()) {
                     User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
 
-                    Mail::to($kupacEmail)
-                        ->send(new PodijeliRacunKorisniku($racun));
+                    $user = User::where('email', $kupacEmail)->first();
+                    $user->notify(new PodijeliRacunKorisniku($racun, $user));
+
                 } else {
                     $invite = Invite::create([
                         'email' => $kupacEmail,
@@ -259,6 +262,8 @@ class RacunController extends Controller
                         'token' => Str::random(40),
                         'racun_id' => $racun->id,
                     ]);
+
+                    // Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
 
                     Mail::to($kupacEmail)
                         ->send(new PodijeliRacunGostu($invite));
@@ -349,15 +354,16 @@ class RacunController extends Controller
 
     public function dijeljenjeRacuna(Racun $racun, DijeljenjeRacunaRequest $request)
     {
-        if (! auth()->id() === $racun->user_id) {
-            abort(403);
+        if (! in_array($racun->id, auth()->user()->racuni->pluck('id')->toArray())) {
+            return response()->json('Nemate pravo da dijelite ovaj racun', 401);
         }
 
         if (User::where('email', $request->email)->exists()) {
             User::where('email', $request->email)->first()->guestRacuni()->attach($racun->id);
 
-            Mail::to($request->email)
-                ->send(new PodijeliRacunKorisniku($racun));
+            $user = User::where('email', $request->email)->first();
+            $user->notify(new PodijeliRacunKorisniku($racun, $user));
+
         } else {
             $invite = Invite::create([
                 'email' => $request->email,
@@ -366,8 +372,7 @@ class RacunController extends Controller
                 'racun_id' => $racun->id,
             ]);
 
-            Mail::to($request->email)
-                ->send(new PodijeliRacunGostu($invite));
+            Notification::route('mail', $request->email)->notify(new PodijeliRacunGostu($invite));
         }
 
         return response()->json('Uspjesno ste poslali racun na mejl korisnika');

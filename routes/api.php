@@ -53,6 +53,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
+
 Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
@@ -150,7 +152,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 'tipovi-atributa' => 'tip-atributa'
             ]);
 
-            Route::post('dijeljenjeRacuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
+            Route::post('dijeljenje-racuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
 
             Route::apiResource('racuni', RacunController::class)->parameters([
                 'racuni' => 'racun'
@@ -254,8 +256,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::put('upload-avatar', [UploadController::class, 'uploadAvataraKorisnika']);
             Route::put('upload-ulazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
             Route::post('upload-ugovora', [UploadController::class, 'uploadUgovora']);
-
-            Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
 
             Route::apiResource('podesavanja', PodesavanjeController::class)->parameters([
                 'podesavanja' => 'podesavanje'
