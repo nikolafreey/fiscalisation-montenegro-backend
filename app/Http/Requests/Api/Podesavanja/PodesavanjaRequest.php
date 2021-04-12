@@ -18,7 +18,7 @@ class PodesavanjaRequest extends BaseApiRequest
             'slanje_kupcu' => 'required',
             'izgled_racuna' => 'required',
             'boja' => 'nullable',
-            'mod' => 'required',
+            'tamni_mod' => 'required',
             'jezik' => 'required',
             'pecat' => 'nullable',
             'sertifikat' => 'nullable',

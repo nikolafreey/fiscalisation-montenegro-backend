@@ -17,10 +17,10 @@ class CreatePodesavanjasTable extends Migration
             $table->id();
             $table->integer('redni_broj')->nullable();
             $table->boolean('slanje_kupcu')->default(false);
-            $table->string('izgled_racuna')->nullable();
-            $table->enum('jezik', ['Crnogorski', 'English']);
+            $table->unsignedInteger('izgled_racuna')->nullable();
+            $table->enum('jezik', ['me', 'en']);
             $table->string('boja')->nullable();
-            $table->enum('mod', ['Svijetli', 'Tamni', 'Automatski']);
+            $table->enum('tamni_mod', ['svijetli', 'tamni', 'automatski']);
 
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
@@ -44,6 +44,6 @@ class CreatePodesavanjasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('podesavanjas');
+        Schema::dropIfExists('podesavanja');
     }
 }
