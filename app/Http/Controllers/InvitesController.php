@@ -31,12 +31,14 @@ class InvitesController extends Controller
 
         $user->assignRole('Gost');
 
-        $user->createToken('Api token')->plainTextToken;
-
-        $redirectTo = $invite->route;
-
         $invite->delete();
 
-        return redirect($redirectTo);
+        return response()->json([
+            'status' => 'Success',
+            'message' => 'Success',
+            'data' => [
+                'token' => $user->createToken('Api token')->plainTextToken,
+            ]
+        ], 200);
     }
 }
