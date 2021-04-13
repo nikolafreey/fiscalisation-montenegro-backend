@@ -1,13 +1,29 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
             <soapenv:Header/>
-            <soapenv:Body><RegisterCashDepositRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://efi.tax.gov.me/fs/schema" Id="Request" Version="1">
-    <Header SendDateTime="2021-03-01T18:30:57+01:00" UUID="245012b9-4577-45d3-ab42-af13afc6902a"/>
+            <soapenv:Body><RegisterInvoiceRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://efi.tax.gov.me/fs/schema" Id="Request" Version="1">
+    <Header SendDateTime="2021-04-13T14:43:19+02:00" UUID="8e8534db-9e93-4511-ae24-6b3507538e88"/>
 
-    <CashDeposit CashAmt="91.00" ChangeDateTime="2021-03-01T18:30:57+01:00" IssuerTIN="12345678" Operation="INITIAL" TCRCode="oo123oo123"/>
+    <Invoice TypeOfInv="NONCASH" IsSimplifiedInv="false" IssueDateTime="2021-04-13T14:43:19+02:00" InvNum="xx123xx123/7/2021/si747we972" InvOrdNum="7" TCRCode="si747we972" IsIssuerInVAT="true" TotPriceWoVAT="155.00" TotVATAmt="100.00" TotPrice="255.00" OperatorCode="oo123oo123" BusinUnitCode="xx123xx123" SoftCode="ss123ss123" IIC="07017f0698650dbc17ab01e4bfd74fa8" IICSignature="3af8d2d4ee03ed2e7a8f5cb3cb75de6216645b1ebedff2f4e7d02539914a08fca29b3fc8c4f88b97e0c2b6d4b9fa24174269fddf8c3dfbb8c5a0ade866e8fc0f2c942fc32b251320a466e2e529206ca7cfc7c50f9b8b70065ddc275f4e92ac6bc6cadb9ff32cd5b78ac64f87311ac6aec39dc2643236afe550685ef6ed26a977bba18b5c19359e76f4e0ee649d2c4606b9b5dd8fab2fcb0be7b57e942d2378358f92ba55fda08189303462775c71890b72e49971b038de5a3ab8c8d28648be17fdce4cd0979be63106be287d222786dc1b9ad89c3410c32b76bdb1b84af0f39a214708379c8953b1e8b2220dcd8bfb5e8681113107d967ddd85b567e2a1226c5" IsReverseCharge="false">
+        <PayMethods>
+            <PayMethod Type="ADVANCE" Amt="255.00"/>
+        </PayMethods>
+
+        <Seller IDType="TIN" IDNum="12345678" Name="Intours"/>
+
+        <Buyer IDType="TIN" IDNum="12345678" Name="Vitka"/>
+
+        <Items>
+                            <I N="quaerat" C="0" U="kom" Q="1.00" UPB="155.00" UPA="0.00" R="55.00" RR="1" PB="0.00" VR="0.07" VA="100.00" PA="255.00"/>
+                    </Items>
+
+        <SameTaxes>
+                                                                            <SameTax NumOfItems="1" PriceBefVAT="155.00" VATRate="7.00" VATAmt="100.00"/>
+                                                                </SameTaxes>
+    </Invoice>
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
   <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <Reference URI="#Request"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>pCXfi3vIB2L5YRbZstBxfhEvAdMUsnxBYj5ZsBnHjKg=</DigestValue></Reference></SignedInfo><SignatureValue>chSI5YrS5yBp8HGifs2/rFlriI61q0aMxj+sXyRyGRt65Su4gu5zw4Bc6F6iqMFNVgUaCffPjXRI16EvPLMLe8t+CFR/jAz1bja27BK4Isb6a4ifqoy6Yk5/oEw/UuaOexLc8JGX91xcXP3fz3A8vfotsoMPQ8dCQDRvY2RUKJzdH+IcdczP8br0T/WaHyvJK85mf54yQak1BhufXG+F4Kk13r/eNQt0F44N7/3rn98Ko3Nn3FMmLKCCNSP6MrAdCUC12su4JfZQWmAkf80gKi7m68qOY82h5ZpKZefE7VQRej0fcH0JM9cixoUvMPFMFBIKNcAXReCnlxNPN/PP9w==</SignatureValue>
+  <Reference URI="#Request"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>D3B1M9m48klYDHypFstrxeY8jxfaqWVtkEWC1z13GxE=</DigestValue></Reference></SignedInfo><SignatureValue>pJUG+o/vRNaOC/BsnXFOO2HNqY9MFxjbzjrXu8M82M9C0vw8+DfyceprYIz6idEjZ1pVmGsPbyZ2eCuYsOx4AbJeaTA5NOyqWdzGUHUujJXpdhfs+f9lqhiytOCjfWroEHW8H/JNtpmmxPy/pTnFKyC/FIalXRXnk7NOF2w+EZxbgfBHHwegMM/AVeVZoh00uUi8Jl6kzmW8xNgBaK4/G9Q9R19A1NNFWvv++BGSHMkbAhv2jU3Ad5BEBLFG7S6Ebq+Ey5UMbFO+l8fDHIpkxwuZDmHZcINKLL4otBBj4hnCEzTYMsqpUbhSGaDyoHen5+qzRe9YOv7UDhHEta6hEQ==</SignatureValue>
 <KeyInfo><X509Data><X509Certificate>MIIFoDCCBAigAwIBAgIIAosoHBIRrfUwDQYJKoZIhvcNAQELBQAwTzELMAkGA1UE
 BhMCTUUxDzANBgNVBAoMBkNvcmVpdDEXMBUGA1UEYQwOVkFUTUUtMDI3NzUwMTgx
 FjAUBgNVBAMMDUNvcmVpdCBTdWIgQ0EwHhcNMjAxMDA1MTIxNDQ3WhcNMjMxMDA1
@@ -39,6 +55,6 @@ uBRZ/G+lubDfjGVlcwznQLPpo3VFpExIvS8Ne/5M1KJjBcVhzc2lPC5ObIyu+Tex
 IYNvuj2FwRs9xLGAwkO0LMJNfjYPItWhBoHZej3SUScgBGtI6p9n8xFrMly93tAJ
 +GhBX4Wncz3TAUhkhH8jPvJUJVYil1QGToOCBIp/XD76BbF67Q/DStDSCeU68CqS
 oTQLMw==
-</X509Certificate></X509Data></KeyInfo></Signature></RegisterCashDepositRequest>
+</X509Certificate></X509Data></KeyInfo></Signature></RegisterInvoiceRequest>
 </soapenv:Body>
             </soapenv:Envelope>
