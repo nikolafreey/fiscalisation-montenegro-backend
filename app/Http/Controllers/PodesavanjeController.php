@@ -39,13 +39,17 @@ class PodesavanjeController extends Controller
 
     public function store(PodesavanjaRequest $request)
     {
+        if (property_exists(Podesavanje::where('preduzece_id', getAuthPreduzeceId($request)), 'id')) {
+            return response()->json("Podesavanje za ovo preduzeće već postoji!", 403);
+        }
+
         $podesavanje = Podesavanje::create([
             'redni_broj' => $request->redni_broj,
             'slanje_kupcu' => $request->slanje_kupcu,
             'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
-            'mod' => $request->mod,
+            'tamni_mod' => $request->tamni_mod,
             'user_id' => auth()->id(),
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
@@ -65,6 +69,8 @@ class PodesavanjeController extends Controller
             'kod_pj' => $request->kod_pj
         ]);
 
+        $preduzece = getAuthPreduzece($request);
+
         auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
@@ -80,7 +86,7 @@ class PodesavanjeController extends Controller
             'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
-            'mod' => $request->mod,
+            'tamni_mod' => $request->tamni_mod,
             'user_id' => auth()->id(),
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
@@ -100,6 +106,7 @@ class PodesavanjeController extends Controller
             'kod_pj' => $request->kod_pj,
         ]);
 
+        $preduzece = getAuthPreduzece($request);
         auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
