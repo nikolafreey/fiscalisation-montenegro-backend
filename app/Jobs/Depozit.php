@@ -60,7 +60,7 @@ class Depozit implements ShouldQueue
             ])
             ->withHeaders([
                 'Content-Type' => 'text/xml; charset=utf-8',
-            ])->send('POST', 'https://efitest.tax.gov.me:443/fs-v1', [
+            ])->send('POST', config('third_party_apis.poreska.registracija_depozita_url'), [
                 'body' => $signedXML,
             ]);
 

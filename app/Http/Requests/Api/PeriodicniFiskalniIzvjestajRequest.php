@@ -12,7 +12,6 @@ class PeriodicniFiskalniIzvjestajRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'poslovna_jedinica_id' => 'required',
             'datum_od' => 'required',
             'datum_do' => 'required',
         ];

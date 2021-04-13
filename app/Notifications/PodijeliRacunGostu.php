@@ -40,10 +40,12 @@ class PodijeliRacunGostu extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new \Coconuts\Mail\MailMessage)
+            ->alias('PodijeliRacunGostu')
+            ->include([
+                "action_url" => route('registerFromInvite', ['invite' => $this->invite, 'token' => $this->invite->token]),
+                "product_name" => config('APP_NAME'),
+            ]);
     }
 
     /**

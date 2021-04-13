@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AccountRegistered extends Notification
+class NalogRegistrovan extends Notification
 {
     use Queueable;
 
@@ -42,7 +42,7 @@ class AccountRegistered extends Notification
     public function toMail($notifiable)
     {
         return (new \Coconuts\Mail\MailMessage)
-            ->alias('welcome-1')
+            ->alias('NalogRegistrovan')
             ->include([
                 "ime" => $this->request->ime,
                 "password" => $this->password,

@@ -30,6 +30,10 @@ class OdaberiPreduzeceController extends Controller
             // ->where('last_used_at', '>', now()->subDays(30))
             ->count();
 
+        if ($preduzece->paketi->isEmpty()) {
+            return response()->json(['message' => 'Preduzece nema paket']);
+        }
+
         if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
             return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece'], 401);
         }

@@ -31,7 +31,12 @@ class PoslovnaJedinicaController extends Controller
      */
     public function store(StorePoslovnaJedinica $request)
     {
-        $poslovnaJedinica = PoslovnaJedinica::create($request->validated());
+        $poslovnaJedinica = PoslovnaJedinica::make($request->validated());
+
+        $poslovnaJedinica->user_id = auth()->id();
+        $poslovnaJedinica->preduzece_id = getAuthPreduzeceId($request);
+
+        $poslovnaJedinica->save();
 
         return response()->json($poslovnaJedinica, 201);
     }

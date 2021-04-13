@@ -21,6 +21,17 @@ class CreateGrupeTable extends Migration
             $table->decimal('popust_iznos', 15, 4);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreignUuid('user_id')
+                ->constrained('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+
+            $table->foreignUuid('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

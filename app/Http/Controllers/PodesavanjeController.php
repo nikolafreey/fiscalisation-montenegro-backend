@@ -7,7 +7,7 @@ use App\Http\Requests\Api\Podesavanja\PodesavanjaRequest;
 use App\Models\Podesavanje;
 use App\Models\Preduzece;
 use App\Models\User;
-use App\Notifications\AccountRegistered;
+use App\Notifications\NalogRegistrovan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -113,7 +113,7 @@ class PodesavanjeController extends Controller
             abort(403, "Nemate pravo za dodjeljivanje ove uloge");
         }
 
-        $preduzece = Preduzece::find($request->preduzece_id);
+        $preduzece = getAuthPreduzece($request);
 
         if (
             $preduzece->najjaciPaket === 1
@@ -137,7 +137,7 @@ class PodesavanjeController extends Controller
 
         $user->syncRoles($request->uloga);
 
-        $user->notify(new AccountRegistered($request, $password));
+        $user->notify(new NalogRegistrovan($request, $password));
 
         return response()->json([
             'status' => 'Success',

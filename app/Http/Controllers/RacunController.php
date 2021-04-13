@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
-use App\Mail\PodijeliRacunGostu;
-use App\Mail\PodijeliRacunKorisniku;
 use App\Models\AtributRobe;
 use App\Models\Grupa;
 use App\Models\Invite;
@@ -14,11 +12,15 @@ use App\Models\Partner;
 use App\Models\Preduzece;
 use App\Models\Racun;
 use App\Models\User;
+use App\Notifications\NalogRegistrovan;
+use App\Notifications\PodijeliRacunGostu;
+use App\Notifications\PodijeliRacunKorisniku;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use ScoutElastic\Searchable;
 
@@ -26,7 +28,7 @@ class RacunController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Racun::class, 'racun');
+        // $this->authorizeResource(Racun::class, 'racun');
     }
 
     /**
@@ -100,14 +102,14 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE deleted_at IS NULL AND tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
 
     public function najveciDuznici(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE deleted_at IS NULL AND tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
@@ -250,8 +252,8 @@ class RacunController extends Controller
                 if (User::where('email', $kupacEmail)->exists()) {
                     User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
 
-                    Mail::to($kupacEmail)
-                        ->send(new PodijeliRacunKorisniku($racun));
+                    $user = User::where('email', $kupacEmail)->first();
+                    $user->notify(new PodijeliRacunKorisniku($racun, $user));
                 } else {
                     $invite = Invite::create([
                         'email' => $kupacEmail,
@@ -260,8 +262,7 @@ class RacunController extends Controller
                         'racun_id' => $racun->id,
                     ]);
 
-                    Mail::to($kupacEmail)
-                        ->send(new PodijeliRacunGostu($invite));
+                    Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
                 }
             }
 
@@ -294,11 +295,10 @@ class RacunController extends Controller
     public function show(Racun $racun)
     {
         if (
-            ! in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
+            !in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
             &&
-            ! in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
-        )
-        {
+            !in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
+        ) {
             abort(403, 'Nemate pristup ovom racunu');
         }
 
@@ -349,15 +349,15 @@ class RacunController extends Controller
 
     public function dijeljenjeRacuna(Racun $racun, DijeljenjeRacunaRequest $request)
     {
-        if (! auth()->id() === $racun->user_id) {
-            abort(403);
+        if (!in_array($racun->id, auth()->user()->racuni->pluck('id')->toArray())) {
+            return response()->json('Nemate pravo da dijelite ovaj racun', 401);
         }
 
         if (User::where('email', $request->email)->exists()) {
             User::where('email', $request->email)->first()->guestRacuni()->attach($racun->id);
 
-            Mail::to($request->email)
-                ->send(new PodijeliRacunKorisniku($racun));
+            $user = User::where('email', $request->email)->first();
+            $user->notify(new PodijeliRacunKorisniku($racun, $user));
         } else {
             $invite = Invite::create([
                 'email' => $request->email,
@@ -366,8 +366,7 @@ class RacunController extends Controller
                 'racun_id' => $racun->id,
             ]);
 
-            Mail::to($request->email)
-                ->send(new PodijeliRacunGostu($invite));
+            Notification::route('mail', $request->email)->notify(new PodijeliRacunGostu($invite));
         }
 
         return response()->json('Uspjesno ste poslali racun na mejl korisnika');

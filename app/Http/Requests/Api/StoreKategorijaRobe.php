@@ -13,7 +13,6 @@ class StoreKategorijaRobe extends BaseApiRequest
     {
         return [
             'naziv' => 'required|string|max:50|min:3',
-            'preduzece_id' => ''
         ];
     }
 }

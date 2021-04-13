@@ -16,8 +16,6 @@ class StorePoslovnaJedinica extends BaseApiRequest
             'adresa' => 'required|string|max:50|min:3',
             'grad' => 'required|string|max:50|min:3',
             'drzava' => 'required|string|max:50|min:3',
-            'preduzece_id' => 'required|int',
-            'user_id' => 'required|int'
         ];
     }
 }
