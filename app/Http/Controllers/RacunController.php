@@ -28,7 +28,7 @@ class RacunController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Racun::class, 'racun');
+        // $this->authorizeResource(Racun::class, 'racun');
     }
 
     /**
@@ -102,14 +102,14 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE deleted_at IS NULL AND tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
 
     public function najveciDuznici(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE deleted_at IS NULL AND tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
@@ -254,7 +254,6 @@ class RacunController extends Controller
 
                     $user = User::where('email', $kupacEmail)->first();
                     $user->notify(new PodijeliRacunKorisniku($racun, $user));
-
                 } else {
                     $invite = Invite::create([
                         'email' => $kupacEmail,
@@ -299,11 +298,10 @@ class RacunController extends Controller
     public function show(Racun $racun)
     {
         if (
-            ! in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
+            !in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
             &&
-            ! in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
-        )
-        {
+            !in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
+        ) {
             abort(403, 'Nemate pristup ovom racunu');
         }
 
@@ -354,7 +352,7 @@ class RacunController extends Controller
 
     public function dijeljenjeRacuna(Racun $racun, DijeljenjeRacunaRequest $request)
     {
-        if (! in_array($racun->id, auth()->user()->racuni->pluck('id')->toArray())) {
+        if (!in_array($racun->id, auth()->user()->racuni->pluck('id')->toArray())) {
             return response()->json('Nemate pravo da dijelite ovaj racun', 401);
         }
 
@@ -363,7 +361,6 @@ class RacunController extends Controller
 
             $user = User::where('email', $request->email)->first();
             $user->notify(new PodijeliRacunKorisniku($racun, $user));
-
         } else {
             $invite = Invite::create([
                 'email' => $request->email,
