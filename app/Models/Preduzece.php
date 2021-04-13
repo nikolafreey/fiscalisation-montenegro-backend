@@ -38,7 +38,7 @@ class Preduzece extends Model
         'website',
         'pib',
         'pdv',
-        'djelatnost',
+        'djelatnost_id',
         'iban',
         'bic_swift',
         'kontakt_ime',
@@ -211,7 +211,7 @@ class Preduzece extends Model
 
     public function setLogotipAttribute($value)
     {
-        if (! Storage::exists('public/logotipi')) {
+        if (!Storage::exists('public/logotipi')) {
             Storage::makeDirectory('public/logotipi');
         }
 
@@ -222,18 +222,18 @@ class Preduzece extends Model
 
             $directory = 'public/logotipi';
 
-            $path = storage_path('app/'. $directory .'/'. $name .'.'. $value->getClientOriginalExtension());
+            $path = storage_path('app/' . $directory . '/' . $name . '.' . $value->getClientOriginalExtension());
 
             Image::make($value)->resize(800, 600)->save($path);
 
-            $this->attributes['logotip'] = 'logotipi/'. $name .'.'. $value->getClientOriginalExtension();
+            $this->attributes['logotip'] = 'logotipi/' . $name . '.' . $value->getClientOriginalExtension();
         }
     }
 
 
     public function setThumbnailAttribute($value)
     {
-        if (! Storage::exists('public/logotipi/thumbnails')) {
+        if (!Storage::exists('public/logotipi/thumbnails')) {
             Storage::makeDirectory('public/logotipi/thumbnails');
         }
 
@@ -244,22 +244,22 @@ class Preduzece extends Model
 
             $directory = 'public/logotipi/thumbnails';
 
-            $path24 = storage_path('app/'. $directory .'/'. $name .'_24x24.'. $extension);
+            $path24 = storage_path('app/' . $directory . '/' . $name . '_24x24.' . $extension);
             Image::make($value)->resize(24, 24)->save($path24);
 
-            $path48 = storage_path('app/'. $directory .'/'. $name .'_48x48.'. $extension);
+            $path48 = storage_path('app/' . $directory . '/' . $name . '_48x48.' . $extension);
             Image::make($value)->resize(48, 48)->save($path48);
 
-            $path200 = storage_path('app/'. $directory .'/'. $name .'_200x150.'. $extension);
+            $path200 = storage_path('app/' . $directory . '/' . $name . '_200x150.' . $extension);
             Image::make($value)->resize(200, 150)->save($path200);
 
-            $path400 = storage_path('app/'. $directory .'/'. $name .'_400x300.'. $extension);
+            $path400 = storage_path('app/' . $directory . '/' . $name . '_400x300.' . $extension);
             Image::make($value)->resize(400, 300)->save($path400);
 
-            $path = storage_path('app/'. $directory .'/'. $name .'.'. $extension);
+            $path = storage_path('app/' . $directory . '/' . $name . '.' . $extension);
             Image::make($value)->save($path);
 
-            $this->attributes['thumbnail'] = 'logotipi/thumbnails/'. $name .'.'. $extension;
+            $this->attributes['thumbnail'] = 'logotipi/thumbnails/' . $name . '.' . $extension;
         }
     }
 }

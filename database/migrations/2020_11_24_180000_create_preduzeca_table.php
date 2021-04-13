@@ -30,7 +30,7 @@ class CreatePreduzecaTable extends Migration
             $table->string('website', 191)->nullable();
             $table->string('pib', 50)->unique();
             $table->string('pdv', 50)->unique();
-            $table->string('djelatnost', 50)->nullable();
+            // $table->string('djelatnost', 50)->nullable();
             $table->string('iban', 50)->nullable();
             $table->string('bic_swift', 50)->nullable();
             $table->string('kontakt_ime', 50)->nullable();
@@ -67,6 +67,11 @@ class CreatePreduzecaTable extends Migration
 
             $table->foreignId('kategorija_id')
                 ->constrained('kategorije')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreignId('djelatnost_id')
+                ->constrained('djelatnosti')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 

@@ -185,7 +185,7 @@ class PreduzeceFactory extends Factory
             'website' => $this->faker->word(),
             'pib' => $this->faker->unique()->numerify('########'),
             'pdv' => $this->faker->unique()->numerify('%%/#####-##'),
-            'djelatnost' => "Djelatnost preduzeća",
+            'djelatnost_id' => rand(1, 10),
             'iban' => $this->faker->unique()->numerify('%%%%%%%%%%'),
             'bic_swift' => $this->faker->unique()->numerify('%%%%%%%%%%'),
             'kontakt_ime' => $this->faker->randomElement($firstName),
