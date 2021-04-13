@@ -239,7 +239,7 @@ class Preduzece extends Model
 
         $extension = $value->getClientOriginalExtension();
 
-        if ($extension === 'jpg' || $extension === 'png') {
+        if ($extension === 'jpg' || $extension === 'png' || $extension === 'jpeg') {
             $name = Str::random(40);
 
             $directory = 'public/logotipi/thumbnails';
@@ -256,7 +256,10 @@ class Preduzece extends Model
             $path400 = storage_path('app/'. $directory .'/'. $name .'_400x300.'. $extension);
             Image::make($value)->resize(400, 300)->save($path400);
 
-            $this->attributes['thumbnail'] = Storage::disk('public')->putFile('logotipi/thumbnails', $value);
+            $path = storage_path('app/'. $directory .'/'. $name .'.'. $extension);
+            Image::make($value)->save($path);
+
+            $this->attributes['thumbnail'] = 'logotipi/thumbnails/'. $name .'.'. $extension;
         }
     }
 }
