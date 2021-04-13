@@ -263,10 +263,7 @@ class RacunController extends Controller
                         'racun_id' => $racun->id,
                     ]);
 
-                    // Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
-
-                    Mail::to($kupacEmail)
-                        ->send(new PodijeliRacunGostu($invite));
+                    Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
                 }
             }
 

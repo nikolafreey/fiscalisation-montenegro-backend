@@ -67,14 +67,13 @@
         </Items>
 
         <SameTaxes>
-
             @foreach($sameTaxes as $pdv_stopa => $sameTax)
                 @if ($sameTax['ukupna_kolicina'] != 0)
                     <SameTax
                         {{-- TODO: Check if it should be integer ? --}}
                         NumOfItems="{{ (int) $sameTax['ukupna_kolicina'] }}"
                         PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
-                        VATRate="{{ $pdv_stopa }}"
+                        VATRate="{{ sprintf("%.02f", $pdv_stopa * 100) }}"
                         VATAmt="{{ sprintf("%.02f", $sameTax['ukupan_iznos_pdv']) }}"
                     />
                 @endif
@@ -82,4 +81,6 @@
         </SameTaxes>
     </Invoice>
 </RegisterInvoiceRequest>
+
+
 

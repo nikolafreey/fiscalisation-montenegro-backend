@@ -179,9 +179,8 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
 
-
             $sameTaxes[$porez_stopa]['ukupna_kolicina'] += $stavka->kolicina;
-            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv;
+            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->ukupna_bez_pdv;
             $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos;
 
         }
