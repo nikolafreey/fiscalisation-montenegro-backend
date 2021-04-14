@@ -37,7 +37,7 @@ class OdabranaPoslovnaJedinicaMiddleware
             $preduzece = Preduzece::find($preduzece_id)->first();
 
             $brojPoslovnihJedinica = $preduzece->poslovne_jedinice()->count();
-
+            // TODO: Staviti === umjesto >=
             if ($brojPoslovnihJedinica >= 1) {
                 $poslovnaJedinica = $preduzece->poslovne_jedinice()->first();
 

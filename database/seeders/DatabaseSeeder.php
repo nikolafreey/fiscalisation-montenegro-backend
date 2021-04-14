@@ -204,7 +204,7 @@ class DatabaseSeeder extends Seeder
 
             Racun::factory(2)->create([
                 'poslovna_jedinica_id' => $poslovnaJedinica->id,
-                'preduzece_id' => Preduzece::first()->id
+                'preduzece_id' => Preduzece::all()->random()->id,
             ]);
         }
 

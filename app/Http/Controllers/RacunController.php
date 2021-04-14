@@ -28,7 +28,7 @@ class RacunController extends Controller
 {
     public function __construct()
     {
-        // $this->authorizeResource(Racun::class, 'racun');
+        $this->authorizeResource(Racun::class, 'racun');
     }
 
     /**
@@ -292,14 +292,14 @@ class RacunController extends Controller
      * @param  \App\Models\Racun  $racun
      * @return \Illuminate\Http\Response
      */
-    public function show(Racun $racun)
+    public function show(Racun $racun, Request $request)
     {
         if (
-            !in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
+            getAuthPreduzeceId($request) != $racun->preduzece_id
             &&
             !in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
         ) {
-            abort(403, 'Nemate pristup ovom racunu');
+            return response()->json(['message' => 'Nemate pristup ovom racunu'], 401);
         }
 
         return $racun->load(['stavke', 'porezi', 'partner', 'preduzece']);
