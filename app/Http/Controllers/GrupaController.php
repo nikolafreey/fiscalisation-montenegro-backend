@@ -31,9 +31,14 @@ class GrupaController extends Controller
      */
     public function store(Request $request)
     {
-        $djelatnost = Grupa::create($request->all());
+        $grupa = Grupa::make($request->all());
 
-        return response()->json($djelatnost, 201);
+        $grupa->user_id = auth()->id();
+
+        $grupa->preduzece_id = getAuthPreduzeceId($request);
+        $grupa->save();
+
+        return response()->json($grupa, 201);
     }
 
     /**
@@ -56,7 +61,10 @@ class GrupaController extends Controller
      */
     public function update(Request $request, Grupa $grupa)
     {
+        $grupa->update($request->validated());
+        $grupa->user_id = auth()->id();
 
+        return response()->json($grupa, 200);
     }
 
     /**
@@ -67,6 +75,5 @@ class GrupaController extends Controller
      */
     public function destroy(Grupa $grupa)
     {
-
     }
 }

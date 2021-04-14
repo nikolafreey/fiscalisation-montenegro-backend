@@ -16,9 +16,10 @@ class PodijeliRacunKorisniku extends Notification
      *
      * @return void
      */
-    public function __construct($racun)
+    public function __construct($racun, $user)
     {
         $this->racun = $racun;
+        $this->user = $user;
     }
 
     /**
@@ -40,10 +41,13 @@ class PodijeliRacunKorisniku extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new \Coconuts\Mail\MailMessage)
+            ->alias('PodijeliRacunKorisniku')
+            ->include([
+                "name" => $this->user->punoIme,
+                "product_name" => config('APP_NAME'),
+                "action_url" => route('racuni.show', $this->racun),
+            ]);
     }
 
     /**

@@ -8,6 +8,8 @@ U .env fajlu podesiti naziv baze i ostale parametre
 Nakon toga:
 ```php artisan migrate:fresh --seed```
 
+Generisanje uloga i dozvola: ```php artisan roles:sync```
+
 ## API dokumentacija
 Da generisete API dokumentaciju izvrsite komandu: 
 ```

@@ -16,7 +16,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
-Auth::routes();
+Route::group(['prefix' => 'okmnoifaonfa'], function(){
+    Auth::routes([
+        'register' => false,
+        'reset' => false,
+        'verify' => false,
+    ]);
+});
 
 Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
     Route::resource('preduzeca', PreduzeceController::class)->parameters([

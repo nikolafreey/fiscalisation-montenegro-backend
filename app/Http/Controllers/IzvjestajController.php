@@ -9,13 +9,14 @@ use App\Http\Requests\Api\FiskalniPresjekStanjaRequest;
 use App\Http\Requests\Api\FiskalniDnevniIzvjestajRequest;
 use App\Http\Requests\Api\PeriodicniIzvjestajRequest;
 use App\Http\Requests\Api\PeriodicniFiskalniIzvjestajRequest;
+use Illuminate\Http\Request;
 
 class IzvjestajController extends Controller
 {
-    public function fiskalniPresjekStanja(FiskalniPresjekStanjaRequest $request)
+    public function fiskalniPresjekStanja(Request $request)
     {
         $izvjestajService = new IzvjestajService(
-            PoslovnaJedinica::find($request->poslovna_jedinica_id),
+            getAuthPoslovnaJedinica($request),
             'PRESJEK STANJA',
             today(),
             now()
@@ -33,7 +34,7 @@ class IzvjestajController extends Controller
     public function fiskalniDnevniIzvjestaj(FiskalniDnevniIzvjestajRequest $request)
     {
         $izvjestajService = new IzvjestajService(
-            PoslovnaJedinica::find($request->poslovna_jedinica_id),
+            getAuthPoslovnaJedinica($request),
             'FISKALNI DNEVNI IZVJEŠTAJ – KRAJ DANA',
             Carbon::parse($request->datum)->startOfDay(),
             Carbon::parse($request->datum)->endOfDay()
@@ -51,7 +52,7 @@ class IzvjestajController extends Controller
     public function periodicniFiskalniIzvjestaj(PeriodicniFiskalniIzvjestajRequest $request)
     {
         $izvjestajService = new IzvjestajService(
-            PoslovnaJedinica::find($request->poslovna_jedinica_id),
+            getAuthPoslovnaJedinica($request),
             'PERIODIČNI FISKALNI IZVJEŠTAJ',
             Carbon::parse($request->datum_od)->startOfDay(),
             Carbon::parse($request->datum_do)->endOfDay()
@@ -69,7 +70,7 @@ class IzvjestajController extends Controller
     public function periodicniAnalitickiPregled(PeriodicniIzvjestajRequest $request)
     {
         $izvjestajService = new IzvjestajService(
-            PoslovnaJedinica::find($request->poslovna_jedinica_id),
+            getAuthPoslovnaJedinica($request),
             'Periodični analitički pregled (izvještaj) – elektronski žurnal',
             Carbon::parse($request->datum_od)->startOfDay(),
             Carbon::parse($request->datum_do)->endOfDay()
@@ -88,7 +89,7 @@ class IzvjestajController extends Controller
     public function periodicniAnalitickiPregledOffline(PeriodicniIzvjestajRequest $request)
     {
         $izvjestajService = new IzvjestajService(
-            PoslovnaJedinica::find($request->poslovna_jedinica_id),
+            getAuthPoslovnaJedinica($request),
             'Periodični analitički pregled (izvještaj) sa stavkama svih offline računa i dnevnim subtotalima – offline elektronski žurnal',
             Carbon::parse($request->datum_od)->startOfDay(),
             Carbon::parse($request->datum_do)->endOfDay()
@@ -108,7 +109,7 @@ class IzvjestajController extends Controller
     public function periodicniAnalitickiPregledKorektivni(PeriodicniIzvjestajRequest $request)
     {
         $izvjestajService = new IzvjestajService(
-            PoslovnaJedinica::find($request->poslovna_jedinica_id),
+            getAuthPoslovnaJedinica($request),
             'Periodični analitički pregled (izvještaj) sa stavkama svih korektivnih računa sa dnevnim subtotalima – korektivni elektronski žurnal',
             Carbon::parse($request->datum_od)->startOfDay(),
             Carbon::parse($request->datum_do)->endOfDay()

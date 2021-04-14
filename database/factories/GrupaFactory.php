@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Grupa;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class GrupaFactory extends Factory
@@ -21,11 +22,15 @@ class GrupaFactory extends Factory
      */
     public function definition()
     {
+        $user = User::all()->random();
+
         return [
             'naziv' => $this->faker->unique()->word(),
             'opis' => $this->faker->name(),
             'popust_procenti' => $this->faker->randomFloat(2, 0, 10),
             'popust_iznos' => $this->faker->randomFloat(2, 0, 10),
+            'user_id' => $user->id,
+            'preduzece_id' => $user->preduzeca()->first()
         ];
     }
 }

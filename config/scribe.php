@@ -226,8 +226,8 @@ Ova dokumentacija vam pruza uputstvo da koristite API aplikacije.
 Da zapocnete koristiti API ispratite sledece korake
 
 1. Korisnik mora da se uloguje na <a href="#apiauthlogin"><code>/api/auth/login</code></a> i da dobije token koji se salje na svaki request
-2. Korisnik mora da izabere preduzece koje on posjeduje na <a href="#apiodabirpreduzecaupdate"><code>/api/odabirPreduzeca/update</code></a>
-3. Korisnik mora da izabere poslovnu jedinicu koja pripada preduzecu na <a href="#apiodabirposlovnejediniceupdate"><code>/api/odabirPoslovneJedinice/update</code></a>.
+2. Korisnik mora da izabere preduzece koje on posjeduje na <a href="#apiodabir-preduzecaupdate"><code>/api/odabir-preduzeca/update</code></a>
+3. Korisnik mora da izabere poslovnu jedinicu koja pripada preduzecu na <a href="#apiodabir-poslovne-jediniceupdate"><code>/api/odabir-poslovne-jedinice/update</code></a>.
 INTRO
     ,
 

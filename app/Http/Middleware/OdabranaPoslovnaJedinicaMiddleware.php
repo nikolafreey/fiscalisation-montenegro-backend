@@ -37,8 +37,8 @@ class OdabranaPoslovnaJedinicaMiddleware
             $preduzece = Preduzece::find($preduzece_id)->first();
 
             $brojPoslovnihJedinica = $preduzece->poslovne_jedinice()->count();
-
-            if ($brojPoslovnihJedinica === 1) {
+            // TODO: Staviti === umjesto >=
+            if ($brojPoslovnihJedinica >= 1) {
                 $poslovnaJedinica = $preduzece->poslovne_jedinice()->first();
 
                 DB::table('personal_access_tokens')

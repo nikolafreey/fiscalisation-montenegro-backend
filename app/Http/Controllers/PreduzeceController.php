@@ -68,12 +68,12 @@ class PreduzeceController extends Controller
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
         if (
-            ! auth()->user()-hasRole('Vlasnik')
+            ! auth()->user()->hasRole('Vlasnik')
             &&
             ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
         )
         {
-            abort(403);
+            return response()->json('Nemate pristup ovom preduzecu', 401);
         }
 
         $preduzece->update($request->validated());

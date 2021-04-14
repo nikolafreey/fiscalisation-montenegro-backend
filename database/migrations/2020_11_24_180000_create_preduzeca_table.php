@@ -45,6 +45,7 @@ class CreatePreduzecaTable extends Migration
             $table->string('facebook_username', 100)->unique();
             $table->string('skype_username', 100)->unique();
             $table->string('logotip')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->text('opis')->nullable();
             $table->string('lokacija_lat', 50)->nullable();
             $table->string('lokacija_long', 50)->nullable();

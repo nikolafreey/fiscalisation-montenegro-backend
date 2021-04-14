@@ -43,12 +43,15 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::user()->tokens()->delete();
+        Auth::user()->tokens()
+            ->where('token', getAccessToken($request))
+            ->delete();
 
-        return [
-            'message' => 'Tokens Revoked'
-        ];
+        return response()->json([
+        'status' => 'Success',
+        'message' => 'Success',
+        ], 200);
     }
 }

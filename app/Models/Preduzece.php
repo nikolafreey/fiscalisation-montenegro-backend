@@ -7,8 +7,10 @@ use App\Traits\GenerateUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use ScoutElastic\Searchable;
 use App\Traits\ImaAktivnost;
 
@@ -51,6 +53,7 @@ class Preduzece extends Model
         'facebook_username',
         'skype_username',
         'logotip',
+        'thumbnail',
         'opis',
         'lokacija_lat',
         'lokacija_long',
@@ -208,7 +211,55 @@ class Preduzece extends Model
 
     public function setLogotipAttribute($value)
     {
-        $this->attributes['logotip'] = Storage::disk('public')->putFile('logotipi', $value);
+        if (! Storage::exists('public/logotipi')) {
+            Storage::makeDirectory('public/logotipi');
+        }
+
+        if ($value->getClientOriginalExtension() === 'svg') {
+            $this->attributes['logotip'] = Storage::disk('public')->putFile('logotipi', $value);
+        } else {
+            $name = Str::random(40);
+
+            $directory = 'public/logotipi';
+
+            $path = storage_path('app/'. $directory .'/'. $name .'.'. $value->getClientOriginalExtension());
+
+            Image::make($value)->resize(800, 600)->save($path);
+
+            $this->attributes['logotip'] = 'logotipi/'. $name .'.'. $value->getClientOriginalExtension();
+        }
     }
 
+
+    public function setThumbnailAttribute($value)
+    {
+        if (! Storage::exists('public/logotipi/thumbnails')) {
+            Storage::makeDirectory('public/logotipi/thumbnails');
+        }
+
+        $extension = $value->getClientOriginalExtension();
+
+        if ($extension === 'jpg' || $extension === 'png' || $extension === 'jpeg') {
+            $name = Str::random(40);
+
+            $directory = 'public/logotipi/thumbnails';
+
+            $path24 = storage_path('app/'. $directory .'/'. $name .'_24x24.'. $extension);
+            Image::make($value)->resize(24, 24)->save($path24);
+
+            $path48 = storage_path('app/'. $directory .'/'. $name .'_48x48.'. $extension);
+            Image::make($value)->resize(48, 48)->save($path48);
+
+            $path200 = storage_path('app/'. $directory .'/'. $name .'_200x150.'. $extension);
+            Image::make($value)->resize(200, 150)->save($path200);
+
+            $path400 = storage_path('app/'. $directory .'/'. $name .'_400x300.'. $extension);
+            Image::make($value)->resize(400, 300)->save($path400);
+
+            $path = storage_path('app/'. $directory .'/'. $name .'.'. $extension);
+            Image::make($value)->save($path);
+
+            $this->attributes['thumbnail'] = 'logotipi/thumbnails/'. $name .'.'. $extension;
+        }
+    }
 }

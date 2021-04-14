@@ -12,8 +12,7 @@ class FiskalniDnevniIzvjestajRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'poslovna_jedinica_id' => 'required',
-            'datum' => 'required'
+            'datum' => 'required',
         ];
     }
 }

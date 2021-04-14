@@ -53,6 +53,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
+
 Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 
@@ -70,27 +72,27 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::put('odabirPreduzeca/update', [OdaberiPreduzeceController::class, 'update']);
-    Route::get('odabirPreduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
+    Route::put('odabir-preduzeca/update', [OdaberiPreduzeceController::class, 'update']);
+    Route::get('odabir-preduzeca', [OdaberiPreduzeceController::class, 'index'])->name('odabir.preduzeca');
 
     Route::middleware('odabranoPreduzece')->group(function () {
 
-        Route::get('/authPreduzece', function (Request $request) {
+        Route::get('/auth-preduzece', function (Request $request) {
             return getAuthPreduzece($request);
         });
 
-        Route::post('odabirPreduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
+        Route::post('odabir-preduzeca/destroy', [OdaberiPreduzeceController::class, 'destroy']);
 
-        Route::put('odabirPoslovneJedinice/update', [OdaberiPoslovnuJedinicuController::class, 'update']);
-        Route::get('odabirPoslovneJedinice', [OdaberiPoslovnuJedinicuController::class, 'index'])->name('odabir.poslovneJedinice');
+        Route::put('odabir-poslovne-jedinice/update', [OdaberiPoslovnuJedinicuController::class, 'update']);
+        Route::get('odabir-poslovne-jedinice', [OdaberiPoslovnuJedinicuController::class, 'index'])->name('odabir.poslovneJedinice');
 
         Route::middleware('odabranaPoslovnaJedinica')->group(function () {
 
-            Route::get('/authPoslovnaJedinica', function (Request $request) {
+            Route::get('/auth-poslovna-jedinica', function (Request $request) {
                 return getAuthPoslovnaJedinica($request);
             });
 
-            Route::post('odabirPoslovneJedinice/destroy', [OdaberiPoslovnuJedinicuController::class, 'destroy']);
+            Route::post('odabir-poslovne-jedinice/destroy', [OdaberiPoslovnuJedinicuController::class, 'destroy']);
 
             Route::get('dozvole', [DozvolaController::class, 'index'])->name('dozvole.index');
 
@@ -150,7 +152,7 @@ Route::middleware('auth:sanctum')->group(function () {
                 'tipovi-atributa' => 'tip-atributa'
             ]);
 
-            Route::post('dijeljenjeRacuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
+            Route::post('dijeljenje-racuna/{racun}', [RacunController::class, 'dijeljenjeRacuna']);
 
             Route::apiResource('racuni', RacunController::class)->parameters([
                 'racuni' => 'racun'
@@ -251,11 +253,9 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'index']);
             Route::post('uloga-korisnika-preduzeca/{preduzece}', [UlogeKorisnikaPreduzecaController::class, 'store']);
 
-            Route::put('uploadAvatar', [UploadController::class, 'uploadAvataraKorisnika']);
-            Route::put('uploadUlazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
-            Route::post('uploadUgovora', [UploadController::class, 'uploadUgovora']);
-
-            Route::post('invite/{invite}', [InvitesController::class, 'registerFromInvite'])->name('registerFromInvite');
+            Route::put('upload-avatar', [UploadController::class, 'uploadAvataraKorisnika']);
+            Route::put('upload-ulazniRacun', [UploadController::class, 'uploadUlaznihRacuna']);
+            Route::post('upload-ugovora', [UploadController::class, 'uploadUgovora']);
 
             Route::apiResource('podesavanja', PodesavanjeController::class)->parameters([
                 'podesavanja' => 'podesavanje'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Preduzece;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,8 +37,12 @@ class OdabranoPreduzeceMiddleware
                     ->where('preduzece_id', $preduzece->id)
                     ->count();
 
+                if ($preduzece->paketi->isEmpty()) {
+                    return response()->json(['message' => 'Preduzece nema paket']);
+                }
+
                 if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
-                    return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece']);
+                    return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece'], 403);
                 }
 
                 DB::table('personal_access_tokens')
@@ -46,7 +51,6 @@ class OdabranoPreduzeceMiddleware
 
                 return $next($request);
             }
-
             return response()->json('Nije odabrano Preduzece', 401);
         }
 

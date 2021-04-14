@@ -19,8 +19,7 @@ class StoreFizickoLice extends BaseApiRequest
             'adresa' => 'string|max:191',
             'grad' => 'string|max:191',
             'drzava' => 'string|max:191',
-            'status'=>'boolean',
-
+            'status' => 'boolean',
             'telefon' => 'string|max:191',
             'telefon_viber' => 'boolean',
             'telefon_whatsapp' => 'boolean',
@@ -32,7 +31,6 @@ class StoreFizickoLice extends BaseApiRequest
             'nacionalnost' => 'string|max:50',
             'cv_link' => 'string|max:255',
             'avatar' => 'string|max:255',
-            'preduzece_id' => 'required|exists:preduzeca,id'
         ];
     }
 }
