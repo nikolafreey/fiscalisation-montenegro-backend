@@ -55,7 +55,7 @@ class PreduzeceController extends Controller
      */
     public function show(Preduzece $preduzece)
     {
-        return response()->json($preduzece->load('ovlascena_lica'), 200);
+        return response()->json($preduzece->load('ovlascena_lica', 'djelatnosti', 'kategorija'), 200);
     }
 
     /**
@@ -68,11 +68,10 @@ class PreduzeceController extends Controller
     public function update(StorePreduzece $request, Preduzece $preduzece)
     {
         if (
-            ! auth()->user()->hasRole('Vlasnik')
+            !auth()->user()->hasRole('Vlasnik')
             &&
-            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
-        )
-        {
+            !auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        ) {
             return response()->json('Nemate pristup ovom preduzecu', 401);
         }
 
@@ -90,11 +89,10 @@ class PreduzeceController extends Controller
     public function destroy(Preduzece $preduzece)
     {
         if (
-            ! auth()->user()-hasRole('Vlasnik')
+            !auth()->user() - hasRole('Vlasnik')
             &&
-            ! auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
-        )
-        {
+            !auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
+        ) {
             abort(403);
         }
 

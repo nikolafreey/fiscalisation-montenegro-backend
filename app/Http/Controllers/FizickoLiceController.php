@@ -60,7 +60,7 @@ class FizickoLiceController extends Controller
      */
     public function show(FizickoLice $fizickoLice)
     {
-        return $fizickoLice->load('ziro_racuni');
+        return $fizickoLice->load('ziro_racuni', 'preduzeca');
     }
 
     /**
