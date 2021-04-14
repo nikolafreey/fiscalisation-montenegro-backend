@@ -45,7 +45,7 @@ class PodesavanjeController extends Controller
             'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
-            'mod' => $request->mod,
+            'tamni_mod' => $request->tamni_mod,
             'user_id' => auth()->id(),
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
@@ -80,7 +80,7 @@ class PodesavanjeController extends Controller
             'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
             'jezik' => $request->jezik,
-            'mod' => $request->mod,
+            'tamni_mod' => $request->tamni_mod,
             'user_id' => auth()->id(),
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
