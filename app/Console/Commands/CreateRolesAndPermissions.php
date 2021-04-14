@@ -240,7 +240,7 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete KategorijaDokumenta']);
 
 
-        User::where('ime', 'Super Admin')->firstOrFail()->syncRoles(['SuperAdmin']);
+        User::where('ime', 'Super')->firstOrFail()->syncRoles(['SuperAdmin']);
 
         $this->info('Done');
 
