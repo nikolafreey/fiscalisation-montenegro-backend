@@ -22,19 +22,19 @@ class JedinicaMjereFactory extends Factory
      */
     public function definition()
     {
-        // $nazivi = array('kom', 'gr', 'inj', 'kesa', 'pak', 'kg', 'kut', 'lit', 'm', 'm2', 'm3', 'par', 'tab', 't', 'vre', 'pal');
-        // $naziviDugi = array('komad', 'gram', 'injekcija', 'kesa', 'paket', 'kilogram', 'kutija', 'litar', 'metar', 'm2', 'm3', 'par', 'tableta', 'tona', 'vreća', 'paleta');
+        // $nazivi = array('kom', 'gr', 'kg', 'inj', 'kesa', 'pak', 'kut', 'l', 'm', 'm2', 'm3', 'par', 'tab', 't', 'vre', 'pal', 'sek', 'min', 'sat', 'dan');
+        // $naziviDugi = array('komad', 'gram', 'kilogram', 'injekcija', 'kesa', 'paket', 'kutija', 'litar', 'metar', 'm2', 'm3', 'par', 'tableta', 'tona', 'vreća', 'paleta', 'sekund', 'minut', 'sat', 'dan');
 
         // for ($i = 0; $i < count($nazivi); $i++) {
-            DB::table('jedinice_mjere')->insert(
-                [
-                    'naziv' => 'kom',
-                    'kratki_naziv' => 'gram',
-                    'deleted_at' => null,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]
-            );
+        //     DB::table('jedinice_mjere')->insert(
+        //         [
+        //             'naziv' => $nazivi[$i],
+        //             'kratki_naziv' => $naziviDugi[$i],
+        //             'deleted_at' => null,
+        //             'created_at' => now(),
+        //             'updated_at' => now(),
+        //         ]
+        //     );
         // }
     }
 }

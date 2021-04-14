@@ -21,12 +21,12 @@ class PorezFactory extends Factory
      */
     public function definition()
     {
-        $nazivi = array('0%', '7%', '21%');
-        $stope = array(0, 7, 21);
+        // $nazivi = array('0%', '7%', '21%');
+        // $stope = array(0, 7, 21);
 
-        return [
-            'stopa' => $this->faker->randomElement(),
-            'naziv' => $this->faker->randomElement($nazivi)
-        ];
+        // return [
+        //     'stopa' => $this->faker->randomElement(),
+        //     'naziv' => $this->faker->randomElement($nazivi)
+        // ];
     }
 }
