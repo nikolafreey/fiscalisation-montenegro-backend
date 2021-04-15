@@ -129,9 +129,13 @@ class RobaController extends Controller
         $roba->preduzece_id = $user['preduzeca'][0]->id;
         $roba->updated_at = Carbon::now();
 
-        $roba->storeKategorije($request->kategorije);
         $roba->storeCijene($request->all(), $roba->preduzece_id);
-        $roba->storeAtributi($request->atributi);
+        if ($request->atributi) {
+            $roba->storeAtributi($request->atributi);
+        }
+        if ($request->kategorije) {
+            $roba->storeKategorije($request->kategorije);
+        }
 
         return response()->json($roba, 200);
     }

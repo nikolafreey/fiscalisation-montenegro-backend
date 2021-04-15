@@ -12,7 +12,7 @@ class StoreAtributRobe extends BaseApiRequest
     public function rules()
     {
         return [
-            'naziv' => 'required|string|max:50|min:3',
+            'naziv' => 'required|string|max:50',
             'tip_atributa_id' => 'required|int',
         ];
     }
