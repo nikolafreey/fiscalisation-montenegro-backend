@@ -29,7 +29,7 @@ class PreduzeceController extends Controller
                     return view('admin.preduzeca.action', compact('preduzece'));
                 })
                 ->make();
-        };
+        }
 
         return view('admin.preduzeca.index');
     }

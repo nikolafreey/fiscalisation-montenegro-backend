@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Preduzece;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +43,29 @@ class OdabranoPreduzeceMiddleware
                 }
 
                 if ($loggedInUsersIntoPreduzeceCount >= $preduzece->brojUredjaja) {
-                    return response()->json(['message' => 'Previse uredjaja je ulogovano na ovo preduzece'], 403);
+                    $loggedInUsers = DB::table('personal_access_tokens')
+                        ->where('preduzece_id', $preduzece->id)
+                        ->get();
+
+                    $array = [
+                        'message' => 'Previse uredjaja je ulogovano na ovo preduzece',
+                        'ulogovani_korisnici' => [],
+                    ];
+
+                    foreach ($loggedInUsers as $id) {
+                        $user = User::find($id->tokenable_id);
+
+                        $array['ulogovani_korisnici'][] = [
+                            'ime' => $user->punoIme,
+                            'email' => $user->email,
+                            'uredjaj' => $id->device,
+                            'pretrazivac' => $id->browser,
+                            'opetarivni_sistem' => $id->platform,
+                            'user_agent' => $id->user_agent,
+                        ];
+                    }
+
+                    return response()->json($array, 403);
                 }
 
                 DB::table('personal_access_tokens')

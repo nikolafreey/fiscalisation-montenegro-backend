@@ -7,7 +7,9 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Jenssegers\Agent\Agent;
 
 class AuthController extends Controller
 {
@@ -17,11 +19,24 @@ class AuthController extends Controller
             return response()->json('Neuspješno');
         }
 
+        $token = Auth::user()->createToken('Api token')->plainTextToken;
+
+        $agent = new Agent();
+
+        DB::table('personal_access_tokens')
+            ->where('token', hash('sha256', explode('|', $token)[1]))
+            ->update([
+                'platform' => $agent->platform(),
+                'browser' => $agent->browser(),
+                'device' => $agent->device(),
+                'user_agent' => $request->header('USER_AGENT'),
+            ]);
+
         return response()->json([
             'status' => 'Success',
             'message' => 'Success',
             'data' => [
-                'token' => Auth::user()->createToken('Api token')->plainTextToken,
+                'token' => $token,
             ]
         ], 200);
     }
@@ -34,11 +49,24 @@ class AuthController extends Controller
             'email' => $request->email
         ]);
 
+        $token = Auth::user()->createToken('Api token')->plainTextToken;
+
+        $agent = new Agent();
+
+        DB::table('personal_access_tokens')
+            ->where('token', hash('sha256', explode('|', $token)[1]))
+            ->update([
+                'platform' => $agent->platform(),
+                'browser' => $agent->browser(),
+                'device' => $agent->device(),
+                'user_agent' => $request->header('USER_AGENT'),
+            ]);
+
         return response()->json([
             'status' => 'Success',
             'message' => 'Success',
             'data' => [
-                'token' => $user->createToken('Api token')->plainTextToken,
+                'token' => $token,
             ]
         ], 200);
     }
