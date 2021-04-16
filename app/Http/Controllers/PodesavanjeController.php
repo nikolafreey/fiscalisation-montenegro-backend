@@ -58,15 +58,16 @@ class PodesavanjeController extends Controller
             getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
                 'sertifikat' => $request->sertifikat,
-                'pecatSifra' => $request->pecat_sifra,
-                'sertifikatSifra' => $request->sertifikat_sifra,
+                'pecatSifra' => $request->pecatSifra,
+                'sertifikatSifra' => $request->sertifikatSifra,
             ]);
         }
 
         getAuthPreduzece($request)->update([
             'enu_kod' => $request->enu_kod,
             'software_kod' => $request->software_kod,
-            'kod_pj' => $request->kod_pj
+            'kod_pj' => $request->kod_pj,
+            'kod_operatera' => $request->kod_operatera
         ]);
 
         $preduzece = getAuthPreduzece($request);
