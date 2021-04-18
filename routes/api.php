@@ -65,10 +65,19 @@ Route::post('register', [MobileAuthController::class, 'register']);
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::get('mobilna-posljednja-verzija', function (Request $request) {
+        return response()->json([
+            "android" => env("ANDROID_VERZIJA"),
+            "android_apk" => url(env("ANDROID_APK")),
+            "ios" => env("IOS_VERZIJA")
+        ]);
+    });
 
     Route::get('/me', function (Request $request) {
         return auth()->user();
     });
+
 
     Route::post('logout', [AuthController::class, 'logout']);
 
