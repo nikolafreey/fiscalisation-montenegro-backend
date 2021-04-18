@@ -10,6 +10,13 @@ class Dokument extends Model
 {
     use HasFactory;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $table = 'dokumenti';
 
     protected $naziv = 'naziv';

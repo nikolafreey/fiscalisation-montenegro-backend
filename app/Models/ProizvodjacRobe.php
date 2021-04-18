@@ -12,6 +12,13 @@ class ProizvodjacRobe extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $naziv = 'naziv';
 
     protected $table = 'proizvodjaci_roba';

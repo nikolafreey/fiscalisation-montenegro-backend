@@ -11,6 +11,13 @@ class PoslovnaJedinica extends Model
 {
     use HasFactory, ImaAktivnost;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $naziv = 'kratki_naziv';
 
     protected $table = 'poslovne_jedinice';

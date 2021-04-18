@@ -11,6 +11,13 @@ class CijenaRobe extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $table = 'cijene_roba';
 
     protected $fillable = [

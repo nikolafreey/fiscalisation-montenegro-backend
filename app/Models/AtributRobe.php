@@ -11,6 +11,13 @@ class AtributRobe extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $table = 'atributi_roba';
 
     protected $naziv = 'naziv';

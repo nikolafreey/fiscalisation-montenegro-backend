@@ -10,6 +10,13 @@ class KategorijaDokumenta extends Model
 {
     use HasFactory, ImaAktivnost;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $naziv = 'naziv';
 
     protected $table = 'kategorije_dokumenata';

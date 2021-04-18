@@ -13,6 +13,13 @@ class FizickoLice extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $naziv = 'ime';
 
     protected $table = 'fizicka_lica';

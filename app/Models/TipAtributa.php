@@ -12,6 +12,13 @@ class TipAtributa extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $naziv = 'naziv';
 
     protected $table = 'tipovi_atributa_roba';

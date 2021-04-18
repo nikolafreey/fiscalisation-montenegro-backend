@@ -11,6 +11,13 @@ class DepozitWithdraw extends Model
 {
     use HasFactory;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new UserScope);
+    }
+
     protected $fillable = array('iznos_depozit', 'iznos_withdraw', 'poslovna_jedinica_id');
 
     public function poslovnaJedinica()
