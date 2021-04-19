@@ -30,7 +30,9 @@ class CreateRacuniTable extends Migration
             $table->dateTime('datum_za_placanje')->nullable();
             $table->string('kod_poslovnog_prostora_enu', 50)->nullable();
             $table->decimal('ukupna_cijena_bez_pdv', 15, 4)->default(0);
+            $table->decimal('ukupna_cijena_bez_pdv_popust', 15, 4)->default(0);
             $table->decimal('ukupna_cijena_sa_pdv', 15, 4)->default(0);
+            $table->decimal('ukupna_cijena_sa_pdv_popust', 15, 4)->default(0);
             $table->decimal('ukupan_iznos_pdv', 15, 4)->default(0);
             $table->decimal('popust_procenat', 15, 2)->nullable();
             $table->decimal('popust_iznos', 15, 4)->nullable();

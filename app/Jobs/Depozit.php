@@ -30,8 +30,8 @@ class Depozit implements ShouldQueue
             'depozit' => $depozit,
             // TODO: Check is this data dynamic?
             'taxpayer' => [
-                'CR' => 'wp886vu280', // Cash Register (ENU)
-                'TIN' => $depozit->preduzece->pib,
+                'CR' => 'si747we972', // Cash Register (ENU)
+                'TIN' => '12345678',
             ],
         ];
     }
@@ -44,8 +44,6 @@ class Depozit implements ShouldQueue
     public function handle()
     {
         $xml = view('xml.depozit', $this->data)->render();
-
-        file_put_contents('depozit.xml', $xml);
 
         $signXMLService = new SignXMLService(
             $xml,
