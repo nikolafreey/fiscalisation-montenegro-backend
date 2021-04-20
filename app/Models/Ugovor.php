@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

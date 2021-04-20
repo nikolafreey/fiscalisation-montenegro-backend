@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use App\UslugaIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,11 +49,6 @@ class Usluga extends Model
         $array = $this->only('naziv');
         return $array;
     }
-
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
 
     public function user()
     {
