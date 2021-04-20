@@ -54,9 +54,11 @@ class UslugaController extends Controller
     public function store(StoreUsluga $request)
     {
         $usluga = Usluga::make($request->validated());
-        $usluga->user_id = auth()->id();
 
+        $usluga->opis = $request->opis;
+        $usluga->user_id = auth()->id();
         $usluga->preduzece_id = getAuthPreduzeceId($request);
+
         $usluga->save();
 
         return response()->json($usluga->save(), 201);
@@ -85,6 +87,7 @@ class UslugaController extends Controller
     public function update(StoreUsluga $request, Usluga $usluga)
     {
         $usluga->update($request->validated());
+        $usluga->opis = $request->opis;
 
         return response()->json($usluga, 200);
     }
