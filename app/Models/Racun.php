@@ -162,22 +162,22 @@ class Racun extends Model
         foreach ($request->stavke as $stavka) {
             if (array_key_exists('usluga_id', $stavka)) {
                 $usluga = Usluga::find($stavka['usluga_id']);
-                $stavke[] = $this->kreirajStavkuIzUsluge($usluga, $stavka);
+                $stavke[] = $this->kreirajStavkuIzUsluge($usluga, $stavka, $request->vrsta_racuna);
             }
             if (array_key_exists('roba_id', $stavka)) {
                 $roba = Roba::find($stavka['roba_id']);
-                $stavke[] = $this->kreirajStavkuIzRobe($roba, $stavka);
+                $stavke[] = $this->kreirajStavkuIzRobe($roba, $stavka, $request->vrsta_racuna);
             }
         }
 
         DB::table('stavke_racuna')->insert($stavke);
     }
 
-    private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka)
+    private function kreirajStavkuIzUsluge(Usluga $usluga, $stavka, $vrsta_racuna)
     {
         //$uslov = ($usluga) ? $usluga['cijena_bez_pdv_popust'] : $stavka['cijena_bez_pdv_popust'];false=gotovinski
 
-        if (true) {
+        if ($vrsta_racuna === "gotovinski") {
             $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
             if ($popust > 0) {
                 // $grupa = $usluga->grupa;
@@ -274,9 +274,9 @@ class Racun extends Model
         }
     }
     //roba!!!
-    private function kreirajStavkuIzRobe(Roba $roba, $stavka)
+    private function kreirajStavkuIzRobe(Roba $roba, $stavka, $vrsta_racuna)
     {
-        if (true) {
+        if ($vrsta_racuna === "gotovinski") {
             // $cijenaRobe = CijenaRobe::first();
 
             // $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();
