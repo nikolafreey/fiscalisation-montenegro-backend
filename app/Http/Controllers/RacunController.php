@@ -43,7 +43,7 @@ class RacunController extends Controller
     {
         Log::info('ssssss', array($request->all()));
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
+            $searchQuery = Racun::filterByPermissions()->search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
@@ -69,7 +69,7 @@ class RacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filter($request);
+            $query = Racun::filter($request)->filterByPermissions();
 
             $query = $query->where('tip_racuna', Racun::RACUN);
 
@@ -85,7 +85,7 @@ class RacunController extends Controller
             return $data;
         }
 
-        $queryAll = Racun::query()->orderBy('created_at', 'DESC');
+        $queryAll = Racun::query()->filterByPermissions()->orderBy('created_at', 'DESC');
         $queryAll = $queryAll->where('tip_racuna', Racun::RACUN);
 
         $paginatedData = $queryAll
@@ -246,23 +246,25 @@ class RacunController extends Controller
 
             $racun->save();
 
-            if ($preduzece->podesavanje->slanje_kupcu) {
-                $kupacEmail = $racun->partner->fizicko_lice->email;
+            if ($preduzece->podesavanje !== null) {
+                if ($preduzece->podesavanje->slanje_kupcu) {
+                    $kupacEmail = $racun->partner->fizicko_lice->email;
 
-                if (User::where('email', $kupacEmail)->exists()) {
-                    User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
+                    if (User::where('email', $kupacEmail)->exists()) {
+                        User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
 
-                    $user = User::where('email', $kupacEmail)->first();
-                    $user->notify(new PodijeliRacunKorisniku($racun, $user));
-                } else {
-                    $invite = Invite::create([
-                        'email' => $kupacEmail,
-                        'route' => route('racuni.show', $racun),
-                        'token' => Str::random(40),
-                        'racun_id' => $racun->id,
-                    ]);
+                        $user = User::where('email', $kupacEmail)->first();
+                        $user->notify(new PodijeliRacunKorisniku($racun, $user));
+                    } else {
+                        $invite = Invite::create([
+                            'email' => $kupacEmail,
+                            'route' => route('racuni.show', $racun),
+                            'token' => Str::random(40),
+                            'racun_id' => $racun->id,
+                        ]);
 
-                    Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
+                        Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
+                    }
                 }
             }
 
@@ -271,6 +273,7 @@ class RacunController extends Controller
 
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
+
 
             if ($request->status === 'Storniran') {
                 $racun->ukupna_cijena_bez_pdv *= -1;

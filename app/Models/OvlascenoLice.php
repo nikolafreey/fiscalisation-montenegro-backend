@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,12 +12,12 @@ class OvlascenoLice extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     protected $naziv = 'ime';
 

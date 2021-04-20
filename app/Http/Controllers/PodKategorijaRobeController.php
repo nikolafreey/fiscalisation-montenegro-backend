@@ -23,7 +23,7 @@ class PodKategorijaRobeController extends Controller
      */
     public function index()
     {
-        return PodKategorijaRobe::all();
+        return PodKategorijaRobe::filterByPermissions()->get();
     }
 
     /**

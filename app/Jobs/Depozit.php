@@ -28,10 +28,9 @@ class Depozit implements ShouldQueue
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'depozit' => $depozit,
-            // TODO: Check is this data dynamic?
             'taxpayer' => [
-                'CR' => 'si747we972', // Cash Register (ENU)
-                'TIN' => '12345678',
+                'CR' => $depozit->preduzece->enu_kod,
+                'TIN' => $depozit->preduzece->pib,
             ],
         ];
     }

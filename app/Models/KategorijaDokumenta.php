@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,12 +11,12 @@ class KategorijaDokumenta extends Model
 {
     use HasFactory, ImaAktivnost;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //
+    //     static::addGlobalScope(new UserScope);
+    // }
 
     protected $naziv = 'naziv';
 

@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Racun;
 use App\Models\Partner;
 use App\Models\Preduzece;
-use App\Scopes\UserScope;
 use App\Models\PoslovnaJedinica;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -52,7 +51,7 @@ class RacunFactory extends Factory
             'opis' => $this->faker->text(),
             'status' => $this->faker->randomElement(['Plaćen', 'Nenaplativ', 'Čeka se', 'Privremeni', 'Nenaplativ dug']),
             'user_id' => User::all()->random()->id,
-            'partner_id' => Partner::withoutGlobalScope(UserScope::class)->get()->random()->id,
+            'partner_id' => Partner::all()->random()->id,
         ];
     }
 }

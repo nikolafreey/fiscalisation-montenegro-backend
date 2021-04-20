@@ -18,7 +18,7 @@ class GrupaPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view Grupa');
+        return $user->canAny(['view all Grupa', 'view owned Grupa']);
     }
 
     /**

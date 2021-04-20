@@ -27,7 +27,7 @@ class OdabranaPoslovnaJedinicaMiddleware
             ->first()
             ->poslovna_jedinica_id;
 
-        if ($odabranaPoslovnaJedinicaID === null) {
+        if (! $odabranaPoslovnaJedinicaID) {
 
             $preduzece_id = DB::table('personal_access_tokens')
                 ->where('token', getAccessToken($request))

@@ -22,7 +22,7 @@ class ProizvodjacRobeController extends Controller
      */
     public function index()
     {
-        return ProizvodjacRobe::get();
+        return ProizvodjacRobe::filterByPermissions()->get();
     }
 
     /**

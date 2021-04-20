@@ -20,7 +20,7 @@ class GrupaController extends Controller
      */
     public function index()
     {
-        return Grupa::all();
+        return Grupa::filterByPermissions()->get();
     }
 
     /**

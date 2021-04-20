@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
@@ -9,13 +10,6 @@ use Illuminate\Support\Facades\Storage;
 class Dokument extends Model
 {
     use HasFactory;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
 
     protected $table = 'dokumenti';
 
@@ -29,6 +23,19 @@ class Dokument extends Model
         'preduzece_id',
         'kategorija_dokumenta_id'
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all Dokument')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned Dokument')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
 
     public function kategorije()
     {

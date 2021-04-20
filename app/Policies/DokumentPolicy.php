@@ -19,7 +19,7 @@ class DokumentPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view Dokument');
+        return $user->canAny(['view all Dokument', 'view owned Dokument']);
     }
 
     /**

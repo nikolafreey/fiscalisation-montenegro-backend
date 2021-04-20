@@ -22,7 +22,7 @@ class KategorijaRobeController extends Controller
      */
     public function index()
     {
-        return KategorijaRobe::with('podkategorije_robe:id,naziv,kategorija_id')->get();
+        return KategorijaRobe::filterByPermissions()->with('podkategorije_robe:id,naziv,kategorija_id')->get();
     }
 
     /**

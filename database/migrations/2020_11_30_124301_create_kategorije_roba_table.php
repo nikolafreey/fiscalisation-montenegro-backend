@@ -28,7 +28,6 @@ class CreateKategorijeRobaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')

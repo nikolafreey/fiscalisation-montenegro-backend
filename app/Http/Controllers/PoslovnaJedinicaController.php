@@ -20,7 +20,7 @@ class PoslovnaJedinicaController extends Controller
      */
     public function index()
     {
-        return PoslovnaJedinica::paginate();
+        return PoslovnaJedinica::filterByPermissions()->paginate();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,13 +11,6 @@ use App\Traits\ImaAktivnost;
 class Grupa extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
 
     protected $naziv = 'naziv';
 
@@ -28,6 +22,19 @@ class Grupa extends Model
         'popust_procenti',
         'popust_iznos'
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all Grupa')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned Grupa')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
 
     public function usluge()
     {

@@ -18,7 +18,7 @@ class PodKategorijaRobePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view PodKategorijaRobe');
+        return $user->canAny(['view all PodKategorijaRobe', 'view owned PodKategorijaRobe']);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,13 +10,6 @@ use App\Traits\ImaAktivnost;
 class PodKategorijaRobe extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
 
     protected $naziv = 'naziv';
 
@@ -32,10 +24,18 @@ class PodKategorijaRobe extends Model
         'kategorija_id'
     ];
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all PodKategorijaRobe')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned PodKategorijaRobe')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
 
     public function user()
     {

@@ -47,11 +47,11 @@ class Fiskalizuj implements ShouldQueue
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
             'taxpayer' => [
-                'CR' => 'wp886vu280', // Cash Register (ENU)
-                'SW' => 'qk433mq872', // Software Code
+                'CR' => $racun->preduzece->enu_kod,
+                'SW' => $racun->preduzece->software_kod,
                 'TIN' => $racun->preduzece->pib,
-                'BU' => 'ya260ri698' ?? $racun->poslovnaJedinica->kratki_naziv,
-                'OP' => 'ia871me776' ?? $racun->kod_operatera,
+                'BU' => 'xx123xx123' ?? $racun->poslovnaJedinica->kratki_naziv,
+                'OP' => $racun->kod_operatera,
             ],
             'seller' => [
                 'IDType' => 'TIN',

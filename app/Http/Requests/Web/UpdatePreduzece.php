@@ -36,6 +36,9 @@ class UpdatePreduzece extends FormRequest
             'sertifikatSifra' => 'nullable',
             'pecat' => 'required_without:sertifikat',
             'sertifikat' => 'required_without:pecat',
+            'pib' => 'nullable',
+            'software_kod' => 'nullable',
+            'enu_kod' => 'nullable',
         ];
     }
 }

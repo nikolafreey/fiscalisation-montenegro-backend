@@ -18,7 +18,7 @@ class UlazniRacunPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view UlazniRacun');
+        return $user->canAny(['view all UlazniRacun', 'view owned UlazniRacun']);
     }
 
     /**

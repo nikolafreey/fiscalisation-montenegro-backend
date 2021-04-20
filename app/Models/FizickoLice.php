@@ -13,13 +13,6 @@ class FizickoLice extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
-
     protected $naziv = 'ime';
 
     protected $table = 'fizicka_lica';
@@ -46,6 +39,11 @@ class FizickoLice extends Model
         'avatar',
         "preduzece_id"
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        return $query->where('preduzece_id', getAuthPreduzeceId(request()));
+    }
 
     use Searchable;
 

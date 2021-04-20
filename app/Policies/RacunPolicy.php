@@ -18,7 +18,7 @@ class RacunPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view Racun');
+        return $user->canAny(['view all Racun', 'view owned Racun']);
     }
 
     /**

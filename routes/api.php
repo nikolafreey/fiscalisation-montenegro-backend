@@ -65,7 +65,7 @@ Route::post('register', [MobileAuthController::class, 'register']);
 Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     Route::get('mobilna-posljednja-verzija', function (Request $request) {
         return response()->json([
             "android" => env("ANDROID_VERZIJA"),
@@ -185,6 +185,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
             Route::apiResource('atribut-roba', AtributRobeController::class)->parameters([
                 'atribut-roba' => 'atribut-robe'
+            ]);
+
+            Route::apiResource('cijena-roba', CijenaRobeController::class)->parameters([
+                'cijena-roba' => 'cijena-robe'
             ]);
 
             Route::apiResource('kategorije-robe', KategorijaRobeController::class)->parameters([

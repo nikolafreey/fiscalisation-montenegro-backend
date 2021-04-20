@@ -21,7 +21,7 @@ class DokumentController extends Controller
      */
     public function index()
     {
-        return Dokument::get();
+        return Dokument::filterByPermissions()->get();
     }
 
     /**

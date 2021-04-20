@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ImaAktivnost;
@@ -10,13 +9,6 @@ use App\Traits\ImaAktivnost;
 class PoslovnaJedinica extends Model
 {
     use HasFactory, ImaAktivnost;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
 
     protected $naziv = 'kratki_naziv';
 
@@ -30,6 +22,19 @@ class PoslovnaJedinica extends Model
         'preduzce_id',
         'user_id'
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all PoslovnaJedinica')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned PoslovnaJedinica')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
 
     public function preduzece()
     {

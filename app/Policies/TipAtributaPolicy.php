@@ -18,7 +18,7 @@ class TipAtributaPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view TipAtributa');
+        return $user->canAny(['view all TipAtributa', 'view owned TipAtributa']);
     }
 
     /**

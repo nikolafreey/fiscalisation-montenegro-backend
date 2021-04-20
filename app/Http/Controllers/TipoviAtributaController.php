@@ -22,7 +22,7 @@ class TipoviAtributaController extends Controller
      */
     public function index()
     {
-        return TipAtributa::with('atributi:id,naziv,tip_atributa_id')->get(['id', 'naziv']);
+        return TipAtributa::filterByPermissions()->with('atributi:id,naziv,tip_atributa_id')->get(['id', 'naziv']);
     }
 
     /**

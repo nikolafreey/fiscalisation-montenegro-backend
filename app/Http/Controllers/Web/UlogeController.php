@@ -55,7 +55,7 @@ class UlogeController extends Controller
 
     public function dodajDozvolu(Role $role, Request $request)
     {
-        $role->givePermissionTo([$request->dozvola]);
+        $role->syncPermissions([$request->dozvola]);
 
         $request->session()->flash('success', 'Uspješno ste dodijelili dozvolu');
 

@@ -23,7 +23,7 @@ class AtributRobeController extends Controller
      */
     public function index()
     {
-        return AtributRobe::get();
+        return AtributRobe::filterByPermissions()->get();
     }
 
     /**

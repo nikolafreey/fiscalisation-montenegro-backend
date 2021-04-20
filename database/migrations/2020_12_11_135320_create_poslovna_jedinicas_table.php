@@ -20,7 +20,6 @@ class CreatePoslovnaJedinicasTable extends Migration
             $table->string('grad', 50)->nullable();
             $table->string('drzava', 50)->nullable();
 
-
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')

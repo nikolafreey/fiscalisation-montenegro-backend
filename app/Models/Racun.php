@@ -17,13 +17,6 @@ class Racun extends Model
 {
     use HasFactory, SoftDeletes, ImaAktivnost;
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
-
     protected $naziv = 'vrsta_racuna';
 
     protected $table = 'racuni';
@@ -56,6 +49,19 @@ class Racun extends Model
         'status',
         'partner_id'
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all Racun')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned Racun')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
 
     public const RACUN = 'racun';
     public const PREDRACUN = 'predracun';

@@ -18,7 +18,7 @@ class PartnerPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view Partner');
+        return $user->canAny(['view all Partner', 'view owned Partner']);
     }
 
     /**

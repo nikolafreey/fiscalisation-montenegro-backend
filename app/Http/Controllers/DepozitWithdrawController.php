@@ -33,14 +33,14 @@ class DepozitWithdrawController extends Controller
 
     public function index()
     {
-        return DepozitWithdraw::paginate();
+        return DepozitWithdraw::filterByPermissions()->paginate();
     }
 
     public function store(StoreDepozitWithdraw $request)
     {
         $depozitWithdraw = DepozitWithdraw::make($request->all());
 
-        $depozitLoaded = DepozitWithdrawController::getDepozitToday();
+        $depozitLoaded = $this->getDepozitToday();
         if ($depozitLoaded) {
             return response()->json('Već je dodat depozit za današnji dan!', 400);
         }
@@ -54,7 +54,6 @@ class DepozitWithdrawController extends Controller
             Depozit::dispatch($depozitWithdraw);
         }
         $depozitWithdraw->save();
-
 
         // if($depozitWithdraw->iznos_withdraw > 0) {
         //     Withdraw::dispatch($depozitWithdraw);

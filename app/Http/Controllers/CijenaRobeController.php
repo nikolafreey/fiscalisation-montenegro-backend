@@ -21,7 +21,7 @@ class CijenaRobeController extends Controller
      */
     public function index()
     {
-        return CijenaRobe::get();
+        return CijenaRobe::filterByPermissions()->get();
     }
 
     /**

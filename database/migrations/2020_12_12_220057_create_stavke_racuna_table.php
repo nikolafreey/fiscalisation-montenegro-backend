@@ -16,7 +16,7 @@ class CreateStavkeRacunaTable extends Migration
         Schema::create('stavke_racuna', function (Blueprint $table) {
             $table->id();
             $table->string('naziv', 50);
-            $table->text('opis', 50)->nullable();
+            $table->text('opis')->nullable();
             $table->decimal('jedinicna_cijena_bez_pdv', 15, 4);
             $table->integer('bar_code');
             $table->decimal('jedinicna_cijena_sa_pdv', 15, 4);

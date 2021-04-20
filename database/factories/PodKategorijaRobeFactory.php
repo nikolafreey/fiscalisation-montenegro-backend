@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\KategorijaRobe;
 use App\Models\PodKategorijaRobe;
 use App\Models\User;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PodKategorijaRobeFactory extends Factory
@@ -34,7 +33,7 @@ class PodKategorijaRobeFactory extends Factory
             'status' => $this->faker->boolean(),
             'user_id' => $user->id,
             'preduzece_id' => $user->preduzeca()->first(),
-            'kategorija_id' => KategorijaRobe::withoutGlobalScope(UserScope::class)->get()->random()->id
+            'kategorija_id' => KategorijaRobe::all()->random()->id
         ];
     }
 }

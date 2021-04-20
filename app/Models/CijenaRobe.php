@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Scopes\UserScope;
 use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,13 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class CijenaRobe extends Model
 {
     use HasFactory, SoftDeletes;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(new UserScope);
-    }
 
     protected $table = 'cijene_roba';
 
@@ -34,10 +28,18 @@ class CijenaRobe extends Model
         'iznos_pdv_popust'
     ];
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all CijenaRobe')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned CijenaRobe')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
 
     public function user()
     {

@@ -65,6 +65,42 @@
                                         value="{{ old('sertifikatSifra') }}"
                                     >
                                 </div>
+                                <legend>
+                                    <span>Ostalo</span>
+                                </legend>
+                                <div class="form-group mt-4">
+                                    <label for="pib">PIB</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite PIB"
+                                        type="text"
+                                        id="pib"
+                                        name="pib"
+                                        value="{{ $preduzece->pib ?? old('pib') }}"
+                                    >
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="software_kod">Software Kod</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite Software Kod"
+                                        type="text"
+                                        id="software_kod"
+                                        name="software_kod"
+                                        value="{{ $preduzece->software_kod ?? old('software_kod') }}"
+                                    >
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="enu_kod">ENU Kod</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite ENU Kod"
+                                        type="text"
+                                        id="enu_kod"
+                                        name="enu_kod"
+                                        value="{{ $preduzece->enu_kod ?? old('enu_kod') }}"
+                                    >
+                                </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
                                         Sacuvajte

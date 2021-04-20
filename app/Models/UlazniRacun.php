@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use App\UlazniRacuniIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,6 +49,19 @@ class UlazniRacun extends Model
         'partner_id'
     ];
 
+    public function scopeFilterByPermissions($query)
+    {
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        if (auth()->user()->can('view all UlazniRacun')) {
+            return $query;
+        }
+
+        if (auth()->user()->can('view owned UlazniRacun')) {
+            return $query->where('user_id', auth()->id());
+        }
+    }
+
     use Searchable;
 
     protected $indexConfigurator = UlazniRacuniIndexConfigurator::class;
@@ -57,11 +69,6 @@ class UlazniRacun extends Model
     protected $searchRules = [
         //
     ];
-
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
 
     protected $mapping = [
         'properties' => [

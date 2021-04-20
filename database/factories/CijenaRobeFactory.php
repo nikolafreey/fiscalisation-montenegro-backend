@@ -7,7 +7,6 @@ use App\Models\Porez;
 use App\Models\User;
 use App\Models\Roba;
 use App\Models\AtributRobe;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CijenaRobeFactory extends Factory
@@ -41,8 +40,8 @@ class CijenaRobeFactory extends Factory
             'user_id' => $user->id,
             'preduzece_id' => $user->preduzeca()->first(),
             'porez_id' => $porez->id,
-            'roba_id' => Roba::withoutGlobalScope(UserScope::class)->get()->random()->id,
-            'atribut_id' => AtributRobe::withoutGlobalScope(UserScope::class)->get()->random()->id
+            'roba_id' => Roba::all()->random()->id,
+            'atribut_id' => AtributRobe::all()->random()->id
 
         ];
     }
