@@ -284,7 +284,7 @@ class RacunController extends Controller
             return $racun;
         });
 
-        Fiskalizuj::dispatch($racun);
+        Fiskalizuj::dispatch($racun)->onConnection('sync');
 
         return response()->json($racun->fresh()->load('porezi', 'stavke'), 201);
     }

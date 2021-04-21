@@ -7,7 +7,13 @@ use Illuminate\Support\Facades\DB;
 
 if (! function_exists('getAccessToken')) {
     function getAccessToken(Request $request): string {
-        return hash('sha256', explode('|', $request->bearerToken())[1]);
+        $bearer = explode('|', $request->bearerToken());
+
+        if (isset($bearer[1])) {
+            return hash('sha256', $bearer[1]);
+        }
+
+        throw new \Exception('Nedostaje Bearer token');
     }
 }
 

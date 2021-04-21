@@ -46,7 +46,6 @@ class DepozitWithdrawController extends Controller
         }
 
         $depozitWithdraw->user_id = auth()->id();
-        $user = User::find(auth()->id())->load(['preduzeca', 'preduzeca.poslovne_jedinice']);
         $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
         $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
