@@ -101,6 +101,17 @@
                                         value="{{ $preduzece->enu_kod ?? old('enu_kod') }}"
                                     >
                                 </div>
+                                <div class="form-group mt-4">
+                                    <label for="kod_operatera">Kod operatera</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite Kod operatera"
+                                        type="text"
+                                        id="kod_operatera"
+                                        name="kod_operatera"
+                                        value="{{ $preduzece->kod_operatera ?? old('kod_operatera') }}"
+                                    >
+                                </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
                                         Sacuvajte

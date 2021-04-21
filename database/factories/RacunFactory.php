@@ -26,8 +26,6 @@ class RacunFactory extends Factory
     public function definition()
     {
         return [
-            'kod_operatera' => 'oo123oo123',
-            'kod_poslovnog_prostora' => $this->faker->lexify('???????????'),
             'ikof' => $this->faker->lexify('???????????'),
             'jikr' => $this->faker->lexify('???????????'),
             'tip_racuna' => $this->faker->randomElement([Racun::RACUN, Racun::PREDRACUN]),

@@ -21,8 +21,6 @@ class Racun extends Model
     protected $table = 'racuni';
 
     protected $fillable = [
-        'kod_operatera',
-        'kod_poslovnog_prostora',
         'ikof',
         'jikr',
         'qr_url',

@@ -15,8 +15,6 @@ class CreateRacuniTable extends Migration
     {
         Schema::create('racuni', function (Blueprint $table) {
             $table->id();
-            $table->string('kod_operatera', 50)->nullable();
-            $table->string('kod_poslovnog_prostora', 50)->nullable();
             $table->string('ikof', 50)->nullable();
             $table->string('jikr', 50)->nullable();
             $table->string('qr_url', 200)->nullable();

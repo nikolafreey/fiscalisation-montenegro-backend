@@ -16,6 +16,7 @@ class StorePoslovnaJedinica extends BaseApiRequest
             'adresa' => 'required|string|max:50|min:3',
             'grad' => 'required|string|max:50|min:3',
             'drzava' => 'required|string|max:50|min:3',
+            'kod_poslovnog_prostora' => 'nullable',
         ];
     }
 }

@@ -20,7 +20,8 @@ class PoslovnaJedinica extends Model
         'grad',
         'drzava',
         'preduzce_id',
-        'user_id'
+        'user_id',
+        'kod_poslovnog_prostora',
     ];
 
     public function scopeFilterByPermissions($query)

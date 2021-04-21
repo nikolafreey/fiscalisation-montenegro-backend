@@ -39,6 +39,7 @@ class UpdatePreduzece extends FormRequest
             'pib' => 'nullable',
             'software_kod' => 'nullable',
             'enu_kod' => 'nullable',
+            'kod_operatera' => 'nullable',
         ];
     }
 }

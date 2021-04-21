@@ -22,6 +22,7 @@ class CreatePartneriTable extends Migration
             $table->boolean('kontakt_whatsapp')->nullable();
             $table->boolean('kontakt_facetime')->nullable();
             $table->text('opis')->nullable();
+            $table->string('pib', 50)->nullable();
 
             $table->foreignUuid('user_id')
                 ->constrained('users')

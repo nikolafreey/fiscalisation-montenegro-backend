@@ -13,8 +13,6 @@ class StoreRacun extends BaseApiRequest
     {
 
         return [
-            'kod_operatera' => 'nullable',
-            'kod_poslovnog_prostora' => 'nullable',
             'ikof' => 'nullable',
             'jikr' => 'nullable',
             'qr_url' => 'nullable',

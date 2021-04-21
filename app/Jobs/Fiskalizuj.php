@@ -2,22 +2,15 @@
 
 namespace App\Jobs;
 
-use DOMDocument;
 use App\Services\SignXMLService;
-use App\Models\Racun;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use VertexIT\XMLSecLibs\XMLSecurityKey;
 use Illuminate\Queue\InteractsWithQueue;
-use VertexIT\XMLSecLibs\XMLSecurityDSig;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class Fiskalizuj implements ShouldQueue
 {
@@ -50,8 +43,8 @@ class Fiskalizuj implements ShouldQueue
                 'CR' => $racun->preduzece->enu_kod,
                 'SW' => $racun->preduzece->software_kod,
                 'TIN' => $racun->preduzece->pib,
-                'BU' => 'xx123xx123' ?? $racun->poslovnaJedinica->kratki_naziv,
-                'OP' => $racun->kod_operatera,
+                'BU' => $racun->poslovnaJedinica->kod_poslovnog_prostora,
+                'OP' => $racun->user->kod_operatera ?? $racun->preduzece->kod_operatera,
             ],
             'seller' => [
                 'IDType' => 'TIN',
@@ -59,7 +52,7 @@ class Fiskalizuj implements ShouldQueue
             ],
             'buyer' => [
                 'IDType' => 'TIN',
-                'IDNum' => '12345678',
+                'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $racun->partner->kontakt_ime,
             ],
         ];
