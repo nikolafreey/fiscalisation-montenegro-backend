@@ -172,16 +172,23 @@ class DatabaseSeeder extends Seeder
 
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
-        // JedinicaMjere::factory(10)->create();
-        DB::table('jedinice_mjere')->insert(
-            [
-                'naziv' => 'kom',
-                'kratki_naziv' => 'gram',
-                'deleted_at' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
+
+        $nazivi = ['kom', 'gr', 'kg', 'inj', 'kesa', 'pak', 'kut', 'l', 'm', 'm2', 'm3', 'par', 'tab', 't', 'vre', 'pal', 'sek', 'min', 'sat', 'dan'];
+
+        $naziviDugi = ['komad', 'gram', 'kilogram', 'injekcija', 'kesa', 'paket', 'kutija', 'litar', 'metar', 'm2', 'm3', 'par', 'tableta', 'tona', 'vreća', 'paleta', 'sekund', 'minut', 'sat', 'dan'];
+
+        for ($i = 0; $i < count($nazivi); $i++) {
+            DB::table('jedinice_mjere')->insert(
+                [
+                    'naziv' => $nazivi[$i],
+                    'kratki_naziv' => $naziviDugi[$i],
+                    'deleted_at' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
+
         Usluga::factory(10)->create();
         KategorijaRobe::factory(10)->create();
         PodKategorijaRobe::factory(10)->create();

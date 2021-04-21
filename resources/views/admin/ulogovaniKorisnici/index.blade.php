@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Preduzeca')
+@section('title', 'Ulogovani korisnici')
 
 @section('content')
 
@@ -16,19 +16,20 @@
         <div class="content-box">
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Preduzeća
+                    Ulogovani korisnici
                 </h6>
                 <div class="element-box">
-                    <table id="data_table" class="table table-hover table-clean">
+                    <table id="example" class="table table-hover table-clean">
                         <thead>
                         <tr>
-                            <th>Naziv</th>
-                            <th>Adresa</th>
-                            <th>Paketi</th>
+                            <th>Id</th>
+                            <th>Ime</th>
+                            <th>E-mail</th>
+                            <th>Preduzece</th>
+                            <th>Poslovna Jedinica</th>
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -39,7 +40,7 @@
 
 @section('scripts')
     <script>
-        $('#data_table').DataTable( {
+        $('#example').DataTable( {
             language: language,
             searchDelay: 500,
             processing: true,
@@ -49,12 +50,24 @@
             stateDuration: 60 * 60 * 24 * 30,
 
             ajax: {
-                url: '{{ route('preduzeca.index') }}',
+                url: '{{ route('ulogovaniKorisnici.index') }}',
             },
             columns: [
-                { data: 'kratki_naziv' },
-                { data: 'adresa' },
-                { data: 'paketi[, ].naziv', name:'paketi.naziv', orderable: false},
+                { data: 'id', name:'id'},
+                { data: 'user.ime', name:'user.ime'},
+                { data: 'user.email', name:'user.email'},
+                {
+                    data: 'preduzece.kratki_naziv',
+                    name: 'preduzece.kratki_naziv',
+                    orderable: false,
+                    defaultContent: "<i>Nije odabrano</i>"
+                },
+                {
+                    data: 'poslovna_jedinica.kratki_naziv',
+                    name: 'poslovna_jedinica.kratki_naziv',
+                    orderable: false,
+                    defaultContent: "<i>Nije odabrana</i>"
+                },
                 {
                     data: 'action',
                     class: 'text-right',

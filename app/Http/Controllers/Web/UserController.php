@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\EditUserRequest;
 use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
 use App\Models\Preduzece;
@@ -78,9 +79,13 @@ class UserController extends Controller
         return view('admin.users.form', $viewModel);
     }
 
-    public function update(User $user, UserRequest $request)
+    public function update(User $user, EditUserRequest $request)
     {
-        $user->update(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
+        $user->update($request->validated());
+
+        if ($request->password != null) {
+            $user->update(['password' => Hash::make($request->password)]);
+        }
 
         $user->syncRoles([$request->uloga]);
 

@@ -27,7 +27,7 @@ class MobileAuthController extends Controller
             ]);
         }
 
-        return response()->json(['user' => $user, 'token' => $user->createToken($user->ime)->plainTextToken]);
+        return response()->json(['user' => $user, 'token' => $user->createToken('Api token')->plainTextToken]);
     }
 
     public function register(Request $request)
@@ -45,7 +45,7 @@ class MobileAuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return response()->json(['user' => $user, 'token' => $user->createToken($user->ime)->plainTextToken]);
+        return response()->json(['user' => $user, 'token' => $user->createToken('Api token')->plainTextToken]);
     }
 
     public function profile(Request $request)
