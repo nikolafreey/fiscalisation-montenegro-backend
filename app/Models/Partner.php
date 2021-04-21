@@ -32,6 +32,10 @@ class Partner extends Model
 
     public function scopeFilterByPermissions($query)
     {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
         if (auth()->user()->can('view all Partner')) {

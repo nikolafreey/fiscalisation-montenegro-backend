@@ -42,6 +42,10 @@ class FizickoLice extends Model
 
     public function scopeFilterByPermissions($query)
     {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
         return $query->where('preduzece_id', getAuthPreduzeceId(request()));
     }
 
