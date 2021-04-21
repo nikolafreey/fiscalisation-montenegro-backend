@@ -41,7 +41,7 @@ class Fiskalizuj implements ShouldQueue
             'racun' => $racun->load('stavke'),
             'taxpayer' => [
                 'CR' => $racun->preduzece->enu_kod,
-                'SW' => $racun->preduzece->software_kod,
+                'SW' => config('third_party_apis.poreska.sw_kod'),
                 'TIN' => $racun->preduzece->pib,
                 'BU' => $racun->poslovnaJedinica->kod_poslovnog_prostora,
                 'OP' => $racun->user->kod_operatera ?? $racun->preduzece->kod_operatera,

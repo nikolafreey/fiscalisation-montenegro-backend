@@ -37,7 +37,6 @@ class UpdatePreduzece extends FormRequest
             'pecat' => 'required_without:sertifikat',
             'sertifikat' => 'required_without:pecat',
             'pib' => 'nullable',
-            'software_kod' => 'nullable',
             'enu_kod' => 'nullable',
             'kod_operatera' => 'nullable',
         ];

@@ -80,17 +80,6 @@
                                     >
                                 </div>
                                 <div class="form-group mt-4">
-                                    <label for="software_kod">Software Kod</label>
-                                    <input
-                                        class="form-control"
-                                        placeholder="Unesite Software Kod"
-                                        type="text"
-                                        id="software_kod"
-                                        name="software_kod"
-                                        value="{{ $preduzece->software_kod ?? old('software_kod') }}"
-                                    >
-                                </div>
-                                <div class="form-group mt-4">
                                     <label for="enu_kod">ENU Kod</label>
                                     <input
                                         class="form-control"
