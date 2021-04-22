@@ -49,10 +49,11 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
         $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
-        if ($depozitWithdraw->iznos_depozit > 0) {
-            Depozit::dispatch($depozitWithdraw);
-        }
         $depozitWithdraw->save();
+
+        if ($depozitWithdraw->iznos_depozit > 0) {
+            Depozit::dispatch($depozitWithdraw)->onConnection('sync');
+        }
 
         // if($depozitWithdraw->iznos_withdraw > 0) {
         //     Withdraw::dispatch($depozitWithdraw);
