@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Exception;
 use Illuminate\Bus\Queueable;
 use App\Services\SignXMLService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -82,8 +83,18 @@ class Depozit implements ShouldQueue
 
             Log::error($errorMessage);
 
-            abort(520, $errorMessage);
+            throw new \Exception($errorMessage);
         }
+    }
+
+    public function failed(Exception $e)
+    {
+        DB::table('failed_jobs_custom')->insert([
+            'connection' => $this->connection,
+            'payload' => $this->data['depozit']->id,
+            'exception' => $e->getMessage(),
+            'job_name' => 'depozit',
+        ]);
     }
 
     private function loadCertifacate($location, $password)

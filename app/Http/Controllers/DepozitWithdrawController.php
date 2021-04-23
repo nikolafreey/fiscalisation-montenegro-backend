@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreDepozitWithdraw;
 use App\Jobs\Depozit;
+use App\Jobs\Fiskalizuj;
+use App\Models\Racun;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
@@ -78,5 +80,12 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->delete();
 
         return response()->json($depozitWithdraw, 200);
+    }
+
+    public function fiskalizujDepozit(DepozitWithdraw $depozit)
+    {
+        Depozit::dispatch($depozit)->onConnection('sync');
+
+        return response()->json($depozit, 201);
     }
 }

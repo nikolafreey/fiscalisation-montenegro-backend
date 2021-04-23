@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Services\SignXMLService;
 use Exception;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -109,8 +110,18 @@ class Fiskalizuj implements ShouldQueue
 
             Log::error($errorMessage);
 
-            abort(520, $errorMessage);
+            throw new \Exception($errorMessage);
         }
+    }
+
+    public function failed(Exception $e)
+    {
+        DB::table('failed_jobs_custom')->insert([
+            'connection' => $this->connection,
+            'payload' => $this->data['racun']->id,
+            'exception' => $e->getMessage(),
+            'job_name' => 'racun',
+        ]);
     }
 
     private function loadCertifacate($location, $password)
