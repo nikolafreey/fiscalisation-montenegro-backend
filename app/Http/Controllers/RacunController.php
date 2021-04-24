@@ -283,10 +283,8 @@ class RacunController extends Controller
         return response()->json($racun->fresh()->load('porezi', 'stavke'), 201);
     }
 
-    public function stornirajRacun(Request $request)
+    public function stornirajRacun(Racun $racun)
     {
-        $racun = Racun::findOrFail($request->id);
-
         $ukupna_cijena_bez_pdv = $racun->ukupna_cijena_bez_pdv * -1;
         $ukupna_cijena_bez_pdv_popust = $racun->ukupna_cijena_bez_pdv_popust * -1;
         $ukupna_cijena_sa_pdv = $racun->ukupna_cijena_sa_pdv * -1;

@@ -168,8 +168,8 @@ Route::middleware('auth:sanctum')->group(function () {
             ]);
 
             Route::get('nefiskalizovani-racuni', [RacunController::class, 'nefiskalizovaniRacuni']);
-            Route::post('nefiskalizovani-racuni/fiskalizuj', [RacunController::class, 'fiskalizujRacun']);
-            Route::post('storniraj-racun', [RacunController::class, 'stornirajRacun']);
+            Route::post('nefiskalizovani-racuni/{racun}', [RacunController::class, 'fiskalizujRacun']);
+            Route::post('storniraj-racun/{racun}', [RacunController::class, 'stornirajRacun']);
 
             Route::apiResource('ulazni-racuni', UlazniRacunController::class)->parameters([
                 'ulazni_racuni' => 'ulazni_racun'
