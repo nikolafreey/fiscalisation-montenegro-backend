@@ -275,18 +275,71 @@ class RacunController extends Controller
             $racun->izracunajPoreze();
 
 
-            if ($request->status === 'Storniran') {
-                $racun->ukupna_cijena_bez_pdv *= -1;
-                $racun->ukupna_cijena_sa_pdv *= -1;
-                $racun->ukupan_iznos_pdv *= -1;
-            }
-
             return $racun;
         });
 
         Fiskalizuj::dispatch($racun)->onConnection('sync');
 
         return response()->json($racun->fresh()->load('porezi', 'stavke'), 201);
+    }
+
+    public function stornirajRacun(Racun $racun)
+    {
+        $ukupna_cijena_bez_pdv = $racun->ukupna_cijena_bez_pdv * -1;
+        $ukupna_cijena_bez_pdv_popust = $racun->ukupna_cijena_bez_pdv_popust * -1;
+        $ukupna_cijena_sa_pdv = $racun->ukupna_cijena_sa_pdv * -1;
+        $ukupna_cijena_sa_pdv_popust = $racun->ukupna_cijena_sa_pdv_popust * -1;
+        $ukupan_iznos_pdv = $racun->ukupan_iznos_pdv * -1;
+
+        $storniranRacun = $racun->replicate()->fill([
+            'status' => 'storniran',
+            'ukupna_cijena_bez_pdv' => $ukupna_cijena_bez_pdv,
+            'ukupna_cijena_bez_pdv_popust' => $ukupna_cijena_bez_pdv_popust,
+            'ukupna_cijena_sa_pdv' => $ukupna_cijena_sa_pdv,
+            'ukupna_cijena_sa_pdv_popust' => $ukupna_cijena_sa_pdv_popust,
+            'ukupan_iznos_pdv' => $ukupan_iznos_pdv
+        ]);
+
+        $storniranRacun->save();
+
+        foreach ($racun->stavke as $stavka) {
+            $jedinicna_cijena_bez_pdv = $stavka->jedinicna_cijena_bez_pdv * -1;
+            $jedinicna_cijena_sa_pdv = $stavka->jedinicna_cijena_sa_pdv * -1;
+            $cijena_bez_pdv = $stavka->cijena_bez_pdv * -1;
+            $pdv_iznos = $stavka->pdv_iznos * -1;
+            $popust_iznos = $stavka->popust_iznos * -1;
+            $cijena_sa_pdv = $stavka->cijena_sa_pdv * -1;
+
+
+            $cijena_bez_pdv_popust = $stavka->cijena_bez_pdv_popust * -1;
+            $cijena_sa_pdv_popust = $stavka->cijena_sa_pdv_popust * -1;
+            $ukupna_bez_pdv = $stavka->ukupna_bez_pdv * -1;
+            $ukupna_sa_pdv = $stavka->ukupna_sa_pdv * -1;
+            $ukupna_sa_pdv_popust = $stavka->ukupna_sa_pdv_popust * -1;
+            $ukupna_bez_pdv_popust = $stavka->ukupna_bez_pdv_popust * -1;
+            $pdv_iznos_ukupno = $stavka->pdv_iznos_ukupno * -1;
+
+            $storniranaStavka = $stavka->replicate()->fill([
+                'racun_id' => $storniranRacun->id,
+                'jedinicna_cijena_bez_pdv' =>  $jedinicna_cijena_bez_pdv,
+                'jedinicna_cijena_sa_pdv' =>  $jedinicna_cijena_sa_pdv,
+                'cijena_bez_pdv' =>  $cijena_bez_pdv,
+                'pdv_iznos' =>  $pdv_iznos,
+                'popust_iznos' =>  $popust_iznos,
+                'cijena_sa_pdv' =>  $cijena_sa_pdv,
+                'cijena_bez_pdv_popust' =>  $cijena_bez_pdv_popust,
+                'cijena_sa_pdv_popust' => $cijena_sa_pdv_popust,
+                'ukupna_bez_pdv' => $ukupna_bez_pdv,
+                'ukupna_sa_pdv_popust' => $ukupna_sa_pdv_popust,
+                'ukupna_sa_pdv' => $ukupna_sa_pdv,
+                'ukupna_bez_pdv_popust' => $ukupna_bez_pdv_popust,
+                'pdv_iznos_ukupno' => $pdv_iznos_ukupno,
+            ]);
+
+            $storniranaStavka->save();
+        }
+
+        return response()->json($storniranRacun->load('stavke'), 201);
     }
 
     /**
@@ -373,5 +426,17 @@ class RacunController extends Controller
         }
 
         return response()->json('Uspjesno ste poslali racun na mejl korisnika');
+    }
+
+    public function nefiskalizovaniRacuni()
+    {
+        return Racun::filterByPermissions()->whereNull('ikof')->get();
+    }
+
+    public function fiskalizujRacun(Racun $racun)
+    {
+        Fiskalizuj::dispatch($racun)->onConnection('sync');
+
+        return response()->json($racun, 201);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\UpdatePreduzece;
 use App\Models\Paket;
+use App\Models\PoslovnaJedinica;
 use App\Models\Preduzece;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,6 +45,12 @@ class PreduzeceController extends Controller
     public function update(Preduzece $preduzece, UpdatePreduzece $request)
     {
         $preduzece->update($request->validated());
+
+        foreach($request->poslovneJedinice as $row){
+            $poslovnaJedinica = PoslovnaJedinica::find($row['id']);
+            $poslovnaJedinica->kod_poslovnog_prostora = $row['kod_poslovnog_prostora'];
+            $poslovnaJedinica->save();
+        }
 
         $request->session()->flash('success', 'Uspješno ste izmijenili sertifikat preduzeća');
 
