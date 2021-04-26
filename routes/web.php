@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\AktivnostiController;
 use App\Http\Controllers\Web\BlogCategoryController;
 use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\DozvoleController;
+use App\Http\Controllers\Web\FailedJobsCustomController;
 use App\Http\Controllers\Web\ImageController;
 use App\Http\Controllers\Web\UlogeController;
 use App\Http\Controllers\Web\UlogovaniKorisnikController;
@@ -59,4 +60,7 @@ Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
     Route::resource('ulogovaniKorisnici', UlogovaniKorisnikController::class)->only('index', 'destroy')->parameters([
         'ulogovaniKorisnici' => 'ulogovaniKorisnik'
     ]);
+
+    Route::get('failedJobs', [FailedJobsCustomController::class, 'index'])->name('failedJobs.index');
+
 });
