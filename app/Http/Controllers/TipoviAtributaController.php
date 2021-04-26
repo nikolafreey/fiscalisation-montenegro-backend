@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class TipoviAtributaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(TipAtributa::class, 'tipAtributa');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(TipAtributa::class, 'tipAtributa');
+    // }
 
     /**
      * Display a listing of the resource.

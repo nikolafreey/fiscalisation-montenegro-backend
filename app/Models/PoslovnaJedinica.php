@@ -32,13 +32,15 @@ class PoslovnaJedinica extends Model
 
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
-        if (auth()->user()->can('view all PoslovnaJedinica')) {
-            return $query;
-        }
+        return $query;
 
-        if (auth()->user()->can('view owned PoslovnaJedinica')) {
-            return $query->where('user_id', auth()->id());
-        }
+        // if (auth()->user()->can('view all PoslovnaJedinica')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned PoslovnaJedinica')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
     }
 
     public function preduzece()

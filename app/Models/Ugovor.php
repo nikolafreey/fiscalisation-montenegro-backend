@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Ugovor extends Model
 {
+    // dodati vezu za preduzece
     use HasFactory, ImaAktivnost;
 
     // protected static function boot()

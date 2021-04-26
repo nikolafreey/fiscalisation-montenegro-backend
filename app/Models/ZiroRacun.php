@@ -20,6 +20,17 @@ class ZiroRacun extends Model
         'fizicko_lice_id'
     ];
 
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+    }
+
     public function preduzece()
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');

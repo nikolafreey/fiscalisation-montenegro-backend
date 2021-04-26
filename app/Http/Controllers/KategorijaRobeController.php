@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class KategorijaRobeController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(KategorijaRobe::class, 'kategorijaRobe');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(KategorijaRobe::class, 'kategorijaRobe');
+    // }
 
     /**
      * Display a listing of the resource.

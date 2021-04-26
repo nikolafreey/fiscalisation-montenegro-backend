@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class PodKategorijaRobeController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(PodKategorijaRobe::class, 'podKategorijaRobe');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(PodKategorijaRobe::class, 'podKategorijaRobe');
+    // }
 
     /**
      * Display a listing of the resource.

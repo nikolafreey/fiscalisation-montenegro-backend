@@ -31,13 +31,15 @@ class TipAtributa extends Model
 
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
-        if (auth()->user()->can('view all TipAtributa')) {
-            return $query;
-        }
+        return $query;
 
-        if (auth()->user()->can('view owned TipAtributa')) {
-            return $query->where('user_id', auth()->id());
-        }
+        // if (auth()->user()->can('view all TipAtributa')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned TipAtributa')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
     }
 
     public function user()

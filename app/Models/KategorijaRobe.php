@@ -31,13 +31,15 @@ class KategorijaRobe extends Model
 
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
-        if (auth()->user()->can('view all KategorijaRobe')) {
-            return $query;
-        }
+        return $query;
 
-        if (auth()->user()->can('view owned KategorijaRobe')) {
-            return $query->where('user_id', auth()->id());
-        }
+        // if (auth()->user()->can('view all KategorijaRobe')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned KategorijaRobe')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
     }
 
     public function user()

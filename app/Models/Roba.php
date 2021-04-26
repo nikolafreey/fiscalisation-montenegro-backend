@@ -13,6 +13,7 @@ use App\Traits\ImaAktivnost;
 
 class Roba extends Model
 {
+    // ispravka veze
     use HasFactory, SoftDeletes, ImaAktivnost;
 
     // protected static function boot()

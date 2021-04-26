@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class JedinicaMjereController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(JedinicaMjere::class, 'jedinicaMjere');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(JedinicaMjere::class, 'jedinicaMjere');
+    // }
 
     /**
      * Display a listing of the resource.

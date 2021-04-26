@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class FizickoLiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(FizickoLice::class, 'fizickoLice');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(FizickoLice::class, 'fizickoLice');
+    // }
 
     /**
      * Display a listing of the resource.

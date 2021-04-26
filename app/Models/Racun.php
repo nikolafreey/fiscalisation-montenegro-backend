@@ -55,13 +55,15 @@ class Racun extends Model
 
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
-        if (auth()->user()->can('view all Racun')) {
-            return $query;
-        }
+        return $query;
 
-        if (auth()->user()->can('view owned Racun')) {
-            return $query->where('user_id', auth()->id());
-        }
+        // if (auth()->user()->can('view all Racun')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned Racun')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
     }
 
     public const RACUN = 'racun';

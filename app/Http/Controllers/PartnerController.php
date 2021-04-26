@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Partner::class, 'partner');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Partner::class, 'partner');
+    // }
 
     /**
      * Display a listing of the resource.

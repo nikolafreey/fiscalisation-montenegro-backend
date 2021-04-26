@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class UlazniRacunController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(UlazniRacun::class, 'ulazniRacun');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(UlazniRacun::class, 'ulazniRacun');
+    // }
 
     /**
      * Display a listing of the resource.

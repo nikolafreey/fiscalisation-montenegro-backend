@@ -26,10 +26,10 @@ use ScoutElastic\Searchable;
 
 class RacunController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Racun::class, 'racun');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Racun::class, 'racun');
+    // }
 
     /**
      * Display a listing of the resource.

@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class DepozitWithdrawController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
+    // }
 
     public function getDepozitToday()
     {

@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class GrupaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Grupa::class, 'grupa');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Grupa::class, 'grupa');
+    // }
 
     /**
      * Display a listing of the resource.

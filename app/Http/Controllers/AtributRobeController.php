@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class AtributRobeController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(AtributRobe::class, 'atributRobe');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(AtributRobe::class, 'atributRobe');
+    // }
 
     /**
      * Display a listing of the resource.

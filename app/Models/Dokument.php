@@ -31,13 +31,15 @@ class Dokument extends Model
 
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
-        if (auth()->user()->can('view all Dokument')) {
-            return $query;
-        }
+        return $query;
 
-        if (auth()->user()->can('view owned Dokument')) {
-            return $query->where('user_id', auth()->id());
-        }
+        // if (auth()->user()->can('view all Dokument')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned Dokument')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
     }
 
     public function kategorije()

@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class UslugaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Usluga::class, 'usluga');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Usluga::class, 'usluga');
+    // }
 
     /**
      * Display a listing of the resource.

@@ -14,6 +14,7 @@ use App\Traits\ImaAktivnost;
 
 class UlazniRacun extends Model
 {
+    // lowercase
     use HasFactory, SoftDeletes, ImaAktivnost;
 
     public const RACUN = 'RACUN';
@@ -57,13 +58,15 @@ class UlazniRacun extends Model
 
         $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
-        if (auth()->user()->can('view all UlazniRacun')) {
-            return $query;
-        }
+        return $query;
 
-        if (auth()->user()->can('view owned UlazniRacun')) {
-            return $query->where('user_id', auth()->id());
-        }
+        // if (auth()->user()->can('view all UlazniRacun')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned UlazniRacun')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
     }
 
     use Searchable;

@@ -11,6 +11,7 @@ use App\Traits\ImaAktivnost;
 
 class Usluga extends Model
 {
+    // dodati vezu
     use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $naziv = 'naziv';
