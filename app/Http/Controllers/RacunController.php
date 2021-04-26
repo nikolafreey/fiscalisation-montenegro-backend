@@ -431,13 +431,13 @@ class RacunController extends Controller
 
     public function nefiskalizovaniRacuni()
     {
-        return Racun::filterByPermissions()->whereNull('ikof')->get();
+        return Racun::filterByPermissions()->whereNull('jikr')->get();
     }
 
     public function fiskalizujRacun(Racun $racun)
     {
-        Fiskalizuj::dispatch($racun)->onConnection('sync');
+        Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
 
-        return response()->json($racun, 201);
+        return response()->json('Uspjesno ste fiskalizovali racun', 200);
     }
 }

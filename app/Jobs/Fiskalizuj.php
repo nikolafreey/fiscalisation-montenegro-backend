@@ -21,7 +21,9 @@ class Fiskalizuj implements ShouldQueue
 
     public $certificate;
 
-    public function __construct($racun)
+    public $ikof;
+
+    public function __construct($racun, $ikof = null)
     {
         if ($racun->vrsta_racuna === 'gotovinski') {
             $potpis = $racun->preduzece->pecat;
@@ -60,10 +62,15 @@ class Fiskalizuj implements ShouldQueue
 
         $this->data['IICData'] = $this->generateIIC();
         $this->data['sameTaxes'] = $this->calculateSameTaxes();
+        $this->ikof = $ikof;
     }
 
     public function handle()
     {
+        $this->data['racun']->update([
+            'ikof' => $this->ikof ?? $this->data['IICData']['IIC'],
+        ]);
+
         $xml = view('xml.fiskalizuj', $this->data)->render();
 
         $signXMLService = new SignXMLService(
@@ -84,7 +91,6 @@ class Fiskalizuj implements ShouldQueue
             ]);
 
         $this->data['racun']->update([
-            'ikof' => $this->data['IICData']['IIC'],
             'jikr' => $this->parseJikrFromXmlResponse($response),
             'qr_url' => $this->generateQRCode(),
         ]);
@@ -116,12 +122,12 @@ class Fiskalizuj implements ShouldQueue
 
     public function failed(Exception $e)
     {
-        DB::table('failed_jobs_custom')->insert([
-            'connection' => $this->connection,
-            'payload' => $this->data['racun']->id,
-            'exception' => $e->getMessage(),
-            'job_name' => 'racun',
-        ]);
+        // DB::table('failed_jobs_custom')->insert([
+        //     'connection' => $this->connection,
+        //     'payload' => $this->data['racun']->id,
+        //     'exception' => $e->getMessage(),
+        //     'job_name' => 'racun',
+        // ]);
     }
 
     private function loadCertifacate($location, $password)
