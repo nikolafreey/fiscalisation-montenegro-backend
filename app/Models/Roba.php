@@ -13,15 +13,7 @@ use App\Traits\ImaAktivnost;
 
 class Roba extends Model
 {
-    // ispravka veze
     use HasFactory, SoftDeletes, ImaAktivnost;
-
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //
-    //     static::addGlobalScope(new UserScope);
-    // }
 
     protected $naziv = 'naziv';
 
@@ -169,7 +161,7 @@ class Roba extends Model
 
     public function preduzece()
     {
-        return $this->hasMany('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 
     public function robe_kategorije()

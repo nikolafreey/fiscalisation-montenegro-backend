@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class TipKorisnikaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(TipKorisnika::class, 'tipKorisnika');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(TipKorisnika::class, 'tipKorisnika');
+    // }
 
     /**
      * Display a listing of the resource.

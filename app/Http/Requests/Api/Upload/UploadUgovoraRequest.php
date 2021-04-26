@@ -6,6 +6,13 @@ use App\Http\Requests\Api\BaseApiRequest;
 
 class UploadUgovoraRequest extends BaseApiRequest
 {
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'preduzece_id' => getAuthPreduzeceId(request()),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,7 +22,8 @@ class UploadUgovoraRequest extends BaseApiRequest
     {
         return [
             'naziv' => 'required',
-            'file' => 'required'
+            'file' => 'required',
+            'preduzece_id' => 'nullable',
         ];
     }
 }

@@ -29,7 +29,7 @@ class Dokument extends Model
             return $query;
         }
 
-        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
         return $query;
 

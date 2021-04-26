@@ -19,6 +19,11 @@ class CreateUgovorsTable extends Migration
             $table->string('file');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreignUuid('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

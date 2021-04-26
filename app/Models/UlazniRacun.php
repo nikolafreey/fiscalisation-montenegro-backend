@@ -14,12 +14,11 @@ use App\Traits\ImaAktivnost;
 
 class UlazniRacun extends Model
 {
-    // lowercase
     use HasFactory, SoftDeletes, ImaAktivnost;
 
-    public const RACUN = 'RACUN';
+    public const RACUN = 'racun';
 
-    public const GOTOVINSKI = 'GOTOVINSKI';
+    public const GOTOVINSKI = 'gotovinski';
 
     protected $naziv = 'vrsta_racuna';
 
@@ -56,7 +55,7 @@ class UlazniRacun extends Model
             return $query;
         }
 
-        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
         return $query;
 

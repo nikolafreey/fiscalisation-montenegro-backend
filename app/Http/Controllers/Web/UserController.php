@@ -54,8 +54,8 @@ class UserController extends Controller
         $user->preduzeca()->attach($request->preduzece_id);
 
         if ($request->uloga === 'Vlasnik') {
-            foreach ($request->preduzeca as $id) {
-                Preduzece::where('id', $id)->firstOrFail()->update(['verifikovan' => true]);
+            foreach ($request->preduzece_id as $id) {
+                Preduzece::find($id)->firstOrFail()->update(['verifikovan' => true]);
             }
         }
 

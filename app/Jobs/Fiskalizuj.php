@@ -23,13 +23,13 @@ class Fiskalizuj implements ShouldQueue
 
     public function __construct($racun)
     {
-        if ($racun->vrsta_racuna === 'GOTOVINSKI') {
+        if ($racun->vrsta_racuna === 'gotovinski') {
             $potpis = $racun->preduzece->pecat;
 
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
         }
 
-        if ($racun->vrsta_racuna === 'BEZGOTOVINSKI') {
+        if ($racun->vrsta_racuna === 'bezgotovinski') {
             $potpis = $racun->preduzece->sertifikat;
 
             $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);

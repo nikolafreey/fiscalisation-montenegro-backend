@@ -29,7 +29,7 @@ class TipAtributa extends Model
             return $query;
         }
 
-        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
         return $query;
 
@@ -51,7 +51,6 @@ class TipAtributa extends Model
     {
         return $this->hasMany('App\Models\AtributRobe', 'tip_atributa_id');
     }
-
 
     public function robe()
     {

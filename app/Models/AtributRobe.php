@@ -29,7 +29,7 @@ class AtributRobe extends Model
             return $query;
         }
 
-        $query= $query->where('preduzece_id', getAuthPreduzeceId(request()));
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
 
         return $query;
         // if (auth()->user()->can('view all AtributRobe')) {

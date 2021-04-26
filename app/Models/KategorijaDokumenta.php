@@ -10,20 +10,30 @@ class KategorijaDokumenta extends Model
 {
     use HasFactory, ImaAktivnost;
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //
-    //     static::addGlobalScope(new UserScope);
-    // }
-
     protected $naziv = 'naziv';
 
     protected $table = 'kategorije_dokumenata';
 
     protected $fillable = [
-        'naziv'
+        'naziv',
+        'preduzece_id',
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+    }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
 
     public function dokumenti()
     {

@@ -293,11 +293,12 @@ class RacunController extends Controller
 
         $storniranRacun = $racun->replicate()->fill([
             'status' => 'storniran',
+            'korektivni_racun_vrsta' => 'CORRECTIVE',
             'ukupna_cijena_bez_pdv' => $ukupna_cijena_bez_pdv,
             'ukupna_cijena_bez_pdv_popust' => $ukupna_cijena_bez_pdv_popust,
             'ukupna_cijena_sa_pdv' => $ukupna_cijena_sa_pdv,
             'ukupna_cijena_sa_pdv_popust' => $ukupna_cijena_sa_pdv_popust,
-            'ukupan_iznos_pdv' => $ukupan_iznos_pdv
+            'ukupan_iznos_pdv' => $ukupan_iznos_pdv,
         ]);
 
         $storniranRacun->save();

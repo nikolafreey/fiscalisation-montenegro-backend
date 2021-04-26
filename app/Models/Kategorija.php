@@ -10,15 +10,7 @@ use App\Traits\ImaAktivnost;
 
 class Kategorija extends Model
 {
-    // Provjeriti
     use HasFactory, SoftDeletes, ImaAktivnost;
-
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //
-    //     static::addGlobalScope(new UserScope);
-    // }
 
     protected $naziv = 'naziv';
 

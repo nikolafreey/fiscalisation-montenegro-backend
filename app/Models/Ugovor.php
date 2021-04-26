@@ -9,15 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Ugovor extends Model
 {
-    // dodati vezu za preduzece
     use HasFactory, ImaAktivnost;
-
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //
-    //     static::addGlobalScope(new UserScope);
-    // }
 
     protected $naziv = 'naziv';
 
@@ -25,8 +17,25 @@ class Ugovor extends Model
 
     protected $fillable = [
         'naziv',
-        'file'
+        'file',
+        'preduzece_id',
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+    }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
 
     public function setFileAttribute($value)
     {

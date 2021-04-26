@@ -109,8 +109,8 @@ class IzvjestajService
         }
 
 
-        $gotovinskiRacuni = $racuni->where('vrsta_racuna', 'GOTOVINSKI');
-        $bezgotovinskiRacuni = $racuni->where('vrsta_racuna', 'BEZGOTOVINSKI');
+        $gotovinskiRacuni = $racuni->where('vrsta_racuna', 'gotovinski');
+        $bezgotovinskiRacuni = $racuni->where('vrsta_racuna', 'bezgotovinski');
 
         $ukupanPrometGotovinskihRacuna = 0;
         $ukupanPrometBezgotovinskihRacuna = 0;

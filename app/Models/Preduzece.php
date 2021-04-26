@@ -146,7 +146,7 @@ class Preduzece extends Model
 
     public function roba()
     {
-        return $this->belongsTo('App\Models\Roba', 'preduzece_id');
+        return $this->hasMany('App\Models\Roba', 'preduzece_id');
     }
 
     public function poslovne_jedinice()

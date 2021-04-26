@@ -20,7 +20,7 @@ class KategorijaDokumentaController extends Controller
      */
     public function index()
     {
-        return KategorijaDokumenta::get();
+        return KategorijaDokumenta::filterByPermissions()->get();
     }
 
     /**

@@ -11,7 +11,6 @@ use App\Traits\ImaAktivnost;
 
 class Usluga extends Model
 {
-    // dodati vezu
     use HasFactory, SoftDeletes, ImaAktivnost;
 
     protected $naziv = 'naziv';
@@ -31,7 +30,7 @@ class Usluga extends Model
         'jedinica_mjere_id',
         'porez_id',
         'iznos_pdv_popust',
-
+        'preduzece_id',
     ];
     use Searchable;
     protected $indexConfigurator = UslugaIndexConfigurator::class;
@@ -49,6 +48,22 @@ class Usluga extends Model
     {
         $array = $this->only('naziv');
         return $array;
+    }
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+    }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 
     public function user()
