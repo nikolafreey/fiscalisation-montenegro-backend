@@ -19,7 +19,7 @@ class CreatePoslovnaJedinicasTable extends Migration
             $table->string('adresa', 50)->nullable();
             $table->string('grad', 50)->nullable();
             $table->string('drzava', 50)->nullable();
-
+            $table->string('kod_poslovnog_prostora', 50)->default('xx123xx123');
 
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')

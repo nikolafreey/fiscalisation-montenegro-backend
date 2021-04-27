@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class ProizvodjacRobeController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(ProizvodjacRobe::class, 'proizvodjacRobe');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(ProizvodjacRobe::class, 'proizvodjacRobe');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class ProizvodjacRobeController extends Controller
      */
     public function index()
     {
-        return ProizvodjacRobe::get();
+        return ProizvodjacRobe::filterByPermissions()->get();
     }
 
     /**

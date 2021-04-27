@@ -39,6 +39,7 @@ class CreateCijeneRobaTable extends Migration
                 ->constrained('robe')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
             $table->foreignId('atribut_id')
                 ->constrained('atributi_roba')
                 ->onDelete('cascade')

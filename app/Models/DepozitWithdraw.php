@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ImaAktivnost;
@@ -11,7 +10,31 @@ class DepozitWithdraw extends Model
 {
     use HasFactory;
 
-    protected $fillable = array('iznos_depozit', 'iznos_withdraw', 'poslovna_jedinica_id');
+    protected $fillable = [
+        'iznos_depozit',
+        'iznos_withdraw',
+        'poslovna_jedinica_id',
+        'fiskalizovan',
+    ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all DepozitWithdraw')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned DepozitWithdraw')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
 
     public function poslovnaJedinica()
     {
@@ -22,9 +45,4 @@ class DepozitWithdraw extends Model
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
-
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
 }

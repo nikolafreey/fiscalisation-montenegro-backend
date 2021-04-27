@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Exception;
 use Illuminate\Bus\Queueable;
 use App\Services\SignXMLService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -28,9 +29,8 @@ class Depozit implements ShouldQueue
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'depozit' => $depozit,
-            // TODO: Check is this data dynamic?
             'taxpayer' => [
-                'CR' => 'wp886vu280', // Cash Register (ENU)
+                'CR' => $depozit->preduzece->enu_kod,
                 'TIN' => $depozit->preduzece->pib,
             ],
         ];
@@ -44,8 +44,6 @@ class Depozit implements ShouldQueue
     public function handle()
     {
         $xml = view('xml.depozit', $this->data)->render();
-
-        file_put_contents('depozit.xml', $xml);
 
         $signXMLService = new SignXMLService(
             $xml,
@@ -85,8 +83,18 @@ class Depozit implements ShouldQueue
 
             Log::error($errorMessage);
 
-            abort(520, $errorMessage);
+            throw new \Exception($errorMessage);
         }
+    }
+
+    public function failed(Exception $e)
+    {
+        DB::table('failed_jobs_custom')->insert([
+            'connection' => $this->connection,
+            'payload' => $this->data['depozit']->id,
+            'exception' => $e->getMessage(),
+            'job_name' => 'depozit',
+        ]);
     }
 
     private function loadCertifacate($location, $password)

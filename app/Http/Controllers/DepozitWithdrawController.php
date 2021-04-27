@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreDepozitWithdraw;
 use App\Jobs\Depozit;
+use App\Jobs\Fiskalizuj;
+use App\Models\Racun;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
@@ -13,10 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class DepozitWithdrawController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(DepozitWithdraw::class, 'depozit-withdraw');
+    // }
 
     public function getDepozitToday()
     {
@@ -33,32 +35,35 @@ class DepozitWithdrawController extends Controller
 
     public function index()
     {
-        return DepozitWithdraw::paginate();
+        return DepozitWithdraw::filterByPermissions()->paginate();
     }
 
     public function store(StoreDepozitWithdraw $request)
     {
         $depozitWithdraw = DepozitWithdraw::make($request->all());
 
-        $depozitLoaded = DepozitWithdrawController::getDepozitToday();
+        $depozitLoaded = $this->getDepozitToday();
         if ($depozitLoaded) {
             return response()->json('Već je dodat depozit za današnji dan!', 400);
         }
 
         $depozitWithdraw->user_id = auth()->id();
-        $user = User::find(auth()->id())->load(['preduzeca', 'preduzeca.poslovne_jedinice']);
         $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
         $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
-        if ($depozitWithdraw->iznos_depozit > 0) {
-            Depozit::dispatch($depozitWithdraw);
-        }
         $depozitWithdraw->save();
 
+        if ($depozitWithdraw->iznos_depozit > 0) {
+            Depozit::dispatch($depozitWithdraw)->onConnection('sync');
+        }
 
         // if($depozitWithdraw->iznos_withdraw > 0) {
         //     Withdraw::dispatch($depozitWithdraw);
         // }
+
+        $depozitWithdraw->update([
+            'fiskalizovan' => true,
+        ]);
 
         return response()->json($depozitWithdraw);
     }
@@ -80,5 +85,21 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->delete();
 
         return response()->json($depozitWithdraw, 200);
+    }
+
+    public function nefiskalizovaniDepoziti()
+    {
+        return DepozitWithdraw::filterByPermissions()->where('fiskalizovan', false)->get();
+    }
+
+    public function fiskalizujDepozit(DepozitWithdraw $depozit)
+    {
+        Depozit::dispatch($depozit)->onConnection('sync');
+
+        $depozit->update([
+            'fiskalizovan' => true,
+        ]);
+
+        return response()->json('Uspjesno ste fiskalizovali depozit', 200);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,10 +23,24 @@ class TipAtributa extends Model
         'status'
     ];
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all TipAtributa')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned TipAtributa')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
 
     public function user()
     {
@@ -38,7 +51,6 @@ class TipAtributa extends Model
     {
         return $this->hasMany('App\Models\AtributRobe', 'tip_atributa_id');
     }
-
 
     public function robe()
     {

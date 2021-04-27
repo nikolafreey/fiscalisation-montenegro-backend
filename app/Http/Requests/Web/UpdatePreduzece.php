@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Web;
 
+use App\Rules\PecatRule;
+use App\Rules\SertifikatRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePreduzece extends FormRequest
@@ -34,8 +36,11 @@ class UpdatePreduzece extends FormRequest
         return [
             'pecatSifra' => 'nullable',
             'sertifikatSifra' => 'nullable',
-            'pecat' => 'required_without:sertifikat',
-            'sertifikat' => 'required_without:pecat',
+            'pecat' => ['required_without:sertifikat', new PecatRule($this->pecatSifra)],
+            'sertifikat' => ['required_without:pecat', new SertifikatRule($this->sertifikatSifra)],
+            'pib' => 'nullable',
+            'enu_kod' => 'nullable',
+            'kod_operatera' => 'nullable',
         ];
     }
 }

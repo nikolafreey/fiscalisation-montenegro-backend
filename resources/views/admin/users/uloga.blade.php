@@ -34,7 +34,18 @@
                                     <label for="uloga">Uloga</label>
                                     <select class="selectize mt-2" id="uloga" name="uloga">
                                         @foreach($roles as $role)
-                                            <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                            <option
+                                                @if(in_array(
+                                                    $role->name,
+                                                    $user->roles->pluck('name')->toArray(),
+                                                    true
+                                                ))
+                                                    selected
+                                                @endif
+                                                value="{{ $role->name }}"
+                                            >
+                                                {{ $role->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>

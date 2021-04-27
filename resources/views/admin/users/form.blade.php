@@ -36,7 +36,7 @@
                                     <input type="email" class="form-control" id="email" placeholder="E-mail..." name="email" value="{{ old('email', $user->email) }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="password">Password</label>
+                                    <label for="password">{{ $action ? 'Nova lozinka' : 'Lozinka' }}</label>
                                     <input type="password" class="form-control" id="password" placeholder="Password..." name="password" value="{{ old('password') }}">
                                 </div>
                                 <div class="form-group">

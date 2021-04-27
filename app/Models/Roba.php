@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\RobaIndexConfigurator;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -162,7 +161,7 @@ class Roba extends Model
 
     public function preduzece()
     {
-        return $this->hasMany('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 
     public function robe_kategorije()

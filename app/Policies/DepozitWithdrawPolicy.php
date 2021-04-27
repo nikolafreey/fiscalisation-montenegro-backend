@@ -18,7 +18,7 @@ class DepozitWithdrawPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view DepozitWithdraw');
+        return $user->canAny(['view all DepozitWithdraw', 'view owned DepozitWithdraw']);
     }
 
     /**

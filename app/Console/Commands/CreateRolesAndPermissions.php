@@ -46,21 +46,24 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'edit users']);
 
 
-        Permission::firstOrCreate(['name' => 'view AtributRobe']);
+        Permission::firstOrCreate(['name' => 'view all AtributRobe']);
+        Permission::firstOrCreate(['name' => 'view owned AtributRobe']);
         Permission::firstOrCreate(['name' => 'show AtributRobe']);
         Permission::firstOrCreate(['name' => 'create AtributRobe']);
         Permission::firstOrCreate(['name' => 'update AtributRobe']);
         Permission::firstOrCreate(['name' => 'delete AtributRobe']);
 
 
-        Permission::firstOrCreate(['name' => 'view CijenaRobe']);
+        Permission::firstOrCreate(['name' => 'view all CijenaRobe']);
+        Permission::firstOrCreate(['name' => 'view owned CijenaRobe']);
         Permission::firstOrCreate(['name' => 'show CijenaRobe']);
         Permission::firstOrCreate(['name' => 'create CijenaRobe']);
         Permission::firstOrCreate(['name' => 'update CijenaRobe']);
         Permission::firstOrCreate(['name' => 'delete CijenaRobe']);
 
 
-        Permission::firstOrCreate(['name' => 'view DepozitWithdraw']);
+        Permission::firstOrCreate(['name' => 'view all DepozitWithdraw']);
+        Permission::firstOrCreate(['name' => 'view owned DepozitWithdraw']);
         Permission::firstOrCreate(['name' => 'show DepozitWithdraw']);
         Permission::firstOrCreate(['name' => 'create DepozitWithdraw']);
         Permission::firstOrCreate(['name' => 'update DepozitWithdraw']);
@@ -81,7 +84,8 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete FizickoLice']);
 
 
-        Permission::firstOrCreate(['name' => 'view Grupa']);
+        Permission::firstOrCreate(['name' => 'view all Grupa']);
+        Permission::firstOrCreate(['name' => 'view owned Grupa']);
         Permission::firstOrCreate(['name' => 'show Grupa']);
         Permission::firstOrCreate(['name' => 'create Grupa']);
         Permission::firstOrCreate(['name' => 'update Grupa']);
@@ -102,7 +106,8 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete Kategorija']);
 
 
-        Permission::firstOrCreate(['name' => 'view KategorijaRobe']);
+        Permission::firstOrCreate(['name' => 'view all KategorijaRobe']);
+        Permission::firstOrCreate(['name' => 'view owned KategorijaRobe']);
         Permission::firstOrCreate(['name' => 'show KategorijaRobe']);
         Permission::firstOrCreate(['name' => 'create KategorijaRobe']);
         Permission::firstOrCreate(['name' => 'update KategorijaRobe']);
@@ -123,14 +128,16 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete OvlascenoLice']);
 
 
-        Permission::firstOrCreate(['name' => 'view Partner']);
+        Permission::firstOrCreate(['name' => 'view all Partner']);
+        Permission::firstOrCreate(['name' => 'view owned Partner']);
         Permission::firstOrCreate(['name' => 'show Partner']);
         Permission::firstOrCreate(['name' => 'create Partner']);
         Permission::firstOrCreate(['name' => 'update Partner']);
         Permission::firstOrCreate(['name' => 'delete Partner']);
 
 
-        Permission::firstOrCreate(['name' => 'view PodKategorijaRobe']);
+        Permission::firstOrCreate(['name' => 'view all PodKategorijaRobe']);
+        Permission::firstOrCreate(['name' => 'view owned PodKategorijaRobe']);
         Permission::firstOrCreate(['name' => 'show PodKategorijaRobe']);
         Permission::firstOrCreate(['name' => 'create PodKategorijaRobe']);
         Permission::firstOrCreate(['name' => 'update PodKategorijaRobe']);
@@ -144,7 +151,8 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete Porez']);
 
 
-        Permission::firstOrCreate(['name' => 'view PoslovnaJedinica']);
+        Permission::firstOrCreate(['name' => 'view all PoslovnaJedinica']);
+        Permission::firstOrCreate(['name' => 'view owned PoslovnaJedinica']);
         Permission::firstOrCreate(['name' => 'show PoslovnaJedinica']);
         Permission::firstOrCreate(['name' => 'create PoslovnaJedinica']);
         Permission::firstOrCreate(['name' => 'update PoslovnaJedinica']);
@@ -172,7 +180,8 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete ProizvodjaciRobe']);
 
 
-        Permission::firstOrCreate(['name' => 'view Racun']);
+        Permission::firstOrCreate(['name' => 'view all Racun']);
+        Permission::firstOrCreate(['name' => 'view owned Racun']);
         Permission::firstOrCreate(['name' => 'show Racun']);
         Permission::firstOrCreate(['name' => 'create Racun']);
         Permission::firstOrCreate(['name' => 'update Racun']);
@@ -193,14 +202,16 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete TipKorisnika']);
 
 
-        Permission::firstOrCreate(['name' => 'view TipAtributa']);
+        Permission::firstOrCreate(['name' => 'view all TipAtributa']);
+        Permission::firstOrCreate(['name' => 'view owned TipAtributa']);
         Permission::firstOrCreate(['name' => 'show TipAtributa']);
         Permission::firstOrCreate(['name' => 'create TipAtributa']);
         Permission::firstOrCreate(['name' => 'update TipAtributa']);
         Permission::firstOrCreate(['name' => 'delete TipAtributa']);
 
 
-        Permission::firstOrCreate(['name' => 'view UlazniRacun']);
+        Permission::firstOrCreate(['name' => 'view all UlazniRacun']);
+        Permission::firstOrCreate(['name' => 'view owned UlazniRacun']);
         Permission::firstOrCreate(['name' => 'show UlazniRacun']);
         Permission::firstOrCreate(['name' => 'create UlazniRacun']);
         Permission::firstOrCreate(['name' => 'update UlazniRacun']);
@@ -227,7 +238,8 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'update ZiroRacun']);
         Permission::firstOrCreate(['name' => 'delete ZiroRacun']);
 
-        Permission::firstOrCreate(['name' => 'view Dokument']);
+        Permission::firstOrCreate(['name' => 'view all Dokument']);
+        Permission::firstOrCreate(['name' => 'view owned Dokument']);
         Permission::firstOrCreate(['name' => 'show Dokument']);
         Permission::firstOrCreate(['name' => 'create Dokument']);
         Permission::firstOrCreate(['name' => 'update Dokument']);
@@ -240,7 +252,7 @@ class CreateRolesAndPermissions extends Command
         Permission::firstOrCreate(['name' => 'delete KategorijaDokumenta']);
 
 
-        User::where('ime', 'Super Admin')->firstOrFail()->syncRoles(['SuperAdmin']);
+        User::where('ime', 'Super')->firstOrFail()->syncRoles(['SuperAdmin']);
 
         $this->info('Done');
 

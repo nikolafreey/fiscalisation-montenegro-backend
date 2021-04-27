@@ -7,7 +7,6 @@ use App\Models\Preduzece;
 use App\Models\ProizvodjacRobe;
 use App\Models\Roba;
 use App\Models\User;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RobaFactory extends Factory
@@ -35,8 +34,8 @@ class RobaFactory extends Factory
             'ean' => $this->faker->word(),
             'interna_sifra_proizvoda' => $this->faker->word(),
             'status' => $this->faker->boolean(),
-            'proizvodjac_robe_id' => ProizvodjacRobe::withoutGlobalScope(UserScope::class)->get()->random()->id,
-            'jedinica_mjere_id' => JedinicaMjere::withoutGlobalScope(UserScope::class)->get()->random()->id,
+            'proizvodjac_robe_id' => ProizvodjacRobe::all()->random()->id,
+            'jedinica_mjere_id' => JedinicaMjere::all()->random()->id,
             'user_id' => $user->id,
             'preduzece_id' => $user->preduzeca()->first()
         ];

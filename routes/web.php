@@ -5,8 +5,10 @@ use App\Http\Controllers\Web\AktivnostiController;
 use App\Http\Controllers\Web\BlogCategoryController;
 use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\DozvoleController;
+use App\Http\Controllers\Web\FailedJobsCustomController;
 use App\Http\Controllers\Web\ImageController;
 use App\Http\Controllers\Web\UlogeController;
+use App\Http\Controllers\Web\UlogovaniKorisnikController;
 use App\Http\Controllers\Web\UserController;
 use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
@@ -15,8 +17,15 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+use Jenssegers\Agent\Agent;
 
-Auth::routes();
+Route::group(['prefix' => 'okmnoifaonfa'], function(){
+    Auth::routes([
+        'register' => false,
+        'reset' => false,
+        'verify' => false,
+    ]);
+});
 
 Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
     Route::resource('preduzeca', PreduzeceController::class)->parameters([
@@ -47,4 +56,11 @@ Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
     Route::resource('blogs', BlogController::class)->except('show');
 
     Route::resource('blogCategories', BlogCategoryController::class)->except('show');
+
+    Route::resource('ulogovaniKorisnici', UlogovaniKorisnikController::class)->only('index', 'destroy')->parameters([
+        'ulogovaniKorisnici' => 'ulogovaniKorisnik'
+    ]);
+
+    Route::get('failedJobs', [FailedJobsCustomController::class, 'index'])->name('failedJobs.index');
+
 });

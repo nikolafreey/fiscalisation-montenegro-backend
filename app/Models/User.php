@@ -120,6 +120,11 @@ class User extends Authenticatable
         return $this->hasOne(Podesavanje::class);
     }
 
+    public function activeUsers()
+    {
+        return $this->hasMany('App\Models\ActiveUser', 'tokenable_id');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,10 +20,16 @@ class ZiroRacun extends Model
         'fizicko_lice_id'
     ];
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+    }
 
     public function preduzece()
     {

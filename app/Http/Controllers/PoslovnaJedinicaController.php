@@ -8,10 +8,10 @@ use App\Http\Requests\Api\StorePoslovnaJedinica;
 
 class PoslovnaJedinicaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(PoslovnaJedinica::class, 'poslovnaJedinica');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(PoslovnaJedinica::class, 'poslovnaJedinica');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class PoslovnaJedinicaController extends Controller
      */
     public function index()
     {
-        return PoslovnaJedinica::paginate();
+        return PoslovnaJedinica::filterByPermissions()->paginate();
     }
 
     /**

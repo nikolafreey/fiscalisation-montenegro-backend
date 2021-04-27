@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use App\UslugaIndexConfigurator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +30,7 @@ class Usluga extends Model
         'jedinica_mjere_id',
         'porez_id',
         'iznos_pdv_popust',
-
+        'preduzece_id',
     ];
     use Searchable;
     protected $indexConfigurator = UslugaIndexConfigurator::class;
@@ -51,10 +50,21 @@ class Usluga extends Model
         return $array;
     }
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+    }
+
+    public function preduzece()
+    {
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
 
     public function user()
     {

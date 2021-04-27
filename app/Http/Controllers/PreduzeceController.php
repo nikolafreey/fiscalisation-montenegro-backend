@@ -15,10 +15,10 @@ use Illuminate\Http\Request;
 
 class PreduzeceController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Preduzece::class, 'preduzece');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Preduzece::class, 'preduzece');
+    // }
 
     /**
      * Izlistavanje resursa

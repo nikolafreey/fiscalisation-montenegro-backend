@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class KategorijaRobeController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(KategorijaRobe::class, 'kategorijaRobe');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(KategorijaRobe::class, 'kategorijaRobe');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class KategorijaRobeController extends Controller
      */
     public function index()
     {
-        return KategorijaRobe::with('podkategorije_robe:id,naziv,kategorija_id')->get();
+        return KategorijaRobe::filterByPermissions()->with('podkategorije_robe:id,naziv,kategorija_id')->get();
     }
 
     /**

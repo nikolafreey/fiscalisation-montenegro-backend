@@ -18,7 +18,7 @@ class AtributRobePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view AtributRobe');
+        return $user->canAny(['view all AtributRobe', 'view owned AtributRobe']);
     }
 
     /**

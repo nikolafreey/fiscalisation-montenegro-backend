@@ -27,10 +27,24 @@ class CijenaRobe extends Model
         'iznos_pdv_popust'
     ];
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new UserScope);
-    // }
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all CijenaRobe')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned CijenaRobe')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
 
     public function user()
     {

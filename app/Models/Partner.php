@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\PartnerIndexConfigurator;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,8 +26,28 @@ class Partner extends Model
         'kontakt_whatsapp',
         'kontakt_facetime',
         'opis',
-        'fizicko_lice_id'
+        'fizicko_lice_id',
+        'pib',
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all Partner')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned Partner')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
 
     use Searchable;
 

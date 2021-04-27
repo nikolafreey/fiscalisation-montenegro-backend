@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class DjelatnostController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Djelatnost::class, 'djelatnost');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Djelatnost::class, 'djelatnost');
+    // }
 
     /**
      * Display a listing of the resource.

@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class DokumentController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Dokument::class, 'dokument');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Dokument::class, 'dokument');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class DokumentController extends Controller
      */
     public function index()
     {
-        return Dokument::get();
+        return Dokument::filterByPermissions()->get();
     }
 
     /**

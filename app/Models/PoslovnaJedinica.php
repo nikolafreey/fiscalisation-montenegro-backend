@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ImaAktivnost;
@@ -21,8 +20,28 @@ class PoslovnaJedinica extends Model
         'grad',
         'drzava',
         'preduzce_id',
-        'user_id'
+        'user_id',
+        'kod_poslovnog_prostora',
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all PoslovnaJedinica')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned PoslovnaJedinica')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
 
     public function preduzece()
     {

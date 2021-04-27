@@ -65,6 +65,59 @@
                                         value="{{ old('sertifikatSifra') }}"
                                     >
                                 </div>
+                                <legend>
+                                    <span>Ostalo</span>
+                                </legend>
+                                <div class="form-group mt-4">
+                                    <label for="pib">PIB</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite PIB"
+                                        type="text"
+                                        id="pib"
+                                        name="pib"
+                                        value="{{ $preduzece->pib ?? old('pib') }}"
+                                    >
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="enu_kod">ENU Kod</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite ENU Kod"
+                                        type="text"
+                                        id="enu_kod"
+                                        name="enu_kod"
+                                        value="{{ $preduzece->enu_kod ?? old('enu_kod') }}"
+                                    >
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="kod_operatera">Kod operatera</label>
+                                    <input
+                                        class="form-control"
+                                        placeholder="Unesite Kod operatera"
+                                        type="text"
+                                        id="kod_operatera"
+                                        name="kod_operatera"
+                                        value="{{ $preduzece->kod_operatera ?? old('kod_operatera') }}"
+                                    >
+                                </div>
+                                @foreach($preduzece->poslovne_jedinice as $poslovnaJedinica)
+                                    <legend>
+                                        <span>{{ $poslovnaJedinica->kratki_naziv }}</span>
+                                    </legend>
+                                    <input type="hidden" name="poslovneJedinice[{{$poslovnaJedinica->id}}][id]" value="{{$poslovnaJedinica->id}}"></td>
+                                    <div class="form-group">
+                                        <label for="kod_poslovne_jedinice">Kod poslovnog prostora</label>
+                                        <input
+                                            class="form-control"
+                                            placeholder="Unesite kod poslovnog prostora"
+                                            type="text"
+                                            id="kod_poslovne_jedinice"
+                                            name="poslovneJedinice[{{$poslovnaJedinica->id}}][kod_poslovnog_prostora]"
+                                            value="{{ $poslovnaJedinica->kod_poslovnog_prostora ?? old('kod_poslovnog_prostora') }}"
+                                        >
+                                    </div>
+                                @endforeach
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
                                         Sacuvajte

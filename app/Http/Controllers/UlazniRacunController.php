@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class UlazniRacunController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(UlazniRacun::class, 'ulazniRacun');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(UlazniRacun::class, 'ulazniRacun');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class UlazniRacunController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            $searchQuery = UlazniRacun::search($request->search . '*')->orderBy('created_at', 'DESC');
+            $searchQuery = UlazniRacun::filterByPermissions()->search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
@@ -49,7 +49,7 @@ class UlazniRacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = UlazniRacun::filter($request);
+            $query = UlazniRacun::filter($request)->filterByPermissions();
 
             $paginatedData = $query
                 ->with(
@@ -63,7 +63,7 @@ class UlazniRacunController extends Controller
             return $data;
         }
 
-        $queryAll = UlazniRacun::query();
+        $queryAll = UlazniRacun::query()->filterByPermissions();
 
         $paginatedData = $queryAll
             ->with(

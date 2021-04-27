@@ -2,22 +2,16 @@
 
 namespace App\Jobs;
 
-use DOMDocument;
 use App\Services\SignXMLService;
-use App\Models\Racun;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use VertexIT\XMLSecLibs\XMLSecurityKey;
 use Illuminate\Queue\InteractsWithQueue;
-use VertexIT\XMLSecLibs\XMLSecurityDSig;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class Fiskalizuj implements ShouldQueue
 {
@@ -27,15 +21,17 @@ class Fiskalizuj implements ShouldQueue
 
     public $certificate;
 
-    public function __construct($racun)
+    public $ikof;
+
+    public function __construct($racun, $ikof = null)
     {
-        if ($racun->vrsta_racuna === 'GOTOVINSKI') {
+        if ($racun->vrsta_racuna === 'gotovinski') {
             $potpis = $racun->preduzece->pecat;
 
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
         }
 
-        if ($racun->vrsta_racuna === 'BEZGOTOVINSKI') {
+        if ($racun->vrsta_racuna === 'bezgotovinski') {
             $potpis = $racun->preduzece->sertifikat;
 
             $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);
@@ -47,11 +43,11 @@ class Fiskalizuj implements ShouldQueue
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
             'taxpayer' => [
-                'CR' => 'wp886vu280', // Cash Register (ENU)
-                'SW' => 'qk433mq872', // Software Code
+                'CR' => $racun->preduzece->enu_kod,
+                'SW' => config('third_party_apis.poreska.sw_kod'),
                 'TIN' => $racun->preduzece->pib,
-                'BU' => 'ya260ri698' ?? $racun->poslovnaJedinica->kratki_naziv,
-                'OP' => 'ia871me776' ?? $racun->kod_operatera,
+                'BU' => $racun->poslovnaJedinica->kod_poslovnog_prostora,
+                'OP' => $racun->user->kod_operatera ?? $racun->preduzece->kod_operatera,
             ],
             'seller' => [
                 'IDType' => 'TIN',
@@ -59,17 +55,22 @@ class Fiskalizuj implements ShouldQueue
             ],
             'buyer' => [
                 'IDType' => 'TIN',
-                'IDNum' => '12345678',
+                'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $racun->partner->kontakt_ime,
             ],
         ];
 
         $this->data['IICData'] = $this->generateIIC();
         $this->data['sameTaxes'] = $this->calculateSameTaxes();
+        $this->ikof = $ikof;
     }
 
     public function handle()
     {
+        $this->data['racun']->update([
+            'ikof' => $this->ikof ?? $this->data['IICData']['IIC'],
+        ]);
+
         $xml = view('xml.fiskalizuj', $this->data)->render();
 
         $signXMLService = new SignXMLService(
@@ -90,7 +91,6 @@ class Fiskalizuj implements ShouldQueue
             ]);
 
         $this->data['racun']->update([
-            'ikof' => $this->data['IICData']['IIC'],
             'jikr' => $this->parseJikrFromXmlResponse($response),
             'qr_url' => $this->generateQRCode(),
         ]);
@@ -116,8 +116,18 @@ class Fiskalizuj implements ShouldQueue
 
             Log::error($errorMessage);
 
-            abort(520, $errorMessage);
+            throw new \Exception($errorMessage);
         }
+    }
+
+    public function failed(Exception $e)
+    {
+        DB::table('failed_jobs_custom')->insert([
+            'connection' => $this->connection,
+            'payload' => $this->data['racun']->id,
+            'exception' => $e->getMessage(),
+            'job_name' => 'racun',
+        ]);
     }
 
     private function loadCertifacate($location, $password)

@@ -18,7 +18,7 @@ class PoslovnaJedinicaPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view PoslovnaJedinica');
+        return $user->canAny(['view all PoslovnaJedinica', 'view owned PoslovnaJedinica']);
     }
 
     /**

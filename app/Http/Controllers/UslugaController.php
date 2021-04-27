@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class UslugaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Usluga::class, 'usluga');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Usluga::class, 'usluga');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class UslugaController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')) {
-            return Usluga::search($request->search . '*')->with([
+            return Usluga::filterByPermissions()->search($request->search . '*')->with([
                 'grupa:id,naziv,opis,popust_procenti,popust_iznos',
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
@@ -31,14 +31,14 @@ class UslugaController extends Controller
         }
 
         if ($request->has('grupa_id')) {
-            return Usluga::query()->where('grupa_id', $request->grupa_id)->with([
+            return Usluga::query()->filterByPermissions()->where('grupa_id', $request->grupa_id)->with([
                 'grupa:id,naziv,opis,popust_procenti,popust_iznos',
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'
             ])->paginate();
         }
 
-        return Usluga::query()->with([
+        return Usluga::query()->filterByPermissions()->with([
             'grupa:id,naziv,opis,popust_procenti,popust_iznos',
             'jedinica_mjere:id,naziv',
             'porez:id,naziv,stopa'

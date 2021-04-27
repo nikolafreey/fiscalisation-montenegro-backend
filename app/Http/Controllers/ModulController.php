@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class ModulController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Modul::class, 'modul');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Modul::class, 'modul');
+    // }
 
     /**
      * Display a listing of the resource.

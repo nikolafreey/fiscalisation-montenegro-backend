@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\EditUserRequest;
 use App\Http\Requests\Web\UserRequest;
 use App\Mail\SendPassword;
 use App\Models\Preduzece;
@@ -53,8 +54,8 @@ class UserController extends Controller
         $user->preduzeca()->attach($request->preduzece_id);
 
         if ($request->uloga === 'Vlasnik') {
-            foreach ($request->preduzeca as $id) {
-                Preduzece::where('id', $id)->firstOrFail()->update(['verifikovan' => true]);
+            foreach ($request->preduzece_id as $id) {
+                Preduzece::find($id)->firstOrFail()->update(['verifikovan' => true]);
             }
         }
 
@@ -78,9 +79,13 @@ class UserController extends Controller
         return view('admin.users.form', $viewModel);
     }
 
-    public function update(User $user, UserRequest $request)
+    public function update(User $user, EditUserRequest $request)
     {
-        $user->update(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
+        $user->update($request->validated());
+
+        if ($request->password != null) {
+            $user->update(['password' => Hash::make($request->password)]);
+        }
 
         $user->syncRoles([$request->uloga]);
 

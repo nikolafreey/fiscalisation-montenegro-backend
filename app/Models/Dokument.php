@@ -23,6 +23,25 @@ class Dokument extends Model
         'kategorija_dokumenta_id'
     ];
 
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all Dokument')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned Dokument')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
+
     public function kategorije()
     {
         return $this->belongsTo(KategorijaDokumenta::class);

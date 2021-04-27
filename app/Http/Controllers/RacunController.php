@@ -26,10 +26,10 @@ use ScoutElastic\Searchable;
 
 class RacunController extends Controller
 {
-    public function __construct()
-    {
-        // $this->authorizeResource(Racun::class, 'racun');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Racun::class, 'racun');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -43,7 +43,7 @@ class RacunController extends Controller
     {
         Log::info('ssssss', array($request->all()));
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
+            $searchQuery = Racun::filterByPermissions()->search($request->search . '*')->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
@@ -69,7 +69,7 @@ class RacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filter($request);
+            $query = Racun::filter($request)->filterByPermissions();
 
             $query = $query->where('tip_racuna', Racun::RACUN);
 
@@ -85,7 +85,7 @@ class RacunController extends Controller
             return $data;
         }
 
-        $queryAll = Racun::query()->orderBy('created_at', 'DESC');
+        $queryAll = Racun::query()->filterByPermissions()->orderBy('created_at', 'DESC');
         $queryAll = $queryAll->where('tip_racuna', Racun::RACUN);
 
         $paginatedData = $queryAll
@@ -246,23 +246,25 @@ class RacunController extends Controller
 
             $racun->save();
 
-            if ($preduzece->podesavanje->slanje_kupcu) {
-                $kupacEmail = $racun->partner->fizicko_lice->email;
+            if ($preduzece->podesavanje !== null) {
+                if ($preduzece->podesavanje->slanje_kupcu) {
+                    $kupacEmail = $racun->partner->fizicko_lice->email;
 
-                if (User::where('email', $kupacEmail)->exists()) {
-                    User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
+                    if (User::where('email', $kupacEmail)->exists()) {
+                        User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
 
-                    $user = User::where('email', $kupacEmail)->first();
-                    $user->notify(new PodijeliRacunKorisniku($racun, $user));
-                } else {
-                    $invite = Invite::create([
-                        'email' => $kupacEmail,
-                        'route' => route('racuni.show', $racun),
-                        'token' => Str::random(40),
-                        'racun_id' => $racun->id,
-                    ]);
+                        $user = User::where('email', $kupacEmail)->first();
+                        $user->notify(new PodijeliRacunKorisniku($racun, $user));
+                    } else {
+                        $invite = Invite::create([
+                            'email' => $kupacEmail,
+                            'route' => route('racuni.show', $racun),
+                            'token' => Str::random(40),
+                            'racun_id' => $racun->id,
+                        ]);
 
-                    Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
+                        Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
+                    }
                 }
             }
 
@@ -272,18 +274,82 @@ class RacunController extends Controller
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
 
-            if ($request->status === 'Storniran') {
-                $racun->ukupna_cijena_bez_pdv *= -1;
-                $racun->ukupna_cijena_sa_pdv *= -1;
-                $racun->ukupan_iznos_pdv *= -1;
-            }
 
             return $racun;
         });
 
-        Fiskalizuj::dispatch($racun);
+        Fiskalizuj::dispatch($racun)->onConnection('sync');
 
         return response()->json($racun->fresh()->load('porezi', 'stavke'), 201);
+    }
+
+    public function stornirajRacun(Racun $racun)
+    {
+        $ukupna_cijena_bez_pdv = $racun->ukupna_cijena_bez_pdv * -1;
+        $ukupna_cijena_bez_pdv_popust = $racun->ukupna_cijena_bez_pdv_popust * -1;
+        $ukupna_cijena_sa_pdv = $racun->ukupna_cijena_sa_pdv * -1;
+        $ukupna_cijena_sa_pdv_popust = $racun->ukupna_cijena_sa_pdv_popust * -1;
+        $ukupan_iznos_pdv = $racun->ukupan_iznos_pdv * -1;
+
+        $storniranRacun = $racun->replicate()->fill([
+            'status' => 'storniran',
+            'korektivni_racun_vrsta' => 'CORRECTIVE',
+            'ukupna_cijena_bez_pdv' => $ukupna_cijena_bez_pdv,
+            'ukupna_cijena_bez_pdv_popust' => $ukupna_cijena_bez_pdv_popust,
+            'ukupna_cijena_sa_pdv' => $ukupna_cijena_sa_pdv,
+            'ukupna_cijena_sa_pdv_popust' => $ukupna_cijena_sa_pdv_popust,
+            'ukupan_iznos_pdv' => $ukupan_iznos_pdv,
+        ]);
+
+        $storniranRacun->save();
+
+        foreach ($racun->stavke as $stavka) {
+            $jedinicna_cijena_bez_pdv = $stavka->jedinicna_cijena_bez_pdv * -1;
+            $jedinicna_cijena_sa_pdv = $stavka->jedinicna_cijena_sa_pdv * -1;
+            $cijena_bez_pdv = $stavka->cijena_bez_pdv * -1;
+            $pdv_iznos = $stavka->pdv_iznos * -1;
+            $popust_iznos = $stavka->popust_iznos * -1;
+            $cijena_sa_pdv = $stavka->cijena_sa_pdv * -1;
+
+
+            $cijena_bez_pdv_popust = $stavka->cijena_bez_pdv_popust * -1;
+            $cijena_sa_pdv_popust = $stavka->cijena_sa_pdv_popust * -1;
+            $ukupna_bez_pdv = $stavka->ukupna_bez_pdv * -1;
+            $ukupna_sa_pdv = $stavka->ukupna_sa_pdv * -1;
+            $ukupna_sa_pdv_popust = $stavka->ukupna_sa_pdv_popust * -1;
+            $ukupna_bez_pdv_popust = $stavka->ukupna_bez_pdv_popust * -1;
+            $pdv_iznos_ukupno = $stavka->pdv_iznos_ukupno * -1;
+
+            $storniranaStavka = $stavka->replicate()->fill([
+                'racun_id' => $storniranRacun->id,
+                'jedinicna_cijena_bez_pdv' =>  $jedinicna_cijena_bez_pdv,
+                'jedinicna_cijena_sa_pdv' =>  $jedinicna_cijena_sa_pdv,
+                'cijena_bez_pdv' =>  $cijena_bez_pdv,
+                'pdv_iznos' =>  $pdv_iznos,
+                'popust_iznos' =>  $popust_iznos,
+                'cijena_sa_pdv' =>  $cijena_sa_pdv,
+                'cijena_bez_pdv_popust' =>  $cijena_bez_pdv_popust,
+                'cijena_sa_pdv_popust' => $cijena_sa_pdv_popust,
+                'ukupna_bez_pdv' => $ukupna_bez_pdv,
+                'ukupna_sa_pdv_popust' => $ukupna_sa_pdv_popust,
+                'ukupna_sa_pdv' => $ukupna_sa_pdv,
+                'ukupna_bez_pdv_popust' => $ukupna_bez_pdv_popust,
+                'pdv_iznos_ukupno' => $pdv_iznos_ukupno,
+            ]);
+
+            $storniranaStavka->save();
+        }
+
+        foreach ($racun->porezi as $porez) {
+
+            $storniranPorez = $porez->replicate();
+
+            $storniranPorez->save();
+
+            $storniranRacun->porezi()->attach($storniranPorez->id);
+        }
+
+        return response()->json($storniranRacun->load('stavke', 'porezi'), 201);
     }
 
     /**
@@ -292,14 +358,14 @@ class RacunController extends Controller
      * @param  \App\Models\Racun  $racun
      * @return \Illuminate\Http\Response
      */
-    public function show(Racun $racun)
+    public function show(Racun $racun, Request $request)
     {
         if (
-            !in_array(auth()->id(), $racun->preduzece->users->pluck('id')->toArray(), true)
+            getAuthPreduzeceId($request) != $racun->preduzece_id
             &&
             !in_array(auth()->id(), $racun->guestUsers->pluck('id')->toArray(), true)
         ) {
-            abort(403, 'Nemate pristup ovom racunu');
+            return response()->json(['message' => 'Nemate pristup ovom racunu'], 401);
         }
 
         return $racun->load(['stavke', 'porezi', 'partner', 'preduzece']);
@@ -370,5 +436,17 @@ class RacunController extends Controller
         }
 
         return response()->json('Uspjesno ste poslali racun na mejl korisnika');
+    }
+
+    public function nefiskalizovaniRacuni()
+    {
+        return Racun::filterByPermissions()->whereNull('jikr')->get();
+    }
+
+    public function fiskalizujRacun(Racun $racun)
+    {
+        Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
+
+        return response()->json('Uspjesno ste fiskalizovali racun', 200);
     }
 }

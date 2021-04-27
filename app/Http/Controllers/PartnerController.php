@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Partner::class, 'partner');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Partner::class, 'partner');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -23,14 +23,14 @@ class PartnerController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search') || $request->has('filter')) {
-            $query = Partner::filter($request);
+            $query = Partner::filter($request)->filterByPermissions();
 
             $query = $query->with(['preduzece', 'fizicko_lice']);
 
             return $query->paginate(20);
         }
 
-        $query = Partner::query();
+        $query = Partner::query()->filterByPermissions();
 
         $query = $query->with(['preduzece', 'fizicko_lice']);
 

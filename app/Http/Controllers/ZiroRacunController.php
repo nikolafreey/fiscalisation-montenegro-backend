@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class ZiroRacunController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(ZiroRacun::class, 'ziroRacun');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(ZiroRacun::class, 'ziroRacun');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class ZiroRacunController extends Controller
      */
     public function index()
     {
-        return ZiroRacun::paginate();
+        return ZiroRacun::filterByPermissions()->get();
     }
 
     /**

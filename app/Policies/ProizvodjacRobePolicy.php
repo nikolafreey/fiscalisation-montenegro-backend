@@ -18,7 +18,7 @@ class ProizvodjacRobePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view ProizvodjacRobe');
+        return $user->can(['view all ProizvodjacRobe', 'view owned ProizvodjacRobe']);
     }
 
     /**

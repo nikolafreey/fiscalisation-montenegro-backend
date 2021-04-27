@@ -17,6 +17,7 @@ class CreateDepozitWithdrawsTable extends Migration
             $table->id();
             $table->decimal('iznos_depozit', 15, 4)->nullable();
             $table->decimal('iznos_withdraw', 15, 4)->nullable();
+            $table->boolean('fiskalizovan')->default(false);
             $table->timestamps();
 
             $table->foreignId('poslovna_jedinica_id')

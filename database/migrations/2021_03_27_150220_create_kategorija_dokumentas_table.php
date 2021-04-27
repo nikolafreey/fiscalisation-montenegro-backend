@@ -18,6 +18,11 @@ class CreateKategorijaDokumentasTable extends Migration
             $table->string('naziv');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreignUuid('preduzece_id')
+                ->constrained('preduzeca')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

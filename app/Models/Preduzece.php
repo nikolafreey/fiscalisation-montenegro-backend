@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\PreduzecaIndexConfigurator;
 use App\Traits\GenerateUuid;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -145,7 +146,7 @@ class Preduzece extends Model
 
     public function roba()
     {
-        return $this->belongsTo('App\Models\Roba', 'preduzece_id');
+        return $this->hasMany('App\Models\Roba', 'preduzece_id');
     }
 
     public function poslovne_jedinice()

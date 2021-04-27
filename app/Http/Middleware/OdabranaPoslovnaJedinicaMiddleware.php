@@ -27,7 +27,7 @@ class OdabranaPoslovnaJedinicaMiddleware
             ->first()
             ->poslovna_jedinica_id;
 
-        if ($odabranaPoslovnaJedinicaID === null) {
+        if (! $odabranaPoslovnaJedinicaID) {
 
             $preduzece_id = DB::table('personal_access_tokens')
                 ->where('token', getAccessToken($request))
@@ -37,7 +37,7 @@ class OdabranaPoslovnaJedinicaMiddleware
             $preduzece = Preduzece::find($preduzece_id)->first();
 
             $brojPoslovnihJedinica = $preduzece->poslovne_jedinice()->count();
-
+            // TODO: Staviti === umjesto >=
             if ($brojPoslovnihJedinica >= 1) {
                 $poslovnaJedinica = $preduzece->poslovne_jedinice()->first();
 

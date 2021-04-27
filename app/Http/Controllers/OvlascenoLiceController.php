@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class OvlascenoLiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(OvlascenoLice::class, 'ovlascenoLice');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(OvlascenoLice::class, 'ovlascenoLice');
+    // }
 
     /**
      * Display a listing of the resource.

@@ -6,7 +6,6 @@ use App\Models\Paket;
 use App\Models\Roba;
 use App\Models\User;
 use App\Models\Grupa;
-
 use App\Models\Modul;
 use App\Models\Porez;
 use App\Models\Racun;
@@ -14,7 +13,6 @@ use App\Models\Usluga;
 use App\Models\Partner;
 use App\Models\Preduzece;
 use App\Models\ZiroRacun;
-use App\Scopes\UserScope;
 use App\Models\CijenaRobe;
 use App\Models\Djelatnost;
 use App\Models\Kategorija;
@@ -25,7 +23,6 @@ use App\Models\TipAtributa;
 use App\Models\UlazniRacun;
 use Illuminate\Support\Arr;
 use App\Models\StavkaRacuna;
-use App\Models\TipKorisnika;
 use App\Models\JedinicaMjere;
 use App\Models\OvlascenoLice;
 use App\Models\KategorijaRobe;
@@ -60,7 +57,8 @@ class DatabaseSeeder extends Seeder
 
         $user = User::create([
             'email' => 'admin@admin.com',
-            'ime' => 'Super Admin',
+            'ime' => 'Super',
+            'prezime' => 'Admin',
             'password' => Hash::make('secret'),
         ]);
 
@@ -77,7 +75,7 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('SuperAdmin');
 
         foreach (Preduzece::all() as $preduzece) {
-            PoslovnaJedinica::factory(2)->create(['preduzece_id' => $preduzece->id]);
+            PoslovnaJedinica::factory(1)->create(['preduzece_id' => $preduzece->id]);
         }
 
         foreach (User::all() as $user) {
@@ -85,7 +83,7 @@ class DatabaseSeeder extends Seeder
 
             DB::table('user_tip_korisnika')->insert([
                 'preduzece_id' => $preduzece->id,
-                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice()->withoutGlobalScopes()->inRandomOrder()->first()->id,
+                'poslovna_jedinica_id' => $preduzece->poslovne_jedinice()->inRandomOrder()->first()->id,
                 'user_id' => $user->id,
             ]);
         }
@@ -174,16 +172,23 @@ class DatabaseSeeder extends Seeder
 
         // Porez::factory(1)->create();
         Grupa::factory(10)->create();
-        // JedinicaMjere::factory(10)->create();
-        DB::table('jedinice_mjere')->insert(
-            [
-                'naziv' => 'kom',
-                'kratki_naziv' => 'gram',
-                'deleted_at' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-        );
+
+        $nazivi = ['kom', 'gr', 'kg', 'inj', 'kesa', 'pak', 'kut', 'l', 'm', 'm2', 'm3', 'par', 'tab', 't', 'vre', 'pal', 'sek', 'min', 'sat', 'dan'];
+
+        $naziviDugi = ['komad', 'gram', 'kilogram', 'injekcija', 'kesa', 'paket', 'kutija', 'litar', 'metar', 'm2', 'm3', 'par', 'tableta', 'tona', 'vreća', 'paleta', 'sekund', 'minut', 'sat', 'dan'];
+
+        for ($i = 0; $i < count($nazivi); $i++) {
+            DB::table('jedinice_mjere')->insert(
+                [
+                    'naziv' => $nazivi[$i],
+                    'kratki_naziv' => $naziviDugi[$i],
+                    'deleted_at' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
+
         Usluga::factory(10)->create();
         KategorijaRobe::factory(10)->create();
         PodKategorijaRobe::factory(10)->create();
@@ -204,7 +209,13 @@ class DatabaseSeeder extends Seeder
 
             Racun::factory(2)->create([
                 'poslovna_jedinica_id' => $poslovnaJedinica->id,
-                'preduzece_id' => Preduzece::first()->id
+                'preduzece_id' => Preduzece::all()->random()->id,
+            ]);
+
+            Racun::factory(1)->create([
+                'poslovna_jedinica_id' => $poslovnaJedinica->id,
+                'preduzece_id' => Preduzece::all()->random()->id,
+                'user_id' => User::where('email', 'admin@admin.com')->first()->id
             ]);
         }
 
@@ -268,8 +279,8 @@ class DatabaseSeeder extends Seeder
 
             DB::table('robe_atributi_roba')->insert(
                 [
-                    'roba_id' => Roba::withoutGlobalScope(UserScope::class)->get()->random()->id,
-                    'atribut_id' => AtributRobe::withoutGlobalScope(UserScope::class)->get()->random()->id,
+                    'roba_id' => Roba::all()->random()->id,
+                    'atribut_id' => AtributRobe::all()->random()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
@@ -277,9 +288,9 @@ class DatabaseSeeder extends Seeder
 
             DB::table('porezi_za_racun')->insert(
                 [
-                    'racun_id' => Racun::withoutGlobalScope(UserScope::class)->get()->random()->id,
+                    'racun_id' => Racun::all()->random()->id,
                     'porez_id' => Porez::all()->random()->id,
-                    'pdv_iznos_ukupno' => Racun::withoutGlobalScope(UserScope::class)->get()->random()->ukupan_iznos_pdv
+                    'pdv_iznos_ukupno' => Racun::all()->random()->ukupan_iznos_pdv
                 ]
             );
         }

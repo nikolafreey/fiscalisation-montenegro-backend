@@ -66,9 +66,18 @@ Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::get('mobilna-posljednja-verzija', function (Request $request) {
+        return response()->json([
+            "android" => env("ANDROID_VERZIJA"),
+            "android_apk" => url(env("ANDROID_APK")),
+            "ios" => env("IOS_VERZIJA")
+        ]);
+    });
+
     Route::get('/me', function (Request $request) {
         return auth()->user();
     });
+
 
     Route::post('logout', [AuthController::class, 'logout']);
 
@@ -158,6 +167,10 @@ Route::middleware('auth:sanctum')->group(function () {
                 'racuni' => 'racun'
             ]);
 
+            Route::get('nefiskalizovani-racuni', [RacunController::class, 'nefiskalizovaniRacuni']);
+            Route::post('nefiskalizovani-racuni/{racun}', [RacunController::class, 'fiskalizujRacun']);
+            Route::post('storniraj-racun/{racun}', [RacunController::class, 'stornirajRacun']);
+
             Route::apiResource('ulazni-racuni', UlazniRacunController::class)->parameters([
                 'ulazni_racuni' => 'ulazni_racun'
             ]);
@@ -176,6 +189,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
             Route::apiResource('atribut-roba', AtributRobeController::class)->parameters([
                 'atribut-roba' => 'atribut-robe'
+            ]);
+
+            Route::apiResource('cijena-roba', CijenaRobeController::class)->parameters([
+                'cijena-roba' => 'cijena-robe'
             ]);
 
             Route::apiResource('kategorije-robe', KategorijaRobeController::class)->parameters([
@@ -234,6 +251,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::apiResource('depozit-withdraws', DepozitWithdrawController::class)->parameters([
                 'depozit-withdraws' => 'depozit-withdraw'
             ]);
+
+            Route::get('nefiskalizovani-depoziti', [DepozitWithdrawController::class, 'nefiskalizovaniDepoziti']);
+
+            Route::post('nefiskalizovani-depoziti/{depozit}', [DepozitWithdrawController::class, 'fiskalizujDepozit']);
 
             Route::get('get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
 

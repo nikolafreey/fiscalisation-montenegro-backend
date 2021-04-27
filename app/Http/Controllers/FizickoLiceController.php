@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class FizickoLiceController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(FizickoLice::class, 'fizickoLice');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(FizickoLice::class, 'fizickoLice');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -24,10 +24,10 @@ class FizickoLiceController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            return FizickoLice::search($request->search . '*')->paginate();
+            return FizickoLice::filterByPermissions()->search($request->search . '*')->paginate();
         }
 
-        return FizickoLice::paginate();
+        return FizickoLice::filterByPermissions()->paginate();
     }
 
     /**

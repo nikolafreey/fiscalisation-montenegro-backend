@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\RacuniIndexConfigurator;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,8 +21,6 @@ class Racun extends Model
     protected $table = 'racuni';
 
     protected $fillable = [
-        'kod_operatera',
-        'kod_poslovnog_prostora',
         'ikof',
         'jikr',
         'qr_url',
@@ -49,6 +46,25 @@ class Racun extends Model
         'status',
         'partner_id'
     ];
+
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all Racun')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned Racun')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
 
     public const RACUN = 'racun';
     public const PREDRACUN = 'predracun';

@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class TipoviAtributaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(TipAtributa::class, 'tipAtributa');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(TipAtributa::class, 'tipAtributa');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -22,7 +22,7 @@ class TipoviAtributaController extends Controller
      */
     public function index()
     {
-        return TipAtributa::with('atributi:id,naziv,tip_atributa_id')->get(['id', 'naziv']);
+        return TipAtributa::filterByPermissions()->with('atributi:id,naziv,tip_atributa_id')->get(['id', 'naziv']);
     }
 
     /**

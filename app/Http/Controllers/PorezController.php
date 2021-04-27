@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 
 class PorezController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Porez::class, 'porez');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Porez::class, 'porez');
+    // }
 
     /**
      * Display a listing of the resource.

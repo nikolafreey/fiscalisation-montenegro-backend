@@ -267,6 +267,54 @@
                             </div>
                         </div>
                     </li>
+                    @can('edit users')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('ulogovaniKorisnici.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-users"></div>
+                                </div>
+                                <span>Ulogovani korisnici</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Ulogovani korisnici
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-life-buoy"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('ulogovaniKorisnici.index') }}">Prikaži</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    @endcan
+                    @can('edit users')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('failedJobs.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-users"></div>
+                                </div>
+                                <span>Fejlovani poslovi</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Fejlovani poslovi
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-life-buoy"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('failedJobs.index') }}">Prikaži</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    @endcan
                 </ul>
             </div>
             <div class="content-w">

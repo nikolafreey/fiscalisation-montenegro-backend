@@ -18,7 +18,7 @@ class KategorijaRobePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('view KategorijaRobe');
+        return $user->canAny(['view all KategorijaRobe', 'view owned KategorijaRobe']);
     }
 
     /**

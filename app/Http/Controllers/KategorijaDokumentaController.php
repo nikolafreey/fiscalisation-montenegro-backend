@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 
 class KategorijaDokumentaController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(KategorijaDokumenta::class, 'kategorijaDokumenta');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(KategorijaDokumenta::class, 'kategorijaDokumenta');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class KategorijaDokumentaController extends Controller
      */
     public function index()
     {
-        return KategorijaDokumenta::get();
+        return KategorijaDokumenta::filterByPermissions()->get();
     }
 
     /**
