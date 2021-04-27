@@ -61,6 +61,10 @@ class DepozitWithdrawController extends Controller
         //     Withdraw::dispatch($depozitWithdraw);
         // }
 
+        $depozitWithdraw->update([
+            'fiskalizovan' => true,
+        ]);
+
         return response()->json($depozitWithdraw);
     }
 
@@ -83,10 +87,19 @@ class DepozitWithdrawController extends Controller
         return response()->json($depozitWithdraw, 200);
     }
 
+    public function nefiskalizovaniDepoziti()
+    {
+        return DepozitWithdraw::filterByPermissions()->where('fiskalizovan', false)->get();
+    }
+
     public function fiskalizujDepozit(DepozitWithdraw $depozit)
     {
         Depozit::dispatch($depozit)->onConnection('sync');
 
-        return response()->json($depozit, 201);
+        $depozit->update([
+            'fiskalizovan' => true,
+        ]);
+
+        return response()->json('Uspjesno ste fiskalizovali depozit', 200);
     }
 }

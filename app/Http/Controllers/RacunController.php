@@ -340,7 +340,16 @@ class RacunController extends Controller
             $storniranaStavka->save();
         }
 
-        return response()->json($storniranRacun->load('stavke'), 201);
+        foreach ($racun->porezi as $porez) {
+
+            $storniranPorez = $porez->replicate();
+
+            $storniranPorez->save();
+
+            $storniranRacun->porezi()->attach($storniranPorez->id);
+        }
+
+        return response()->json($storniranRacun->load('stavke', 'porezi'), 201);
     }
 
     /**

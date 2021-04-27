@@ -252,7 +252,9 @@ Route::middleware('auth:sanctum')->group(function () {
                 'depozit-withdraws' => 'depozit-withdraw'
             ]);
 
-            Route::post('nefiskalizovani-depoziti/fiskalizuj', [DepozitWithdrawController::class, 'fiskalizujDepozit']);
+            Route::get('nefiskalizovani-depoziti', [DepozitWithdrawController::class, 'nefiskalizovaniDepoziti']);
+
+            Route::post('nefiskalizovani-depoziti/{depozit}', [DepozitWithdrawController::class, 'fiskalizujDepozit']);
 
             Route::get('get-depozit-today', [DepozitWithdrawController::class, 'getDepozitToday']);
 

@@ -10,7 +10,12 @@ class DepozitWithdraw extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['iznos_depozit', 'iznos_withdraw', 'poslovna_jedinica_id'];
+    protected $fillable = [
+        'iznos_depozit',
+        'iznos_withdraw',
+        'poslovna_jedinica_id',
+        'fiskalizovan',
+    ];
 
     public function scopeFilterByPermissions($query)
     {

@@ -122,12 +122,12 @@ class Fiskalizuj implements ShouldQueue
 
     public function failed(Exception $e)
     {
-        // DB::table('failed_jobs_custom')->insert([
-        //     'connection' => $this->connection,
-        //     'payload' => $this->data['racun']->id,
-        //     'exception' => $e->getMessage(),
-        //     'job_name' => 'racun',
-        // ]);
+        DB::table('failed_jobs_custom')->insert([
+            'connection' => $this->connection,
+            'payload' => $this->data['racun']->id,
+            'exception' => $e->getMessage(),
+            'job_name' => 'racun',
+        ]);
     }
 
     private function loadCertifacate($location, $password)

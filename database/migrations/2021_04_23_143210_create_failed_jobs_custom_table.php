@@ -15,7 +15,7 @@ class CreateFailedJobsCustomTable extends Migration
     {
         Schema::create('failed_jobs_custom', function (Blueprint $table) {
             $table->id();
-            $table->string('uuid')->unique();
+            $table->string('uuid');
             $table->text('connection');
             $table->string('job_name');
             $table->longText('payload');
