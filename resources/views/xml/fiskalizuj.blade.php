@@ -14,8 +14,8 @@
         TypeOfInv="NONCASH"
         IsSimplifiedInv="false"
         IssueDateTime="{{ $danasnji_datum }}"
-        InvNum="{{ implode('/', [$taxpayer['BU'], $racun->broj_racuna, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
-        InvOrdNum="{{ $racun->broj_racuna }}"
+        InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
+        InvOrdNum="{{ $racun->redni_broj }}"
         TCRCode="{{ $taxpayer['CR'] }}"
         IsIssuerInVAT="true"
         TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
@@ -30,7 +30,8 @@
     >
         <PayMethods>
             <PayMethod
-                Type="{{ $racun->nacin_placanja }}"
+                {{-- TODO: --}}
+                Type="{{ $racun->nacin_placanja ?? 'BANKNOTE' }}"
                 Amt="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
             />
         </PayMethods>

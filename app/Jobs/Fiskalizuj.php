@@ -56,7 +56,7 @@ class Fiskalizuj implements ShouldQueue
             'buyer' => [
                 'IDType' => 'TIN',
                 'IDNum' => $racun->partner->pib ?? '12345678',
-                'Name' => $racun->partner->kontakt_ime,
+                'Name' => $racun->partner->kontakt_ime ?? 'Anonimni',
             ],
         ];
 
@@ -82,8 +82,8 @@ class Fiskalizuj implements ShouldQueue
         $signedXML = $signXMLService->getSignedXML();
 
         $response = Http::withOptions([
-                'verify' => false,
-            ])
+            'verify' => false,
+        ])
             ->withHeaders([
                 'Content-Type' => 'text/xml; charset=utf-8',
             ])->send('POST', config('third_party_apis.poreska.fiskalizacija_url'), [
@@ -147,7 +147,7 @@ class Fiskalizuj implements ShouldQueue
         $dataString = implode('|', [
             $this->data['taxpayer']['TIN'],
             $this->data['danasnji_datum'],
-            $this->data['racun']->broj_racuna,
+            $this->data['racun']->redni_broj,
             $this->data['taxpayer']['BU'],
             $this->data['taxpayer']['CR'],
             $this->data['taxpayer']['SW'],
@@ -192,7 +192,6 @@ class Fiskalizuj implements ShouldQueue
             $sameTaxes[$porez_stopa]['ukupna_kolicina'] += $stavka->kolicina;
             $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->ukupna_bez_pdv;
             $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos;
-
         }
 
         return $sameTaxes;
@@ -201,15 +200,14 @@ class Fiskalizuj implements ShouldQueue
     private function generateQRCode()
     {
         return config('third_party_apis.poreska.qr_code_url') . implode('&', [
-                $this->data['IICData']['IIC'],
-                'tin=' . $this->data['taxpayer']['TIN'],
-                'crtd=' . $this->data['danasnji_datum'],
-                'ord=' . $this->data['racun']->broj_racuna,
-                'bu=' . $this->data['taxpayer']['BU'],
-                'cr=' . $this->data['taxpayer']['CR'],
-                'sw=' . $this->data['taxpayer']['SW'],
-                'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
-            ]);
+            $this->data['IICData']['IIC'],
+            'tin=' . $this->data['taxpayer']['TIN'],
+            'crtd=' . $this->data['danasnji_datum'],
+            'ord=' . $this->data['racun']->redni_broj,
+            'bu=' . $this->data['taxpayer']['BU'],
+            'cr=' . $this->data['taxpayer']['CR'],
+            'sw=' . $this->data['taxpayer']['SW'],
+            'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
+        ]);
     }
-
 }

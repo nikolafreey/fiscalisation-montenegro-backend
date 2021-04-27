@@ -27,6 +27,7 @@ class Partner extends Model
         'kontakt_facetime',
         'opis',
         'fizicko_lice_id',
+        'preduzece_tabela_id',
         'pib',
     ];
 

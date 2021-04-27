@@ -15,6 +15,7 @@ class CreatePartneriTable extends Migration
     {
         Schema::create('partneri', function (Blueprint $table) {
             $table->id();
+            $table->uuid('preduzece_id');
             $table->string('kontakt_ime', 50)->nullable();
             $table->string('kontakt_prezime', 50)->nullable();
             $table->string('kontakt_telefon', 50)->nullable();
@@ -35,7 +36,7 @@ class CreatePartneriTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreignUuid('preduzece_id')
+            $table->foreignUuid('preduzece_tabela_id')
                 ->nullable()
                 ->constrained('preduzeca')
                 ->onDelete('cascade')

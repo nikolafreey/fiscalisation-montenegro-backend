@@ -193,7 +193,7 @@ class Racun extends Model
     {
         //$uslov = ($usluga) ? $usluga['cijena_bez_pdv_popust'] : $stavka['cijena_bez_pdv_popust'];false=gotovinski
 
-        if ($vrsta_racuna === "gotovinski") {
+        if ($vrsta_racuna !== "gotovinski") {
             $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
             if ($popust > 0) {
                 // $grupa = $usluga->grupa;
@@ -292,7 +292,7 @@ class Racun extends Model
     //roba!!!
     private function kreirajStavkuIzRobe(Roba $roba, $stavka, $vrsta_racuna)
     {
-        if ($vrsta_racuna === "gotovinski") {
+        if ($vrsta_racuna !== "gotovinski") {
             // $cijenaRobe = CijenaRobe::first();
 
             // $atribut = AtributRobe::where('id', $stavka['atribut_id'])->first();

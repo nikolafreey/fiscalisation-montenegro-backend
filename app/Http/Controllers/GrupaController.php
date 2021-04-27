@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreGrupa;
 use App\Models\Grupa;
+use Elasticsearch\Endpoints\Ml\Validate;
+use Exception;
 use Illuminate\Http\Request;
 
 class GrupaController extends Controller
@@ -31,6 +33,14 @@ class GrupaController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'naziv' => 'required|unique:grupe',
+        ]);
+
+        if (!$validated) {
+            abort('Grupa sa ovim nazivom vec postoji!', 422);
+        }
+
         $grupa = Grupa::make($request->all());
 
         $grupa->user_id = auth()->id();

@@ -36,6 +36,11 @@ class CreateFizickaLicaTable extends Migration
             $table->string('avatar', 255)->nullable();
             $table->boolean('status');
 
+            $table->foreignUuid('user_id')
+                ->constrained('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->foreignUuid('preduzece_id')
                 ->constrained('preduzeca')
                 ->onDelete('cascade')
@@ -53,6 +58,6 @@ class CreateFizickaLicaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fizicko_lices');
+        Schema::dropIfExists('fizicka_lica');
     }
 }

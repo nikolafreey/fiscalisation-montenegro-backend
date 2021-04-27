@@ -6,6 +6,7 @@ use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
+use App\Models\FizickoLice;
 use App\Models\Grupa;
 use App\Models\Invite;
 use App\Models\Partner;
@@ -221,25 +222,89 @@ class RacunController extends Controller
     {
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
+            $preduzece = Preduzece::find(getAuthPreduzeceId($request));
+            $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
+
+            //ispitamo da li postoji fizicko lice sa ime_korisnika
+            if ($request->vrsta_racuna === 'gotovinski') {
+
+                $fizickoLice = FizickoLice::where('ime', 'Anonimni')->first();
+                if (!$fizickoLice) {
+                    $fizickoLice = FizickoLice::make([
+                        'ime', 'Anonimni',
+                        'prezime' => 'Korisnik',
+                        'jmbg' => '1234567891111',
+                        'ib' => '12345678',
+                        'adresa' => 'Adresa',
+                        'grad' => 'Grad',
+                        'drzava' => 'Drzava',
+                        'status' => 'Status',
+                        'telefon' => 'Telefon',
+                        'telefon_viber' => 0,
+                        'telefon_whatsapp' => 0,
+                        'telefon_facetime' => 0,
+                        'email' => 'anonimni.korisnik@gmail.com',
+                        'zanimanje' => 'Zanimanje',
+                        'radno_mjesto' => 'RadnoMjesto',
+                        'drzavljanstvo' => 'Drzavljanstvo',
+                        'nacionalnost' => 'Nacionalnost',
+                        'cv_link' => 'CvLink',
+                        'avatar' => 'Avatar',
+                    ]);
+
+                    // $fizickoLice->user_id = auth()->id();
+                    $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
+                    $fizickoLice->save();
+
+                    $partner = Partner::where('fizicko_lice_id', $fizickoLice->id)->first();
+                    if (!$partner) {
+                        $partner = Partner::make([
+                            'kontakt_ime' => 'Anonimni',
+                            'kontakt_prezime' => 'Korisnik',
+                            'fizicko_lice_id' => $fizickoLice->id,
+                        ]);
+
+                        $partner->user_id = auth()->id();
+                        $partner->preduzece_id = getAuthPreduzeceId($request);
+                        $partner->save();
+                    }
+                } else {
+                    $partner = Partner::where('fizicko_lice_id', $fizickoLice->id)->first();
+                    if (!$partner) {
+                        $partner = Partner::make([
+                            'kontakt_ime' => 'Anonimni',
+                            'kontakt_prezime' => 'Korisnik',
+                            'fizicko_lice_id' => $fizickoLice->id,
+                        ]);
+
+                        $partner->user_id = auth()->id();
+                        $partner->preduzece_id = getAuthPreduzeceId($request);
+                        $partner->save();
+                    }
+                }
+
+                $racun->partner_id = $partner->id;
+            }
+
             // $racun->tip_racuna = Racun::RACUN;
-            $racun->broj_racuna = Racun::izracunajBrojRacuna();
+            // InvNum="{{ implode('/', [$taxpayer['BU'], $racun->broj_racuna, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
+            $ovaGodina = date('Y');
+
+            // $racun->broj_racuna = implode('/', [$preduzece->poslovne_jedinice->kod_poslovnog_prostora, $racun->redni_broj, $ovaGodina, $preduzece->enu_kod]);
             $racun->datum_izdavanja = now();
 
             $racun->user_id = auth()->id();
 
             $racun->preduzece_id = getAuthPreduzeceId($request);
+            $racun->partner_id = $request->partner_id;
 
             $racun->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
-
-            $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
 
             $startOfYear = $date->copy()->startOfYear();
             $endOfYear   = $date->copy()->endOfYear();
 
-            $preduzece = Preduzece::find(getAuthPreduzeceId($request));
-
             if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
-                $racun->redni_broj = $preduzece->podesavanje->redni_broj;
+                $racun->redni_broj = $preduzece->podesavanje->redni_broj ? $preduzece->podesavanje->redni_broj : 1;
             } else {
                 $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
             }

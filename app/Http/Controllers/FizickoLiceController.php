@@ -40,6 +40,7 @@ class FizickoLiceController extends Controller
     {
         $fizickoLice = FizickoLice::create($request->validated());
 
+        $fizickoLice->user_id = auth()->id();
         $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
 
         $ziro_racuni = $request->ziro_racuni;
