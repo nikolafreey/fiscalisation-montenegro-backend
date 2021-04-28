@@ -39,6 +39,12 @@ class Fiskalizuj implements ShouldQueue
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
 
+        if($racun->vrsta_racuna === 'gotovinski') {
+            $nacin_placanja = 'CASH';
+        } elseif ($racun->vrsta_racuna === 'bezgotovinski') {
+            $nacin_placanja = 'NONCASH';
+        }
+
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
@@ -58,6 +64,7 @@ class Fiskalizuj implements ShouldQueue
                 'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $racun->partner->kontakt_ime ?? 'Anonimni',
             ],
+            'nacin_placanja' => $nacin_placanja
         ];
 
         $this->data['IICData'] = $this->generateIIC();

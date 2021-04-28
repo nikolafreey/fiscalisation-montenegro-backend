@@ -11,7 +11,7 @@
     />
 
     <Invoice
-        TypeOfInv="NONCASH"
+        TypeOfInv="{{ $nacin_placanja }}"
         IsSimplifiedInv="false"
         IssueDateTime="{{ $danasnji_datum }}"
         InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
