@@ -46,6 +46,7 @@ class Fiskalizuj implements ShouldQueue
                 'CR' => $racun->preduzece->enu_kod,
                 'SW' => config('third_party_apis.poreska.sw_kod'),
                 'TIN' => $racun->preduzece->pib,
+                //TODO: Ispraviti poslovnu jedinicu i upisati iz niza, a ne prvi koji smo pokupili iz racuna
                 'BU' => $racun->poslovnaJedinica->kod_poslovnog_prostora,
                 'OP' => $racun->user->kod_operatera ?? $racun->preduzece->kod_operatera,
             ],

@@ -11,16 +11,16 @@
     />
 
     <Invoice
-        TypeOfInv="NONCASH"
+        TypeOfInv="CASH"
         IsSimplifiedInv="false"
         IssueDateTime="{{ $danasnji_datum }}"
         InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
         InvOrdNum="{{ $racun->redni_broj }}"
         TCRCode="{{ $taxpayer['CR'] }}"
         IsIssuerInVAT="true"
-        TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
-        TotVATAmt="{{ sprintf('%0.2f', $racun->ukupan_iznos_pdv) }}"
-        TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
+        TotPriceWoVAT="{{ sprintf('%0.2f', round($racun->ukupna_cijena_bez_pdv, 2)) }}"
+        TotVATAmt="{{ sprintf('%0.2f', round($racun->ukupna_cijena_sa_pdv, 2) - round($racun->ukupna_cijena_bez_pdv, 2)) }}"
+        TotPrice="{{ sprintf('%0.2f', round($racun->ukupna_cijena_sa_pdv, 2)) }}"
         OperatorCode="{{ $taxpayer['OP'] }}"
         BusinUnitCode="{{ $taxpayer['BU'] }}"
         SoftCode="{{ $taxpayer['SW'] }}"
