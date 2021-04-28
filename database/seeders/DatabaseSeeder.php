@@ -153,8 +153,10 @@ class DatabaseSeeder extends Seeder
             'cv_link' => 'cv_link',
             'avatar' => 'avatar',
             'preduzece_id' => Preduzece::all()->random()->id,
+            'user_id' => User::all()->random()->id,
 
         ]);
+
         FizickoLice::factory(10)->create();
         ZiroRacun::factory(10)->create();
         Partner::factory(1)->create(['fizicko_lice_id' => FizickoLice::get()->first()->id]);

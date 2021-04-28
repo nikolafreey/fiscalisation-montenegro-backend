@@ -70,7 +70,7 @@ class RacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filter($request)->filterByPermissions();
+            $query = Racun::filterByPermissions()->filter($request);
 
             $query = $query->where('tip_racuna', Racun::RACUN);
 
@@ -252,7 +252,7 @@ class RacunController extends Controller
                         'avatar' => 'Avatar',
                     ]);
 
-                    // $fizickoLice->user_id = auth()->id();
+                    $fizickoLice->user_id = auth()->id();
                     $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
                     $fizickoLice->save();
 

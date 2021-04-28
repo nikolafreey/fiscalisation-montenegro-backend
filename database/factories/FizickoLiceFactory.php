@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\FizickoLice;
 use App\Models\Preduzece;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FizickoLiceFactory extends Factory
@@ -168,6 +169,7 @@ class FizickoLiceFactory extends Factory
             'cv_link' => $this->faker->mimeType(),
             'avatar' => $this->faker->imageUrl(640, 480, 'people'),
             'preduzece_id' => Preduzece::all()->random()->id,
+            'user_id' => User::all()->random()->id,
         ];
     }
 }

@@ -29,12 +29,7 @@ class OdabranaPoslovnaJedinicaMiddleware
 
         if (! $odabranaPoslovnaJedinicaID) {
 
-            $preduzece_id = DB::table('personal_access_tokens')
-                ->where('token', getAccessToken($request))
-                ->first()
-                ->preduzece_id;
-
-            $preduzece = Preduzece::find($preduzece_id)->first();
+            $preduzece = getAuthPreduzece($request);
 
             $brojPoslovnihJedinica = $preduzece->poslovne_jedinice()->count();
             // TODO: Staviti === umjesto >=
