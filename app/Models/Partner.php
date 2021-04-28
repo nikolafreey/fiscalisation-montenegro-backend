@@ -101,12 +101,12 @@ class Partner extends Model
     public static function filter(Request $request)
     {
         if ($request->has(['filter', 'search'])) {
-            $query = Partner::search($request->search . '*');
+            $query = Partner::filterByPermissions()->search($request->search . '*');
             return $query;
         }
 
         if ($request->has('search')) {
-            $query = Partner::search($request->search . '*');
+            $query = Partner::filterByPermissions()->search($request->search . '*');
         }
 
         if ($request->has('filter')) {

@@ -29,21 +29,19 @@ class Fiskalizuj implements ShouldQueue
             $potpis = $racun->preduzece->pecat;
 
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
+
+            $nacin_placanja = 'CASH';
         }
 
         if ($racun->vrsta_racuna === 'bezgotovinski') {
             $potpis = $racun->preduzece->sertifikat;
 
             $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);
+
+            $nacin_placanja = 'NONCASH';
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
-
-        if($racun->vrsta_racuna === 'gotovinski') {
-            $nacin_placanja = 'CASH';
-        } elseif ($racun->vrsta_racuna === 'bezgotovinski') {
-            $nacin_placanja = 'NONCASH';
-        }
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
