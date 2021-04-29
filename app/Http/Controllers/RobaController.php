@@ -26,7 +26,9 @@ class RobaController extends Controller
     {
         if ($request->has('search')) {
             $queryRobaId = [];
-            $queryRoba = Roba::search($request->search . '*')->get()->toArray();
+            $queryRoba = Roba::search($request->search . '*')->query(function ($query) {
+                return $query->filterByPermissions();
+            })->get()->toArray();
             foreach ($queryRoba as $roba) {
                 $queryRobaId[] = $roba['id'];
             }
@@ -44,7 +46,9 @@ class RobaController extends Controller
             return $query;
         }
         if ($request->has('atribut_id')) {
-            $query = RobaAtributRobe::filter($request);
+            $query = RobaAtributRobe::filter($request)->query(function ($query) {
+                return $query->filterByPermissions();
+            });
             return $query
                 ->with([
                     'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
@@ -59,7 +63,12 @@ class RobaController extends Controller
                 ])->paginate();
         }
 
-        return RobaAtributRobe::query()->with([
+        $queryRobaId = [];
+        $queryRoba = Roba::filterByPermissions()->get()->toArray();
+        foreach ($queryRoba as $roba) {
+            $queryRobaId[] = $roba['id'];
+        }
+        return RobaAtributRobe::whereIn('roba_id', $queryRobaId)->with([
             'roba:id,naziv,opis,ean,status,proizvodjac_robe_id',
             'roba.jedinica_mjere:id,naziv',
             'roba.cijene_roba:id,roba_id,cijena_bez_pdv,ukupna_cijena,porez_id',

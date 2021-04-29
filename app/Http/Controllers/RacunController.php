@@ -44,7 +44,7 @@ class RacunController extends Controller
     {
         Log::info('ssssss', array($request->all()));
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*')->query(function($query) {
+            $searchQuery = Racun::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             })->orderBy('created_at', 'DESC');
 
@@ -72,7 +72,9 @@ class RacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filter($request);
+            $query = Racun::filter($request)->query(function ($query) {
+                return $query->filterByPermissions();
+            });
 
             $query = $query->where('tip_racuna', Racun::RACUN);
 
@@ -227,6 +229,7 @@ class RacunController extends Controller
 
             $preduzece = Preduzece::find(getAuthPreduzeceId($request));
             $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
+
 
             //ispitamo da li postoji fizicko lice sa ime_korisnika
             if ($request->vrsta_racuna === 'gotovinski') {

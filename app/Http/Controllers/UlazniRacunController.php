@@ -25,7 +25,7 @@ class UlazniRacunController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            $searchQuery = UlazniRacun::search($request->search . '*')->query(function($query) {
+            $searchQuery = UlazniRacun::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             })->orderBy('created_at', 'DESC');
 
@@ -51,7 +51,9 @@ class UlazniRacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = UlazniRacun::filter($request);
+            $query = UlazniRacun::filter($request)->query(function ($query) {
+                return $query->filterByPermissions();
+            });
 
             $paginatedData = $query
                 ->with(

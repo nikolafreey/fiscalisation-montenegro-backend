@@ -101,14 +101,14 @@ class Partner extends Model
     public static function filter(Request $request)
     {
         if ($request->has(['filter', 'search'])) {
-            $query = Partner::search($request->search . '*')->query(function($query) {
+            $query = Partner::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             });
             return $query;
         }
 
         if ($request->has('search')) {
-            $query = Partner::search($request->search . '*')->query(function($query) {
+            $query = Partner::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             });
         }
@@ -141,6 +141,6 @@ class Partner extends Model
 
     public function preduzece()
     {
-        return $this->belongsTo('App\Models\Preduzece', 'preduzece_tabela_id');
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 }
