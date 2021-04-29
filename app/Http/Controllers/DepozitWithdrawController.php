@@ -51,6 +51,10 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
         $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
+        if ($depozitWithdraw->iznos_depozit < 0) {
+            return response()->json('Depozit nije validan', 400);
+        }
+
         $depozitWithdraw->save();
 
         Depozit::dispatch($depozitWithdraw)->onConnection('sync');
