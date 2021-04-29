@@ -80,7 +80,7 @@ class Partner extends Model
 
     public function toSearchableArray()
     {
-        if ($this->preduzece_id) {
+        if ($this->preduzece_tabela_id) {
             $preduzece = $this->preduzece;
             $array['preduzece_kratki_naziv'] = $preduzece->kratki_naziv;
             $array['preduzece_puni_naziv'] = $preduzece->puni_naziv;
@@ -115,7 +115,7 @@ class Partner extends Model
 
         if ($request->has('filter')) {
             if ($request->filter == "fizicko_lice") {
-                return Partner::where('preduzece_id', null);
+                return Partner::where('preduzece_tabela_id', null);
             } elseif ($request->filter == "preduzece") {
                 return Partner::where('fizicko_lice_id', null);
             }
@@ -141,6 +141,6 @@ class Partner extends Model
 
     public function preduzece()
     {
-        return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+        return $this->belongsTo('App\Models\Preduzece', 'preduzece_tabela_id');
     }
 }
