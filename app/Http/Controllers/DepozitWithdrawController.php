@@ -53,9 +53,7 @@ class DepozitWithdrawController extends Controller
 
         $depozitWithdraw->save();
 
-        if ($depozitWithdraw->iznos_depozit > 0) {
-            Depozit::dispatch($depozitWithdraw)->onConnection('sync');
-        }
+        Depozit::dispatch($depozitWithdraw)->onConnection('sync');
 
         // if($depozitWithdraw->iznos_withdraw > 0) {
         //     Withdraw::dispatch($depozitWithdraw);
