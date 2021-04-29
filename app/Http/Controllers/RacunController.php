@@ -44,7 +44,9 @@ class RacunController extends Controller
     {
         Log::info('ssssss', array($request->all()));
         if ($request->search) {
-            $searchQuery = Racun::filterByPermissions()->search($request->search . '*')->orderBy('created_at', 'DESC');
+            $searchQuery = Racun::search($request->search . '*')->query(function($query) {
+                return $query->filterByPermissions();
+            })->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
@@ -70,7 +72,7 @@ class RacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filterByPermissions()->filter($request);
+            $query = Racun::filter($request);
 
             $query = $query->where('tip_racuna', Racun::RACUN);
 

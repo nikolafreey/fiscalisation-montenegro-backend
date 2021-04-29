@@ -137,7 +137,9 @@ class Racun extends Model
     {
 
         if ($request->has('search')) {
-            $query = Racun::search($request->search . '*');
+            $query = Racun::search($request->search . '*')->query(function($query) {
+                return $query->filterByPermissions();
+            });
         } else {
             $query = Racun::query();
         }

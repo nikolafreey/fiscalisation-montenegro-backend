@@ -23,7 +23,9 @@ class UslugaController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search')) {
-            return Usluga::filterByPermissions()->search($request->search . '*')->with([
+            return Usluga::search($request->search . '*')->query(function($query) {
+                return $query->filterByPermissions();
+            })->with([
                 'grupa:id,naziv,opis,popust_procenti,popust_iznos',
                 'jedinica_mjere:id,naziv',
                 'porez:id,naziv,stopa'

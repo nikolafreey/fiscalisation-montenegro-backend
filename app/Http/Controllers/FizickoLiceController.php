@@ -24,7 +24,9 @@ class FizickoLiceController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            return FizickoLice::filterByPermissions()->search($request->search . '*')->paginate();
+            return FizickoLice::search($request->search . '*')->query(function($query) {
+                return $query->filterByPermissions();
+            })->paginate();
         }
 
         return FizickoLice::filterByPermissions()->paginate();
