@@ -32,7 +32,7 @@ class Racun extends Model
         'datum_izdavanja',
         'nacin_placanja',
         'datum_za_placanje',
-        'kod_poslovnog_prostora_enu',
+        // 'kod_poslovnog_prostora_enu',
         'ukupna_cijena_bez_pdv',
         'ukupna_cijena_sa_pdv',
         'ukupna_cijena_bez_pdv_popust',

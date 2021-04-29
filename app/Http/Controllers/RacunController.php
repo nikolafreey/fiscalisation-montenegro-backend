@@ -222,16 +222,16 @@ class RacunController extends Controller
     {
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
+
             $preduzece = Preduzece::find(getAuthPreduzeceId($request));
             $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
 
             //ispitamo da li postoji fizicko lice sa ime_korisnika
             if ($request->vrsta_racuna === 'gotovinski') {
-
                 $fizickoLice = FizickoLice::where('ime', 'Anonimni')->first();
                 if (!$fizickoLice) {
                     $fizickoLice = FizickoLice::make([
-                        'ime', 'Anonimni',
+                        'ime' => 'Anonimni',
                         'prezime' => 'Korisnik',
                         'jmbg' => '1234567891111',
                         'ib' => '12345678',
@@ -268,6 +268,7 @@ class RacunController extends Controller
                         $partner->preduzece_id = getAuthPreduzeceId($request);
                         $partner->save();
                     }
+                    $racun->partner_id = $partner->id;
                 } else {
                     $partner = Partner::where('fizicko_lice_id', $fizickoLice->id)->first();
                     if (!$partner) {
@@ -281,22 +282,27 @@ class RacunController extends Controller
                         $partner->preduzece_id = getAuthPreduzeceId($request);
                         $partner->save();
                     }
+                    $racun->partner_id = $partner->id;
                 }
 
-                $racun->partner_id = $partner->id;
+                $racun->status = 'Plaćen';
+            } else {
+                $racun->partner_id = $request->partner_id;
             }
 
             // $racun->tip_racuna = Racun::RACUN;
             // InvNum="{{ implode('/', [$taxpayer['BU'], $racun->broj_racuna, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
             $ovaGodina = date('Y');
 
-            // $racun->broj_racuna = implode('/', [$preduzece->poslovne_jedinice->kod_poslovnog_prostora, $racun->redni_broj, $ovaGodina, $preduzece->enu_kod]);
+            //TODO: Prepraviti poslovne_jedinice, treba da se proslijedi tacna poslovna jedinica a ne da se uzima prvi iz niza.
+            $racun->broj_racuna = implode('/', [$preduzece->poslovne_jedinice[0]->kod_poslovnog_prostora, $racun->redni_broj, $ovaGodina, $preduzece->enu_kod]);
             $racun->datum_izdavanja = now();
+            $racun->nacin_placanja = $request->nacin_placanja;
+            $racun->tip_racuna = Racun::RACUN;
 
             $racun->user_id = auth()->id();
 
             $racun->preduzece_id = getAuthPreduzeceId($request);
-            $racun->partner_id = $request->partner_id;
 
             $racun->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 

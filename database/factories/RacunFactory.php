@@ -47,7 +47,7 @@ class RacunFactory extends Factory
             'order' => rand(0, 1),
             'popust_ukupno' => $this->faker->randomFloat(2, 0, 100),
             'opis' => $this->faker->text(),
-            'status' => $this->faker->randomElement(['Plaćen', 'Nenaplativ', 'Čeka se', 'Privremeni', 'Nenaplativ dug']),
+            'status' => $this->faker->randomElement(['Plaćen', 'Nenaplativ', 'Nije Plaćen', 'Privremeni']),
             'user_id' => User::all()->random()->id,
             'partner_id' => Partner::all()->random()->id,
         ];
