@@ -136,7 +136,9 @@ class UlazniRacun extends Model
     {
 
         if ($request->has('search')) {
-            $query = UlazniRacun::search($request->search . '*');
+            $query = UlazniRacun::search($request->search . '*')->query(function($query) {
+                return $query->filterByPermissions();
+            });
         } else {
             $query = UlazniRacun::query();
         }
