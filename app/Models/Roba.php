@@ -144,9 +144,30 @@ class Roba extends Model
         return $query;
     }
 
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        $query = $query->where('preduzece_id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all PoslovnaJedinica')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned PoslovnaJedinica')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
+
     public function storeAtributi($atributi)
     {
         $this->atributi_roba()->sync($atributi);
+        $this->atributi_roba()->preduzece_id = getAuthPreduzeceId(request());
+        $this->atributi_roba()->user_id = auth()->id();
     }
 
     public function proizvodjac_robe()

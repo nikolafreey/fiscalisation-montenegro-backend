@@ -19,7 +19,9 @@ class PredracunController extends Controller
         auth()->user()->can('view Predracun');
 
         if ($request->search) {
-            $searchQuery = Racun::search($request->search . '*')->orderBy('created_at', 'DESC');
+            $searchQuery = Racun::search($request->search . '*')->query(function ($query) {
+                return $query->filterByPermissions();
+            })->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
@@ -45,7 +47,9 @@ class PredracunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filter($request);
+            $query = Racun::filter($request)->query(function ($query) {
+                return $query->filterByPermissions();
+            });
 
             $query = $query->where('tip_racuna', Racun::PREDRACUN);
 
@@ -61,7 +65,7 @@ class PredracunController extends Controller
             return $data;
         }
 
-        $queryAll = Racun::query();
+        $queryAll = Racun::query()->filterByPermissions()->orderBy('created_at', 'DESC');
         $queryAll = $queryAll->where('tip_racuna', Racun::PREDRACUN);
 
         $paginatedData = $queryAll

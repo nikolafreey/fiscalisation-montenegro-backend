@@ -65,7 +65,7 @@ class Fiskalizuj implements ShouldQueue
             ],
             'seller' => [
                 'IDType' => 'TIN',
-                'Name' => $racun->preduzece->kratki_naziv,
+                'Name' => $racun->preduzece->kratki_naziv ?? 'Anonimno Preduzece',
             ],
             'buyer' => [
                 'IDType' => 'TIN',
