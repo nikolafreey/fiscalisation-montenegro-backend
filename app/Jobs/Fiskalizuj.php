@@ -49,9 +49,9 @@ class Fiskalizuj implements ShouldQueue
         $ukupna_cijena_bez_pdv = 0;
 
         foreach($racun->stavke as $stavka) {
-            $ukupan_iznos_pdv += sprintf('%0.2f', $stavka->pdv_iznos) * sprintf('%0.2f', $stavka->kolicina);
+            $ukupan_iznos_pdv += $stavka->pdv_iznos * $stavka->kolicina;
 
-            $ukupna_cijena_bez_pdv += sprintf('%0.2f', $stavka->ukupna_bez_pdv) * sprintf('%0.2f', $stavka->kolicina);
+            $ukupna_cijena_bez_pdv += $stavka->ukupna_bez_pdv * $stavka->kolicina;
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);

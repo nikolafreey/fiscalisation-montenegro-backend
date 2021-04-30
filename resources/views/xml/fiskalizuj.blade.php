@@ -56,13 +56,13 @@
                     U="{{ $stavka->jedinica_mjere->naziv }}"
                     Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
                     UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
-                    UPA="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_sa_pdv) }}"
+                    UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
                     R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
                     RR="{{ (bool) $stavka->popust_iznos }}"
-                    PB="{{ sprintf('%0.2f', $stavka->cijena_bez_pdv) }}"
+                    PB="{{ sprintf('%0.2f', $stavka->ukupna_bez_pdv) }}"
                     VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
                     VA="{{ sprintf('%0.2f', $stavka->pdv_iznos) }}"
-                    PA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
+                    PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
                 />
             @endforeach
         </Items>

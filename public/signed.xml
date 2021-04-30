@@ -1,68 +1,61 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
             <soapenv:Header/>
             <soapenv:Body><RegisterInvoiceRequest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://efi.tax.gov.me/fs/schema" Id="Request" Version="1">
-    <Header SendDateTime="2021-04-28T21:30:41+02:00" UUID="6d3d7d1b-ee0d-46b7-9eb0-3737ce499087"/>
+    <Header SendDateTime="2021-04-30T18:33:25+02:00" UUID="f75babe9-6d72-40df-89b1-f35909d76440"/>
 
-    <Invoice TypeOfInv="CASH" IsSimplifiedInv="false" IssueDateTime="2021-04-28T21:30:41+02:00" InvNum="ya260ri698/60/2021/wp886vu280" InvOrdNum="60" TCRCode="wp886vu280" IsIssuerInVAT="true" TotPriceWoVAT="75.84" TotVATAmt="71.71" TotPrice="75.84" OperatorCode="ia871me776" BusinUnitCode="ya260ri698" SoftCode="qk433mq872" IIC="38c0e4df9a7aefb6d97f5647d7d78417" IICSignature="35bf9fa9e4d8fc7423ba6eb25ec955af60158a2eaacde686a29ee062615d83d7ea7621ab4649ad1fb298c5cc704648897ecc733d6936ed32ec1284740603091158022b0b5417b7d4dd97fb516163ca57501f6582e429b2f565dee650c0e09511bdcb919ee3a9defd323f999f49cdfb910ec93214c7d169bef1b5dc65af2eb8c4d028c71db194f4a723959109afd78283f65c7b8c14554e2c6bd49b21cbd094605b0d510ad1a8e740eaff63effc8e34d88b5113fd8547404cc792c049664136c63dae99007c30837ca63d06585aa744487eb8506abc949e6ea1b4a389d4dbdeb7416d9b11f65dfe69de67b7df1e944ce01e1a63eaec472650dc730c60440388d0" IsReverseCharge="false">
+    <Invoice TypeOfInv="CASH" IsSimplifiedInv="false" IssueDateTime="2021-04-30T18:33:25+02:00" InvNum="xx123xx123/26/2021/si747we972" InvOrdNum="26" TCRCode="si747we972" IsIssuerInVAT="true" TotPriceWoVAT="99.17" TotVATAmt="20.83" TotPrice="120.00" OperatorCode="oo123oo123" BusinUnitCode="xx123xx123" SoftCode="ss123ss123" IIC="ef42c57f4d2fcdbe3d3b3a6647cb2bb7" IICSignature="22677703539733cce036831c86e7fed05846557b2c2a312529768ae858f660e87c5e9db5853cc476e1156fcd3571040d1a457baec980990961517473177854790305166c8a58d720810123480c0ed96b8eeab4387f4be2ad4b78e675e1d7b9659893ea31b796c1e6d9772a903b925ad300e4acf81ab2df7256e6a842920cd81fd901581504c1bc4f83c9dd3b984ec962477d1c56a447cc2e8e50d1064688693272b589d41eacea2a20bf31f3b6830946c971f6c37a5e1b08b73ab33f5e6045f9c49c8d2ff859a2a8b7fdc58951130a04f3840b8e95abf12a91e782aba8bd7e757e244d74e1608f220fbb5ce3d60e2caabd760b5d0dab19af2afda48d630d1217" IsReverseCharge="false">
         <PayMethods>
-            <PayMethod Type="BANKNOTE" Amt="75.84"/>
+            <PayMethod Type="BANKNOTE" Amt="120.00"/>
         </PayMethods>
 
-        <Seller IDType="TIN" IDNum="02829258" Name="Crnagoraput"/>
+        <Seller IDType="TIN" IDNum="12345678" Name="Nex Montenegro"/>
 
-        <Buyer IDType="TIN" IDNum="12345678" Name="Cvijeta"/>
+        <Buyer IDType="TIN" IDNum="12345678" Name="Anonimni Kupac"/>
 
         <Items>
-                            <I N="et" C="0" U="m2" Q="1.00" UPB="75.84" UPA="0.00" R="0.00" RR="1" PB="0.00" VR="0.21" VA="71.71" PA="75.84"/>
+                            <I N="quisquam" C="0" U="sek" Q="12.00" UPB="8.26" UPA="10.00" R="0.00" RR="1" PB="99.17" VR="0.00" VA="1.74" PA="120.00"/>
                     </Items>
 
+
         <SameTaxes>
-                                                                                                        <SameTax NumOfItems="1" PriceBefVAT="75.84" VATRate="21.00" VATAmt="71.71"/>
-                                    </SameTaxes>
+                                                <SameTax NumOfItems="12" PriceBefVAT="1190.09" VATRate="0.00" VATAmt="20.83"/>
+                                                                                            </SameTaxes>
     </Invoice>
 <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
   <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <Reference URI="#Request"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>pxAmmcGVJdkLJTetNYPwXTLXjRtt7PO3k1z1ku8AwH8=</DigestValue></Reference></SignedInfo><SignatureValue>htbvwHyAIAVOZx/EAUi44H4ZsotAEJiSOA7kvf49QtpztTJj/o081CgjkQwRbRtxOsRvebX3FOoigIGlihqWTxGPSqXWQfkH9yoFxZz7Dx47su7f3+Hedb8r4BSzw/Zb/bF+JCBjk5LlOsL4BO/RyZavXa88iP/TbKDjeXzwofRZEB5EM/RTGCYYxYuz+e1JteevF8BLk5K7a55MTW5Uc7Z8e2Y4Ypn5hNuMG5c2hVSZiBpvOzu71zqkI2RRs4lSN7ANLfLB2d5n/MOCFVcDoGNhHjesk5bb0kps4ZeQOpcPTiQ4J1X2rdEPH8PR1361451lBYYV5zwwLF/TvmaAvA==</SignatureValue>
-<KeyInfo><X509Data><X509Certificate>MIIHHTCCBYWgAwIBAgIEXQMMRjANBgkqhkiG9w0BAQsFADA0MQswCQYDVQQGEwJt
-ZTEQMA4GA1UEChMHUG9zdGFDRzETMBEGA1UEAxMKUG9zdGFDRyBDQTAeFw0yMTAx
-MTIwNzEzMDVaFw0yNDAxMTIwNzQzMDVaMIGAMQswCQYDVQQGEwJNRTEUMBIGA1UE
-CxMLUHJhdm5vIGxpY2UxMTAVBgNVBGETDlZBVE1FLTAyODI5MjU4MBgGA1UEChMR
-UkVTVEFSVCBJVCBkLm8uby4xKDAMBgNVBAUTBTQyODY0MBgGA1UEAxMRUkVTVEFS
-VCBJVCBkLm8uby4wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC0u6vT
-75aX4Etzpo/RU8afyOoWQUe+FmpL7sL/jpJFPMte6OMgbms3qqWRYsgR2oJ2YU9d
-mHZV7Cy+EEbdfV73IkIStkJuLyHHT+kxkp+dXLcykEe23e7VLnkCPzJ2nU4HUs4G
-S6fTth4Z36srmgcFfJz3LHy8ii80/753A5sEjKWDbjrnvyTYr1v3i4WjGS61tqcW
-LFdst9K7y5PiGB3KZeGkG0qg7iYLHTmo27ekVyNjAlgFiR/xNURM+hOJCH0DTHS5
-SJ5VvdQ3PMczL74VEXKye6MgDtMeBH9UEZPOFsaOaqT4dfq+FL/Kd65a+qDFAez0
-eZGcyPoWqa7rC8VRAgMBAAGjggNoMIIDZDAOBgNVHQ8BAf8EBAMCBsAwRQYDVR0g
-BD4wPDA6BgwrBgEEAYKfAQEGAQQwKjAoBggrBgEFBQcCARYcaHR0cDovL3d3dy5w
-b3N0YWNnLWNhLm1lL2NwczCBsgYIKwYBBQUHAQMEgaUwgaIwCAYGBACORgEBMIGA
-BgYEAI5GAQUwdjA5FjNodHRwczovL3d3dy5wb3N0YWNnLWNhLm1lL2Nwcy9wb3N0
-YWNnLWNhX3Bkc19lbi5wZGYTAmVuMDkWM2h0dHBzOi8vd3d3LnBvc3RhY2ctY2Eu
-bWUvY3BzL3Bvc3RhY2ctY2FfcGRzX3NyLnBkZhMCc3IwEwYGBACORgEGMAkGBwQA
-jkYBBgIwTgYIKwYBBQUHAQEEQjBAMD4GCCsGAQUFBzAChjJodHRwOi8vd3d3LnBv
-c3RhY2ctY2EubWUvY2VyL1Bvc3RhQ0ctQ0FfY2FjZXJ0LmNlcjCBgAYDVR0SBHkw
-d6R1MHMxCzAJBgNVBAYTAk1FMTYwNAYDVQQKEy1QT1NUQSBDUk5FIEdPUkUgQUtD
-SU9OQVJTS08gRFJVU1RWTyBQT0RHT1JJQ0ExFzAVBgNVBGETDlZBVE1FLTAyODY3
-OTQwMRMwEQYDVQQDEwpQb3N0YUNHIENBMIIBQQYDVR0fBIIBODCCATQwTKBKoEik
-RjBEMQswCQYDVQQGEwJtZTEQMA4GA1UEChMHUG9zdGFDRzETMBEGA1UEAxMKUG9z
-dGFDRyBDQTEOMAwGA1UEAxMFQ1JMNDUwgeOggeCggd2GW2xkYXA6Ly9sZGFwLnBv
-c3RhY2ctY2EubWUvY249UG9zdGFDRyUyMENBLG89UG9zdGFDRyxjPW1lP2NlcnRp
-ZmljYXRlUmV2b2NhdGlvbkxpc3QlM0JiaW5hcnmGPmh0dHA6Ly9laWQucG9zdGFj
-Zy1jYS5tZS9jcmwvcG9zdGFjZ19jYV9wb3N0YWNnX21lX2NybGZpbGUuY3Jshj5o
-dHRwOi8vd3d3LnBvc3RhY2ctY2EubWUvY3JsL3Bvc3RhY2dfY2FfcG9zdGFjZ19t
-ZV9jcmxmaWxlLmNybDAfBgNVHSMEGDAWgBR3Y0xYMrlU0RoJ93Quq6uNPKoq8TAd
-BgNVHQ4EFgQUV5q+2TeanEdIUlZlVxS81r6WkOwwDQYJKoZIhvcNAQELBQADggGB
-AOBXnwm3bozLpkES2WypmCFHkFrNBmz9nm6XoLBsGx7uRcqRGsquQLVlAB/IRa+b
-N14vQ6Vulcw9zv7kqDZFhi1txuWpvuxSZpx621EgZtIVDMUITmU8q9ezqNor7UgS
-DhhfvIF6ZTkPM1UmBZpPMyLUtcxgZ1l3guZwu00ClcUQpb3S4710aM8CoFBGKHE9
-65GXhSlriw0MUX0cgVANqV0FyKyuIOes2Lc7N0dHGKwKU8XbSziUaf+59Unigm5C
-HxcT3ZvvMxl/+M65Whw4dkkajoeobpCm3YKuUb26/evjuH7EWki9dgKLQ1qSoDmQ
-dDxIaNqK9c0hfbislxx3hrQcqQ9K/34Jr3sdS4Tq8142GRYoclKGebU62ds51a43
-YfXo308Nx2mDsu6gd6yZvLP7JWBNB2Dvtc7bJHtciEOUtr5UN+AANgKG69JRRK4e
-W4lhSwPSMKscth2PsAw0+hfi1i3aSThj6tTVrZLsnliMtrANXRJLETV9cbx7Ohzb
-Sw==
+  <Reference URI="#Request"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>kKh/GdZWWznojSTV3K+U3gHSN9J/y3q9bJWWhYij778=</DigestValue></Reference></SignedInfo><SignatureValue>Tl901kmVYxhKlgydhqAtrwRg/wgYgyZxqhq6AByDgMaJrDH7aw+AmPSgVQ1KyGR84OtGsfEj0DaOwPiSEB/hdGkTKpgQ3SbcXtbHF6BMkfoCbq+dsTyiqKkwD6QPzk6GTdBliFlkzpt4vHQXWNuwQGHy4/WbwYtRp9/Gx6g73FYXl9idcW3BBAbXBZYJtEyuP1W//wX/0uD+yqijEzHpzvJmBnCoOqM94dd9e7RDNCmlXjKjSuF9SEWefosbqF8mCk1Gs49LnEAa92GRtyFag7RRA2o69L/soJk6p1Qqbd7X9PtmNs86iZ3EyiwYo+12lJSYpMrx8umPPqME5zJeLg==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>MIIFoDCCBAigAwIBAgIIAosoHBIRrfUwDQYJKoZIhvcNAQELBQAwTzELMAkGA1UE
+BhMCTUUxDzANBgNVBAoMBkNvcmVpdDEXMBUGA1UEYQwOVkFUTUUtMDI3NzUwMTgx
+FjAUBgNVBAMMDUNvcmVpdCBTdWIgQ0EwHhcNMjAxMDA1MTIxNDQ3WhcNMjMxMDA1
+MTIxNDQ3WjCBmzELMAkGA1UEBhMCTUUxGjAYBgNVBAoMEVRlc3QgT25seSBDb21w
+YW55MRcwFQYDVQRhDA5WQVRNRS0xMjM0NTY3ODESMBAGA1UECwwJT3BlcmFjaWpl
+MQ4wDAYDVQQFEwUxMDAwMTEzMDEGA1UEAwwqVGVzdCBPbmx5IENvbXBhbnkgKFBl
+xI1hdC9BdXRlbnRpZmlrYWNpamEpMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAqzK8vMGchz7qc5K7eqvLy3kMIO7omEv406wLU+vIMIeusmwebrVYCd03
+EdMrI6ktDFiUuQbD1Ze0+oxpBLT9iFpB3njTf+z2phI5BNkEseHGxc0BrT8S2DTG
+qO13xAYwcqViK6cARfpgzpRB6B1HLVKmW5PwlwNQlmXuM61bQqyaPLrToNex+drV
+ybO9r2zLQzY5ztNV5F1Uy/pQnggZt2qRyFO71cW/D7+Vc1d14DGG4gy3TmW36BQK
+3zSGBy11psNLLsNDPl14JaqrKZgKv9o6M9+qZ0yb08HHoURkR91XsbJ0YnUZJy+D
+jy6rya7iqqN5y5MIc9qfdul7HI/FuQIDAQABo4IBsTCCAa0wDAYDVR0TAQH/BAIw
+ADAfBgNVHSMEGDAWgBRS3xfznifJOu61Gx/QkwDS8wtU/jBxBggrBgEFBQcBAQRl
+MGMwLwYIKwYBBQUHMAKGI2h0dHA6Ly9jYS5jb3JlaXQubWUvQ29yZWl0U3ViQ0Eu
+Y2VyMDAGCCsGAQUFBzABhiRodHRwOi8vb2NzcC5jYS5jb3JlaXQubWUvQ29yZWl0
+U3ViQ0EwQgYDVR0gBDswOTA3Bg0rBgEEAYOjKQEBAgIBMCYwJAYIKwYBBQUHAgEW
+GGh0dHA6Ly9jYS5jb3JlaXQubWUvY3BzLzBcBggrBgEFBQcBAwRQME4wCAYGBACO
+RgEBMBMGBgQAjkYBBjAJBgcEAI5GAQYCMC0GBgQAjkYBBTAjMCEWG2h0dHBzOi8v
+Y2EuY29yZWl0Lm1lL3Bkcy9lbhMCZW4wOAYDVR0fBDEwLzAtoCugKYYnaHR0cDov
+L2NybC5jYS5jb3JlaXQubWUvQ29yZWl0U3ViQ0EuY3JsMB0GA1UdDgQWBBSLBPEd
+crmjuxuatJAJ3dUzJmzzbjAOBgNVHQ8BAf8EBAMCBsAwDQYJKoZIhvcNAQELBQAD
+ggGBACp0Yi52FnYapjzVv//lC17uU6EKrIomCs1QUQSQE7zXrz4pBgnB3v4mNS1g
+0EzFtzfkIspjQex1Y8D/SdgtFrVmwfmUhsI/GLtr1VvlSVTMdRoekGDHS8J89wna
+rebV3pxfIFpmKw3iqQwIQXur5gXCRojPehJoAg3J/YhA1XT6D0aEYJVhRjIuSqee
+c/G7XIDKnr8sOy+iOBaHVjvnQ5cYmXgVyslDuWFZ7N5mRrWYreXX+WaOAQf1+zEq
+BsRwZp7jAU62dmI4D4C/FqrANhOby6FKOjCylX7VrF3igZyQ+KHVETSxqJXMTyQ9
+uBRZ/G+lubDfjGVlcwznQLPpo3VFpExIvS8Ne/5M1KJjBcVhzc2lPC5ObIyu+Tex
+IYNvuj2FwRs9xLGAwkO0LMJNfjYPItWhBoHZej3SUScgBGtI6p9n8xFrMly93tAJ
++GhBX4Wncz3TAUhkhH8jPvJUJVYil1QGToOCBIp/XD76BbF67Q/DStDSCeU68CqS
+oTQLMw==
 </X509Certificate></X509Data></KeyInfo></Signature></RegisterInvoiceRequest>
 </soapenv:Body>
             </soapenv:Envelope>
