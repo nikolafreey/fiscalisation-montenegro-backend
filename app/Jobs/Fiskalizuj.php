@@ -41,6 +41,15 @@ class Fiskalizuj implements ShouldQueue
             $nacin_placanja = 'NONCASH';
         }
 
+        $ukupan_iznos_pdv = 0;
+        $ukupna_cijena_bez_pdv = 0;
+
+        foreach($racun->stavke as $stavka) {
+            $ukupan_iznos_pdv += sprintf('%0.2f', $stavka->pdv_iznos) * sprintf('%0.2f', $stavka->kolicina);
+
+            $ukupna_cijena_bez_pdv += sprintf('%0.2f', $stavka->ukupna_bez_pdv) * sprintf('%0.2f', $stavka->kolicina);
+        }
+
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
 
         $this->data = [
@@ -63,7 +72,9 @@ class Fiskalizuj implements ShouldQueue
                 'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $racun->partner->kontakt_ime ?? 'Anonimni',
             ],
-            'nacin_placanja' => $nacin_placanja
+            'nacin_placanja' => $nacin_placanja,
+            'ukupan_iznos_pdv' => $ukupan_iznos_pdv,
+            'ukupna_cijena_bez_pdv' => $ukupna_cijena_bez_pdv
         ];
 
         $this->data['IICData'] = $this->generateIIC();
