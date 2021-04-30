@@ -31,6 +31,8 @@ class Fiskalizuj implements ShouldQueue
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
 
             $nacin_placanja = 'CASH';
+
+            $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
         }
 
         if ($racun->vrsta_racuna === 'bezgotovinski') {
@@ -39,6 +41,8 @@ class Fiskalizuj implements ShouldQueue
             $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);
 
             $nacin_placanja = 'NONCASH';
+
+            $kupacNaziv = $racun->preduzece->kratki_naziv;
         }
 
         $ukupan_iznos_pdv = 0;
@@ -70,7 +74,7 @@ class Fiskalizuj implements ShouldQueue
             'buyer' => [
                 'IDType' => 'TIN',
                 'IDNum' => $racun->partner->pib ?? '12345678',
-                'Name' => $racun->partner->kontakt_ime ?? 'Anonimni',
+                'Name' => $kupacNaziv,
             ],
             'nacin_placanja' => $nacin_placanja,
             'ukupan_iznos_pdv' => $ukupan_iznos_pdv,

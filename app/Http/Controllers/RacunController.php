@@ -237,7 +237,7 @@ class RacunController extends Controller
                 if (!$fizickoLice) {
                     $fizickoLice = FizickoLice::make([
                         'ime' => 'Anonimni',
-                        'prezime' => 'Korisnik',
+                        'prezime' => 'Kupac',
                         'jmbg' => '1234567891111',
                         'ib' => '12345678',
                         'adresa' => 'Adresa',
@@ -265,7 +265,7 @@ class RacunController extends Controller
                     if (!$partner) {
                         $partner = Partner::make([
                             'kontakt_ime' => 'Anonimni',
-                            'kontakt_prezime' => 'Korisnik',
+                            'kontakt_prezime' => 'Kupac',
                             'fizicko_lice_id' => $fizickoLice->id,
                         ]);
 
