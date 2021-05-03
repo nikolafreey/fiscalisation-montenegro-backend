@@ -28,12 +28,12 @@ class PreduzeceController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            return Preduzece::search($request->search . '*')->query(function($query) {
+            return Preduzece::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             })->paginate();
         }
 
-        return Preduzece::with('partneri:id,preduzece_id,user_id', 'ziro_racuni:id,preduzece_id,broj_racuna')->paginate();
+        return Preduzece::with('partneri', 'ziro_racuni:id,preduzece_id,broj_racuna')->paginate();
     }
 
     /**

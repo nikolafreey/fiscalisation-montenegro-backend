@@ -299,8 +299,6 @@ class RacunController extends Controller
             // InvNum="{{ implode('/', [$taxpayer['BU'], $racun->broj_racuna, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
             $ovaGodina = date('Y');
 
-            //TODO: Prepraviti poslovne_jedinice, treba da se proslijedi tacna poslovna jedinica a ne da se uzima prvi iz niza.
-            $racun->broj_racuna = implode('/', [$preduzece->poslovne_jedinice[0]->kod_poslovnog_prostora, $racun->redni_broj, $ovaGodina, $preduzece->enu_kod]);
             $racun->datum_izdavanja = now();
             $racun->nacin_placanja = $request->nacin_placanja;
             $racun->tip_racuna = Racun::RACUN;
@@ -319,6 +317,9 @@ class RacunController extends Controller
             } else {
                 $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
             }
+
+            //TODO: Prepraviti poslovne_jedinice, treba da se proslijedi tacna poslovna jedinica a ne da se uzima prvi iz niza.
+            $racun->broj_racuna = implode('/', [$preduzece->poslovne_jedinice[0]->kod_poslovnog_prostora, $racun->redni_broj, $ovaGodina, $preduzece->enu_kod]);
 
             $racun->save();
 

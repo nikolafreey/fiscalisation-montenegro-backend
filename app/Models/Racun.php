@@ -234,8 +234,8 @@ class Racun extends Model
                 'popust_procenat' => $tip_popusta == 'procenat' ? round($popust, 2) : 0,
                 'popust_iznos' => $tip_popusta == 'iznos' ? round($popust, 2) : 0,
                 'popust_na_jedinicnu_cijenu' =>  round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2),
-                'ukupna_bez_pdv' => round($stavka['cijena_bez_pdv']  * $stavka['kolicina'], 2),
-                'ukupna_sa_pdv' => round($stavka['ukupna_cijena'] * $stavka['kolicina'], 2),
+                'ukupna_bez_pdv' => round($stavka['cijena_bez_pdv'], 2) * round($stavka['kolicina'], 2),
+                'ukupna_sa_pdv' => round($stavka['ukupna_cijena'], 2) * round($stavka['kolicina'], 2),
                 'ukupna_bez_pdv_popust' => round($stavka['cijena_bez_pdv_popust'] * $stavka['kolicina'], 2),
                 'ukupna_sa_pdv_popust' => round($stavka['cijena_sa_pdv_popust'] * $stavka['kolicina'], 2),
                 'porez_id' => $stavka['porez_id'],
@@ -419,8 +419,8 @@ class Racun extends Model
 
     public function izracunajPoreze()
     {
-        $porezi_za_racun = StavkaRacuna::groupBy('porez_id', 'racun_id')
-            ->selectRaw('sum(pdv_iznos) as pdv_iznos_ukupno, racun_id, porez_id')
+        $porezi_za_racun = StavkaRacuna::groupBy('racun_id', 'porez_id')
+            ->selectRaw('sum(pdv_iznos*kolicina) as pdv_iznos_ukupno, racun_id, porez_id')
             ->where('racun_id', $this->id)
             ->get()->toArray();
 

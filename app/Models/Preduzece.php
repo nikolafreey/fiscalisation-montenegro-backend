@@ -111,12 +111,12 @@ class Preduzece extends Model
 
     public function fizickaLica()
     {
-        return $this->hasMany('App\Models\FizickoLice');
+        return $this->hasMany('App\Models\FizickoLice', 'preduzece_id');
     }
 
     public function partneri()
     {
-        return $this->hasMany('App\Models\Partner', 'preduzece_id');
+        return $this->hasOne('App\Models\Partner', 'preduzece_tabela_id');
     }
 
     public function ziro_racuni()

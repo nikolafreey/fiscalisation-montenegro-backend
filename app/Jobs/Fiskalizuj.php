@@ -48,10 +48,10 @@ class Fiskalizuj implements ShouldQueue
         $ukupan_iznos_pdv = 0;
         $ukupna_cijena_bez_pdv = 0;
 
-        foreach($racun->stavke as $stavka) {
-            $ukupan_iznos_pdv += $stavka->pdv_iznos * $stavka->kolicina;
+        foreach ($racun->stavke as $stavka) {
+            $ukupan_iznos_pdv += round($stavka->pdv_iznos, 2) * $stavka->kolicina;
 
-            $ukupna_cijena_bez_pdv += $stavka->ukupna_bez_pdv * $stavka->kolicina;
+            $ukupna_cijena_bez_pdv += (round($stavka->ukupna_sa_pdv, 2) - round($stavka->pdv_iznos * $stavka->kolicina, 2));
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
@@ -77,8 +77,8 @@ class Fiskalizuj implements ShouldQueue
                 'Name' => $kupacNaziv,
             ],
             'nacin_placanja' => $nacin_placanja,
-            'ukupan_iznos_pdv' => $ukupan_iznos_pdv,
-            'ukupna_cijena_bez_pdv' => $ukupna_cijena_bez_pdv
+            'ukupan_iznos_pdv' => round($ukupan_iznos_pdv, 2),
+            'ukupna_cijena_bez_pdv' => round($ukupna_cijena_bez_pdv, 2)
         ];
 
         $this->data['IICData'] = $this->generateIIC();
@@ -92,7 +92,10 @@ class Fiskalizuj implements ShouldQueue
             'ikof' => $this->ikof ?? $this->data['IICData']['IIC'],
         ]);
 
-        $xml = view('xml.fiskalizuj', $this->data)->render();
+        $xml = view(
+            'xml.fiskalizuj',
+            $this->data
+        )->render();
 
         $signXMLService = new SignXMLService(
             $xml,
@@ -191,17 +194,17 @@ class Fiskalizuj implements ShouldQueue
     {
         $sameTaxes = [
             '0.00' => [
-                'ukupna_kolicina' => 0.0,
+                'ukupan_broj_stavki' => 0,
                 'ukupna_cijena_bez_pdv' => 0.0,
                 'ukupan_iznos_pdv' => 0.0,
             ],
             '0.07' => [
-                'ukupna_kolicina' => 0.0,
+                'ukupan_broj_stavki' => 0,
                 'ukupna_cijena_bez_pdv' => 0.0,
                 'ukupan_iznos_pdv' => 0.0,
             ],
             '0.21' => [
-                'ukupna_kolicina' => 0.0,
+                'ukupan_broj_stavki' => 0,
                 'ukupna_cijena_bez_pdv' => 0.0,
                 'ukupan_iznos_pdv' => 0.0,
             ],
@@ -210,9 +213,9 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
 
-            $sameTaxes[$porez_stopa]['ukupna_kolicina'] += $stavka->kolicina;
-            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->ukupna_bez_pdv;
-            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos;
+            $sameTaxes[$porez_stopa]['ukupan_broj_stavki'] += 1;
+            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += (round($stavka->ukupna_sa_pdv, 2) - round($stavka->pdv_iznos * $stavka->kolicina, 2));
+            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += round($stavka->pdv_iznos * $stavka->kolicina, 2);
         }
 
         return $sameTaxes;
@@ -228,7 +231,8 @@ class Fiskalizuj implements ShouldQueue
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
+            'prc=' . ($this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_iznos_pdv']),
+            // 'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
         ]);
     }
 }

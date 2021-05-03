@@ -27,14 +27,16 @@ class PartnerController extends Controller
                 return $query->filterByPermissions();
             });
 
-            $query = $query->with(['preduzece', 'fizicko_lice']);
+            // $preduzece_tabela = Preduzece::find($partner->preduzece_tabel_id)
+
+            $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 
             return $query->paginate(20);
         }
 
         $query = Partner::query()->filterByPermissions();
 
-        $query = $query->with(['preduzece', 'fizicko_lice']);
+        $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 
         return $query->paginate(20);
     }
