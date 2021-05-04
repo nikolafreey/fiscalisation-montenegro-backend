@@ -30,7 +30,7 @@ class Fiskalizuj implements ShouldQueue
 
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
 
-            $nacin_placanja = 'CASH';
+            $nacin_placanja = $racun->nacin_placanja ?? 'CASH';
 
             $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
         }
@@ -40,7 +40,7 @@ class Fiskalizuj implements ShouldQueue
 
             $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);
 
-            $nacin_placanja = 'NONCASH';
+            $nacin_placanja = $racun->nacin_placanja ?? 'BANKNOTE';
 
             $kupacNaziv = $racun->preduzece->kratki_naziv;
         }
