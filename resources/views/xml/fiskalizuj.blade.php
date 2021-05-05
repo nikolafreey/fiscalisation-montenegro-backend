@@ -11,7 +11,7 @@
     />
 
     <Invoice
-        TypeOfInv="{{ $nacin_placanja }}"
+        TypeOfInv="{{ $tip_placanja }}"
         IsSimplifiedInv="false"
         IssueDateTime="{{ $danasnji_datum }}"
         InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
@@ -31,7 +31,7 @@
         <PayMethods>
             <PayMethod
                 {{-- TODO: --}}
-                Type="{{ $racun->nacin_placanja ?? 'BANKNOTE' }}"
+                Type="{{ $nacin_placanja ?? 'BANKNOTE' }}"
                 Amt="{{ sprintf('%0.2f', round($racun->ukupna_cijena_sa_pdv, 2)) }}"
             />
         </PayMethods>
