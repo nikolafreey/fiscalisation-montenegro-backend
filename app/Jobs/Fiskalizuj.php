@@ -69,6 +69,7 @@ class Fiskalizuj implements ShouldQueue
                 'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $kupacNaziv,
             ],
+            'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,
         ];
 
