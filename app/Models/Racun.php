@@ -135,13 +135,12 @@ class Racun extends Model
 
     public static function filter(Request $request)
     {
-
         if ($request->has('search')) {
             $query = Racun::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             });
         } else {
-            $query = Racun::query();
+            $query = Racun::query()->filterByPermissions();
         }
         if ($request->has('startDate')) {
             $query = $query->where('created_at', '>=', $request->startDate);

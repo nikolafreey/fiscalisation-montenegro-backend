@@ -42,17 +42,17 @@ class RacunController extends Controller
 
     public function index(Request $request)
     {
-        Log::info('ssssss', array($request->all()));
-        if ($request->search) {
+        if ($request->search && !$request->status && !$request->startDate && !$request->endDate) {
             $searchQuery = Racun::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             })->orderBy('created_at', 'DESC');
 
             $paginatedSearch = $searchQuery
                 ->with(
-                    'partner:id,preduzece_id,fizicko_lice_id',
+                    'partner:id,preduzece_id,fizicko_lice_id,preduzece_tabela_id',
                     'partner.preduzece:id,kratki_naziv',
-                    'partner.fizicko_lice:id,ime,prezime'
+                    'partner.fizicko_lice:id,ime,prezime',
+                    'partner.preduzece_partner'
                 )->paginate(10);
 
             $partneri = [];
@@ -72,18 +72,17 @@ class RacunController extends Controller
         }
 
         if ($request->status || $request->startDate || $request->endDate) {
-            $query = Racun::filter($request)->query(function ($query) {
-                return $query->filterByPermissions();
-            });
+            $query = Racun::filter($request);
 
             $query = $query->where('tip_racuna', Racun::RACUN);
 
             $paginatedData = $query
                 ->with(
-                    'partner:id,preduzece_id,fizicko_lice_id',
+                    'partner:id,preduzece_id,fizicko_lice_id,preduzece_tabela_id',
                     'partner.preduzece:id,kratki_naziv',
-                    'partner.fizicko_lice:id,ime,prezime'
-                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(10);
+                    'partner.fizicko_lice:id,ime,prezime',
+                    'partner.preduzece_partner'
+                )->with('partner.preduzece:id,kratki_naziv')->with('partner.fizicko_lice:id,ime,prezime')->paginate(200); //TODO: Napraviti Paginaciju na frontu
             $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($query)]);
             $data = $ukupnaCijena->merge($paginatedData);
 
@@ -95,9 +94,10 @@ class RacunController extends Controller
 
         $paginatedData = $queryAll
             ->with(
-                'partner:id,preduzece_id,fizicko_lice_id',
+                'partner:id,preduzece_id,fizicko_lice_id,preduzece_tabela_id',
                 'partner.preduzece:id,kratki_naziv',
-                'partner.fizicko_lice:id,ime,prezime'
+                'partner.fizicko_lice:id,ime,prezime',
+                'partner.preduzece_partner'
             )->paginate(10);
         $ukupnaCijena = collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($queryAll)]);
         $data = $ukupnaCijena->merge($paginatedData);
@@ -445,7 +445,7 @@ class RacunController extends Controller
             return response()->json(['message' => 'Nemate pristup ovom racunu'], 401);
         }
 
-        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece']);
+        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece', 'partner.preduzece_partner']);
     }
 
     /**
