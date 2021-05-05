@@ -163,7 +163,7 @@ class DatabaseSeeder extends Seeder
 
         foreach (Preduzece::all() as $preduzece) {
 
-            Partner::factory(1)->create(['preduzece_tabela_id' => $preduzece->id]);
+            Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
         }
 
 

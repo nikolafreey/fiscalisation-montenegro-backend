@@ -30,7 +30,7 @@ class Fiskalizuj implements ShouldQueue
 
             $decryptedPassword = decrypt($racun->preduzece->pecatSifra);
 
-            $nacin_placanja = $racun->nacin_placanja ?? 'CASH';
+            $nacin_placanja = 'CASH';
 
             $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
         }
@@ -40,18 +40,9 @@ class Fiskalizuj implements ShouldQueue
 
             $decryptedPassword = decrypt($racun->preduzece->sertifikatSifra);
 
-            $nacin_placanja = $racun->nacin_placanja ?? 'BANKNOTE';
+            $nacin_placanja = 'NONCASH';
 
             $kupacNaziv = $racun->preduzece->kratki_naziv;
-        }
-
-        $ukupan_iznos_pdv = 0;
-        $ukupna_cijena_bez_pdv = 0;
-
-        foreach ($racun->stavke as $stavka) {
-            $ukupan_iznos_pdv += round($stavka->pdv_iznos, 2) * $stavka->kolicina;
-
-            $ukupna_cijena_bez_pdv += (round($stavka->ukupna_sa_pdv, 2) - round($stavka->pdv_iznos * $stavka->kolicina, 2));
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
@@ -77,8 +68,6 @@ class Fiskalizuj implements ShouldQueue
                 'Name' => $kupacNaziv,
             ],
             'nacin_placanja' => $nacin_placanja,
-            'ukupan_iznos_pdv' => round($ukupan_iznos_pdv, 2),
-            'ukupna_cijena_bez_pdv' => round($ukupna_cijena_bez_pdv, 2)
         ];
 
         $this->data['IICData'] = $this->generateIIC();
@@ -214,8 +203,8 @@ class Fiskalizuj implements ShouldQueue
             $porez_stopa = $stavka->porez->stopa;
 
             $sameTaxes[$porez_stopa]['ukupan_broj_stavki'] += 1;
-            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += (round($stavka->ukupna_sa_pdv, 2) - round($stavka->pdv_iznos * $stavka->kolicina, 2));
-            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += round($stavka->pdv_iznos * $stavka->kolicina, 2);
+            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
+            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos * $stavka->kolicina;
         }
 
         return $sameTaxes;
@@ -231,8 +220,8 @@ class Fiskalizuj implements ShouldQueue
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . ($this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_iznos_pdv']),
-            // 'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
+            // 'prc=' . ($this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_iznos_pdv']),
+            'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
         ]);
     }
 }
