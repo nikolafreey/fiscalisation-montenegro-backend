@@ -97,6 +97,25 @@ class Preduzece extends Model
         ]
     ];
 
+    public function scopeFilterByPermissions($query)
+    {
+        if (auth()->user()->hasRole('SuperAdmin')) {
+            return $query;
+        }
+
+        // $query = $query->where('id', getAuthPreduzeceId(request()));
+
+        return $query;
+
+        // if (auth()->user()->can('view all Racun')) {
+        //     return $query;
+        // }
+
+        // if (auth()->user()->can('view owned Racun')) {
+        //     return $query->where('user_id', auth()->id());
+        // }
+    }
+
     public function toSearchableArray()
     {
         $array = $this->only('kratki_naziv', 'puni_naziv', 'pib');

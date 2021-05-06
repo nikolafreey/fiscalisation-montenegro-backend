@@ -107,14 +107,14 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Plaćen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
 
     public function najveciDuznici(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'Čeka se' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
+        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
 
         return $data;
     }
@@ -184,9 +184,9 @@ class RacunController extends Controller
         $queryN = Racun::query();
         $queryC = Racun::query();
 
-        $queryPlacen = $queryP->where('status', 'Plaćen')->where('tip_racuna', Racun::RACUN)->get();
-        $queryNenaplativ = $queryN->where('status', 'Nenaplativ')->where('tip_racuna', Racun::RACUN)->get();
-        $queryCekaSe = $queryC->where('status', 'Čeka se')->where('tip_racuna', Racun::RACUN)->get();
+        $queryPlacen = $queryP->where('status', 'placen')->where('tip_racuna', Racun::RACUN)->get();
+        $queryNenaplativ = $queryN->where('status', 'nenaplativ')->where('tip_racuna', Racun::RACUN)->get();
+        $queryCekaSe = $queryC->where('status', 'cekase')->where('tip_racuna', Racun::RACUN)->get();
 
         $ukupnaCijenaPlacenSuma = 0;
         $ukupnaCijenaNenaplativSuma = 0;
@@ -229,7 +229,6 @@ class RacunController extends Controller
 
             $preduzece = Preduzece::find(getAuthPreduzeceId($request));
             $date = \Illuminate\Support\Carbon::createFromDate(now()->year);
-
 
             //ispitamo da li postoji fizicko lice sa ime_korisnika
             if ($request->vrsta_racuna === 'gotovinski') {
@@ -290,7 +289,7 @@ class RacunController extends Controller
                     $racun->partner_id = $partner->id;
                 }
 
-                $racun->status = 'Plaćen';
+                $racun->status = 'placen';
             } else {
                 $racun->partner_id = $request->partner_id;
             }

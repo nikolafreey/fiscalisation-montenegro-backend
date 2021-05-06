@@ -45,7 +45,7 @@ class UlazniRacunFactory extends Factory
             'popust_na_cijenu_bez_pdv' => $this->faker->randomFloat(2, 0, 100),
             'popust_ukupno' => $this->faker->randomFloat(2, 0, 100),
             'opis' => $this->faker->text(),
-            'status' => $this->faker->randomElement(['Plaćen', 'Nenaplativ', 'Čeka se', 'Privremeni', 'Nenaplativ dug']),
+            'status' => $this->faker->randomElement(['placen', 'nenaplativ', 'cekase', 'privremeni', 'nenaplativ']),
             'preduzece_id' => Preduzece::all()->random()->id,
             'user_id' => User::all()->random()->id,
             'partner_id' => Partner::all()->random()->id,
