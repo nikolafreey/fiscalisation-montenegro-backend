@@ -7,7 +7,7 @@ use App\Models\Porez;
 use App\Models\Racun;
 use App\Models\StavkaRacuna;
 use App\Models\User;
-use App\Scopes\UserScope;
+// use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StavkaRacunaFactory extends Factory
