@@ -23,10 +23,10 @@ class CreateRacuniTable extends Migration
             $table->boolean('korektivni_racun')->default(false);
             $table->string('korektivni_racun_vrsta', 50)->nullable();
             $table->string('nacin_placanja', 50)->nullable();
-            $table->string('broj_racuna');
+            $table->string('broj_racuna', 191);
             $table->dateTime('datum_izdavanja');
             $table->dateTime('datum_za_placanje')->nullable();
-            $table->string('kod_poslovnog_prostora_enu', 50)->nullable();
+            // $table->string('kod_poslovnog_prostora_enu', 50)->nullable();
             $table->decimal('ukupna_cijena_bez_pdv', 15, 4)->default(0);
             $table->decimal('ukupna_cijena_bez_pdv_popust', 15, 4)->default(0);
             $table->decimal('ukupna_cijena_sa_pdv', 15, 4)->default(0);

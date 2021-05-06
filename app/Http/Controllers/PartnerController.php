@@ -27,8 +27,6 @@ class PartnerController extends Controller
                 return $query->filterByPermissions();
             });
 
-            // $preduzece_tabela = Preduzece::find($partner->preduzece_tabel_id)
-
             $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 
             return $query->paginate(20);
