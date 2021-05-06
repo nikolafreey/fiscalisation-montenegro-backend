@@ -24,7 +24,7 @@ class FizickoLiceController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            return FizickoLice::search($request->search . '*')->query(function($query) {
+            return FizickoLice::search($request->search . '*')->query(function ($query) {
                 return $query->filterByPermissions();
             })->paginate();
         }
@@ -45,11 +45,14 @@ class FizickoLiceController extends Controller
         $fizickoLice->user_id = auth()->id();
         $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
 
-        $ziro_racuni = $request->ziro_racuni;
-        foreach ($ziro_racuni as $ziro_racun) {
-            $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
+        if (count($request->ziro_racuni) !== 0) {
+            $ziro_racuni = $request->ziro_racuni;
+            foreach ($ziro_racuni as $ziro_racun) {
+                $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
+            }
+            $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
         }
-        $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
+
         $fizickoLice->save();
 
         return response()->json($fizickoLice, 201);
