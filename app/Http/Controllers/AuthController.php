@@ -15,8 +15,8 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        if (! Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return response()->json('Neuspješno');
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            return response()->json('Neuspješna prijava!');
         }
 
         $token = Auth::user()->createToken('Api token')->plainTextToken;
@@ -78,8 +78,8 @@ class AuthController extends Controller
             ->delete();
 
         return response()->json([
-        'status' => 'Success',
-        'message' => 'Success',
+            'status' => 'Success',
+            'message' => 'Success',
         ], 200);
     }
 }

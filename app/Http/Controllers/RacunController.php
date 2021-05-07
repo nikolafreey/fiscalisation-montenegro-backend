@@ -6,6 +6,7 @@ use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
+use App\Models\DepozitWithdraw;
 use App\Models\FizickoLice;
 use App\Models\Grupa;
 use App\Models\Invite;
@@ -232,6 +233,12 @@ class RacunController extends Controller
 
             //ispitamo da li postoji fizicko lice sa ime_korisnika
             if ($request->vrsta_racuna === 'gotovinski') {
+
+                $depozit = DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->first();
+                if (!$depozit) {
+                    abort(400, 'Neophodno je dodati depozit prije izdavanja gotovinskog računa!');
+                }
+
                 $fizickoLice = FizickoLice::where('ime', 'Anonimni')->first();
                 if (!$fizickoLice) {
                     $fizickoLice = FizickoLice::make([
