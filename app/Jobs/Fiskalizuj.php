@@ -139,6 +139,8 @@ class Fiskalizuj implements ShouldQueue
         } catch (Exception $e) {
             $errorMessage = 'Fiskalizacija nije uspjesna: ' . $response['FAULTSTRING']['value'];
 
+            // TODO: Ubaciti ID racuna u log da bi znali koji nije fiskalizovan ako dodje do greske
+            // Log::error(id racuna);
             Log::error($errorMessage);
 
             throw new \Exception($errorMessage);
