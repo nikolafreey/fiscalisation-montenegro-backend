@@ -6,6 +6,7 @@ use App\Http\Requests\Api\Podesavanja\DodavanjeKorisnikaRequest;
 use App\Http\Requests\Api\Podesavanja\PodesavanjaRequest;
 use App\Models\Podesavanje;
 use App\Models\Preduzece;
+use App\Models\Racun;
 use App\Models\User;
 use App\Notifications\NalogRegistrovan;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ class PodesavanjeController extends Controller
     {
         if (property_exists(Podesavanje::where('preduzece_id', getAuthPreduzeceId($request)), 'id')) {
             return response()->json("Podesavanje za ovo preduzeće već postoji!", 403);
+        }
+
+        if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
+            return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
         }
 
         $podesavanje = Podesavanje::create([
@@ -81,6 +86,10 @@ class PodesavanjeController extends Controller
 
     public function update(Podesavanje $podesavanje, PodesavanjaRequest $request)
     {
+        if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
+            return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
+        }
+
         $podesavanje->update([
             'redni_broj' => $request->redni_broj,
             'slanje_kupcu' => $request->slanje_kupcu,
