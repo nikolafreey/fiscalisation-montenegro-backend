@@ -24,7 +24,7 @@ class PodesavanjeController extends Controller
 {
     public function index()
     {
-        return Podesavanje::all();
+        return Podesavanje::filterByPermissions()->get();
     }
 
     public function show(Request $request)
@@ -81,6 +81,9 @@ class PodesavanjeController extends Controller
 
     public function update(Podesavanje $podesavanje, PodesavanjaRequest $request)
     {
+        // \Log::error($request); 
+        // \Log::error($podesavanje); 
+        // return;
         $podesavanje->update([
             'redni_broj' => $request->redni_broj,
             'slanje_kupcu' => $request->slanje_kupcu,
