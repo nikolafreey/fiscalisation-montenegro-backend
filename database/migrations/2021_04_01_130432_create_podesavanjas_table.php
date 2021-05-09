@@ -18,7 +18,7 @@ class CreatePodesavanjasTable extends Migration
             $table->integer('redni_broj')->nullable();
             $table->boolean('slanje_kupcu')->default(false);
             $table->unsignedInteger('izgled_racuna')->nullable();
-            $table->enum('jezik', ['me', 'en']);
+            $table->enum('jezik', ['me', 'en', 'ru']);
             $table->string('boja')->nullable();
             $table->enum('tamni_mod', ['svijetli', 'tamni', 'automatski']);
 
