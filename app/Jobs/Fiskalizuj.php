@@ -32,7 +32,7 @@ class Fiskalizuj implements ShouldQueue
 
             $tip_placanja = 'CASH';
             $nacin_placanja = $racun->nacin_placanja ?? 'CASH';
-            
+
             $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
         }
 
@@ -48,6 +48,9 @@ class Fiskalizuj implements ShouldQueue
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
+
+
+
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
@@ -71,11 +74,17 @@ class Fiskalizuj implements ShouldQueue
             ],
             'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,
+            'ukupan_pdv' => null,
         ];
 
-        $this->data['IICData'] = $this->generateIIC();
-        $this->data['sameTaxes'] = $this->calculateSameTaxes();
-        $this->ikof = $ikof;
+    $this->data['IICData'] = $this->generateIIC();
+    $this->data['sameTaxes'] = $this->calculateSameTaxes();
+    $this->ikof = $ikof;
+
+    foreach($this->data['sameTaxes'] as $totWat) {
+        $this->data['ukupan_pdv'] += round($totWat['ukupan_iznos_pdv'], 2);
+    };
+
     }
 
     public function handle()

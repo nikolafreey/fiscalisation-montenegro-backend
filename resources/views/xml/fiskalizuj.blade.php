@@ -9,7 +9,6 @@
         SendDateTime="{{ $danasnji_datum }}"
         UUID="{{ Str::uuid() }}"
     />
-
     <Invoice
         TypeOfInv="{{ $tip_placanja }}"
         IsSimplifiedInv="false"
@@ -19,7 +18,7 @@
         TCRCode="{{ $taxpayer['CR'] }}"
         IsIssuerInVAT="true"
         TotPriceWoVAT="{{ sprintf('%0.2f', round($racun->ukupna_cijena_bez_pdv, 2)) }}"
-        TotVATAmt="{{ sprintf('%0.2f', round($racun->ukupan_iznos_pdv, 2)) }}"
+        TotVATAmt="{{ sprintf('%0.2f', round($ukupan_pdv, 2)) }}"
         TotPrice="{{ sprintf('%0.2f', round($racun->ukupna_cijena_bez_pdv + $racun->ukupan_iznos_pdv, 2)) }}"
         OperatorCode="{{ $taxpayer['OP'] }}"
         BusinUnitCode="{{ $taxpayer['BU'] }}"

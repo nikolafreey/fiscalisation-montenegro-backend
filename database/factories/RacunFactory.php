@@ -36,7 +36,7 @@ class RacunFactory extends Factory
             'broj_racuna' => $this->faker->randomNumber(),
             'datum_izdavanja' => $this->faker->date(),
             'datum_za_placanje' => $this->faker->date(),
-            'kod_poslovnog_prostora_enu' => $this->faker->asciify('***********'),
+            // 'kod_poslovnog_prostora_enu' => $this->faker->asciify('***********'),
             'ukupna_cijena_bez_pdv' => $this->faker->randomFloat(2, 0, 100),
             'ukupna_cijena_sa_pdv' => $this->faker->randomFloat(2, 0, 100),
             'ukupan_iznos_pdv' => $this->faker->randomFloat(2, 0, 100),
