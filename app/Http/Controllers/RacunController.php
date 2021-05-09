@@ -491,8 +491,8 @@ class RacunController extends Controller
 
     public function getAtributiGrupe()
     {
-        $tipovi_atributa = AtributRobe::get(['id AS tip_atributa_id', 'naziv'])->toArray();
-        $grupe = Grupa::get(['id AS grupa_id', 'naziv'])->toArray();
+        $tipovi_atributa = AtributRobe::filterByPermissions()->get(['id AS tip_atributa_id', 'naziv'])->toArray();
+        $grupe = Grupa::filterByPermissions()->get(['id AS grupa_id', 'naziv'])->toArray();
         return array_merge($tipovi_atributa, $grupe);
     }
 
