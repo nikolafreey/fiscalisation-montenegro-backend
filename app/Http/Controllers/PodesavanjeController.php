@@ -54,27 +54,44 @@ class PodesavanjeController extends Controller
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        if ($request->pecat != null && $request->sertifikat != null) {
+        // TODO: odraditi validaciju sifre za sertifikate tj. da li se poklapa sa sertifikatom
+        if ($request->pecat != null && $request->pecatSifra != null) {
             getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
-                'sertifikat' => $request->sertifikat,
-                'pecatSifra' => $request->pecatSifra,
-                'sertifikatSifra' => $request->sertifikatSifra,
+                'pecatSifra' => encrypt($request->pecatSifra)
+            ]);
+        } elseif ($request->pecatSifra != null){
+            getAuthPreduzece($request)->update([
+                'pecatSifra' => encrypt($request->pecatSifra),
             ]);
         }
 
-        getAuthPreduzece($request)->update([
-            'enu_kod' => $request->enu_kod,
-            'software_kod' => $request->software_kod,
-            'kod_pj' => $request->kod_pj,
-            'kod_operatera' => $request->kod_operatera
-        ]);
+        if ($request->sertifikat != null && $request->sertifikatSifra) {
+            getAuthPreduzece($request)->update([
+                'sertifikat' => $request->sertifikat,
+                'sertifikatSifra' => encrypt($request->sertifikatSifra)
+            ]);
+        } elseif ($request->sertifikatSifra != null){
+            getAuthPreduzece($request)->update([
+                'sertifikatSifra' => encrypt($request->sertifikatSifra)
+            ]);
+        }
+
+        $kodovi = [];
+        if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
+        if($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
+        if($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
+        if($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
+        
+        getAuthPreduzece($request)->update(array_filter($kodovi));
 
         $preduzece = getAuthPreduzece($request);
 
         auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
+
+        // TODO: sacuvati kod poslovnog prostora u poslovne_jedinice tabelu
 
         return response()->json($podesavanje, 201);
     }
@@ -84,8 +101,10 @@ class PodesavanjeController extends Controller
         // \Log::error($request); 
         // \Log::error($podesavanje); 
         // return;
+
         $podesavanje->update([
-            'redni_broj' => $request->redni_broj,
+            // TODO: ne moze da se apdejtuje redni broj ako je vec jednom unesen za tu godinu
+            // 'redni_broj' => $request->redni_broj,
             'slanje_kupcu' => $request->slanje_kupcu,
             'izgled_racuna' => $request->izgled_racuna,
             'boja' => $request->boja,
@@ -95,25 +114,43 @@ class PodesavanjeController extends Controller
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        if ($request->pecat != null && $request->sertifikat != null) {
+        // TODO: odraditi validaciju sifre za sertifikate tj. da li se poklapa sa sertifikatom
+        if ($request->pecat != null && $request->pecatSifra != null) {
             getAuthPreduzece($request)->update([
                 'pecat' => $request->pecat,
-                'sertifikat' => $request->sertifikat,
-                'pecatSifra' => $request->pecatSifra,
-                'sertifikatSifra' => $request->sertifikatSifra,
+                'pecatSifra' => encrypt($request->pecatSifra)
+            ]);
+        } elseif ($request->pecatSifra != null){
+            getAuthPreduzece($request)->update([
+                'pecatSifra' => encrypt($request->pecatSifra),
             ]);
         }
 
-        getAuthPreduzece($request)->update([
-            'enu_kod' => $request->enu_kod,
-            'software_kod' => $request->software_kod,
-            'kod_pj' => $request->kod_pj,
-        ]);
+        if ($request->sertifikat != null && $request->sertifikatSifra) {
+            getAuthPreduzece($request)->update([
+                'sertifikat' => $request->sertifikat,
+                'sertifikatSifra' => encrypt($request->sertifikatSifra)
+            ]);
+        } elseif ($request->sertifikatSifra != null){
+            getAuthPreduzece($request)->update([
+                'sertifikatSifra' => encrypt($request->sertifikatSifra)
+            ]);
+        }
+
+        $kodovi = [];
+        if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
+        if($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
+        if($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
+        if($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
+        
+        getAuthPreduzece($request)->update(array_filter($kodovi));
 
         $preduzece = getAuthPreduzece($request);
         auth()->user()->update([
             'kod_operatera' => $request->kod_operatera != null ? $request->kod_operatera : $preduzece->kod_operatera,
         ]);
+
+        // TODO: sacuvati kod poslovnog prostora u poslovne_jedinice tabelu
 
         return response()->json($podesavanje, 201);
     }
