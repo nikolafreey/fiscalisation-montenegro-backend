@@ -48,6 +48,7 @@ class StorePreduzece extends BaseApiRequest
             'privatnost' => 'boolean',
             'verifikovan' => 'boolean',
             'kategorija_id' => 'required|int',
+            'djelatnost_id' => 'required|int'
         ];
     }
 }
