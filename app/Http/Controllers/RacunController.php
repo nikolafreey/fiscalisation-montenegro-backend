@@ -254,7 +254,7 @@ class RacunController extends Controller
                         'telefon_viber' => 0,
                         'telefon_whatsapp' => 0,
                         'telefon_facetime' => 0,
-                        'email' => 'anonimni.korisnik@gmail.com',
+                        'email' => 'anonimni.kupac@gmail.com',
                         'zanimanje' => 'Zanimanje',
                         'radno_mjesto' => 'RadnoMjesto',
                         'drzavljanstvo' => 'Drzavljanstvo',
@@ -285,7 +285,7 @@ class RacunController extends Controller
                     if (!$partner) {
                         $partner = Partner::make([
                             'kontakt_ime' => 'Anonimni',
-                            'kontakt_prezime' => 'Korisnik',
+                            'kontakt_prezime' => 'Kupac',
                             'fizicko_lice_id' => $fizickoLice->id,
                         ]);
 
