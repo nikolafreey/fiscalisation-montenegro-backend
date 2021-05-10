@@ -44,9 +44,11 @@ class PodesavanjeController extends Controller
             return response()->json("Podesavanje za ovo preduzeće već postoji!", 403);
         }
 
-        if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
-            return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
-        }
+        // TODO:: ovaj kod ne treba uopste zato sto je napravljeno unutar racuna da obracunava redni broj 
+        // ako nema  ni jednog racuna
+        // if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
+        //     return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
+        // }
 
         $podesavanje = Podesavanje::create([
             'redni_broj' => $request->redni_broj,
@@ -103,9 +105,10 @@ class PodesavanjeController extends Controller
 
     public function update(Podesavanje $podesavanje, PodesavanjaRequest $request)
     {
-        if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
-            return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
-        }
+        // TODO: ovaj if moze da se brise
+        // if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
+        //     return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
+        // }
 
         // \Log::error($request); 
         // \Log::error($podesavanje); 
