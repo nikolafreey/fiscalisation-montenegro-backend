@@ -9,6 +9,7 @@
         SendDateTime="{{ $danasnji_datum }}"
         UUID="{{ Str::uuid() }}"
     />
+
     <Invoice
         TypeOfInv="{{ $tip_placanja }}"
         IsSimplifiedInv="false"
@@ -17,9 +18,9 @@
         InvOrdNum="{{ $racun->redni_broj }}"
         TCRCode="{{ $taxpayer['CR'] }}"
         IsIssuerInVAT="true"
-        TotPriceWoVAT="{{ sprintf('%0.2f', round($racun->ukupna_cijena_bez_pdv, 2)) }}"
+        TotPriceWoVAT="{{ sprintf('%0.2f', round($ukupna_cijena_bez_pdv, 2)) }}"
         TotVATAmt="{{ sprintf('%0.2f', round($ukupan_pdv, 2)) }}"
-        TotPrice="{{ sprintf('%0.2f', round($racun->ukupna_cijena_bez_pdv + $racun->ukupan_iznos_pdv, 2)) }}"
+        TotPrice="{{ sprintf('%0.2f', round($ukupna_cijena, 2)) }}"
         OperatorCode="{{ $taxpayer['OP'] }}"
         BusinUnitCode="{{ $taxpayer['BU'] }}"
         SoftCode="{{ $taxpayer['SW'] }}"
@@ -53,15 +54,15 @@
                     N="{{ $stavka->naziv }}"
                     C="{{ $stavka->bar_code }}"
                     U="{{ $stavka->jedinica_mjere->naziv }}"
-                    Q="{{ sprintf('%0.2f', round($stavka->kolicina, 2)) }}"
-                    UPB="{{ sprintf('%0.2f', round($stavka->jedinicna_cijena_bez_pdv, 2)) }}"
-                    UPA="{{ sprintf('%0.2f', round($stavka->cijena_sa_pdv, 2)) }}"
-                    R="{{ sprintf('%0.2f', round($stavka->popust_procenat, 2)) }}"
+                    Q="{{ $stavka->kolicina }}"
+                    UPB="{{ $stavka->jedinicna_cijena_bez_pdv }}"
+                    UPA="{{ $stavka->cijena_sa_pdv }}"
+                    R="{{ $stavka->popust_procenat }}"
                     RR="{{ (bool) $stavka->popust_iznos }}"
                     PB="{{ sprintf('%0.2f', round($stavka->ukupna_sa_pdv, 2) - round($stavka->pdv_iznos * $stavka->kolicina, 2)) }}"
-                    VR="{{ sprintf('%0.2f', round($stavka->porez->stopa, 2)) }}"
-                    VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos * $stavka->kolicina, 2)) }}"
-                    PA="{{ sprintf('%0.2f', round($stavka->ukupna_sa_pdv, 2)) }}"
+                    VR="{{ $stavka->porez->stopa }}"
+                    VA="{{ $stavka->pdv_iznos * $stavka->kolicina }}"
+                    PA="{{ $stavka->ukupna_sa_pdv }}"
                 />
             @endforeach
         </Items>

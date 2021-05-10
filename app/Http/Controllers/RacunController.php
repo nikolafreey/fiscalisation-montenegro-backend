@@ -7,6 +7,7 @@ use App\Http\Requests\Api\StoreRacun;
 use App\Jobs\Fiskalizuj;
 use App\Models\AtributRobe;
 use App\Models\DepozitWithdraw;
+use App\Models\FailedJobsCustom;
 use App\Models\FizickoLice;
 use App\Models\Grupa;
 use App\Models\Invite;
@@ -532,6 +533,8 @@ class RacunController extends Controller
     public function fiskalizujRacun(Racun $racun)
     {
         Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
+
+        FailedJobsCustom::where('payload', $racun->id)->delete();
 
         return response()->json('Uspjesno ste fiskalizovali racun', 200);
     }

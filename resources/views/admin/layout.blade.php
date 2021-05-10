@@ -295,7 +295,7 @@
                         <li class=" has-sub-menu">
                             <a href="{{ route('failedJobs.index') }}">
                                 <div class="icon-w">
-                                    <div class="os-icon os-icon-users"></div>
+                                    <div class="os-icon os-icon-zap"></div>
                                 </div>
                                 <span>Fejlovani poslovi</span></a>
                             <div class="sub-menu-w">

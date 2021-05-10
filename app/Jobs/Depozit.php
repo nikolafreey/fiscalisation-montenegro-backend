@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\FailedJobsCustom;
 use Exception;
 use Illuminate\Bus\Queueable;
 use App\Services\SignXMLService;
@@ -89,7 +90,7 @@ class Depozit implements ShouldQueue
 
     public function failed(Exception $e)
     {
-        DB::table('failed_jobs_custom')->insert([
+        FailedJobsCustom::insert([
             'connection' => $this->connection,
             'payload' => $this->data['depozit']->id,
             'exception' => $e->getMessage(),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreDepozitWithdraw;
 use App\Jobs\Depozit;
 use App\Jobs\Fiskalizuj;
+use App\Models\FailedJobsCustom;
 use App\Models\Racun;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -103,6 +104,8 @@ class DepozitWithdrawController extends Controller
         $depozit->update([
             'fiskalizovan' => true,
         ]);
+
+        FailedJobsCustom::where('payload', $depozit->id)->delete();
 
         return response()->json('Uspjesno ste fiskalizovali depozit', 200);
     }
