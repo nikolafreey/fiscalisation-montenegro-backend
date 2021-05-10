@@ -40,10 +40,10 @@ class CreatePreduzecaTable extends Migration
             $table->boolean('kontakt_whatsapp')->nullable();
             $table->boolean('kontakt_facetime')->nullable();
             $table->string('kontakt_email', 50)->nullable();
-            $table->string('twitter_username', 100)->unique();
-            $table->string('instagram_username', 100)->unique();
-            $table->string('facebook_username', 100)->unique();
-            $table->string('skype_username', 100)->unique();
+            $table->string('twitter_username', 100)->nullable();
+            $table->string('instagram_username', 100)->nullable();
+            $table->string('facebook_username', 100)->nullable();
+            $table->string('skype_username', 100)->nullable();
             $table->string('logotip')->nullable();
             $table->string('thumbnail')->nullable();
             $table->text('opis')->nullable();
