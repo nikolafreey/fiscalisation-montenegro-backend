@@ -315,41 +315,44 @@ class RacunController extends Controller
 
             $racun->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
 
-            $startOfYear = $date->copy()->startOfYear();
-            $endOfYear   = $date->copy()->endOfYear();
+            // $startOfYear = $date->copy()->startOfYear();
+            // $endOfYear   = $date->copy()->endOfYear();
 
-            if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
-                $racun->redni_broj = $preduzece->podesavanje->redni_broj ? $preduzece->podesavanje->redni_broj : 1;
-            } else {
-                $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
-            }
+            // if ($preduzece->racuni->whereBetween('created_at', [$startOfYear, $endOfYear]) === null) {
+            //     $racun->redni_broj = $preduzece->podesavanje->redni_broj ? $preduzece->podesavanje->redni_broj : 1;
+            // } else {
+            //     $racun->redni_broj = $preduzece->racuni->max('redni_broj') + 1;
+            // }
+
+            $racun->redni_broj = Racun::izracunajRedniBrojRacuna();
 
             //TODO: Prepraviti poslovne_jedinice, treba da se proslijedi tacna poslovna jedinica a ne da se uzima prvi iz niza.
             $racun->broj_racuna = implode('/', [$preduzece->poslovne_jedinice[0]->kod_poslovnog_prostora, $racun->redni_broj, $ovaGodina, $preduzece->enu_kod]);
 
             $racun->save();
 
-            if ($preduzece->podesavanje !== null) {
-                if ($preduzece->podesavanje->slanje_kupcu) {
-                    $kupacEmail = $racun->partner->fizicko_lice->email;
+            // TODO: ispitati da li ovo radi
+            // if ($preduzece->podesavanje !== null) {
+            //     if ($preduzece->podesavanje->slanje_kupcu) {
+            //         $kupacEmail = $racun->partner->fizicko_lice->email;
 
-                    if (User::where('email', $kupacEmail)->exists()) {
-                        User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
+            //         if (User::where('email', $kupacEmail)->exists()) {
+            //             User::where('email', $kupacEmail)->first()->guestRacuni()->attach($racun->id);
 
-                        $user = User::where('email', $kupacEmail)->first();
-                        $user->notify(new PodijeliRacunKorisniku($racun, $user));
-                    } else {
-                        $invite = Invite::create([
-                            'email' => $kupacEmail,
-                            'route' => route('racuni.show', $racun),
-                            'token' => Str::random(40),
-                            'racun_id' => $racun->id,
-                        ]);
+            //             $user = User::where('email', $kupacEmail)->first();
+            //             $user->notify(new PodijeliRacunKorisniku($racun, $user));
+            //         } else {
+            //             $invite = Invite::create([
+            //                 'email' => $kupacEmail,
+            //                 'route' => route('racuni.show', $racun),
+            //                 'token' => Str::random(40),
+            //                 'racun_id' => $racun->id,
+            //             ]);
 
-                        Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
-                    }
-                }
-            }
+            //             Notification::route('mail', $kupacEmail)->notify(new PodijeliRacunGostu($invite));
+            //         }
+            //     }
+            // }
 
             $racun->kreirajStavke($request);
             Log::info('suma: ' . var_export($racun->izracunajUkupneCijene(), true));

@@ -426,10 +426,23 @@ class Racun extends Model
         DB::table('porezi_za_racun')->insert($porezi_za_racun);
     }
 
-    public static function izracunajBrojRacuna()
+    // public static function izracunajBrojRacuna()
+    // {
+    //     $broj_racuna = DB::table('racuni')->where('tip_racuna', Racun::RACUN)->whereNotNull('qr_url')->max('broj_racuna');      #moze i bez provjere za tip_racuna
+    //     return $broj_racuna + 1;
+    // }
+
+    public static function izracunajRedniBrojRacuna()
     {
-        $broj_racuna = DB::table('racuni')->where('tip_racuna', Racun::RACUN)->whereNotNull('qr_url')->max('broj_racuna');      #moze i bez provjere za tip_racuna
-        return $broj_racuna + 1;
+        // whereNotNull('qr_url') ako treba da se ne dodjeljuje redni broj nefiskalizovanim racunima
+        if (Racun::filterByPermissions()->where('tip_racuna', Racun::RACUN)->whereYear('created_at', \Carbon\Carbon::now()->format('Y'))->first() == null) {
+            $podesavanjeRedniBroj = Podesavanje::filterByPermissions()->select('redni_broj')->first();
+            $redni_broj = $podesavanjeRedniBroj ? $podesavanjeRedniBroj->redni_broj : 1;
+        } else {
+            $redni_broj = Racun::filterByPermissions()->where('tip_racuna', Racun::RACUN)->whereYear('created_at', \Carbon\Carbon::now()->format('Y'))->max('redni_broj') + 1;
+        }
+
+        return $redni_broj;
     }
 
     public function user()
