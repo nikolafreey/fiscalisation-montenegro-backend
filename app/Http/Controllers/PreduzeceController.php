@@ -65,7 +65,7 @@ class PreduzeceController extends Controller
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePreduzece $request, Preduzece $preduzece)
+    public function update(Request $request, Preduzece $preduzece)
     {
         if (
             !auth()->user()->hasRole('Vlasnik')
@@ -75,7 +75,7 @@ class PreduzeceController extends Controller
             return response()->json('Nemate pristup ovom preduzecu', 401);
         }
 
-        $preduzece->update($request->validated());
+        $preduzece->update($request->all());
 
         return response()->json($preduzece, 200);
     }
