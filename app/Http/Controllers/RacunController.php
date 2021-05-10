@@ -454,7 +454,7 @@ class RacunController extends Controller
             return response()->json(['message' => 'Nemate pristup ovom racunu'], 401);
         }
 
-        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece', 'partner.preduzece_partner', 'partner.fizicko_lice']);
+        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece', 'partner.preduzece_partner', 'partner.fizicko_lice', 'preduzece.users']);
     }
 
     /**
