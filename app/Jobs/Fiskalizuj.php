@@ -81,15 +81,15 @@ class Fiskalizuj implements ShouldQueue
         $this->data['sameTaxes'] = $this->calculateSameTaxes();
         $this->ikof = $ikof;
 
-        foreach($this->data['sameTaxes'] as $totVat) {
-            $this->data['ukupan_pdv'] += $totVat['ukupan_iznos_pdv'];
-        }
-
-        foreach($this->data['sameTaxes'] as $totPrice) {
-            $this->data['ukupna_cijena_bez_pdv'] += $totPrice['ukupna_cijena_bez_pdv'];
-        }
-
-        $this->data['ukupna_cijena'] += $this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_pdv'];
+        // foreach($this->data['sameTaxes'] as $totVat) {
+        //     $this->data['ukupan_pdv'] += $totVat['ukupan_iznos_pdv'];
+        // }
+        //
+        // foreach($this->data['sameTaxes'] as $totPrice) {
+        //     $this->data['ukupna_cijena_bez_pdv'] += $totPrice['ukupna_cijena_bez_pdv'];
+        // }
+        //
+        // $this->data['ukupna_cijena'] += $this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_pdv'];
     }
 
     public function handle()
@@ -219,9 +219,9 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
 
-            ++$sameTaxes[$porez_stopa]['ukupan_broj_stavki'];
+            $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
             $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
-            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos * $stavka->kolicina;
+            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
         }
 
         return $sameTaxes;
