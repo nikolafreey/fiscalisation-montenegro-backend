@@ -35,10 +35,10 @@ class StorePreduzece extends BaseApiRequest
             'kontakt_viber' => 'boolean',
             'kontakt_whatsapp' => 'boolean',
             'kontakt_facetime' => 'boolean',
-            'kontakt_email' => 'string|max:191',
-            'twitter_username' => 'string|max:100',
-            'instagram_username' => 'string|max:100',
-            'facebook_username' => 'string|max:100',
+            'kontakt_email' => 'nullable',
+            'twitter_username' => 'nullable',
+            'instagram_username' => 'nullable',
+            'facebook_username' => 'nullable',
             'logotip' => 'nullable',
             'thumbnail' => 'nullable',
             'opis' => 'string|max:255',
@@ -48,6 +48,7 @@ class StorePreduzece extends BaseApiRequest
             'privatnost' => 'boolean',
             'verifikovan' => 'boolean',
             'kategorija_id' => 'required|int',
+            'djelatnost_id' => 'required|int'
         ];
     }
 }
