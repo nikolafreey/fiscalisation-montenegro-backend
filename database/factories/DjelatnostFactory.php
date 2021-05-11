@@ -22,9 +22,9 @@ class DjelatnostFactory extends Factory
     public function definition()
     {
         $djelatnosti = array(
-            'Poljoprivreda, šumarstvo i ribarstvo', 'Vađenje rude i kamena', 'Prerađivačka industrija', 'Snabdjevanje električnom energijom', 'Snabdjevanje vodom', 'Građevinarstvo', 'Trgovina na veliko i trgovina na malo, popravka motornih vozila i motocikala', 'Saobraćaj i skladištenje',
-            'Usluge smještaja i ishrane', 'Informisanje i komunikacije', 'Finansijske djelatnosti i djelatnosti osiguranja', 'Poslovanje nekretninama', 'Stručne, naučne i tehnološke djelatnosti',
-            'Administrativne i pomoćne uslužne djelatnosti', 'Obrazovanje', 'Zdravstvo i socijalna zaštita', 'Umjetničke, zabavne i rekreativne djelatnosti', 'Ostalo'
+            'Poljoprivreda, šumarstvo i ribarstvo', 'Vađenje rude i kamena', 'Prerađivačka industrija', 'Snabdjevanje električnom energijom', 'Snabdjevanje vodom', 'Građevinarstvo', 'Trgovina na veliko i trgovina na malo', 'Popravka motornih vozila i motocikala', 'Saobraćaj i skladištenje',
+            'Usluge smještaja i ishrane', 'Informisanje i komunikacije', 'Finansijske djelatnosti i djelatnosti osiguranja', 'Poslovanje nekretninama', 'Stručne, naučne i tehničke djelatnosti',
+            'Administrativne i pomoćne uslužne djelatnosti', 'Obrazovanje', 'Zdravstvo i socijalna zaštita', 'Umjetničke, zabavne i rekreativne djelatnosti', 'Zanatstvo', 'Ostalo'
         );
 
         return [
