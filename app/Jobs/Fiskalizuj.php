@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\FailedJobsCustom;
 use App\Services\SignXMLService;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -50,6 +49,9 @@ class Fiskalizuj implements ShouldQueue
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
 
+
+
+
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
             'racun' => $racun->load('stavke'),
@@ -73,23 +75,16 @@ class Fiskalizuj implements ShouldQueue
             'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,
             'ukupan_pdv' => null,
-            'ukupna_cijena_bez_pdv' => null,
-            'ukupna_cijena' => null,
         ];
 
-        $this->data['IICData'] = $this->generateIIC();
-        $this->data['sameTaxes'] = $this->calculateSameTaxes();
-        $this->ikof = $ikof;
+    $this->data['IICData'] = $this->generateIIC();
+    $this->data['sameTaxes'] = $this->calculateSameTaxes();
+    $this->ikof = $ikof;
 
-        // foreach($this->data['sameTaxes'] as $totVat) {
-        //     $this->data['ukupan_pdv'] += $totVat['ukupan_iznos_pdv'];
-        // }
-        //
-        // foreach($this->data['sameTaxes'] as $totPrice) {
-        //     $this->data['ukupna_cijena_bez_pdv'] += $totPrice['ukupna_cijena_bez_pdv'];
-        // }
-        //
-        // $this->data['ukupna_cijena'] += $this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_pdv'];
+    foreach($this->data['sameTaxes'] as $totWat) {
+        $this->data['ukupan_pdv'] += round($totWat['ukupan_iznos_pdv'], 2);
+    };
+
     }
 
     public function handle()
@@ -142,7 +137,7 @@ class Fiskalizuj implements ShouldQueue
         try {
             return $response['FIC']['value'];
         } catch (Exception $e) {
-            $errorMessage =  'Racun id:' . $this->data['racun']->id . ' Fiskalizacija nije uspjesna: ' . $response['FAULTSTRING']['value'];
+            $errorMessage = 'Fiskalizacija nije uspjesna: ' . $response['FAULTSTRING']['value'];
 
             Log::error($errorMessage);
 
@@ -152,7 +147,7 @@ class Fiskalizuj implements ShouldQueue
 
     public function failed(Exception $e)
     {
-        FailedJobsCustom::insert([
+        DB::table('failed_jobs_custom')->insert([
             'connection' => $this->connection,
             'payload' => $this->data['racun']->id,
             'exception' => $e->getMessage(),
@@ -219,9 +214,9 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
 
-            $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
+            $sameTaxes[$porez_stopa]['ukupan_broj_stavki'] += 1;
             $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
-            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos * $stavka->kolicina;
         }
 
         return $sameTaxes;
@@ -237,7 +232,8 @@ class Fiskalizuj implements ShouldQueue
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['ukupna_cijena'],
+            // 'prc=' . ($this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_iznos_pdv']),
+            'prc=' . $this->data['racun']->ukupna_cijena_sa_pdv,
         ]);
     }
 }
