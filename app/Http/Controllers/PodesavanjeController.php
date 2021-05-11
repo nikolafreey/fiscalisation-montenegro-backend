@@ -62,27 +62,28 @@ class PodesavanjeController extends Controller
         ]);
 
         // TODO: odraditi validaciju sifre za sertifikate tj. da li se poklapa sa sertifikatom
-        if ($request->pecat != null && $request->pecatSifra != null) {
-            getAuthPreduzece($request)->update([
-                'pecat' => $request->pecat,
-                'pecatSifra' => encrypt($request->pecatSifra)
-            ]);
-        } elseif ($request->pecatSifra != null){
-            getAuthPreduzece($request)->update([
-                'pecatSifra' => encrypt($request->pecatSifra),
-            ]);
-        }
+        // TODO: odraditi upload certifikata, potpisa i pecata
+        // if ($request->pecat != null && $request->pecatSifra != null) {
+        //     getAuthPreduzece($request)->update([
+        //         'pecat' => $request->pecat,
+        //         'pecatSifra' => encrypt($request->pecatSifra)
+        //     ]);
+        // } elseif ($request->pecatSifra != null){
+        //     getAuthPreduzece($request)->update([
+        //         'pecatSifra' => encrypt($request->pecatSifra),
+        //     ]);
+        // }
 
-        if ($request->sertifikat != null && $request->sertifikatSifra) {
-            getAuthPreduzece($request)->update([
-                'sertifikat' => $request->sertifikat,
-                'sertifikatSifra' => encrypt($request->sertifikatSifra)
-            ]);
-        } elseif ($request->sertifikatSifra != null){
-            getAuthPreduzece($request)->update([
-                'sertifikatSifra' => encrypt($request->sertifikatSifra)
-            ]);
-        }
+        // if ($request->sertifikat != null && $request->sertifikatSifra) {
+        //     getAuthPreduzece($request)->update([
+        //         'sertifikat' => $request->sertifikat,
+        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
+        //     ]);
+        // } elseif ($request->sertifikatSifra != null){
+        //     getAuthPreduzece($request)->update([
+        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
+        //     ]);
+        // }
 
         $kodovi = [];
         if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
@@ -127,27 +128,28 @@ class PodesavanjeController extends Controller
         ]);
 
         // TODO: odraditi validaciju sifre za sertifikate tj. da li se poklapa sa sertifikatom
-        if ($request->pecat != null && $request->pecatSifra != null) {
-            getAuthPreduzece($request)->update([
-                'pecat' => $request->pecat,
-                'pecatSifra' => encrypt($request->pecatSifra)
-            ]);
-        } elseif ($request->pecatSifra != null){
-            getAuthPreduzece($request)->update([
-                'pecatSifra' => encrypt($request->pecatSifra),
-            ]);
-        }
+        // TODO: odraditi upload certifikata, potpisa i pecata
+        // if ($request->pecat != null && $request->pecatSifra != null) {
+        //     getAuthPreduzece($request)->update([
+        //         'pecat' => $request->pecat,
+        //         'pecatSifra' => encrypt($request->pecatSifra)
+        //     ]);
+        // } elseif ($request->pecatSifra != null){
+        //     getAuthPreduzece($request)->update([
+        //         'pecatSifra' => encrypt($request->pecatSifra),
+        //     ]);
+        // }
 
-        if ($request->sertifikat != null && $request->sertifikatSifra) {
-            getAuthPreduzece($request)->update([
-                'sertifikat' => $request->sertifikat,
-                'sertifikatSifra' => encrypt($request->sertifikatSifra)
-            ]);
-        } elseif ($request->sertifikatSifra != null){
-            getAuthPreduzece($request)->update([
-                'sertifikatSifra' => encrypt($request->sertifikatSifra)
-            ]);
-        }
+        // if ($request->sertifikat != null && $request->sertifikatSifra) {
+        //     getAuthPreduzece($request)->update([
+        //         'sertifikat' => $request->sertifikat,
+        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
+        //     ]);
+        // } elseif ($request->sertifikatSifra != null){
+        //     getAuthPreduzece($request)->update([
+        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
+        //     ]);
+        // }
 
         $kodovi = [];
         if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;

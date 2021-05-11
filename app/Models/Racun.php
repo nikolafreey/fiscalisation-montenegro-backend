@@ -282,6 +282,7 @@ class Racun extends Model
                 //'popust_na_jedinicnu_cijenu' => $grupa ? $grupa->popust_iznos : 0,
                 'ukupna_bez_pdv' => $usluga->cijena_bez_pdv * $stavka['kolicina'],
                 'ukupna_sa_pdv' => $usluga->ukupna_cijena * $stavka['kolicina'],
+                // TODO: ukupna bez pdv popust ne racuna kako treba
                 'ukupna_bez_pdv_popust' => $cijena_bez_pdv_popust * $stavka['kolicina'],
                 'ukupna_sa_pdv_popust' => $cijena_sa_pdv_popust * $stavka['kolicina'],
                 'porez_id' => $porez_id,
