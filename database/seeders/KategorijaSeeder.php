@@ -13,6 +13,19 @@ class KategorijaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $nazivi = array(
+            'Ostalo'
+        );
+
+        for ($i = 0; $i < count($nazivi); $i++) {
+            \DB::table('kategorije')->insert(
+                [
+                    'naziv' => $nazivi[$i],
+                    'deleted_at' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+        }
     }
 }
