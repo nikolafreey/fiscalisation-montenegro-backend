@@ -21,6 +21,7 @@ class KategorijaFactory extends Factory
      */
     public function definition()
     {
+        // TODO: unijeti kategorije preduzeca
         return [
             'naziv' => $this->faker->unique()->word(),
         ];

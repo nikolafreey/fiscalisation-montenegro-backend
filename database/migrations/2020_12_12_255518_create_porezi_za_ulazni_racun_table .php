@@ -15,8 +15,8 @@ class CreatePoreziZaUlazniRacunTable extends Migration
     {
         Schema::create('porezi_za_ulazni_racun', function (Blueprint $table) {
             $table->id();
-            $table->decimal('pdv_iznos_ukupno', 15, 4);
-            $table->decimal('neodbitni_pdv_ukupno', 15, 4);
+            $table->decimal('pdv_iznos_ukupno', 20, 10);
+            $table->decimal('neodbitni_pdv_ukupno', 20, 10);
             $table->softDeletes();
             $table->timestamps();
 

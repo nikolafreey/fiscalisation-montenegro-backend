@@ -17,11 +17,11 @@ class CreateUslugeTable extends Migration
             $table->id();
             $table->string('naziv', 50);
             $table->text('opis')->nullable();
-            $table->decimal('cijena_bez_pdv', 15, 4);
-            $table->decimal('iznos_pdv_popust', 15, 4);
-            $table->decimal('cijena_bez_pdv_popust', 15, 4);
-            $table->decimal('cijena_sa_pdv_popust', 15, 4);
-            $table->decimal('ukupna_cijena', 15, 4);
+            $table->decimal('cijena_bez_pdv', 20, 10);
+            $table->decimal('iznos_pdv_popust', 20, 10);
+            $table->decimal('cijena_bez_pdv_popust', 20, 10);
+            $table->decimal('cijena_sa_pdv_popust', 20, 10);
+            $table->decimal('ukupna_cijena', 20, 10);
             $table->boolean('status');
             $table->softDeletes();
             $table->timestamps();

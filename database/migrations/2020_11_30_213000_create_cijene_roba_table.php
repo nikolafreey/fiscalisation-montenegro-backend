@@ -15,13 +15,13 @@ class CreateCijeneRobaTable extends Migration
     {
         Schema::create('cijene_roba', function (Blueprint $table) {
             $table->id();
-            $table->decimal('nabavna_cijena_bez_pdv', 15, 4)->nullable();
-            $table->decimal('nabavna_cijena_sa_pdv', 15, 4)->nullable();
-            $table->decimal('iznos_pdv_popust', 15, 4);
-            $table->decimal('cijena_bez_pdv_popust', 15, 4);
-            $table->decimal('cijena_sa_pdv_popust', 15, 4);
-            $table->decimal('cijena_bez_pdv', 15, 4)->nullable();
-            $table->decimal('ukupna_cijena', 15, 4)->nullable();
+            $table->decimal('nabavna_cijena_bez_pdv', 20, 10)->nullable();
+            $table->decimal('nabavna_cijena_sa_pdv', 20, 10)->nullable();
+            $table->decimal('iznos_pdv_popust', 20, 10);
+            $table->decimal('cijena_bez_pdv_popust', 20, 10);
+            $table->decimal('cijena_sa_pdv_popust', 20, 10);
+            $table->decimal('cijena_bez_pdv', 20, 10)->nullable();
+            $table->decimal('ukupna_cijena', 20, 10)->nullable();
             $table->softDeletes();
             $table->timestamps();
 
