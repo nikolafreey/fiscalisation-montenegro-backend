@@ -17,16 +17,16 @@ class CreateStavkeRacunaTable extends Migration
             $table->id();
             $table->string('naziv', 50);
             $table->text('opis')->nullable();
-            $table->decimal('jedinicna_cijena_bez_pdv', 15, 4);
+            $table->decimal('jedinicna_cijena_bez_pdv', 20, 10);
             $table->integer('bar_code');
-            $table->decimal('jedinicna_cijena_sa_pdv', 15, 4);
-            $table->decimal('cijena_bez_pdv', 15, 4);
+            $table->decimal('jedinicna_cijena_sa_pdv', 20, 10);
+            $table->decimal('cijena_bez_pdv', 20, 10);
             $table->decimal('kolicina', 15, 3);
-            $table->decimal('pdv_iznos', 15, 4);
+            $table->decimal('pdv_iznos', 20, 10);
             $table->decimal('popust_procenat', 15, 2)->nullable();
-            $table->decimal('popust_iznos', 15, 4)->nullable();
+            $table->decimal('popust_iznos', 20, 10)->nullable();
             $table->boolean('popust_na_jedinicnu_cijenu')->nullable();
-            $table->decimal('cijena_sa_pdv', 15, 4);
+            $table->decimal('cijena_sa_pdv', 20, 10);
             $table->softDeletes();
             $table->timestamps();
 
