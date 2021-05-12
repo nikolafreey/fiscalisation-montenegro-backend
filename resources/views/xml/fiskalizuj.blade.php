@@ -19,7 +19,7 @@
         TCRCode="{{ $taxpayer['CR'] }}"
         IsIssuerInVAT="true"
         TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
-        TotVATAmt="{{ round($racun->ukupan_iznos_pdv, 2) }}"
+        TotVATAmt="{{ sprintf('%0.2f',$ukupan_pdv) }}"
         TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
         OperatorCode="{{ $taxpayer['OP'] }}"
         BusinUnitCode="{{ $taxpayer['BU'] }}"
@@ -50,7 +50,6 @@
 
         <Items>
             @foreach($racun->stavke as $stavka)
-{{--                @dd($stavka->pdv_iznos, $stavka)--}}
                 <I
                     N="{{ $stavka->naziv }}"
                     C="{{ $stavka->bar_code }}"
@@ -62,7 +61,7 @@
                     RR="{{ (bool) $stavka->popust_iznos }}"
                     PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                     VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
-                    VA="{{ round($stavka->pdv_iznos_ukupno, 2) }}"
+                    VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
                     PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
                 />
             @endforeach
@@ -77,7 +76,7 @@
                         NumOfItems="{{ (int) $sameTax['ukupan_broj_stavki'] }}"
                         PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
                         VATRate="{{ sprintf("%.02f", $pdv_stopa * 100) }}"
-                        VATAmt="{{ round($sameTax['ukupan_iznos_pdv'], 2) }}"
+                        VATAmt="{{ sprintf("%.02f", round($sameTax['ukupan_iznos_pdv'], 2)) }}"
                     />
                 @endif
             @endforeach

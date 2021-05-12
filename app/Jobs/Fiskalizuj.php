@@ -81,9 +81,9 @@ class Fiskalizuj implements ShouldQueue
         $this->data['sameTaxes'] = $this->calculateSameTaxes();
         $this->ikof = $ikof;
 
-        // foreach($this->data['sameTaxes'] as $totVat) {
-        //     $this->data['ukupan_pdv'] += $totVat['ukupan_iznos_pdv'];
-        // }
+        foreach($this->data['sameTaxes'] as $totVat) {
+            $this->data['ukupan_pdv'] += round($totVat['ukupan_iznos_pdv'], 2);
+        }
         //
         // foreach($this->data['sameTaxes'] as $totPrice) {
         //     $this->data['ukupna_cijena_bez_pdv'] += $totPrice['ukupna_cijena_bez_pdv'];
