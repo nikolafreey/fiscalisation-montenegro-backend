@@ -42,7 +42,11 @@ class PreduzeceController extends Controller
      */
     public function store(StorePreduzece $request)
     {
-        $preduzece = Preduzece::create($request->validated());
+        // \Log::info($request);
+        // return;
+
+        $preduzece = Preduzece::make($request->validated());
+        $preduzece->save();
 
         return response()->json($preduzece, 201);
     }
@@ -89,7 +93,7 @@ class PreduzeceController extends Controller
     public function destroy(Preduzece $preduzece)
     {
         if (
-            !auth()->user() - hasRole('Vlasnik')
+            !auth()->user()->hasRole('Vlasnik')
             &&
             !auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
         ) {

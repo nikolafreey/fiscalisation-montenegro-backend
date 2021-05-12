@@ -40,7 +40,11 @@ class FizickoLiceController extends Controller
      */
     public function store(StoreFizickoLice $request)
     {
-        $fizickoLice = FizickoLice::create($request->validated());
+        // TODO: ubaciti u Partnere
+        // DB::transaction(function () use ($request) {}
+        // ubaciti oba 
+
+        $fizickoLice = FizickoLice::make($request->validated());
 
         $fizickoLice->user_id = auth()->id();
         $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
@@ -54,6 +58,7 @@ class FizickoLiceController extends Controller
         }
 
         $fizickoLice->save();
+
 
         return response()->json($fizickoLice, 201);
     }
