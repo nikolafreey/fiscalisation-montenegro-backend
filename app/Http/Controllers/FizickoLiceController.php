@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreFizickoLice;
 use App\Models\FizickoLice;
+use App\Models\Partner;
 use App\Models\User;
 use App\Models\ZiroRacun;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,21 +46,39 @@ class FizickoLiceController extends Controller
         // DB::transaction(function () use ($request) {}
         // ubaciti oba 
 
-        $fizickoLice = FizickoLice::make($request->validated());
+        $fizickoLice = DB::transaction(function () use ($request) {
+            $fizickoLice = FizickoLice::make($request->validated());
 
-        $fizickoLice->user_id = auth()->id();
-        $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
+            $fizickoLice->user_id = auth()->id();
+            $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
 
-        if (count($request->ziro_racuni) !== 0) {
-            $ziro_racuni = $request->ziro_racuni;
-            foreach ($ziro_racuni as $ziro_racun) {
-                $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
+            if (count($request->ziro_racuni) !== 0) {
+                $ziro_racuni = $request->ziro_racuni;
+                foreach ($ziro_racuni as $ziro_racun) {
+                    $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
+                }
+                $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
             }
-            $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
-        }
 
-        $fizickoLice->save();
+            $fizickoLice->save();
 
+            //Dodavanje Fizickog Lica u Partnere:
+            $partner = Partner::make(
+                [
+                    "created_at" => Carbon::now(),
+                    "updated_at" => Carbon::now(),
+                    "kontakt_ime" => $fizickoLice->ime,
+                    "kontakt_prezime" => $fizickoLice->prezime,
+                    "fizicko_lice_id" => $fizickoLice->id,
+                ]
+            );
+            $partner->user_id = auth()->id();
+            $partner->preduzece_id = getAuthPreduzeceId($request);
+
+            $partner->save();
+
+            return collect(["fizicko_lice" => $fizickoLice, "partner" => $partner]);
+        });
 
         return response()->json($fizickoLice, 201);
     }
