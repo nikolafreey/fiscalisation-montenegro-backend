@@ -61,19 +61,19 @@ class Partner extends Model
 
     protected $mapping = [
         'properties' => [
-            'preduzece_kratki_naziv' => [
+            'preduzece_partner.kratki_naziv' => [
                 'type' => 'text',
             ],
-            'preduzece_puni_naziv' => [
+            'preduzece_partner.puni_naziv' => [
                 'type' => 'text',
             ],
-            'preduzece_pib' => [
+            // 'preduzece_partner.pib' => [
+            //     'type' => 'text',
+            // ],
+            'fizicko_lice.ime' => [
                 'type' => 'text',
             ],
-            'fizicko_lice_ime' => [
-                'type' => 'text',
-            ],
-            'fizicko_lice_prezime' => [
+            'fizicko_lice.prezime' => [
                 'type' => 'text',
             ],
         ]
@@ -81,8 +81,9 @@ class Partner extends Model
 
     public function toSearchableArray()
     {
-        if ($this->preduzece_id) {
-            $preduzece = $this->preduzece;
+        $array = [];
+        if ($this->preduzece_partner) {
+            $preduzece = $this->preduzece_partner;
             $array['preduzece_kratki_naziv'] = $preduzece->kratki_naziv;
             $array['preduzece_puni_naziv'] = $preduzece->puni_naziv;
             $array['preduzece_pib'] = $preduzece->pib;

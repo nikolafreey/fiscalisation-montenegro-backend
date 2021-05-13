@@ -79,6 +79,10 @@ class PreduzeceController extends Controller
             return response()->json('Nemate pristup ovom preduzecu', 401);
         }
 
+        if ($preduzece->verifikovan === 1) {
+            return response()->json('Ne mozete mijenjati verifikovano preduzece!', 403);
+        }
+
         $preduzece->update($request->all());
 
         return response()->json($preduzece, 200);
