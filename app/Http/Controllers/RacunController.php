@@ -155,8 +155,8 @@ class RacunController extends Controller
         $prviUMjesecu = Carbon::parse($prviUMjesecu);
         $prethodniMjesec = Carbon::parse($prviUMjesecu)->subMonthNoOverflow();
 
-        $queryAllPdv = $queryAll->where('tip_racuna', Racun::RACUN)->get();
-        $queryPdv = $query->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->get();
+        $queryAllPdv = $queryAll->filterByPermissions()->where('tip_racuna', Racun::RACUN)->get();
+        $queryPdv = $query->filterByPermissions()->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->get();
         $queryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE deleted_at IS NULL AND datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
 
         $ukupnaSuma = 0;
@@ -186,9 +186,9 @@ class RacunController extends Controller
         $queryN = Racun::query();
         $queryC = Racun::query();
 
-        $queryPlacen = $queryP->where('status', 'placen')->where('tip_racuna', Racun::RACUN)->get();
-        $queryNenaplativ = $queryN->where('status', 'nenaplativ')->where('tip_racuna', Racun::RACUN)->get();
-        $queryCekaSe = $queryC->where('status', 'cekase')->where('tip_racuna', Racun::RACUN)->get();
+        $queryPlacen = $queryP->filterByPermissions()->where('status', 'placen')->where('tip_racuna', Racun::RACUN)->get();
+        $queryNenaplativ = $queryN->filterByPermissions()->where('status', 'nenaplativ')->where('tip_racuna', Racun::RACUN)->get();
+        $queryCekaSe = $queryC->filterByPermissions()->where('status', 'cekase')->where('tip_racuna', Racun::RACUN)->get();
 
         $ukupnaCijenaPlacenSuma = 0;
         $ukupnaCijenaNenaplativSuma = 0;
