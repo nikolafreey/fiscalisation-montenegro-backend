@@ -81,7 +81,7 @@ class Racun extends Model
 
     protected $mapping = [
         'properties' => [
-            'broj_racuna' => [
+            'redni_broj' => [
                 'type' => 'text',
             ],
             // 'status' => [
@@ -90,12 +90,12 @@ class Racun extends Model
             // 'created_at' => [
             //     'type' => 'date',
             // ],
-            'partner.preduzece.kratki_naziv' => [
+            'partner.preduzece_partner.kratki_naziv' => [
                 'type' => 'text',
             ],
-            // 'partner.preduzece.puni_naziv' => [
-            //     'type' => 'text',
-            // ],
+            'partner.preduzece_partner.puni_naziv' => [
+                'type' => 'text',
+            ],
             // 'partner.preduzece.pib' => [
             //     'type' => 'text',
             // ],
@@ -114,10 +114,10 @@ class Racun extends Model
 
         $partner = $this->partner;
 
-        if ($partner && $partner->preduzece_id) {
-            $array['preduzece_kratki_naziv'] = $partner->preduzece->kratki_naziv;
-            $array['preduzece_puni_naziv'] = $partner->preduzece->puni_naziv;
-            $array['preduzece_pib'] = $partner->preduzece->pib;
+        if ($partner && $partner->preduzece_partner) {
+            $array['preduzece_kratki_naziv'] = $partner->preduzece_partner->kratki_naziv;
+            $array['preduzece_puni_naziv'] = $partner->preduzece_partner->puni_naziv;
+            $array['preduzece_pib'] = $partner->preduzece_partner->pib;
         }
 
         if ($partner && $partner->fizicko_lice_id) {
@@ -135,24 +135,25 @@ class Racun extends Model
 
     public static function filter(Request $request)
     {
-        if ($request->has('search')) {
-            $query = Racun::search($request->search . '*')->query(function ($query) {
-                return $query->filterByPermissions();
-            });
-        } else {
-            $query = Racun::query()->filterByPermissions();
-        }
+        // if ($request->has('search')) {
+        //     $query = Racun::search($request->search . '*')->query(function ($query) {
+        //         return $query->filterByPermissions();
+        //     });
+        // } else {
+        $query = Racun::query()->filterByPermissions();
+        // }
         if ($request->has('startDate')) {
-            $query = $query->where('created_at', '>=', $request->startDate);
+            $query = $query->whereDate('created_at', '>=', $request->startDate);
         }
         if ($request->has('endDate')) {
-            $query = $query->where('created_at', '<=', $request->endDate);
+            $query = $query->whereDate('created_at', '<=', $request->endDate);
         }
         if ($request->has('status')) {
             $query = $query->where('status', $request->status);
         }
 
-        return $query;
+        return
+            $query->orderBy('created_at', 'DESC');;
     }
 
     public static function getAll(Request $request)

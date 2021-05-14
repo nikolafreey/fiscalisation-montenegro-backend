@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'ime' => $this->faker->firstName(),
             'prezime' => $this->faker->lastName(),
             'jezik' => 'sr',
-            'paket' => false,
+            'paket' => 1,
             // 'avatar' => $this->faker->imageUrl(),
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),

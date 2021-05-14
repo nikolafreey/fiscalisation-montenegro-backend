@@ -17,6 +17,7 @@
         InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
         InvOrdNum="{{ $racun->redni_broj }}"
         TCRCode="{{ $taxpayer['CR'] }}"
+        {{-- IsIssuerInVAT="{{ $pdv_obveznik }}" --}}
         IsIssuerInVAT="true"
         TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
         TotVATAmt="{{ sprintf('%0.2f',$ukupan_pdv) }}"
@@ -58,16 +59,20 @@
                     UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
                     UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
                     R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
-                    RR="{{ (bool) $stavka->popust_iznos }}"
+                    RR="{{ (bool) $stavka->popust_iznos }}" {{-- TODO: da li rabat (popust) umanjuje osnovni iznos ili ne --}}
                     PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
-                    VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
-                    VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
+                    {{-- @if($pdv_obveznik == "true") --}}
+                        VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
+                        VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
+                    {{-- @else
+                        EX="VAT_CL17"
+                    @endif --}}
                     PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
                 />
             @endforeach
         </Items>
 
-
+        {{-- @if($pdv_obveznik == "true") --}}
         <SameTaxes>
             @foreach($sameTaxes as $pdv_stopa => $sameTax)
                 @if ($sameTax['ukupan_broj_stavki'] != 0)
@@ -77,10 +82,14 @@
                         PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
                         VATRate="{{ sprintf("%.02f", $pdv_stopa * 100) }}"
                         VATAmt="{{ sprintf("%.02f", round($sameTax['ukupan_iznos_pdv'], 2)) }}"
+                        {{-- @if($sameTax["1"] == 1){
+                        ExemptFromVAT="VAT_CL17"
+                        @endif --}}
                     />
                 @endif
             @endforeach
         </SameTaxes>
+        {{-- @endif --}}
     </Invoice>
 </RegisterInvoiceRequest>
 

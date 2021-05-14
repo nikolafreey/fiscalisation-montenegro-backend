@@ -45,7 +45,7 @@ class Fiskalizuj implements ShouldQueue
             $tip_placanja = 'NONCASH';
             $nacin_placanja = $racun->nacin_placanja ?? 'BANKNOTE';
 
-            $kupacNaziv = $racun->preduzece->kratki_naziv;
+            $kupacNaziv = $racun->partner->id;
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
@@ -75,6 +75,7 @@ class Fiskalizuj implements ShouldQueue
             'ukupan_pdv' => null,
             'ukupna_cijena_bez_pdv' => null,
             'ukupna_cijena' => null,
+            'pdv_obveznik' => $racun->preduzece->pdv_obveznik ? "true" : "false",
         ];
 
         $this->data['IICData'] = $this->generateIIC();
@@ -218,6 +219,9 @@ class Fiskalizuj implements ShouldQueue
 
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
+            // $porez_id = $stavka->porez->id;
+
+            // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
 
             $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
             $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
