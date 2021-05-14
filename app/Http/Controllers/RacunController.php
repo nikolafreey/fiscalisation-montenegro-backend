@@ -62,7 +62,7 @@ class RacunController extends Controller
                 $partneri[] = $partner['partner_id'];
             }
 
-            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime')->get();
+            $queryPartneri = Partner::whereIn('id', $partneri)->with('preduzece:id,kratki_naziv', 'fizicko_lice:id,ime,prezime', 'preduzece_partner')->get();
 
             $ukupnaCijenaSearch =
                 collect(["ukupna_cijena" => Racun::izracunajUkupnuCijenu($searchQuery)]);
