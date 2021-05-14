@@ -237,7 +237,7 @@ class Fiskalizuj implements ShouldQueue
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['ukupna_cijena'],
+            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
         ]);
     }
 }
