@@ -73,8 +73,6 @@ class Fiskalizuj implements ShouldQueue
             'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,
             'ukupan_pdv' => null,
-            'ukupna_cijena_bez_pdv' => null,
-            'ukupna_cijena' => null,
             'pdv_obveznik' => $racun->preduzece->pdv_obveznik ? "true" : "false",
         ];
 
@@ -85,12 +83,6 @@ class Fiskalizuj implements ShouldQueue
         foreach($this->data['sameTaxes'] as $totVat) {
             $this->data['ukupan_pdv'] += round($totVat['ukupan_iznos_pdv'], 2);
         }
-        //
-        // foreach($this->data['sameTaxes'] as $totPrice) {
-        //     $this->data['ukupna_cijena_bez_pdv'] += $totPrice['ukupna_cijena_bez_pdv'];
-        // }
-        //
-        // $this->data['ukupna_cijena'] += $this->data['ukupna_cijena_bez_pdv'] + $this->data['ukupan_pdv'];
     }
 
     public function handle()
