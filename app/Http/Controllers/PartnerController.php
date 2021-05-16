@@ -34,7 +34,7 @@ class PartnerController extends Controller
 
         $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 
-        return $query->paginate(20);
+        return $query->paginate(100);
     }
 
     /**

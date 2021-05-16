@@ -139,6 +139,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('profile', [MobileAuthController::class, 'profile']);
             Route::get('refresh', [MobileAuthController::class, 'refresh']);
 
+            Route::post('update-status/{racun}', [RacunController::class, 'updateStatus']);
+
             Route::get('robe-racuni', [RobaController::class, 'robaRacuni']);
 
             Route::get('racuni-status', [RacunController::class, 'racuniStatus']);

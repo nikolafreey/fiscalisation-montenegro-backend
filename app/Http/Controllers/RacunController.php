@@ -379,11 +379,11 @@ class RacunController extends Controller
 
         $storniranRacun->save();
 
-        foreach($racun->stavke as $stavka) {
+        foreach ($racun->stavke as $stavka) {
             $stavka->update(['racun_id' => $storniranRacun->id]);
         }
 
-        foreach($racun->porezi as $porez) {
+        foreach ($racun->porezi as $porez) {
             $storniranRacun->porezi()->attach($porez);
         }
 
@@ -433,6 +433,22 @@ class RacunController extends Controller
         } else {
             return response()->json($racun, 400);
         }
+    }
+
+    public function updateStatus(Request $request, Racun $racun)
+    {
+        $ikof = $request->input('ikof');
+        $jikr = $request->input('jikr');
+        $status = $request->input('status');
+
+        if (($ikof != null || $ikof != '') && ($jikr != null || $jikr != '')) {
+
+            $racun->status = $status;
+            $racun->save();
+            return response()->json($request->status, 200);
+        }
+
+        return response()->json('Račun mora biti fiskalizovan i sačuvan da bi ste izmjenili status!', 400);
     }
 
     /**
