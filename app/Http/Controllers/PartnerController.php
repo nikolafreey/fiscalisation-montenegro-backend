@@ -23,9 +23,7 @@ class PartnerController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search') || $request->has('filter')) {
-            $query = Partner::filter($request)->query(function ($query) {
-                return $query->filterByPermissions();
-            });
+            $query = Partner::filter($request);
 
             $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 

@@ -40,8 +40,7 @@
             TCRCode="{{ $taxpayer['CR'] }}"
             IsIssuerInVAT="{{ $pdv_obveznik }}"
             TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
-            TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
-            TaxFreeAmt="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
+
             OperatorCode="{{ $taxpayer['OP'] }}"
             BusinUnitCode="{{ $taxpayer['BU'] }}"
             SoftCode="{{ $taxpayer['SW'] }}"
@@ -82,7 +81,7 @@
                         UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
                         UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
                         R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
-                        RR="{{ (bool) $stavka->popust_iznos }}"
+
                         PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                         VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
                         VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
@@ -97,7 +96,7 @@
                         UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
                         UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
                         R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
-                        RR="{{ (bool) $stavka->popust_iznos }}"
+
                         PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                         EX="VAT_CL17"
                         PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
@@ -106,11 +105,12 @@
             @endforeach
         </Items>
 
-         @if($pdv_obveznik === "true")
+
             <SameTaxes>
                 @foreach($sameTaxes as $pdv_stopa => $sameTax)
                     @if ($sameTax['ukupan_broj_stavki'] != 0)
                         <SameTax
+
                             NumOfItems="{{ (int) $sameTax['ukupan_broj_stavki'] }}"
                             PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
                             VATRate="{{ sprintf("%.02f", $pdv_stopa * 100) }}"
@@ -122,7 +122,7 @@
                     @endif
                 @endforeach
             </SameTaxes>
-         @endif
+
     </Invoice>
 </RegisterInvoiceRequest>
 
