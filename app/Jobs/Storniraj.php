@@ -14,7 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class Fiskalizuj implements ShouldQueue
+class Storniraj implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -24,7 +24,7 @@ class Fiskalizuj implements ShouldQueue
 
     public $ikof;
 
-    public function __construct($racun, $ikof = null)
+    public function __construct($racun, $ikof, $datum, $stavke)
     {
         if ($racun->vrsta_racuna === 'gotovinski') {
             $potpis = $racun->preduzece->pecat;
@@ -74,14 +74,29 @@ class Fiskalizuj implements ShouldQueue
             'nacin_placanja' => $nacin_placanja,
             'ukupan_pdv' => null,
             'pdv_obveznik' => $racun->preduzece->pdv_obveznik ? "true" : "false",
+            'ikof' => $ikof,
+            'datum' => $datum->toIso8601String(),
+            'stavke' => $stavke,
+            'ukupna_bez_pdv' => null,
+            'ukupna_sa_pdv' => null,
+            'ukupan_storniran_pdv' => null
         ];
 
         $this->data['IICData'] = $this->generateIIC();
         $this->data['sameTaxes'] = $this->calculateSameTaxes();
-        $this->ikof = $ikof;
 
         foreach($this->data['sameTaxes'] as $totVat) {
             $this->data['ukupan_pdv'] += round($totVat['ukupan_iznos_pdv'], 2);
+        }
+
+        foreach($racun->stavke as $stavka) {
+            if(in_array($stavka->id, $stavke)){
+                $this->data['ukupna_bez_pdv'] = $racun->ukupna_cijena_bez_pdv - $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
+
+                $this->data['ukupna_sa_pdv'] = $racun->ukupna_cijena_sa_pdv - $stavka->ukupna_sa_pdv;
+
+                $this->data['ukupan_storniran_pdv'] = $this->data['ukupan_pdv'] - $stavka->pdv_iznos_ukupno;
+            }
         }
     }
 
@@ -92,7 +107,7 @@ class Fiskalizuj implements ShouldQueue
         ]);
 
         $xml = view(
-            'xml.fiskalizuj',
+            'xml.storniraj',
             $this->data
         )->render();
 
@@ -226,14 +241,14 @@ class Fiskalizuj implements ShouldQueue
     private function generateQRCode()
     {
         return config('third_party_apis.poreska.qr_code_url') . implode('&', [
-            $this->data['IICData']['IIC'],
-            'tin=' . $this->data['taxpayer']['TIN'],
-            'crtd=' . $this->data['danasnji_datum'],
-            'ord=' . $this->data['racun']->redni_broj,
-            'bu=' . $this->data['taxpayer']['BU'],
-            'cr=' . $this->data['taxpayer']['CR'],
-            'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
-        ]);
+                $this->data['IICData']['IIC'],
+                'tin=' . $this->data['taxpayer']['TIN'],
+                'crtd=' . $this->data['danasnji_datum'],
+                'ord=' . $this->data['racun']->redni_broj,
+                'bu=' . $this->data['taxpayer']['BU'],
+                'cr=' . $this->data['taxpayer']['CR'],
+                'sw=' . $this->data['taxpayer']['SW'],
+                'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
+            ]);
     }
 }
