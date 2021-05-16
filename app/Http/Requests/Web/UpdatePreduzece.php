@@ -21,8 +21,8 @@ class UpdatePreduzece extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'pecatSifra' => encrypt($this->pecatSifra),
-            'sertifikatSifra' => encrypt($this->sertifikatSifra),
+            'pecatSifra' => $this->pecatSifra != null ? encrypt($this->pecatSifra) : null,
+            'sertifikatSifra' => $this->sertifikatSifra != null ? encrypt($this->sertifikatSifra) : null,
         ]);
     }
 

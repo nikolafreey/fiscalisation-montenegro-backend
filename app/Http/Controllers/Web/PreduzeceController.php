@@ -44,7 +44,7 @@ class PreduzeceController extends Controller
 
     public function update(Preduzece $preduzece, UpdatePreduzece $request)
     {
-        $preduzece->update($request->validated());
+        $preduzece->update(array_filter($request->validated()));
 
         if($request->poslovneJedinice !== null) {
             foreach($request->poslovneJedinice as $row){
