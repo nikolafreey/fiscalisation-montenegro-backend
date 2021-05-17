@@ -380,14 +380,18 @@ class RacunController extends Controller
         $storniranRacun->save();
 
         foreach ($racun->stavke as $stavka) {
-            $stavka->update(['racun_id' => $storniranRacun->id]);
+            $novaStavka = $stavka->replicate();
+
+            $novaStavka->racun_id = $storniranRacun->id;
+
+            $novaStavka->save();
         }
 
         foreach ($racun->porezi as $porez) {
             $storniranRacun->porezi()->attach($porez);
         }
 
-        Storniraj::dispatch($storniranRacun, $racun->ikof, $racun->created_at, $request->stavke)->onConnection('sync');
+        Storniraj::dispatch($storniranRacun, $racun->ikof, $racun->created_at, $request->stavke, $racun->stavke)->onConnection('sync');
 
         return response()->json($storniranRacun->load('stavke', 'porezi'), 201);
     }

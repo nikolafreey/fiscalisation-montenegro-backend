@@ -78,8 +78,8 @@
 
                     {{-- TODO: da li rabat (popust) umanjuje osnovni iznos ili ne --}}
                     <Items>
-                        @foreach($racun->stavke as $stavka)
-                            @if(in_array($stavka->id, $stavke))
+                        @foreach($stavke as $stavka)
+                            @if(in_array($stavka->id, $odabraneStavke))
                                 <I
                                     N="{{ $stavka->naziv }}"
                                     C="{{ $stavka->bar_code }}"
