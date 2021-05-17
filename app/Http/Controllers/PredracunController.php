@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Partner;
 use App\Models\Racun;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class PredracunController extends Controller

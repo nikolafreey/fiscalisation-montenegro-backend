@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StorePartner;
 use App\Models\Partner;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {

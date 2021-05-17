@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreCijenaRobe;
 use App\Models\CijenaRobe;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class CijenaRobeController extends Controller
 {

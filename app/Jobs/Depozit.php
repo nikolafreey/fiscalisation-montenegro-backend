@@ -6,7 +6,6 @@ use App\Models\FailedJobsCustom;
 use Exception;
 use Illuminate\Bus\Queueable;
 use App\Services\SignXMLService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;

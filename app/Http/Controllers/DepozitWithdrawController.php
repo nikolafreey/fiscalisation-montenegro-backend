@@ -4,15 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreDepozitWithdraw;
 use App\Jobs\Depozit;
-use App\Jobs\Fiskalizuj;
 use App\Models\FailedJobsCustom;
-use App\Models\Racun;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class DepozitWithdrawController extends Controller
 {

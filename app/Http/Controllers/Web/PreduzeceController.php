@@ -7,10 +7,7 @@ use App\Http\Requests\Web\UpdatePreduzece;
 use App\Models\Paket;
 use App\Models\PoslovnaJedinica;
 use App\Models\Preduzece;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class PreduzeceController extends Controller

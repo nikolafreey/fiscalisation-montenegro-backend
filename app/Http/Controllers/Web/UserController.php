@@ -5,15 +5,12 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\EditUserRequest;
 use App\Http\Requests\Web\UserRequest;
-use App\Mail\SendPassword;
 use App\Models\Preduzece;
 use App\Models\User;
 use App\Notifications\NalogRegistrovan;
 use App\ViewModels\UserViewModel;
-use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 

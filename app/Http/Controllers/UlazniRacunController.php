@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreUlazniRacun;
 use App\Models\Partner;
 use App\Models\UlazniRacun;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

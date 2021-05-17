@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Services\ContentDomService;
-use App\Services\FileService;
 use App\Traits\ImaAktivnost;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Spatie\LaravelImageOptimizer\Facades\ImageOptimizer;
 
 class Blog extends Model

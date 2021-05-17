@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreKategorijaRobe;
 use App\Models\KategorijaRobe;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class KategorijaRobeController extends Controller
 {
