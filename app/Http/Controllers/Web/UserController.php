@@ -21,8 +21,6 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        auth()->user()->can('edit users');
-
         if ($request->ajax()) {
             return DataTables::eloquent(
                     User::query()->with('roles')
@@ -45,8 +43,6 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        auth()->user()->can('edit users');
-
         $user = User::create(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
 
         $user->syncRoles([$request->uloga]);
@@ -72,8 +68,6 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // auth()->user()->can('edit users');
-
         $viewModel = new UserViewModel($user);
 
         return view('admin.users.form', $viewModel);

@@ -27,15 +27,11 @@ class UlogeController extends Controller
 
     public function create()
     {
-        auth()->user()->can('edit users');
-
         return view('admin.uloge.create');
     }
 
     public function store(Request $request)
     {
-        auth()->user()->can('edit users');
-
         Role::create(['name' => $request->uloga]);
 
         $request->session()->flash('success', 'Uspješno ste dodali ulogu');
@@ -45,8 +41,6 @@ class UlogeController extends Controller
 
     public function edit(Role $role)
     {
-        auth()->user()->can('edit preduzeca');
-
         return view('admin.uloge.edit', [
             'role' => $role,
             'dozvole' => Permission::all()

@@ -28,39 +28,43 @@ Route::group(['prefix' => 'okmnoifaonfa'], function(){
 });
 
 Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
-    Route::resource('preduzeca', PreduzeceController::class)->parameters([
-        'preduzeca' => 'preduzece'
-    ])->only('index', 'edit', 'update');
 
-    Route::resource('uloge', UlogeController::class)->only('index', 'create', 'store', 'edit')->parameters([
-        'uloge' => 'role'
-    ]);
+    Route::group(['middleware' => ['role:SuperAdmin']], function () {
 
-    Route::resource('users', UserController::class);
-    Route::get('uloge/{user}', [UserController::class, 'izmjeniteUlogu'])->name('izmjeniteUlogu');
-    Route::put('uloge/{user}', [UserController::class, 'updateUlogu'])->name('updateUlogu');
+        Route::resource('preduzeca', PreduzeceController::class)->parameters([
+            'preduzeca' => 'preduzece'
+        ])->only('index', 'edit', 'update');
 
-    Route::get('paket/{preduzece}', [PreduzeceController::class, 'izmjenitePaket'])->name('izmjenitePaket');
-    Route::put('paket/{preduzece}', [PreduzeceController::class, 'updatePaket'])->name('updatePaket');
+        Route::resource('uloge', UlogeController::class)->only('index', 'create', 'store', 'edit')->parameters([
+            'uloge' => 'role'
+        ]);
 
-    Route::resource('aktivnosti', AktivnostiController::class)->only('index', 'show')->parameters([
-        'aktivnosti' => 'activity'
-    ]);
+        Route::resource('users', UserController::class);
+        Route::get('uloge/{user}', [UserController::class, 'izmjeniteUlogu'])->name('izmjeniteUlogu');
+        Route::put('uloge/{user}', [UserController::class, 'updateUlogu'])->name('updateUlogu');
 
-    Route::resource('dozvole', DozvoleController::class)->only('index', 'create', 'store');
+        Route::get('paket/{preduzece}', [PreduzeceController::class, 'izmjenitePaket'])->name('izmjenitePaket');
+        Route::put('paket/{preduzece}', [PreduzeceController::class, 'updatePaket'])->name('updatePaket');
 
-    Route::post('uloge/store/{role}', [UlogeController::class, 'dodajDozvolu'])->name('dodajDozvolu');
+        Route::resource('aktivnosti', AktivnostiController::class)->only('index', 'show')->parameters([
+            'aktivnosti' => 'activity'
+        ]);
 
-    Route::post('cropper/image-upload', [ImageController::class, 'store'])->name('cropper.images');
+        Route::resource('dozvole', DozvoleController::class)->only('index', 'create', 'store');
 
-    Route::resource('blogs', BlogController::class)->except('show');
+        Route::post('uloge/store/{role}', [UlogeController::class, 'dodajDozvolu'])->name('dodajDozvolu');
 
-    Route::resource('blogCategories', BlogCategoryController::class)->except('show');
+        Route::post('cropper/image-upload', [ImageController::class, 'store'])->name('cropper.images');
 
-    Route::resource('ulogovaniKorisnici', UlogovaniKorisnikController::class)->only('index', 'destroy')->parameters([
-        'ulogovaniKorisnici' => 'ulogovaniKorisnik'
-    ]);
+        Route::resource('blogs', BlogController::class)->except('show');
 
-    Route::get('failedJobs', [FailedJobsCustomController::class, 'index'])->name('failedJobs.index');
+        Route::resource('blogCategories', BlogCategoryController::class)->except('show');
 
+        Route::resource('ulogovaniKorisnici', UlogovaniKorisnikController::class)->only('index', 'destroy')->parameters([
+            'ulogovaniKorisnici' => 'ulogovaniKorisnik'
+        ]);
+
+        Route::get('failedJobs', [FailedJobsCustomController::class, 'index'])->name('failedJobs.index');
+
+    });
 });

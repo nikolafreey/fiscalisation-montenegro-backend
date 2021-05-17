@@ -15,11 +15,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PreduzeceController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Preduzece::class, 'preduzece');
-    }
-
     public function index(Request $request)
     {
         if ($request->ajax()) {

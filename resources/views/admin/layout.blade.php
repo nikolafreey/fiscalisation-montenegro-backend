@@ -136,87 +136,81 @@
                             </div>
                         </div>
                     </li>
-                    @can('edit users')
-                        <li class=" has-sub-menu">
-                            <a href="{{ route('users.index') }}">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-users"></div>
-                                </div>
-                                <span>Korisnici</span></a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Korisnici
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-life-buoy"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ route('users.index') }}">Prikaži</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('users.create') }}">Dodajte korisnika</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('users.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-users"></div>
                             </div>
-                        </li>
-                    @endcan
-                    @can('edit users')
-                        <li class=" has-sub-menu">
-                            <a href="{{ route('uloge.index') }}">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-edit-32"></div>
-                                </div>
-                                <span>Uloge</span></a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Uloge
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-life-buoy"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ route('uloge.index') }}">Prikaži</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('uloge.create') }}">Dodajte ulogu</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <span>Korisnici</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Korisnici
                             </div>
-                        </li>
-                    @endcan
-                    @can('edit users')
-                        <li class=" has-sub-menu">
-                            <a href="{{ route('dozvole.index') }}">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-grid"></div>
-                                </div>
-                                <span>Dozvole</span></a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Dozvole
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-life-buoy"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ route('dozvole.index') }}">Prikaži</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('dozvole.create') }}">Dodajte dozvolu</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
                             </div>
-                        </li>
-                    @endcan
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('users.index') }}">Prikaži</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('users.create') }}">Dodajte korisnika</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('uloge.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-edit-32"></div>
+                            </div>
+                            <span>Uloge</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Uloge
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('uloge.index') }}">Prikaži</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('uloge.create') }}">Dodajte ulogu</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('dozvole.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-grid"></div>
+                            </div>
+                            <span>Dozvole</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Dozvole
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('dozvole.index') }}">Prikaži</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('dozvole.create') }}">Dodajte dozvolu</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
                     <li class=" has-sub-menu">
                         <a href="{{ route('blogs.index') }}">
                             <div class="icon-w">
@@ -267,54 +261,50 @@
                             </div>
                         </div>
                     </li>
-                    @can('edit users')
-                        <li class=" has-sub-menu">
-                            <a href="{{ route('ulogovaniKorisnici.index') }}">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-users"></div>
-                                </div>
-                                <span>Ulogovani korisnici</span></a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Ulogovani korisnici
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-life-buoy"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ route('ulogovaniKorisnici.index') }}">Prikaži</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('ulogovaniKorisnici.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-users"></div>
                             </div>
-                        </li>
-                    @endcan
-                    @can('edit users')
-                        <li class=" has-sub-menu">
-                            <a href="{{ route('failedJobs.index') }}">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-zap"></div>
-                                </div>
-                                <span>Fejlovani poslovi</span></a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Fejlovani poslovi
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-life-buoy"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ route('failedJobs.index') }}">Prikaži</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <span>Ulogovani korisnici</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Ulogovani korisnici
                             </div>
-                        </li>
-                    @endcan
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('ulogovaniKorisnici.index') }}">Prikaži</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('failedJobs.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-zap"></div>
+                            </div>
+                            <span>Fejlovani poslovi</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Fejlovani poslovi
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-life-buoy"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('failedJobs.index') }}">Prikaži</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="content-w">
