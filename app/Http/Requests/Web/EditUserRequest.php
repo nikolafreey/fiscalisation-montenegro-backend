@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Web;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class EditUserRequest extends FormRequest
 {
@@ -14,6 +16,13 @@ class EditUserRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'password' => $this->password !== null ? Hash::make($this->password) : null,
+        ]);
     }
 
     /**
@@ -29,6 +38,7 @@ class EditUserRequest extends FormRequest
             'avatar' => 'nullable',
             'email' => 'required|email',
             'preduzece_id' => 'required',
+            'password' => 'nullable'
         ];
     }
 }

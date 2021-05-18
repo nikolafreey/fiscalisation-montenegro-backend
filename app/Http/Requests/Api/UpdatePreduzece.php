@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class StorePreduzece extends BaseApiRequest
+class UpdatePreduzece extends BaseApiRequest
 {
     /**
      * Get the validation rules that apply to the request.
