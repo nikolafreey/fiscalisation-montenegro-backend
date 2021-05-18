@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreTipKorisnika;
-use App\Models\TipKorisnika;
 use Illuminate\Http\Request;
 
 class TipKorisnikaController extends Controller

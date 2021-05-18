@@ -27,12 +27,12 @@ class UserViewModel extends ViewModel
 
     public function roles()
     {
-        return Role::all();
+        return Role::orderBy('name')->get();
     }
 
     public function preduzeca()
     {
-        return Preduzece::all();
+        return Preduzece::orderBy('kratki_naziv')->get();
     }
 
     public function method()

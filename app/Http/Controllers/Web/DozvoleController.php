@@ -23,15 +23,11 @@ class DozvoleController extends Controller
 
     public function create()
     {
-        auth()->user()->can('edit users');
-
         return view('admin.dozvole.create');
     }
 
     public function store(Request $request)
     {
-        auth()->user()->can('edit users');
-
         Permission::create(['name' => $request->dozvola]);
 
         $request->session()->flash('success', 'Uspješno ste dodali dozvolu');

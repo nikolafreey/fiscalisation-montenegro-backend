@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\PartnerIndexConfigurator;
-use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -103,22 +102,24 @@ class Partner extends Model
     public static function filter(Request $request)
     {
         if ($request->has(['filter', 'search'])) {
-            $query = Partner::search($request->search . '*');
-            return $query;
+            $query = Partner::search($request->search . '*')->query(function ($query) {
+                return $query->filterByPermissions();
+            });
         }
 
         if ($request->has('search')) {
-            $query = Partner::search($request->search . '*');
+            $query = Partner::search($request->search . '*')->query(function ($query) {
+                return $query->filterByPermissions();
+            });
         }
 
         if ($request->has('filter')) {
             if ($request->filter == "fizicko_lice") {
-                return Partner::where('preduzece_id', null);
+                return Partner::query()->where('preduzece_tabela_id', null)->filterByPermissions();
             } elseif ($request->filter == "preduzece") {
-                return Partner::where('fizicko_lice_id', null);
+                return Partner::query()->where('fizicko_lice_id', null)->filterByPermissions();
             }
         }
-
         return $query;
     }
 

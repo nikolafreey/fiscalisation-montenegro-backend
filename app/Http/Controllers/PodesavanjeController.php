@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\Podesavanja\DodavanjeKorisnikaRequest;
-use App\Http\Requests\Api\Podesavanja\PodesavanjaRequest;
-use App\Models\Podesavanje;
-use App\Models\Preduzece;
-use App\Models\Racun;
 use App\Models\User;
-use App\Notifications\NalogRegistrovan;
+use App\Models\Podesavanje;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
+use App\Notifications\NalogRegistrovan;
+use App\Http\Requests\Api\SertifikatRequest;
+use App\Http\Requests\Api\Podesavanja\PodesavanjaRequest;
+use App\Http\Requests\Api\Podesavanja\DodavanjeKorisnikaRequest;
 
 /**
  * @group Podesavanja
@@ -38,13 +36,13 @@ class PodesavanjeController extends Controller
         );
     }
 
-    public function store(PodesavanjaRequest $request)
+    public function store(PodesavanjaRequest $request, SertifikatRequest $sertifikatRequest)
     {
         if (property_exists(Podesavanje::where('preduzece_id', getAuthPreduzeceId($request)), 'id')) {
             return response()->json("Podesavanje za ovo preduzeće već postoji!", 403);
         }
 
-        // TODO:: ovaj kod ne treba uopste zato sto je napravljeno unutar racuna da obracunava redni broj 
+        // TODO:: ovaj kod ne treba uopste zato sto je napravljeno unutar racuna da obracunava redni broj
         // ako nema  ni jednog racuna
         // if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
         //     return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
@@ -61,36 +59,14 @@ class PodesavanjeController extends Controller
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        // TODO: odraditi validaciju sifre za sertifikate tj. da li se poklapa sa sertifikatom
-        // TODO: odraditi upload certifikata, potpisa i pecata
-        // if ($request->pecat != null && $request->pecatSifra != null) {
-        //     getAuthPreduzece($request)->update([
-        //         'pecat' => $request->pecat,
-        //         'pecatSifra' => encrypt($request->pecatSifra)
-        //     ]);
-        // } elseif ($request->pecatSifra != null){
-        //     getAuthPreduzece($request)->update([
-        //         'pecatSifra' => encrypt($request->pecatSifra),
-        //     ]);
-        // }
-
-        // if ($request->sertifikat != null && $request->sertifikatSifra) {
-        //     getAuthPreduzece($request)->update([
-        //         'sertifikat' => $request->sertifikat,
-        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
-        //     ]);
-        // } elseif ($request->sertifikatSifra != null){
-        //     getAuthPreduzece($request)->update([
-        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
-        //     ]);
-        // }
+        getAuthPreduzece($request)->update(array_filter($sertifikatRequest->validated()));
 
         $kodovi = [];
         if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
         if($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
         if($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
         if($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
-        
+
         getAuthPreduzece($request)->update(array_filter($kodovi));
 
         $preduzece = getAuthPreduzece($request);
@@ -104,15 +80,15 @@ class PodesavanjeController extends Controller
         return response()->json($podesavanje, 201);
     }
 
-    public function update(Podesavanje $podesavanje, PodesavanjaRequest $request)
+    public function update(Podesavanje $podesavanje, PodesavanjaRequest $request, SertifikatRequest $sertifikatRequest)
     {
         // TODO: ovaj if moze da se brise
         // if (count(Racun::where('preduzece_id', getAuthPreduzeceId($request))->get()) > 0) {
         //     return response()->json("Podesavanja nije dozvoljeno mijenjati ukoliko ste izdali račun!", 403);
         // }
 
-        // \Log::error($request); 
-        // \Log::error($podesavanje); 
+        // \Log::error($request);
+        // \Log::error($podesavanje);
         // return;
 
         $podesavanje->update([
@@ -127,36 +103,14 @@ class PodesavanjeController extends Controller
             'preduzece_id' => getAuthPreduzeceId($request),
         ]);
 
-        // TODO: odraditi validaciju sifre za sertifikate tj. da li se poklapa sa sertifikatom
-        // TODO: odraditi upload certifikata, potpisa i pecata
-        // if ($request->pecat != null && $request->pecatSifra != null) {
-        //     getAuthPreduzece($request)->update([
-        //         'pecat' => $request->pecat,
-        //         'pecatSifra' => encrypt($request->pecatSifra)
-        //     ]);
-        // } elseif ($request->pecatSifra != null){
-        //     getAuthPreduzece($request)->update([
-        //         'pecatSifra' => encrypt($request->pecatSifra),
-        //     ]);
-        // }
-
-        // if ($request->sertifikat != null && $request->sertifikatSifra) {
-        //     getAuthPreduzece($request)->update([
-        //         'sertifikat' => $request->sertifikat,
-        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
-        //     ]);
-        // } elseif ($request->sertifikatSifra != null){
-        //     getAuthPreduzece($request)->update([
-        //         'sertifikatSifra' => encrypt($request->sertifikatSifra)
-        //     ]);
-        // }
+        getAuthPreduzece($request)->update(array_filter($sertifikatRequest->validated()));
 
         $kodovi = [];
         if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
         if($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
         if($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
         if($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
-        
+
         getAuthPreduzece($request)->update(array_filter($kodovi));
 
         $preduzece = getAuthPreduzece($request);

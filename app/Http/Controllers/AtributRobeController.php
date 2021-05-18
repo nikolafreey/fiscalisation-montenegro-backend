@@ -4,10 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreAtributRobe;
 use App\Models\AtributRobe;
-use App\Models\Preduzece;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AtributRobeController extends Controller
 {

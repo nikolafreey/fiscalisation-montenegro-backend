@@ -1,23 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Web;
+namespace App\Http\Requests\Api;
 
 use App\Rules\PecatRule;
 use App\Rules\SertifikatRule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePreduzece extends FormRequest
+class SertifikatRequest extends BaseApiRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     protected function prepareForValidation()
     {
         $this->merge([
@@ -38,9 +27,6 @@ class UpdatePreduzece extends FormRequest
             'sertifikatSifra' => 'nullable',
             'pecat' => ['nullable', new PecatRule($this->pecatSifra)],
             'sertifikat' => ['nullable', new SertifikatRule($this->sertifikatSifra)],
-            'pib' => 'nullable',
-            'enu_kod' => 'nullable',
-            'kod_operatera' => 'nullable',
         ];
     }
 }

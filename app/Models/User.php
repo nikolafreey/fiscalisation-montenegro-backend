@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\ImaAktivnost;
 use App\Traits\GenerateUuid;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Sanctum\NewAccessToken;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable

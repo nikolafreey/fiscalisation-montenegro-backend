@@ -13,7 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 
-class Fiskalizuj implements ShouldQueue
+class Storniraj implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -21,9 +21,7 @@ class Fiskalizuj implements ShouldQueue
 
     public $certificate;
 
-    public $ikof;
-
-    public function __construct($racun, $ikof = null)
+    public function __construct($racun, $ikof, $datum, $odabraneStavke, $stavke)
     {
         if ($racun->vrsta_racuna === 'gotovinski') {
             $potpis = $racun->preduzece->pecat;
@@ -57,7 +55,6 @@ class Fiskalizuj implements ShouldQueue
                 'SW' => config('third_party_apis.poreska.sw_kod'),
                 'TIN' => $racun->preduzece->pib,
                 //TODO: Ispraviti poslovnu jedinicu i upisati iz niza, a ne prvi koji smo pokupili iz racuna
-                // Racun ima samo jednu poslovnu jedinicu
                 'BU' => $racun->poslovnaJedinica->kod_poslovnog_prostora,
                 'OP' => $racun->user->kod_operatera ?? $racun->preduzece->kod_operatera,
             ],
@@ -74,14 +71,31 @@ class Fiskalizuj implements ShouldQueue
             'nacin_placanja' => $nacin_placanja,
             'ukupan_pdv' => null,
             'pdv_obveznik' => $racun->preduzece->pdv_obveznik ? "true" : "false",
+            'ikof' => $ikof,
+            'datum' => $datum->toIso8601String(),
+            'odabraneStavke' => $odabraneStavke,
+            'ukupna_bez_pdv' => $racun->ukupna_cijena_bez_pdv,
+            'ukupna_sa_pdv' => $racun->ukupna_cijena_sa_pdv,
+            'ukupan_storniran_pdv' => $racun->ukupan_iznos_pdv,
+            'stavke' => $stavke
         ];
 
         $this->data['IICData'] = $this->generateIIC();
         $this->data['sameTaxes'] = $this->calculateSameTaxes();
-        $this->ikof = $ikof;
 
         foreach($this->data['sameTaxes'] as $totVat) {
             $this->data['ukupan_pdv'] += round($totVat['ukupan_iznos_pdv'], 2);
+        }
+
+        foreach($this->data['stavke'] as $stavka) {
+            if(in_array($stavka->id, $odabraneStavke)){
+
+                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+
+                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+
+                $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
+            }
         }
     }
 
@@ -92,7 +106,7 @@ class Fiskalizuj implements ShouldQueue
         ]);
 
         $xml = view(
-            'xml.fiskalizuj',
+            'xml.storniraj',
             $this->data
         )->render();
 
@@ -209,15 +223,27 @@ class Fiskalizuj implements ShouldQueue
             ],
         ];
 
-        foreach ($this->data['racun']->stavke as $stavka) {
-            $porez_stopa = $stavka->porez->stopa;
-            // $porez_id = $stavka->porez->id;
 
-            // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
+        foreach ($this->data['stavke'] as $stavka) {
+            if(! in_array($stavka->id, $this->data['odabraneStavke'])){
+                $porez_stopa = $stavka->porez->stopa;
+                // $porez_id = $stavka->porez->id;
 
-            $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
-            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
-            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+                // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
+
+                $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
+                $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
+                $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+            } else {
+                $porez_stopa = $stavka->porez->stopa;
+                // $porez_id = $stavka->porez->id;
+
+                // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
+
+                $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
+                $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += 0;
+                $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += 0;
+            }
         }
 
         return $sameTaxes;
@@ -226,14 +252,14 @@ class Fiskalizuj implements ShouldQueue
     private function generateQRCode()
     {
         return config('third_party_apis.poreska.qr_code_url') . implode('&', [
-            $this->data['IICData']['IIC'],
-            'tin=' . $this->data['taxpayer']['TIN'],
-            'crtd=' . $this->data['danasnji_datum'],
-            'ord=' . $this->data['racun']->redni_broj,
-            'bu=' . $this->data['taxpayer']['BU'],
-            'cr=' . $this->data['taxpayer']['CR'],
-            'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
-        ]);
+                $this->data['IICData']['IIC'],
+                'tin=' . $this->data['taxpayer']['TIN'],
+                'crtd=' . $this->data['danasnji_datum'],
+                'ord=' . $this->data['racun']->redni_broj,
+                'bu=' . $this->data['taxpayer']['BU'],
+                'cr=' . $this->data['taxpayer']['CR'],
+                'sw=' . $this->data['taxpayer']['SW'],
+                'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
+            ]);
     }
 }

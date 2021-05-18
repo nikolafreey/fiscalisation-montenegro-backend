@@ -4,15 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreDepozitWithdraw;
 use App\Jobs\Depozit;
-use App\Jobs\Fiskalizuj;
 use App\Models\FailedJobsCustom;
-use App\Models\Racun;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\DepozitWithdraw;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class DepozitWithdrawController extends Controller
 {
@@ -30,7 +24,7 @@ class DepozitWithdrawController extends Controller
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
 
-        return DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->first();
+        return DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', null)->first();
 
         // return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
         // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
@@ -45,9 +39,11 @@ class DepozitWithdrawController extends Controller
     {
         $depozitWithdraw = DepozitWithdraw::make($request->all());
 
-        $depozitLoaded = $this->getDepozitToday();
-        if ($depozitLoaded) {
-            return response()->json('Već je dodat depozit za današnji dan!', 400);
+        if($depozitWithdraw->iznos_depozit != null){
+            $depozitLoaded = $this->getDepozitToday();
+            if ($depozitLoaded) {
+                return response()->json('Već je dodat depozit za današnji dan!', 400);
+            }
         }
 
         $depozitWithdraw->user_id = auth()->id();
@@ -58,13 +54,13 @@ class DepozitWithdrawController extends Controller
             return response()->json('Depozit nije validan', 400);
         }
 
+        if ($depozitWithdraw->iznos_withdraw < 0) {
+            return response()->json('Withdraw nije validan', 400);
+        }
+
         $depozitWithdraw->save();
 
         Depozit::dispatch($depozitWithdraw)->onConnection('sync');
-
-        // if($depozitWithdraw->iznos_withdraw > 0) {
-        //     Withdraw::dispatch($depozitWithdraw);
-        // }
 
         $depozitWithdraw->update([
             'fiskalizovan' => true,

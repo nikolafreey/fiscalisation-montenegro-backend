@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ScoutElastic\Searchable;
-use Illuminate\Support\Facades\Log;
 use App\Traits\ImaAktivnost;
 
 class Racun extends Model

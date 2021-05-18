@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreDokument;
 use App\Models\Dokument;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DokumentController extends Controller
 {

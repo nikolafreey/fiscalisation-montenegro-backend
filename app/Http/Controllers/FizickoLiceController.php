@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Api\StoreFizickoLice;
 use App\Models\FizickoLice;
 use App\Models\Partner;
-use App\Models\User;
 use App\Models\ZiroRacun;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -44,7 +43,7 @@ class FizickoLiceController extends Controller
     {
         // TODO: ubaciti u Partnere
         // DB::transaction(function () use ($request) {}
-        // ubaciti oba 
+        // ubaciti oba
 
         $fizickoLice = DB::transaction(function () use ($request) {
             $fizickoLice = FizickoLice::make($request->validated());

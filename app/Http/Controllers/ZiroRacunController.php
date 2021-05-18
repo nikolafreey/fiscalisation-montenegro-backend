@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreZiroRacun;
-use App\Models\User;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ZiroRacunController extends Controller
 {

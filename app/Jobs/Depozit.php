@@ -6,7 +6,6 @@ use App\Models\FailedJobsCustom;
 use Exception;
 use Illuminate\Bus\Queueable;
 use App\Services\SignXMLService;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,17 +21,16 @@ class Depozit implements ShouldQueue
 
     public $certificate;
 
-    public function __construct($depozit)
+    public function __construct($depozitWithdraw)
     {
-
-        $this->certificate = $this->loadCertifacate(storage_path('app/' . $depozit->preduzece->pecat), decrypt($depozit->preduzece->pecatSifra));
+        $this->certificate = $this->loadCertifacate(storage_path('app/' . $depozitWithdraw->preduzece->pecat), decrypt($depozitWithdraw->preduzece->pecatSifra));
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
-            'depozit' => $depozit,
+            'depozitWithdraw' => $depozitWithdraw,
             'taxpayer' => [
-                'CR' => $depozit->preduzece->enu_kod,
-                'TIN' => $depozit->preduzece->pib,
+                'CR' => $depozitWithdraw->preduzece->enu_kod,
+                'TIN' => $depozitWithdraw->preduzece->pib,
             ],
         ];
     }
@@ -92,7 +90,7 @@ class Depozit implements ShouldQueue
     {
         FailedJobsCustom::insert([
             'connection' => $this->connection,
-            'payload' => $this->data['depozit']->id,
+            'payload' => $this->data['depozitWithdraw']->id,
             'exception' => $e->getMessage(),
             'job_name' => 'depozit',
         ]);

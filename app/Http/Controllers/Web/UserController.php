@@ -5,15 +5,12 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\EditUserRequest;
 use App\Http\Requests\Web\UserRequest;
-use App\Mail\SendPassword;
 use App\Models\Preduzece;
 use App\Models\User;
 use App\Notifications\NalogRegistrovan;
 use App\ViewModels\UserViewModel;
-use Coconuts\Mail\MailMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -21,8 +18,6 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        auth()->user()->can('edit users');
-
         if ($request->ajax()) {
             return DataTables::eloquent(
                     User::query()->with('roles')
@@ -45,8 +40,6 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        auth()->user()->can('edit users');
-
         $user = User::create(array_merge($request->validated(), ['password' => Hash::make($request->password)]));
 
         $user->syncRoles([$request->uloga]);
@@ -72,8 +65,6 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        // auth()->user()->can('edit users');
-
         $viewModel = new UserViewModel($user);
 
         return view('admin.users.form', $viewModel);
@@ -81,11 +72,7 @@ class UserController extends Controller
 
     public function update(User $user, EditUserRequest $request)
     {
-        $user->update($request->validated());
-
-        if ($request->password != null) {
-            $user->update(['password' => Hash::make($request->password)]);
-        }
+        $user->update(array_filter($request->validated()));
 
         $user->syncRoles([$request->uloga]);
 

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StorePartner;
 use App\Models\Partner;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
@@ -23,9 +21,7 @@ class PartnerController extends Controller
     public function index(Request $request)
     {
         if ($request->has('search') || $request->has('filter')) {
-            $query = Partner::filter($request)->query(function ($query) {
-                return $query->filterByPermissions();
-            });
+            $query = Partner::filter($request);
 
             $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 
@@ -36,7 +32,7 @@ class PartnerController extends Controller
 
         $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
 
-        return $query->paginate(20);
+        return $query->paginate(100);
     }
 
     /**

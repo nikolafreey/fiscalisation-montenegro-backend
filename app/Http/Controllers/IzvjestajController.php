@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\PoslovnaJedinica;
 use App\Services\IzvjestajService;
-use App\Http\Requests\Api\FiskalniPresjekStanjaRequest;
 use App\Http\Requests\Api\FiskalniDnevniIzvjestajRequest;
 use App\Http\Requests\Api\PeriodicniIzvjestajRequest;
 use App\Http\Requests\Api\PeriodicniFiskalniIzvjestajRequest;

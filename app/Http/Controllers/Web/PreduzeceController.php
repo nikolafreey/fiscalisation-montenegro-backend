@@ -7,19 +7,11 @@ use App\Http\Requests\Web\UpdatePreduzece;
 use App\Models\Paket;
 use App\Models\PoslovnaJedinica;
 use App\Models\Preduzece;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 
 class PreduzeceController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(Preduzece::class, 'preduzece');
-    }
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -44,7 +36,7 @@ class PreduzeceController extends Controller
 
     public function update(Preduzece $preduzece, UpdatePreduzece $request)
     {
-        $preduzece->update($request->validated());
+        $preduzece->update(array_filter($request->validated()));
 
         if($request->poslovneJedinice !== null) {
             foreach($request->poslovneJedinice as $row){

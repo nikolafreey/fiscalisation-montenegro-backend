@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\StoreGrupa;
 use App\Models\Grupa;
-use Elasticsearch\Endpoints\Ml\Validate;
-use Exception;
 use Illuminate\Http\Request;
 
 class GrupaController extends Controller

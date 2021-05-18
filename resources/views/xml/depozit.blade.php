@@ -11,11 +11,24 @@
         UUID="{{ Str::uuid() }}"
     />
 
-    <CashDeposit
-        CashAmt="{{ sprintf("%.02f", $depozit->iznos_depozit) }}"
-        ChangeDateTime="{{ $danasnji_datum }}"
-        IssuerTIN="{{ $taxpayer['TIN'] }}"
-        Operation="INITIAL"
-        TCRCode="{{ $taxpayer['CR'] }}"
-    />
+    @if($depozitWithdraw->iznos_depozit != null)
+        <CashDeposit
+            CashAmt="{{ sprintf("%.02f", $depozitWithdraw->iznos_depozit) }}"
+            ChangeDateTime="{{ $danasnji_datum }}"
+            IssuerTIN="{{ $taxpayer['TIN'] }}"
+            Operation="INITIAL"
+            TCRCode="{{ $taxpayer['CR'] }}"
+        />
+    @endif
+
+    @if($depozitWithdraw->iznos_withdraw != null)
+        <CashDeposit
+            CashAmt="{{ sprintf("%.02f", $depozitWithdraw->iznos_withdraw) }}"
+            ChangeDateTime="{{ $danasnji_datum }}"
+            IssuerTIN="{{ $taxpayer['TIN'] }}"
+            Operation="WITHDRAW"
+            TCRCode="{{ $taxpayer['CR'] }}"
+        />
+    @endif
+
 </RegisterCashDepositRequest>

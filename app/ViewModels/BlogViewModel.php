@@ -24,7 +24,7 @@ class BlogViewModel extends ViewModel
 
     public function blogCategories()
     {
-        return BlogCategory::all();
+        return BlogCategory::orderBy('naziv')->get();
     }
 
     public function method()

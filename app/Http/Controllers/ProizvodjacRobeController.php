@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StoreProizvodjacRobe;
 use App\Models\ProizvodjacRobe;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProizvodjacRobeController extends Controller
 {

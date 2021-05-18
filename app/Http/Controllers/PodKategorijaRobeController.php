@@ -4,10 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StorePodKategorijaRobe;
 use App\Models\PodKategorijaRobe;
-use App\Models\Preduzece;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PodKategorijaRobeController extends Controller
 {
