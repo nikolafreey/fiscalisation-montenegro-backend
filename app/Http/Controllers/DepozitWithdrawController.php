@@ -39,11 +39,23 @@ class DepozitWithdrawController extends Controller
     {
         $depozitWithdraw = DepozitWithdraw::make($request->all());
 
-        if($depozitWithdraw->iznos_depozit != null){
-            $depozitLoaded = $this->getDepozitToday();
+        $depozitLoaded = $this->getDepozitToday();
+        if ($depozitWithdraw->iznos_depozit != null) {
             if ($depozitLoaded) {
                 return response()->json('Već je dodat depozit za današnji dan!', 400);
             }
+        }
+
+        if ($depozitWithdraw->iznos_withdraw != null) {
+            $withdrawLoaded =
+                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->first();
+            if ($withdrawLoaded) {
+                return response()->json('Već je podignut depozit za današnji dan!', 400);
+            }
+        }
+
+        if ($depozitWithdraw->iznos_withdraw > $depozitLoaded->iznos_depozit) {
+            return response()->json('Iznos koji podižete ne može biti veći od iznosa depozita za današnji dan!', 400);
         }
 
         $depozitWithdraw->user_id = auth()->id();
