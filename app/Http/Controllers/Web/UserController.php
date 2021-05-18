@@ -72,11 +72,7 @@ class UserController extends Controller
 
     public function update(User $user, EditUserRequest $request)
     {
-        $user->update($request->validated());
-
-        if ($request->password != null) {
-            $user->update(['password' => Hash::make($request->password)]);
-        }
+        $user->update(array_filter($request->validated()));
 
         $user->syncRoles([$request->uloga]);
 
