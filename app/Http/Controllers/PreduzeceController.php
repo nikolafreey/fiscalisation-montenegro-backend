@@ -82,14 +82,6 @@ class PreduzeceController extends Controller
             }
         }
 
-        if ($preduzece->verifikovan === 0) {
-            if (
-            ! in_array($preduzece->id, auth()->user()->preduzeca->pluck('id')->toArray())
-            ) {
-                return response()->json('Nemate pristup ovom preduzecu', 401);
-            }
-        }
-
         $preduzece->update(array_filter($request->validated()));
 
         return response()->json($preduzece, 200);
