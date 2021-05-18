@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StorePreduzece;
+use App\Http\Requests\Api\UpdatePreduzece;
 use App\Models\Preduzece;
 use Illuminate\Http\Request;
 
@@ -69,21 +70,27 @@ class PreduzeceController extends Controller
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Preduzece $preduzece)
+    public function update(UpdatePreduzece $request, Preduzece $preduzece)
     {
-        if (
-            !auth()->user()->hasRole('Vlasnik')
-            &&
-            !auth()->user()->preduzeca()->where('preduzeca.id', $preduzece->id)->exists()
-        ) {
-            return response()->json('Nemate pristup ovom preduzecu', 401);
-        }
-
         if ($preduzece->verifikovan === 1) {
-            return response()->json('Ne mozete mijenjati verifikovano preduzece!', 403);
+            if (
+                ! auth()->user()->hasRole('Vlasnik')
+                ||
+                ! in_array($preduzece->id, auth()->user()->preduzeca->pluck('id')->toArray())
+            ) {
+                return response()->json('Nemate pristup ovom preduzecu', 401);
+            }
         }
 
-        $preduzece->update($request->all());
+        if ($preduzece->verifikovan === 0) {
+            if (
+            ! in_array($preduzece->id, auth()->user()->preduzeca->pluck('id')->toArray())
+            ) {
+                return response()->json('Nemate pristup ovom preduzecu', 401);
+            }
+        }
+
+        $preduzece->update(array_filter($request->validated()));
 
         return response()->json($preduzece, 200);
     }
