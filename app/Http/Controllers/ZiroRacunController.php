@@ -20,7 +20,7 @@ class ZiroRacunController extends Controller
      */
     public function index()
     {
-        return ZiroRacun::filterByPermissions()->get();
+        return ZiroRacun::get();
     }
 
     /**
@@ -31,10 +31,10 @@ class ZiroRacunController extends Controller
      */
     public function store(StoreZiroRacun $request)
     {
-        $ziroRacun = ZiroRacun::create($request->all());
+        $ziroRacun = ZiroRacun::make($request->all());
         $ziroRacun->user_id = auth()->id();
 
-        $ziroRacun->preduzece_id = getAuthPreduzeceId($request);
+        // $ziroRacun->preduzece_id = getAuthPreduzeceId($request);
         $ziroRacun->save();
 
         return response()->json($ziroRacun, 201);
