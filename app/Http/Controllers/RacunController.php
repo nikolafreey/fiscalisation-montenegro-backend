@@ -378,11 +378,11 @@ class RacunController extends Controller
         $storniranRacun->save();
 
         foreach ($racun->stavke as $stavka) {
-            $novaStavka = $stavka->replicate();
+            $stavka = $stavka->replicate();
 
-            $novaStavka->racun_id = $storniranRacun->id;
+            $stavka->racun_id = $storniranRacun->id;
 
-            $novaStavka->save();
+            $stavka->save();
         }
 
         foreach ($racun->porezi as $porez) {
