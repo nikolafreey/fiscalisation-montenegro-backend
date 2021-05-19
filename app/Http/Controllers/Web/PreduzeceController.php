@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\PreduzeceRequest;
 use App\Http\Requests\Web\UpdatePreduzece;
+use App\Models\Djelatnost;
+use App\Models\Kategorija;
 use App\Models\Paket;
 use App\Models\PoslovnaJedinica;
 use App\Models\Preduzece;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,6 +29,26 @@ class PreduzeceController extends Controller
         }
 
         return view('admin.preduzeca.index');
+    }
+
+    public function create()
+    {
+        return view('admin.preduzeca.create', [
+            'djelatnosti' => Djelatnost::all(),
+            'kategorije' => Kategorija::all(),
+            'users' => User::all(),
+        ]);
+    }
+
+    public function store(PreduzeceRequest $request)
+    {
+        $preduzece = Preduzece::create(array_filter($request->validated()));
+
+        $preduzece->users()->attach($request->user_id);
+
+        $request->session()->flash('success', 'Uspješno ste dodali preduzeće');
+
+        return redirect(route('preduzeca.index'));
     }
 
     public function edit(Preduzece $preduzece)

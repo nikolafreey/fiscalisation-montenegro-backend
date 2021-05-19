@@ -19,7 +19,7 @@ class PoslovnaJedinica extends Model
         'adresa',
         'grad',
         'drzava',
-        'preduzce_id',
+        'preduzece_id',
         'user_id',
         'kod_poslovnog_prostora',
     ];

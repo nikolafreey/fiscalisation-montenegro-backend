@@ -7,6 +7,7 @@ use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\DozvoleController;
 use App\Http\Controllers\Web\FailedJobsCustomController;
 use App\Http\Controllers\Web\ImageController;
+use App\Http\Controllers\Web\PoslovnaJedinicaController;
 use App\Http\Controllers\Web\UlogeController;
 use App\Http\Controllers\Web\UlogovaniKorisnikController;
 use App\Http\Controllers\Web\UserController;
@@ -31,15 +32,10 @@ Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
 
     Route::group(['middleware' => ['role:SuperAdmin']], function () {
 
-        Route::resource('preduzeca', PreduzeceController::class)->parameters([
-            'preduzeca' => 'preduzece'
-        ])->only('index', 'edit', 'update');
-
         Route::resource('uloge', UlogeController::class)->only('index', 'create', 'store', 'edit')->parameters([
             'uloge' => 'role'
         ]);
 
-        Route::resource('users', UserController::class);
         Route::get('uloge/{user}', [UserController::class, 'izmjeniteUlogu'])->name('izmjeniteUlogu');
         Route::put('uloge/{user}', [UserController::class, 'updateUlogu'])->name('updateUlogu');
 
@@ -65,6 +61,20 @@ Route::middleware('auth')->prefix('okmnoifaonfa')->group(function () {
         ]);
 
         Route::get('failedJobs', [FailedJobsCustomController::class, 'index'])->name('failedJobs.index');
+
+    });
+
+    Route::group(['middleware' => ['role:SuperAdmin|Operater']], function () {
+
+        Route::resource('preduzeca', PreduzeceController::class)->parameters([
+            'preduzeca' => 'preduzece'
+        ])->except('show', 'destroy');
+
+        Route::resource('poslovneJedinice', PoslovnaJedinicaController::class)->parameters([
+            'poslovneJedinice' => 'poslovnaJedinica'
+        ])->except('show', 'destroy');
+
+        Route::resource('users', UserController::class);
 
     });
 });
