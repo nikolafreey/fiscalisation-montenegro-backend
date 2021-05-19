@@ -102,17 +102,20 @@ class PreduzeceController extends Controller
             }
         }
 
-        $preduzece->ziro_racuni()->delete();
 
-        $ziro_racuni = $request->ziro_racuni;
-        foreach ($ziro_racuni as $ziro_racun) {
-            $zr = ZiroRacun::make($ziro_racun);
-            $zr->user_id = auth()->id();
-            $zr->preduzece_id = $preduzece->id;
-            $zr->save();
-            $ziro_racuni_objects[] = $zr;
+        if (count($request->ziro_racuni) !== 0) {
+            $preduzece->ziro_racuni()->delete();
+
+            $ziro_racuni = $request->ziro_racuni;
+            foreach ($ziro_racuni as $ziro_racun) {
+                $zr = ZiroRacun::make($ziro_racun);
+                $zr->user_id = auth()->id();
+                $zr->preduzece_id = $preduzece->id;
+                $zr->save();
+                $ziro_racuni_objects[] = $zr;
+            }
+            $preduzece->ziro_racuni()->saveMany($ziro_racuni_objects);
         }
-        $preduzece->ziro_racuni()->saveMany($ziro_racuni_objects);
 
         $preduzece->update(array_filter($request->validated()));
 
