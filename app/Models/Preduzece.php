@@ -70,7 +70,8 @@ class Preduzece extends Model
         'software_kod',
         'kod_operatera',
         'kod_pj',
-        'vazenje_paketa_do'
+        'vazenje_paketa_do',
+        'country_code',
     ];
 
     use Searchable;
