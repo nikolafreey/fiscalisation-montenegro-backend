@@ -371,25 +371,47 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
-        $storniranRacun = $racun->replicate();
+        if(! isset($request->stavke) || empty($request->stavke)) {
+            return response()->json('Morate unijeti stavke koje želite da stornirate', 400);
+        }
 
-        $storniranRacun->created_at = Carbon::now();
+        $storniranRacun = $racun->replicate()->fill([
+            'created_at' => Carbon::now(),
+        ]);
 
         $storniranRacun->save();
 
         foreach ($racun->stavke as $stavka) {
-            $stavka = $stavka->replicate();
+            if(! in_array($stavka->id, $request->stavke)) {
+                $stavka = $stavka->replicate()->fill([
+                    'racun_id' => $storniranRacun->id,
+                ]);
 
-            $stavka->racun_id = $storniranRacun->id;
+                $stavka->save();
+            } else {
+                $stavka = $stavka->replicate()->fill([
+                    'ukupna_bez_pdv' => $stavka->ukupna_bez_pdv * -1,
+                    'ukupna_sa_pdv' => $stavka->ukupna_sa_pdv * -1,
+                    'kolicina' => $stavka->kolicina * -1,
+                    'racun_id' => $storniranRacun->id,
+                ]);
 
-            $stavka->save();
+                $stavka->save();
+            }
         }
 
         foreach ($racun->porezi as $porez) {
             $storniranRacun->porezi()->attach($porez);
         }
 
-        Storniraj::dispatch($storniranRacun, $racun->ikof, $racun->created_at, $request->stavke, $racun->stavke)->onConnection('sync');
+        Storniraj::dispatch(
+            $storniranRacun,
+            $racun->ikof,
+            $racun->created_at,
+            $request->stavke,
+            $racun->stavke
+        )
+            ->onConnection('sync');
 
         return response()->json($storniranRacun->load('stavke', 'porezi'), 201);
     }
