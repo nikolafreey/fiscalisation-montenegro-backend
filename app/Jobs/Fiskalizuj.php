@@ -64,11 +64,17 @@ class Fiskalizuj implements ShouldQueue
             'seller' => [
                 'IDType' => 'TIN',
                 'Name' => $racun->preduzece->kratki_naziv ?? 'Anonimno Preduzece',
+                'Address' => $racun->preduzece->adresa ?? 'Anonimna adresa',
+                'Town' => $racun->preduzece->grad ?? 'Anoniman grad',
+                'Country' => $racun->preduzece->country_code ?? 'MNE',
             ],
             'buyer' => [
                 'IDType' => 'TIN',
                 'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $kupacNaziv,
+                'Address' => $racun->partner->preduzece_partner->adresa ?? 'Anonimna adresa',
+                'Town' => $racun->partner->preduzece_partner->grad ?? 'Anoniman grad',
+                'Country' => $racun->partner->preduzece_partner->country_code ?? 'MNE',
             ],
             'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,

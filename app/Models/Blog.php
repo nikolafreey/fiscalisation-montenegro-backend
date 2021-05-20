@@ -27,7 +27,7 @@ class Blog extends Model
 
     public function categories()
     {
-        return $this->belongsTo(BlogCategory::class);
+        return $this->belongsTo(BlogCategory::class, 'blog_category_id');
     }
 
     public function setSlikaAttribute($value)

@@ -120,7 +120,7 @@
                     <li class=" has-sub-menu">
                         <a href="{{ route('poslovneJedinice.index') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-layout"></div>
                             </div>
                             <span>Poslovne Jedinice</span></a>
                         <div class="sub-menu-w">
@@ -128,7 +128,7 @@
                                 Poslovne Jedinice
                             </div>
                             <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-package"></i>
+                                <i class="os-icon os-icon-layout"></i>
                             </div>
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
@@ -142,30 +142,6 @@
                             </div>
                         </div>
                     </li>
-                    @role('SuperAdmin')
-                        <li class=" has-sub-menu">
-                            <a href="{{ route('aktivnosti.index') }}">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-life-buoy"></div>
-                                </div>
-                                <span>Aktivnosti</span></a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Aktivnosti
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-file-text"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ route('aktivnosti.index') }}">Prikaži</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    @endrole
                     <li class=" has-sub-menu">
                         <a href="{{ route('users.index') }}">
                             <div class="icon-w">
@@ -298,6 +274,30 @@
                                 </div>
                             </div>
                         </li>
+                    @endrole
+                    @role('SuperAdmin')
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('aktivnosti.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-life-buoy"></div>
+                            </div>
+                            <span>Aktivnosti</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Aktivnosti
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-file-text"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('aktivnosti.index') }}">Prikaži</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
                     @endrole
                     @role('SuperAdmin')
                         <li class=" has-sub-menu">

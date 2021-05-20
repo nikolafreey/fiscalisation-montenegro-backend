@@ -105,7 +105,9 @@
                                         @foreach($blogCategories as $category)
                                             <option
                                                 @if(old('blog_category_id') === $category->id)
-                                                selected
+                                                    selected
+                                                @elseif($category->id === $blog->categories->id)
+                                                    selected
                                                 @endif
                                                 value="{{ $category->id }}"
                                             >

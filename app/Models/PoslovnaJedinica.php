@@ -48,6 +48,11 @@ class PoslovnaJedinica extends Model
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
     public function racuni()
     {
         return $this->hasMany('App\Models\Racun', 'poslovna_jedinica_id');

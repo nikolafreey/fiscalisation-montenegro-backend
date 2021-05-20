@@ -58,13 +58,13 @@
                                     <select class="preduzece" name="preduzece_id" id="preduzece">
                                         @foreach($preduzeca as $preduzece)
                                             <option
-{{--                                                @if(in_array(--}}
-{{--                                                   $preduzece->id,--}}
-{{--                                                   $poslovnaJedinica->preduzeca->pluck('id')->toArray(),--}}
-{{--                                                   true--}}
-{{--                                               ))--}}
-{{--                                                selected--}}
-{{--                                                @endif--}}
+                                                @if(
+                                                   $preduzece->id
+                                                   ===
+                                                   $poslovnaJedinica->preduzece->id
+                                               )
+                                                selected
+                                                @endif
                                                 value="{{ $preduzece->id }}"
                                             >
                                                 {{ $preduzece->kratki_naziv }}
@@ -78,6 +78,13 @@
                                     <select class="user" name="user_id" id="user">
                                         @foreach($users as $user)
                                             <option
+                                                @if(
+                                                  $user->id
+                                                  ===
+                                                  $poslovnaJedinica->user->id
+                                                )
+                                                selected
+                                                @endif
                                                 value="{{ $user->id }}"
                                             >
                                                 {{ $user->ime }} {{ $user->prezime }}
@@ -87,7 +94,7 @@
                                 </div>
                                 <div class="form-buttons-w">
                                     <button class="btn btn-primary" type="submit">
-                                        {{ $action ? 'Sacuvajte' : 'Dodajte' }}
+                                        {{ $action ? 'Sačuvajte' : 'Dodajte' }}
                                     </button>
                                 </div>
                             </form>

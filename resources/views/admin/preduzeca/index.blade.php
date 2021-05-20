@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Preduzeca')
+@section('title', 'Preduzeća')
 
 @section('content')
 
