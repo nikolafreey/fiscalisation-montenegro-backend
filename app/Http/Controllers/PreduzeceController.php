@@ -80,7 +80,7 @@ class PreduzeceController extends Controller
      */
     public function show(Preduzece $preduzece)
     {
-        return response()->json($preduzece->load('ovlascena_lica', 'djelatnosti', 'kategorija'), 200);
+        return response()->json($preduzece->load('ovlascena_lica', 'djelatnosti', 'kategorija', 'ziro_racuni'), 200);
     }
 
     /**

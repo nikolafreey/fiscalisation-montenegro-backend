@@ -30,7 +30,7 @@ class PartnerController extends Controller
 
         $query = Partner::query()->filterByPermissions();
 
-        $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
+        $query = $query->with(['preduzece', 'fizicko_lice', 'fizicko_lice.ziro_racuni', 'preduzece_partner', 'preduzece_partner.ziro_racuni']);
 
         return $query->paginate(100);
     }
