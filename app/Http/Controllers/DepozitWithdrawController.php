@@ -24,7 +24,7 @@ class DepozitWithdrawController extends Controller
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
 
-        return DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', null)->first();
+        return DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('fiskalizovan', 1)->first();
 
         // return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
         // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
