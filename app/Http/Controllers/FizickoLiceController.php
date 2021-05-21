@@ -41,25 +41,25 @@ class FizickoLiceController extends Controller
      */
     public function store(StoreFizickoLice $request)
     {
-        // TODO: ubaciti u Partnere
-        // DB::transaction(function () use ($request) {}
-        // ubaciti oba
-
         $fizickoLice = DB::transaction(function () use ($request) {
             $fizickoLice = FizickoLice::make($request->validated());
 
             $fizickoLice->user_id = auth()->id();
             $fizickoLice->preduzece_id = getAuthPreduzeceId($request);
 
+            $fizickoLice->save();
+
             if (count($request->ziro_racuni) !== 0) {
                 $ziro_racuni = $request->ziro_racuni;
                 foreach ($ziro_racuni as $ziro_racun) {
-                    $ziro_racuni_objects[] = new ZiroRacun($ziro_racun);
+                    $zr = ZiroRacun::make($ziro_racun);
+                    $zr->user_id = auth()->id();
+                    $zr->fizicko_lice_id = $fizickoLice->id;
+                    $zr->save();
+                    $ziro_racuni_objects[] = $zr;
                 }
                 $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
             }
-
-            $fizickoLice->save();
 
             //Dodavanje Fizickog Lica u Partnere:
             $partner = Partner::make(
@@ -104,12 +104,19 @@ class FizickoLiceController extends Controller
     {
         $fizickoLice->update($request->validated());
 
-        $fizickoLice->ziro_racuni()->delete();
-        $ziro_racuni = $request->ziro_racuni;
-        foreach ($ziro_racuni as $ziro_racun) {
-            $ziro_racuni_objects[] = ZiroRacun::make($ziro_racun);
+        if (count($request->ziro_racuni) !== 0) {
+            $fizickoLice->ziro_racuni()->delete();
+
+            $ziro_racuni = $request->ziro_racuni;
+            foreach ($ziro_racuni as $ziro_racun) {
+                $zr = ZiroRacun::make($ziro_racun);
+                $zr->user_id = auth()->id();
+                $zr->preduzece_id = $fizickoLice->id;
+                $zr->save();
+                $ziro_racuni_objects[] = $zr;
+            }
+            $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
         }
-        $fizickoLice->ziro_racuni()->saveMany($ziro_racuni_objects);
 
         return response()->json($fizickoLice, 200);
     }

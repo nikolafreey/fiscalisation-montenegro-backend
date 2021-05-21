@@ -23,14 +23,14 @@ class PartnerController extends Controller
         if ($request->has('search') || $request->has('filter')) {
             $query = Partner::filter($request);
 
-            $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner']);
+            $query = $query->with(['preduzece', 'fizicko_lice', 'preduzece_partner'])->orderBy('created_at', 'DESC');
 
             return $query->paginate(20);
         }
 
         $query = Partner::query()->filterByPermissions();
 
-        $query = $query->with(['preduzece', 'fizicko_lice', 'fizicko_lice.ziro_racuni', 'preduzece_partner', 'preduzece_partner.ziro_racuni']);
+        $query = $query->with(['preduzece', 'fizicko_lice', 'fizicko_lice.ziro_racuni', 'preduzece_partner', 'preduzece_partner.ziro_racuni'])->orderBy('created_at', 'DESC');
 
         return $query->paginate(100);
     }
