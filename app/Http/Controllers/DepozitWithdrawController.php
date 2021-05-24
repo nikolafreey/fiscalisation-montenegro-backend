@@ -54,8 +54,10 @@ class DepozitWithdrawController extends Controller
             }
         }
 
-        if ($depozitWithdraw->iznos_withdraw > $depozitLoaded->iznos_depozit) {
-            return response()->json('Iznos koji podižete ne može biti veći od iznosa depozita za današnji dan!', 400);
+        if ($depozitWithdraw && $depozitLoaded) {
+            if ($depozitWithdraw->iznos_withdraw > $depozitLoaded->iznos_depozit) {
+                return response()->json('Iznos koji podižete ne može biti veći od iznosa depozita za današnji dan!', 400);
+            }
         }
 
         $depozitWithdraw->user_id = auth()->id();
@@ -66,8 +68,10 @@ class DepozitWithdrawController extends Controller
             return response()->json('Depozit nije validan', 400);
         }
 
-        if ($depozitWithdraw->iznos_withdraw < 0) {
-            return response()->json('Withdraw nije validan', 400);
+        if ($depozitWithdraw) {
+            if ($depozitWithdraw->iznos_withdraw < 0) {
+                return response()->json('Withdraw nije validan', 400);
+            }
         }
 
         $depozitWithdraw->save();
