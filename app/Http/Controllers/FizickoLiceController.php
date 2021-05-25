@@ -111,7 +111,7 @@ class FizickoLiceController extends Controller
             foreach ($ziro_racuni as $ziro_racun) {
                 $zr = ZiroRacun::make($ziro_racun);
                 $zr->user_id = auth()->id();
-                $zr->preduzece_id = $fizickoLice->id;
+                $zr->preduzece_id = $fizickoLice->preduzece_id;
                 $zr->save();
                 $ziro_racuni_objects[] = $zr;
             }
