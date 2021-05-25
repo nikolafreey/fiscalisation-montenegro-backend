@@ -32,8 +32,6 @@ class Fiskalizuj implements ShouldQueue
 
             $tip_placanja = 'CASH';
             $nacin_placanja = $racun->nacin_placanja ?? 'CASH';
-
-            $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
         }
 
         if ($racun->vrsta_racuna === 'bezgotovinski') {
@@ -43,8 +41,20 @@ class Fiskalizuj implements ShouldQueue
 
             $tip_placanja = 'NONCASH';
             $nacin_placanja = $racun->nacin_placanja ?? 'BANKNOTE';
+        }
 
-            $kupacNaziv = $racun->partner->id;
+        if ($racun->partner->preduzece_tabela_id != null) {
+            $kupacPib = $racun->partner->preduzece_partner->pib;
+            $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
+            $kupacAdresa = $racun->partner->preduzece_partner->adresa;
+            $kupacGrad = $racun->partner->preduzece_partner->grad;
+            $kupacDrzava = $racun->partner->preduzece_partner->country_code;
+        } else {
+            $kupacPib = '123456';
+            $kupacNaziv = $racun->partner->fizicko_lice->ime . " " . $racun->partner->fizicko_lice->prezime;
+            $kupacAdresa = $racun->partner->fizicko_lice->adresa;
+            $kupacGrad = $racun->partner->fizicko_lice->grad;
+            $kupacDrzava = $racun->partner->fizicko_lice->country_code;
         }
 
         $this->certificate = $this->loadCertifacate(storage_path('app/' . $potpis), $decryptedPassword);
@@ -70,11 +80,11 @@ class Fiskalizuj implements ShouldQueue
             ],
             'buyer' => [
                 'IDType' => 'TIN',
-                'IDNum' => $racun->partner->pib ?? '12345678',
+                'IDNum' => $kupacPib,
                 'Name' => $kupacNaziv,
-                'Address' => $racun->partner->preduzece_partner->adresa ?? 'Anonimna adresa',
-                'Town' => $racun->partner->preduzece_partner->grad ?? 'Anoniman grad',
-                'Country' => $racun->partner->preduzece_partner->country_code ?? 'MNE',
+                'Address' => $kupacAdresa,
+                'Town' => $kupacGrad,
+                'Country' => $kupacDrzava ?? 'MNE',
             ],
             'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,
@@ -180,7 +190,7 @@ class Fiskalizuj implements ShouldQueue
             $this->data['taxpayer']['BU'],
             $this->data['taxpayer']['CR'],
             $this->data['taxpayer']['SW'],
-            sprintf("%.2f", $this->data['racun']->cijena_sa_pdv),
+            sprintf("%.2f", $this->data['racun']->ukupna_cijena_sa_pdv),
         ]);
 
         $dataString = utf8_encode($dataString);
@@ -232,14 +242,14 @@ class Fiskalizuj implements ShouldQueue
     private function generateQRCode()
     {
         return config('third_party_apis.poreska.qr_code_url') . implode('&', [
-            $this->data['IICData']['IIC'],
+            strtoupper($this->data['IICData']['IIC']),
             'tin=' . $this->data['taxpayer']['TIN'],
             'crtd=' . $this->data['danasnji_datum'],
             'ord=' . $this->data['racun']->redni_broj,
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
+            'prc=' . sprintf("%.2f", $this->data['racun']['ukupna_cijena_sa_pdv']),
         ]);
     }
 }

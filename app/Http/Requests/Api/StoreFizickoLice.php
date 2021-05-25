@@ -31,6 +31,7 @@ class StoreFizickoLice extends BaseApiRequest
             'nacionalnost' => 'nullable|string|max:50',
             'cv_link' => 'nullable|string|max:255',
             'avatar' => 'nullable|string|max:255',
+            'country_code' => 'nullable',
         ];
     }
 }
