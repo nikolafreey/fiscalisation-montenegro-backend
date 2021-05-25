@@ -87,7 +87,7 @@ class UslugaController extends Controller
     public function update(StoreUsluga $request, Usluga $usluga)
     {
         $usluga->update($request->validated());
-        $usluga->opis = $request->opis;
+        // $usluga->opis = $request->opis;
 
         return response()->json($usluga, 200);
     }
