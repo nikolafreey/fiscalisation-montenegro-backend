@@ -49,7 +49,7 @@ class Storniraj implements ShouldQueue
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
-            'racun' => $racun->load('stavke'),
+            'racun' => $racun,
             'taxpayer' => [
                 'CR' => $racun->preduzece->enu_kod,
                 'SW' => config('third_party_apis.poreska.sw_kod'),
@@ -61,11 +61,17 @@ class Storniraj implements ShouldQueue
             'seller' => [
                 'IDType' => 'TIN',
                 'Name' => $racun->preduzece->kratki_naziv ?? 'Anonimno Preduzece',
+                'Address' => $racun->preduzece->adresa ?? 'Anonimna adresa',
+                'Town' => $racun->preduzece->grad ?? 'Anoniman grad',
+                'Country' => $racun->preduzece->country_code ?? 'MNE',
             ],
             'buyer' => [
                 'IDType' => 'TIN',
                 'IDNum' => $racun->partner->pib ?? '12345678',
                 'Name' => $kupacNaziv,
+                'Address' => $racun->partner->preduzece_partner->adresa ?? 'Anonimna adresa',
+                'Town' => $racun->partner->preduzece_partner->grad ?? 'Anoniman grad',
+                'Country' => $racun->partner->preduzece_partner->country_code ?? 'MNE',
             ],
             'tip_placanja' => $tip_placanja,
             'nacin_placanja' => $nacin_placanja,
@@ -97,6 +103,12 @@ class Storniraj implements ShouldQueue
                 $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
             }
         }
+
+        $this->data['racun']->update([
+            'ukupna_cijena_bez_pdv' => $this->data['ukupna_bez_pdv'],
+            'ukupna_cijena_sa_pdv' => $this->data['ukupna_sa_pdv'],
+            'ukupan_iznos_pdv' => $this->data['ukupan_storniran_pdv'],
+        ]);
     }
 
     public function handle()

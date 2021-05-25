@@ -19,7 +19,7 @@ class PoslovnaJedinica extends Model
         'adresa',
         'grad',
         'drzava',
-        'preduzce_id',
+        'preduzece_id',
         'user_id',
         'kod_poslovnog_prostora',
     ];
@@ -46,6 +46,11 @@ class PoslovnaJedinica extends Model
     public function preduzece()
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function racuni()

@@ -49,7 +49,7 @@
                                 {{ auth()->user()->ime }}
                             </div>
                             <div class="logged-user-role">
-                                {{ auth()->user()->roles()->first()->name }}
+                                {{ auth()->user()->roles()->first()->name ?? '' }}
                             </div>
                         </div>
                         <div class="logged-user-toggler-arrow">
@@ -65,7 +65,7 @@
                                         {{ auth()->user()->ime }}
                                     </div>
                                     <div class="logged-user-role">
-                                        {{ auth()->user()->roles()->first()->name }}
+                                        {{ auth()->user()->roles()->first()->name ?? '' }}
                                     </div>
                                 </div>
                             </div>
@@ -110,27 +110,33 @@
                                     <li>
                                         <a href="{{ route('preduzeca.index') }}">Prikaži</a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('preduzeca.create') }}">Dodaj preduzeće</a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </li>
                     <li class=" has-sub-menu">
-                        <a href="{{ route('aktivnosti.index') }}">
+                        <a href="{{ route('poslovneJedinice.index') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-life-buoy"></div>
+                                <div class="os-icon os-icon-layout"></div>
                             </div>
-                            <span>Aktivnosti</span></a>
+                            <span>Poslovne Jedinice</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Aktivnosti
+                                Poslovne Jedinice
                             </div>
                             <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-file-text"></i>
+                                <i class="os-icon os-icon-layout"></i>
                             </div>
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ route('aktivnosti.index') }}">Prikaži</a>
+                                        <a href="{{ route('poslovneJedinice.index') }}">Prikaži</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('poslovneJedinice.create') }}">Dodaj preduzeće</a>
                                     </li>
                                 </ul>
                             </div>
@@ -161,65 +167,124 @@
                             </div>
                         </div>
                     </li>
-                    <li class=" has-sub-menu">
-                        <a href="{{ route('uloge.index') }}">
-                            <div class="icon-w">
-                                <div class="os-icon os-icon-edit-32"></div>
+                    @role('SuperAdmin')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('uloge.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-edit-32"></div>
+                                </div>
+                                <span>Uloge</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Uloge
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-life-buoy"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('uloge.index') }}">Prikaži</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('uloge.create') }}">Dodajte ulogu</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <span>Uloge</span></a>
+                        </li>
+                    @endrole
+                    @role('SuperAdmin')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('dozvole.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-grid"></div>
+                                </div>
+                                <span>Dozvole</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Dozvole
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-life-buoy"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('dozvole.index') }}">Prikaži</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('dozvole.create') }}">Dodajte dozvolu</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    @endrole
+                    @role('SuperAdmin')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('blogs.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-file-text"></div>
+                                </div>
+                                <span>Blogovi</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Blogovi
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-file-text"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('blogs.index') }}">Prikaži</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('blogs.create') }}">Dodajte blog</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    @endrole
+                    @role('SuperAdmin')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('blogCategories.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-layers"></div>
+                                </div>
+                                <span>Kategorije blogova</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Kategorije blogova
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-layers"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('blogCategories.index') }}">Prikaži</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('blogCategories.create') }}">Dodajte kategoriju</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    @endrole
+                    @role('SuperAdmin')
+                    <li class=" has-sub-menu">
+                        <a href="{{ route('aktivnosti.index') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-life-buoy"></div>
+                            </div>
+                            <span>Aktivnosti</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Uloge
-                            </div>
-                            <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-life-buoy"></i>
-                            </div>
-                            <div class="sub-menu-i">
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="{{ route('uloge.index') }}">Prikaži</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('uloge.create') }}">Dodajte ulogu</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class=" has-sub-menu">
-                        <a href="{{ route('dozvole.index') }}">
-                            <div class="icon-w">
-                                <div class="os-icon os-icon-grid"></div>
-                            </div>
-                            <span>Dozvole</span></a>
-                        <div class="sub-menu-w">
-                            <div class="sub-menu-header">
-                                Dozvole
-                            </div>
-                            <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-life-buoy"></i>
-                            </div>
-                            <div class="sub-menu-i">
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="{{ route('dozvole.index') }}">Prikaži</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('dozvole.create') }}">Dodajte dozvolu</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class=" has-sub-menu">
-                        <a href="{{ route('blogs.index') }}">
-                            <div class="icon-w">
-                                <div class="os-icon os-icon-file-text"></div>
-                            </div>
-                            <span>Blogovi</span></a>
-                        <div class="sub-menu-w">
-                            <div class="sub-menu-header">
-                                Blogovi
+                                Aktivnosti
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-file-text"></i>
@@ -227,84 +292,61 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ route('blogs.index') }}">Prikaži</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('blogs.create') }}">Dodajte blog</a>
+                                        <a href="{{ route('aktivnosti.index') }}">Prikaži</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </li>
-                    <li class=" has-sub-menu">
-                        <a href="{{ route('blogCategories.index') }}">
-                            <div class="icon-w">
-                                <div class="os-icon os-icon-layers"></div>
+                    @endrole
+                    @role('SuperAdmin')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('ulogovaniKorisnici.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-users"></div>
+                                </div>
+                                <span>Ulogovani korisnici</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Ulogovani korisnici
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-life-buoy"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('ulogovaniKorisnici.index') }}">Prikaži</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <span>Kategorije blogova</span></a>
-                        <div class="sub-menu-w">
-                            <div class="sub-menu-header">
-                                Kategorije blogova
+                        </li>
+                    @endrole
+                    @role('SuperAdmin')
+                        <li class=" has-sub-menu">
+                            <a href="{{ route('failedJobs.index') }}">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-zap"></div>
+                                </div>
+                                <span>Fejlovani poslovi</span></a>
+                            <div class="sub-menu-w">
+                                <div class="sub-menu-header">
+                                    Fejlovani poslovi
+                                </div>
+                                <div class="sub-menu-icon">
+                                    <i class="os-icon os-icon-life-buoy"></i>
+                                </div>
+                                <div class="sub-menu-i">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ route('failedJobs.index') }}">Prikaži</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-layers"></i>
-                            </div>
-                            <div class="sub-menu-i">
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="{{ route('blogCategories.index') }}">Prikaži</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('blogCategories.create') }}">Dodajte kategoriju</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class=" has-sub-menu">
-                        <a href="{{ route('ulogovaniKorisnici.index') }}">
-                            <div class="icon-w">
-                                <div class="os-icon os-icon-users"></div>
-                            </div>
-                            <span>Ulogovani korisnici</span></a>
-                        <div class="sub-menu-w">
-                            <div class="sub-menu-header">
-                                Ulogovani korisnici
-                            </div>
-                            <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-life-buoy"></i>
-                            </div>
-                            <div class="sub-menu-i">
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="{{ route('ulogovaniKorisnici.index') }}">Prikaži</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    <li class=" has-sub-menu">
-                        <a href="{{ route('failedJobs.index') }}">
-                            <div class="icon-w">
-                                <div class="os-icon os-icon-zap"></div>
-                            </div>
-                            <span>Fejlovani poslovi</span></a>
-                        <div class="sub-menu-w">
-                            <div class="sub-menu-header">
-                                Fejlovani poslovi
-                            </div>
-                            <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-life-buoy"></i>
-                            </div>
-                            <div class="sub-menu-i">
-                                <ul class="sub-menu">
-                                    <li>
-                                        <a href="{{ route('failedJobs.index') }}">Prikaži</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    @endrole
                 </ul>
             </div>
             <div class="content-w">
