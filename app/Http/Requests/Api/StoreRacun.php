@@ -34,6 +34,7 @@ class StoreRacun extends BaseApiRequest
             'opis' => 'nullable',
             'status' => 'nullable',
             'partner_id' => 'nullable',
+            'oslobodjen_pdv' => 'nullable',
         ];
     }
 }

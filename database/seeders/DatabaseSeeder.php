@@ -162,10 +162,11 @@ class DatabaseSeeder extends Seeder
         Partner::factory(1)->create(['fizicko_lice_id' => FizickoLice::get()->first()->id]);
 
         foreach (Preduzece::all() as $preduzece) {
-
-            Partner::factory(1)->create(['preduzece_id' => $preduzece->id]);
+            Partner::factory(1)->create([
+                'preduzece_id' => $preduzece->id,
+                'preduzece_tabela_id' => Preduzece::all()->random()->id,
+            ]);
         }
-
 
         foreach (FizickoLice::all() as $fizicko_lice) {
 

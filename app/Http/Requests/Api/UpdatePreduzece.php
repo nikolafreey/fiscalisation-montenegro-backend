@@ -13,7 +13,7 @@ class UpdatePreduzece extends BaseApiRequest
     {
         return [
             'kratki_naziv' => 'required|string|max:100',
-            'puni_naziv' => 'string|max:191',
+            'puni_naziv' => 'string|max:191|nullable',
             'oblik_preduzeca' => 'required|string|max:50',
             'adresa' => 'required|string|max:50',
             'grad' => 'required|string|max:50',
@@ -23,8 +23,8 @@ class UpdatePreduzece extends BaseApiRequest
             'telfon_whatsapp' => 'boolean',
             'telfon_facetime' => 'boolean',
             'fax' => 'string|max:50|nullable',
-            'email' => 'string|email',
-            'website' => 'string|max:191',
+            'email' => 'string|email|nullable',
+            'website' => 'string|max:191|nullable',
             'pib' => 'required|string|max:50|min:7',
             'pdv' => 'required|string|max:50',
             'iban' => 'string|max:50|nullable',

@@ -67,12 +67,18 @@
                         IDType="{{ $seller['IDType'] }}"
                         IDNum="{{ $taxpayer['TIN'] }}"
                         Name="{{ $seller['Name'] }}"
+                        Address="{{ $seller['Address'] }}"
+                        Town="{{ $seller['Town'] }}"
+                        Country="{{ $seller['Country'] }}"
                     />
 
                     <Buyer
                         IDType="{{ $buyer['IDType'] }}"
                         IDNum="{{ $buyer['IDNum'] }}"
                         Name="{{ $buyer['Name'] }}"
+                        Address="{{ $buyer['Address'] }}"
+                        Town="{{ $buyer['Town'] }}"
+                        Country="{{ $buyer['Country'] }}"
                     />
 
 

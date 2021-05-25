@@ -11,11 +11,13 @@
         >
             Izmjenite Korisnika
         </a>
-        <a
-            class="dropdown-item btn-delete-amenity"
-            href="{{ route('izmjeniteUlogu', $user) }}"
-        >
-            Izmjenite Ulogu
-        </a>
+        @role('SuperAdmin')
+            <a
+                class="dropdown-item btn-delete-amenity"
+                href="{{ route('izmjeniteUlogu', $user) }}"
+            >
+                Izmjenite Ulogu
+            </a>
+        @endrole
     </div>
 </div>

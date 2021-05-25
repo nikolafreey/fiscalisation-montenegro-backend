@@ -11,11 +11,13 @@
         >
             Izmjenite Sertifikate
         </a>
-        <a
-            class="dropdown-item btn-delete-amenity"
-            href="{{ route('izmjenitePaket', $preduzece) }}"
-        >
-            Izmjenite Paket
-        </a>
+        @role('SuperAdmin')
+            <a
+                class="dropdown-item btn-delete-amenity"
+                href="{{ route('izmjenitePaket', $preduzece) }}"
+            >
+                Izmjenite Paket
+            </a>
+        @endrole
     </div>
 </div>

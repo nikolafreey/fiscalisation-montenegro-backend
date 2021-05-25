@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Preduzeća')
+@section('title', 'Poslovne Jedinice')
 
 @section('content')
 
@@ -16,15 +16,13 @@
         <div class="content-box">
             <div class="element-wrapper">
                 <h6 class="element-header">
-                    Preduzeća
+                    Poslovne Jedinice
                 </h6>
                 <div class="element-box">
                     <table id="data_table" class="table table-hover table-clean">
                         <thead>
                         <tr>
                             <th>Naziv</th>
-                            <th>Adresa</th>
-                            <th>Paketi</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -49,12 +47,10 @@
             stateDuration: 60 * 60 * 24 * 30,
 
             ajax: {
-                url: '{{ route('preduzeca.index') }}',
+                url: '{{ route('poslovneJedinice.index') }}',
             },
             columns: [
                 { data: 'kratki_naziv' },
-                { data: 'adresa' },
-                { data: 'paketi[, ].naziv', name:'paketi.naziv', orderable: false},
                 {
                     data: 'action',
                     class: 'text-right',

@@ -52,25 +52,27 @@
                                     <label for="avatar">Avatar</label>
                                     <input type="file" class="form-control-file" id="avatar" name="avatar">
                                 </div>
-                                <div class="form-group">
-                                    <label for="uloga">Uloga</label>
-                                    <select class="selectize" id="uloga" name="uloga">
-                                        @foreach($roles as $role)
-                                            <option
-                                                @if(in_array(
-                                                    $role->name,
-                                                    $user->roles->pluck('name')->toArray(),
-                                                    true
-                                                ))
-                                                    selected
-                                                @endif
-                                                value="{{ $role->name }}"
-                                            >
-                                                {{ $role->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @role('SuperAdmin')
+                                    <div class="form-group">
+                                        <label for="uloga">Uloga</label>
+                                        <select class="selectize" id="uloga" name="uloga">
+                                            @foreach($roles as $role)
+                                                <option
+                                                    @if(in_array(
+                                                        $role->name,
+                                                        $user->roles->pluck('name')->toArray(),
+                                                        true
+                                                    ))
+                                                        selected
+                                                    @endif
+                                                    value="{{ $role->name }}"
+                                                >
+                                                    {{ $role->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endrole
                                 <div class="form-group">
                                     <label for="preduzece">Preduzece</label>
                                     <select class="preduzece" name="preduzece_id[]" id="preduzece" multiple>
