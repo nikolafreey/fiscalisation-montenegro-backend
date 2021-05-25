@@ -29,10 +29,12 @@ class ZiroRacunController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreZiroRacun $request)
+    public function store(Request $request)
     {
         $ziroRacun = ZiroRacun::make($request->all());
         $ziroRacun->user_id = auth()->id();
+        $ziroRacun->fizicko_lice_id = $request->fizicko_lice_id;
+        $ziroRacun->preduzece_id = null;
 
         // $ziroRacun->preduzece_id = getAuthPreduzeceId($request);
         $ziroRacun->save();
