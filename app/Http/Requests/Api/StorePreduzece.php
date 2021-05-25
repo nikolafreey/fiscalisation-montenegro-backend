@@ -19,7 +19,7 @@ class StorePreduzece extends BaseApiRequest
             'grad' => 'required|string|max:50',
             'drzava' => 'required|string|max:50',
             'country_code' => 'nullable',
-            'telefon' => 'string|max:50',
+            'telefon' => 'string|max:50|nullable',
             'telefon_viber' => 'boolean',
             'telefon_whatsapp' => 'boolean',
             'telefon_facetime' => 'boolean',

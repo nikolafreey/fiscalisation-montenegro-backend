@@ -18,7 +18,7 @@ class UpdatePreduzece extends BaseApiRequest
             'adresa' => 'required|string|max:50',
             'grad' => 'required|string|max:50',
             'drzava' => 'required|string|max:50',
-            'telefon' => 'string|max:50',
+            'telefon' => 'string|max:50|nullable',
             'telfon_viber' => 'boolean',
             'telfon_whatsapp' => 'boolean',
             'telfon_facetime' => 'boolean',
