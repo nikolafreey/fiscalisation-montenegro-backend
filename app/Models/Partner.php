@@ -63,9 +63,9 @@ class Partner extends Model
             'preduzece_partner.kratki_naziv' => [
                 'type' => 'text',
             ],
-            'preduzece_partner.puni_naziv' => [
-                'type' => 'text',
-            ],
+            // 'preduzece_partner.puni_naziv' => [
+            //     'type' => 'text',
+            // ],
             // 'preduzece_partner.pib' => [
             //     'type' => 'text',
             // ],
@@ -84,6 +84,7 @@ class Partner extends Model
         if ($this->preduzece_partner) {
             $preduzece = $this->preduzece_partner;
             $array['preduzece_kratki_naziv'] = $preduzece->kratki_naziv;
+            $array['created_at'] = $preduzece->created_at;
             $array['preduzece_puni_naziv'] = $preduzece->puni_naziv;
             $array['preduzece_pib'] = $preduzece->pib;
             $array['tip'] = 'preduzece';
@@ -92,6 +93,7 @@ class Partner extends Model
         if ($this->fizicko_lice_id) {
             $fizicko_lice = $this->fizicko_lice;
             $array['fizicko_lice_ime'] = $fizicko_lice->ime;
+            $array['created_at'] = $fizicko_lice->created_at;
             $array['fizicko_lice_prezime'] = $fizicko_lice->prezime;
             $array['tip'] = 'fizicko_lice';
         }
