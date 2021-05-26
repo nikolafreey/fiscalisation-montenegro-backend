@@ -37,6 +37,7 @@ class FizickoLice extends Model
         'nacionalnost',
         'cv_link',
         'avatar',
+        'country_code',
     ];
 
     public function scopeFilterByPermissions($query)
