@@ -108,12 +108,12 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ?", [getAuthPreduzeceId($request)]);
+        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
     }
 
     public function najveciDuznici(Request $request)
     {
-        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = ?", [getAuthPreduzeceId($request)]);
+        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
     }
 
     public function izlazniRacuniDanas(Request $request)
