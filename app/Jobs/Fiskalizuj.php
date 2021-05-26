@@ -242,14 +242,14 @@ class Fiskalizuj implements ShouldQueue
     private function generateQRCode()
     {
         return config('third_party_apis.poreska.qr_code_url') . implode('&', [
-            strtoupper($this->data['IICData']['IIC']),
+             $this->data['IICData']['IIC'],
             'tin=' . $this->data['taxpayer']['TIN'],
             'crtd=' . $this->data['danasnji_datum'],
             'ord=' . $this->data['racun']->redni_broj,
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . sprintf("%.2f", $this->data['racun']['ukupna_cijena_sa_pdv']),
+            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
         ]);
     }
 }
