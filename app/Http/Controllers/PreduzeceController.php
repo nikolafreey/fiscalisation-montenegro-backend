@@ -63,7 +63,7 @@ class PreduzeceController extends Controller
                     $preduzece->ziro_racuni()->saveMany($ziro_racuni_objects);
                 }
 
-                DB::insert('insert into preduzece_djelatnost (preduzece_id, djelatnost_id) values (?, ?)', [$preduzece->id, $request->djelatnost_id]);
+                DB::insert('insert into preduzece_djelatnost (preduzece_id, djelatnost_id, created_at, updated_at) values (?, ?, now(), now())', [$preduzece->id, $request->djelatnost_id]);
 
                 return $preduzece;
             }
@@ -119,7 +119,7 @@ class PreduzeceController extends Controller
 
         $preduzece->update(array_filter($request->validated()));
 
-        DB::update('update preduzece_djelatnost set djelatnost_id = ? where preduzece_id = ?', [$preduzece->id, $request->djelatnost_id]);
+        DB::update('update preduzece_djelatnost set djelatnost_id = ? AND updated_at = now() where preduzece_id = ?', [$preduzece->id, $request->djelatnost_id]);
 
         return response()->json($preduzece, 200);
     }
