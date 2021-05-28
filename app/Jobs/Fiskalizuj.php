@@ -50,7 +50,7 @@ class Fiskalizuj implements ShouldQueue
             $kupacGrad = $racun->partner->preduzece_partner->grad;
             $kupacDrzava = $racun->partner->preduzece_partner->country_code;
         } else {
-            $kupacPib = '123456';
+            $kupacPib = '12345678';
             $kupacNaziv = $racun->partner->fizicko_lice->ime . " " . $racun->partner->fizicko_lice->prezime;
             $kupacAdresa = $racun->partner->fizicko_lice->adresa;
             $kupacGrad = $racun->partner->fizicko_lice->grad;
@@ -242,14 +242,14 @@ class Fiskalizuj implements ShouldQueue
     private function generateQRCode()
     {
         return config('third_party_apis.poreska.qr_code_url') . implode('&', [
-            strtoupper($this->data['IICData']['IIC']),
+             $this->data['IICData']['IIC'],
             'tin=' . $this->data['taxpayer']['TIN'],
             'crtd=' . $this->data['danasnji_datum'],
             'ord=' . $this->data['racun']->redni_broj,
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . sprintf("%.2f", $this->data['racun']['ukupna_cijena_sa_pdv']),
+            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
         ]);
     }
 }

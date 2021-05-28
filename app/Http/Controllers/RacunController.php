@@ -108,16 +108,12 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
-
-        return $data;
+        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
     }
 
     public function najveciDuznici(Request $request)
     {
-        $data = DB::select(DB::raw("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = preduzeca.id GROUP BY preduzeca.id ORDER BY ukupan_promet DESC LIMIT 3"));
-
-        return $data;
+        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
     }
 
     public function izlazniRacuniDanas(Request $request)
@@ -371,7 +367,7 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
-        if(! isset($request->stavke) || empty($request->stavke)) {
+        if (!isset($request->stavke) || empty($request->stavke)) {
             return response()->json('Morate unijeti stavke koje želite da stornirate', 400);
         }
 
@@ -382,7 +378,7 @@ class RacunController extends Controller
         $storniranRacun->save();
 
         foreach ($racun->stavke as $stavka) {
-            if(! in_array($stavka->id, $request->stavke)) {
+            if (!in_array($stavka->id, $request->stavke)) {
                 $stavka = $stavka->replicate()->fill([
                     'racun_id' => $storniranRacun->id,
                 ]);
@@ -432,7 +428,7 @@ class RacunController extends Controller
             return response()->json(['message' => 'Nemate pristup ovom racunu'], 401);
         }
 
-        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece', 'partner.preduzece_partner', 'partner.fizicko_lice', 'preduzece.users']);
+        return $racun->load(['stavke', 'porezi', 'partner', 'preduzece', 'partner.preduzece_partner', 'partner.fizicko_lice', 'partner.fizicko_lice.ziro_racuni', 'preduzece.users', 'preduzece.ziro_racuni']);
     }
 
     /**

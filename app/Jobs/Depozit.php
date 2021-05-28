@@ -78,7 +78,7 @@ class Depozit implements ShouldQueue
         try {
             return $response['FCDC']['value'];
         } catch (Exception $e) {
-            $errorMessage = 'Depozit nije uspjesan: ' . $response['FAULTSTRING']['value'];
+            $errorMessage = 'Depozit nije uspješno unesen: ' . $response['FAULTSTRING']['value'];
 
             Log::error($errorMessage);
 

@@ -23,7 +23,7 @@ class PodesavanjeController extends Controller
 {
     public function index()
     {
-        return Podesavanje::filterByPermissions()->get();
+        return Podesavanje::filterByPermissions()->with('preduzece')->get();
     }
 
     public function show(Request $request)
@@ -62,10 +62,10 @@ class PodesavanjeController extends Controller
         getAuthPreduzece($request)->update(array_filter($sertifikatRequest->validated()));
 
         $kodovi = [];
-        if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
-        if($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
-        if($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
-        if($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
+        if ($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
+        if ($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
+        if ($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
+        if ($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
 
         getAuthPreduzece($request)->update(array_filter($kodovi));
 
@@ -106,10 +106,10 @@ class PodesavanjeController extends Controller
         getAuthPreduzece($request)->update(array_filter($sertifikatRequest->validated()));
 
         $kodovi = [];
-        if($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
-        if($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
-        if($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
-        if($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
+        if ($request->enu_kod != null) $kodovi['enu_kod'] = $request->enu_kod;
+        if ($request->software_kod != null) $kodovi['software_kod'] = config('third_party_apis.poreska.sw_kod');
+        if ($request->kod_pj != null) $kodovi['kod_pj'] = $request->kod_pj;
+        if ($request->kod_operatera != null) $kodovi['kod_operatera'] = $request->kod_operatera;
 
         getAuthPreduzece($request)->update(array_filter($kodovi));
 

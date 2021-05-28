@@ -40,7 +40,7 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw = DepozitWithdraw::make($request->all());
 
         if ($depozitWithdraw->iznos_depozit && $depozitWithdraw->iznos_withdraw) {
-            return response()->json('Ne mozete unijeti obe vrijednosti', 400);
+            return response()->json('Ne možete unijeti i povući depozit istovremeno', 400);
         }
 
         $depozitLoaded = $this->getDepozitToday();
