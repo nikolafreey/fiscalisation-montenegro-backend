@@ -50,7 +50,7 @@ class Fiskalizuj implements ShouldQueue
             $kupacGrad = $racun->partner->preduzece_partner->grad;
             $kupacDrzava = $racun->partner->preduzece_partner->country_code;
         } else {
-            $kupacPib = '123456';
+            $kupacPib = '12345678';
             $kupacNaziv = $racun->partner->fizicko_lice->ime . " " . $racun->partner->fizicko_lice->prezime;
             $kupacAdresa = $racun->partner->fizicko_lice->adresa;
             $kupacGrad = $racun->partner->fizicko_lice->grad;
