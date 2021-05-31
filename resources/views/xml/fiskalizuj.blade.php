@@ -21,7 +21,7 @@
             IsIssuerInVAT="{{ $pdv_obveznik }}"
             TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
             TotVATAmt="{{ sprintf('%0.2f',$ukupan_pdv) }}"
-            TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
+            TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv_popust) }}"
             OperatorCode="{{ $taxpayer['OP'] }}"
             BusinUnitCode="{{ $taxpayer['BU'] }}"
             SoftCode="{{ $taxpayer['SW'] }}"
@@ -88,7 +88,7 @@
                         PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                         VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
                         VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
-                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
+                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popustom) }}"
                     />
                 @else
                     <I
