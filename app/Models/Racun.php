@@ -223,7 +223,7 @@ class Racun extends Model
 
             return StavkaRacuna::make([
                 'naziv' => $usluga->naziv,
-                'opis' => $usluga->opis,
+                'opis' => $usluga->opis ? $usluga->opis : $stavka['opis'],
                 'jedinicna_cijena_bez_pdv' => $stavka['cijena_bez_pdv'],
                 'cijena_bez_pdv_popust' => $stavka['cijena_bez_pdv_popust'],
                 'cijena_sa_pdv' => $stavka['ukupna_cijena'],
@@ -290,7 +290,7 @@ class Racun extends Model
             }
             return StavkaRacuna::make([
                 'naziv' => $usluga->naziv,
-                'opis' => $usluga->opis,
+                'opis' => $usluga->opis ? $usluga->opis : $stavka['opis'],
                 'jedinicna_cijena_bez_pdv' => $usluga->cijena_bez_pdv,
                 'cijena_bez_pdv_popust' => $cijena_bez_pdv_popust,
                 'cijena_sa_pdv' => $usluga->ukupna_cijena,
@@ -351,7 +351,7 @@ class Racun extends Model
 
             return StavkaRacuna::make([
                 'naziv' => $roba->naziv,
-                'opis' => $roba->opis,
+                'opis' => $roba->opis ? $roba->opis : $stavka['opis'],
                 'jedinicna_cijena_bez_pdv' => round($stavka['cijena_bez_pdv'], 2),
                 'cijena_bez_pdv_popust' => round($stavka['cijena_bez_pdv_popust'], 2),
                 'cijena_sa_pdv' => round($stavka['ukupna_cijena'], 2),
@@ -402,7 +402,7 @@ class Racun extends Model
 
             return StavkaRacuna::make([
                 'naziv' => $roba->naziv,
-                'opis' => $roba->opis,
+                'opis' => $roba->opis ? $roba->opis : $stavka['opis'],
                 'jedinicna_cijena_bez_pdv' => $cijenaRobe->cijena_bez_pdv,
                 'cijena_bez_pdv_popust' => $cijena_bez_pdv_popust,
                 'cijena_sa_pdv' => $cijenaRobe->ukupna_cijena,
