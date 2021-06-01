@@ -88,7 +88,7 @@
                         PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                         VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
                         VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
-                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popustom) }}"
+                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popust) }}"
                     />
                 @else
                     <I
@@ -101,7 +101,7 @@
                         R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
                         PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                         EX="VAT_CL17"
-                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
+                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popust) }}"
                     />
                 @endif
             @endforeach
