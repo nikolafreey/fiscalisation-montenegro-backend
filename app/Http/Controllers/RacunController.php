@@ -303,7 +303,6 @@ class RacunController extends Controller
 
             $racun->datum_izdavanja = now();
             $racun->nacin_placanja = $request->nacin_placanja;
-            $racun->opis = $request->opis;
             $racun->tip_racuna = Racun::RACUN;
 
             $racun->user_id = auth()->id();
