@@ -146,7 +146,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="user">Preduzece</label>
+                                    <label for="user">Korisnik</label>
                                     <select class="user" name="user_id[]" id="user" multiple>
                                         @foreach($users as $user)
                                             <option
