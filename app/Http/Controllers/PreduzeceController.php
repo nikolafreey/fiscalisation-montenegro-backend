@@ -119,9 +119,10 @@ class PreduzeceController extends Controller
 
         if ($request->hasFile('pecat') || $request->has('potpis')) {
             $preduzece->setPecatAttribute($request->pecat);
-            $preduzece->pecatSifra = $request->pecatSifra;
+            $preduzece->pecatSifra = $request->pecatSifra != null ? encrypt($request->pecatSifra) : null;
             $preduzece->setSertifikatAttribute($request->potpis);
-            $preduzece->sertifikatSifra = $request->sertifikatSifra;
+            $preduzece->sertifikatSifra =
+                $request->sertifikatSifra != null ? encrypt($request->sertifikatSifra) : null;
         } else {
             $preduzece->update(array_filter($request->validated()));
         }
