@@ -190,7 +190,7 @@ class Fiskalizuj implements ShouldQueue
             $this->data['taxpayer']['BU'],
             $this->data['taxpayer']['CR'],
             $this->data['taxpayer']['SW'],
-            sprintf("%.2f", $this->data['racun']->ukupna_cijena_sa_pdv),
+            sprintf("%.2f", $this->data['racun']->ukupna_cijena_sa_pdv_popust), 
         ]);
 
         $dataString = utf8_encode($dataString);
@@ -232,7 +232,7 @@ class Fiskalizuj implements ShouldQueue
             // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
 
             $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
-            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_sa_pdv_popust * $stavka->kolicina;
+            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv_popust * $stavka->kolicina;
             $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
         }
 
@@ -249,7 +249,7 @@ class Fiskalizuj implements ShouldQueue
             'bu=' . $this->data['taxpayer']['BU'],
             'cr=' . $this->data['taxpayer']['CR'],
             'sw=' . $this->data['taxpayer']['SW'],
-            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
+            'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv_popust'],
         ]);
     }
 }

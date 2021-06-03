@@ -19,7 +19,7 @@
             InvOrdNum="{{ $racun->redni_broj }}"
             TCRCode="{{ $taxpayer['CR'] }}"
             IsIssuerInVAT="{{ $pdv_obveznik }}"
-            TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
+            TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv_popust) }}"
             TotVATAmt="{{ sprintf('%0.2f',$ukupan_pdv) }}"
             TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv_popust) }}"
             OperatorCode="{{ $taxpayer['OP'] }}"
@@ -38,7 +38,7 @@
             InvOrdNum="{{ $racun->redni_broj }}"
             TCRCode="{{ $taxpayer['CR'] }}"
             IsIssuerInVAT="{{ $pdv_obveznik }}"
-            TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv) }}"
+            TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv_popust) }}"
             OperatorCode="{{ $taxpayer['OP'] }}"
             BusinUnitCode="{{ $taxpayer['BU'] }}"
             SoftCode="{{ $taxpayer['SW'] }}"
@@ -51,7 +51,7 @@
         <PayMethods>
             <PayMethod
                 Type="{{ $nacin_placanja ?? 'BANKNOTE' }}"
-                Amt="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv) }}"
+                Amt="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv_popust) }}"
             />
         </PayMethods>
 
@@ -65,17 +65,26 @@
         />
 
         <Buyer
-            IDType="{{ $buyer['IDType'] }}"
-            IDNum="{{ $buyer['IDNum'] }}"
-            Name="{{ $buyer['Name'] }}"
-            Address="{{ $buyer['Address'] }}"
-            Town="{{ $buyer['Town'] }}"
-            Country="{{ $buyer['Country'] }}"
+            @if($buyer['IDType']) IDType="{{ $buyer['IDType'] }}" @endif
+            @if($buyer['IDNum']) IDNum="{{ $buyer['IDNum'] }}" @endif
+            @if($buyer['Name']) Name="{{ $buyer['Name'] }}" @endif
+            @if($buyer['Address']) Address="{{ $buyer['Address'] }}" @endif
+            @if($buyer['Town']) Town="{{ $buyer['Town'] }}" @endif
+            @if($buyer['Country']) Country="{{ $buyer['Country'] }}" @endif
         />
 
         {{-- TODO: da li rabat (popust) umanjuje osnovni iznos ili ne --}}
         <Items>
             @foreach($racun->stavke as $stavka)
+                @php
+                    $popust = 0;
+                    if($stavka->popust_iznos > 0) 
+                        // TODO: provjeriti da li ovdje upisuje jedinicne cijene ili ukupne
+                        // procenat popusta ako je dodat iznos
+                        $popust = (1 - $stavka->cijena_bez_pdv_popust / $stavka->jedinicna_cijena_bez_pdv) * 100;
+                    else
+                        $popust = $stavka->popust_procenat;
+                @endphp
                 @if($pdv_obveznik === "true")
                     <I
                         N="{{ $stavka->naziv }}"
@@ -83,10 +92,12 @@
                         U="{{ $stavka->jedinica_mjere->naziv }}"
                         Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
                         UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
-                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
-                        R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
-                        PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
-                        VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
+                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv_popust) }}"
+                        R="{{ sprintf('%0.2f', $popust) }}"
+                        RR="true"  {{-- osnovica za izračune je jedinična cijena bez PDV-a i rabata --}}
+                        {{-- PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}" --}}
+                        PB="{{ sprintf('%0.2f', $stavka->ukupna_bez_pdv_popust) }}"
+                        VR="{{ sprintf('%0.2f', $stavka->porez->stopa * 100) }}"
                         VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
                         PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popust) }}"
                     />
@@ -97,9 +108,11 @@
                         U="{{ $stavka->jedinica_mjere->naziv }}"
                         Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
                         UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
-                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
-                        R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
-                        PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
+                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv_popust) }}"
+                        R="{{ sprintf('%0.2f', $popust) }}"
+                        RR="true"  {{-- osnovica za izračune je jedinična cijena bez PDV-a i rabata --}}
+                        {{-- PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}" --}}
+                        PB="{{ sprintf('%0.2f', $stavka->ukupna_bez_pdv_popust) }}"
                         EX="VAT_CL17"
                         PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popust) }}"
                     />

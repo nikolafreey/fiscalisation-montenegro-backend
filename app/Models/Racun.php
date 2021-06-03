@@ -196,25 +196,36 @@ class Racun extends Model
         //$uslov = ($usluga) ? $usluga['cijena_bez_pdv_popust'] : $stavka['cijena_bez_pdv_popust'];false=gotovinski
 
         if ($vrsta_racuna !== "gotovinski") {
-            $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
-            if ($popust > 0) {
-                // $grupa = $usluga->grupa;
-                if (!array_key_exists('tip_popusta', $stavka)) {
-
-                    $popust_iznos = $stavka['grupa']['popust_iznos'] ? $stavka['grupa']['popust_iznos'] : 0;
-                    $popust_procenti = $stavka['grupa']['popust_procenti'] ? $stavka['grupa']['popust_procenti'] : 0;
-                    if ($popust_iznos > 0) {
-                        $tip_popusta = 'iznos';
-                    }
-                    if ($popust_procenti > 0) {
-                        $tip_popusta = 'procenat';
-                    }
-                } else {
-                    $tip_popusta = $stavka['tip_popusta'];
+            $popust_procenat = 0;
+            $popust_iznos = 0;
+            if(array_key_exists('tip_popusta', $stavka)){
+                if($stavka['tip_popusta'] == 'procenat'){
+                    $popust_procenat = $stavka['popust'];
+                } else if ($stavka['tip_popusta'] == 'iznos'){
+                    $popust_iznos = $stavka['popust'];
                 }
-            } else {
-                $tip_popusta = 'nema';
-            };
+            }
+
+            // TODO: Popuste na grupe pregledati ponovo da se ukljuce u popuste
+            // $popust = round($stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'], 2);
+            // if ($popust > 0) {
+            //     // $grupa = $usluga->grupa;
+            //     if (!array_key_exists('tip_popusta', $stavka)) {
+
+            //         $popust_iznos = $stavka['grupa']['popust_iznos'] ? $stavka['grupa']['popust_iznos'] : 0;
+            //         $popust_procenti = $stavka['grupa']['popust_procenti'] ? $stavka['grupa']['popust_procenti'] : 0;
+            //         if ($popust_iznos > 0) {
+            //             $tip_popusta = 'iznos';
+            //         }
+            //         if ($popust_procenti > 0) {
+            //             $tip_popusta = 'procenat';
+            //         }
+            //     } else {
+            //         $tip_popusta = $stavka['tip_popusta'];
+            //     }
+            // } else {
+            //     $tip_popusta = 'nema';
+            // };
 
             if (!array_key_exists('kolicina', $stavka)) {
                 $stavka['kolicina'] = 1;
@@ -231,8 +242,8 @@ class Racun extends Model
                 'kolicina' => $stavka['kolicina'],
                 'pdv_iznos' => $stavka['cijena_sa_pdv_popust'] - $stavka['cijena_bez_pdv_popust'],
                 'pdv_iznos_ukupno' => ($stavka['cijena_sa_pdv_popust'] - $stavka['cijena_bez_pdv_popust']) * $stavka['kolicina'],
-                'popust_procenat' => $tip_popusta == 'procenat' ? $popust : 0,
-                'popust_iznos' => $tip_popusta == 'iznos' ? $popust : 0,
+                'popust_procenat' => $popust_procenat > 0 ? $popust_procenat : 0,
+                'popust_iznos' => $popust_iznos > 0 ? $popust_iznos : 0,
                 'popust_na_jedinicnu_cijenu' =>  $stavka['ukupna_cijena'] - $stavka['cijena_sa_pdv_popust'],
                 'ukupna_bez_pdv' => $stavka['cijena_bez_pdv'] * $stavka['kolicina'],
                 'ukupna_sa_pdv' => $stavka['ukupna_cijena'] * $stavka['kolicina'],
