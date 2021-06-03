@@ -189,10 +189,12 @@ class Preduzece extends Model
 
     public function setPecatAttribute($file)
     {
-        $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(
-            $file->get(),
-            $this->attributes['pecatSifra']
-        );
+        //TODO: PUCALO ZBOG OVE PROVJERE VAZENJA
+
+        // $this->attributes['vazenje_pecata_do'] = $this->getVazenjeDo(
+        //     $file->get(),
+        //     $this->attributes['pecatSifra']
+        // );
 
         return $this->attributes['pecat'] = Storage::disk('local')
             ->putFileAs('certs', $file, Str::random(40) . '.pfx');
@@ -200,10 +202,12 @@ class Preduzece extends Model
 
     public function setSertifikatAttribute($file)
     {
-        $this->attributes['vazenje_sertifikata_do'] = $this->getVazenjeDo(
-            $file->get(),
-            $this->attributes['sertifikatSifra']
-        );
+        //TODO: PUCALO ZBOG OVE PROVJERE VAZENJA
+
+        // $this->attributes['vazenje_sertifikata_do'] = $this->getVazenjeDo(
+        //     $file->get(),
+        //     $this->attributes['sertifikatSifra']
+        // );
 
         return $this->attributes['sertifikat'] = Storage::disk('local')
             ->putFileAs('certs', $file, Str::random(40) . '.pfx');

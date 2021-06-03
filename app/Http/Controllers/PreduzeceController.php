@@ -103,7 +103,7 @@ class PreduzeceController extends Controller
         }
 
 
-        if (count($request->ziro_racuni) !== 0) {
+        if ($request->ziro_racuni && count($request->ziro_racuni) !== 0) {
             $preduzece->ziro_racuni()->delete();
 
             $ziro_racuni = $request->ziro_racuni;
@@ -117,7 +117,16 @@ class PreduzeceController extends Controller
             $preduzece->ziro_racuni()->saveMany($ziro_racuni_objects);
         }
 
-        $preduzece->update(array_filter($request->validated()));
+        if ($request->hasFile('pecat') || $request->has('potpis')) {
+            $preduzece->setPecatAttribute($request->pecat);
+            $preduzece->pecatSifra = $request->pecatSifra;
+            $preduzece->setSertifikatAttribute($request->potpis);
+            $preduzece->sertifikatSifra = $request->sertifikatSifra;
+        } else {
+            $preduzece->update(array_filter($request->validated()));
+        }
+
+        $preduzece->save();
 
         DB::update('update preduzece_djelatnost set djelatnost_id = ? AND updated_at = now() where preduzece_id = ?', [$preduzece->id, $request->djelatnost_id]);
 
