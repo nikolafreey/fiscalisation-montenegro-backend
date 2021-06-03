@@ -190,7 +190,7 @@ class Fiskalizuj implements ShouldQueue
             $this->data['taxpayer']['BU'],
             $this->data['taxpayer']['CR'],
             $this->data['taxpayer']['SW'],
-            sprintf("%.2f", $this->data['racun']->ukupna_cijena_sa_pdv_popust), 
+            sprintf("%.2f", $this->data['racun']->ukupna_cijena_sa_pdv_popust),
         ]);
 
         $dataString = utf8_encode($dataString);
@@ -208,6 +208,11 @@ class Fiskalizuj implements ShouldQueue
     public function calculateSameTaxes()
     {
         $sameTaxes = [
+            'oslobodjen_pdv' => [
+                'ukupan_broj_stavki' => 0,
+                'ukupna_cijena_bez_pdv' => 0.0,
+                'ukupan_iznos_pdv' => 'oslobodjen',
+            ],
             '0.00' => [
                 'ukupan_broj_stavki' => 0,
                 'ukupna_cijena_bez_pdv' => 0.0,
@@ -227,13 +232,16 @@ class Fiskalizuj implements ShouldQueue
 
         foreach ($this->data['racun']->stavke as $stavka) {
             $porez_stopa = $stavka->porez->stopa;
-            // $porez_id = $stavka->porez->id;
+            $porez_id = $stavka->porez->id;
 
-            // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
-
-            $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
-            $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv_popust * $stavka->kolicina;
-            $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+            if ($porez_id === 1) {
+                $sameTaxes['oslobodjen_pdv']['ukupan_broj_stavki']++;
+                $sameTaxes['oslobodjen_pdv']['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv_popust * $stavka->kolicina;
+            } else {
+                $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
+                $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv_popust * $stavka->kolicina;
+                $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+            }
         }
 
         return $sameTaxes;
