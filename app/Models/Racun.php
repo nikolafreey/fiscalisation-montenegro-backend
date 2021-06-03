@@ -213,7 +213,7 @@ class Racun extends Model
                     $tip_popusta = $stavka['tip_popusta'];
                 }
             } else {
-                $tip_popusta = 'nema';
+                $tip_popusta = 'iznos';
             };
 
             if (!array_key_exists('kolicina', $stavka)) {
@@ -288,7 +288,7 @@ class Racun extends Model
                 $cijena_sa_pdv_popust = $usluga->ukupna_cijena;
                 $cijena_bez_pdv_popust =  $cijena_sa_pdv_popust / (1 + $stavka['pdv_iznos']);
             }
-            
+
             return StavkaRacuna::make([
                 'naziv' => $usluga->naziv,
                 'opis' => $usluga->opis, // kod gotovinskih upisuje opis stavke iz baze ne iz fronta
@@ -343,7 +343,7 @@ class Racun extends Model
                     $tip_popusta = $stavka['tip_popusta'];
                 }
             } else {
-                $tip_popusta = 'nema_popusta';
+                $tip_popusta = 'iznos';
             }
 
             if (!array_key_exists('kolicina', $stavka)) {
