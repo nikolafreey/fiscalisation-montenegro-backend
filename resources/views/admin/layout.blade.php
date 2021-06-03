@@ -111,7 +111,7 @@
                                         <a href="{{ route('preduzeca.index') }}">Prikaži</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('preduzeca.create') }}">Dodaj preduzeće</a>
+                                        <a href="{{ route('preduzeca.create') }}">Dodajte preduzeće</a>
                                     </li>
                                 </ul>
                             </div>
@@ -136,7 +136,7 @@
                                         <a href="{{ route('poslovneJedinice.index') }}">Prikaži</a>
                                     </li>
                                     <li>
-                                        <a href="{{ route('poslovneJedinice.create') }}">Dodaj preduzeće</a>
+                                        <a href="{{ route('poslovneJedinice.create') }}">Dodajte poslovnu jedinicu</a>
                                     </li>
                                 </ul>
                             </div>

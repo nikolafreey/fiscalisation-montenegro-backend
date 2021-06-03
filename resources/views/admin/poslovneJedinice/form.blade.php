@@ -58,12 +58,14 @@
                                     <select class="preduzece" name="preduzece_id" id="preduzece">
                                         @foreach($preduzeca as $preduzece)
                                             <option
-                                                @if(
-                                                   $preduzece->id
-                                                   ===
-                                                   $poslovnaJedinica->preduzece->id
-                                               )
-                                                selected
+                                                @if($action)
+                                                    @if(
+                                                       $preduzece->id
+                                                       ===
+                                                       $poslovnaJedinica->preduzece->id
+                                                   )
+                                                        selected
+                                                    @endif
                                                 @endif
                                                 value="{{ $preduzece->id }}"
                                             >
@@ -78,12 +80,14 @@
                                     <select class="user" name="user_id" id="user">
                                         @foreach($users as $user)
                                             <option
-                                                @if(
-                                                  $user->id
-                                                  ===
-                                                  $poslovnaJedinica->user->id
-                                                )
-                                                selected
+                                                @if($action)
+                                                    @if(
+                                                      $user->id
+                                                      ===
+                                                      $poslovnaJedinica->user->id
+                                                    )
+                                                        selected
+                                                    @endif
                                                 @endif
                                                 value="{{ $user->id }}"
                                             >
