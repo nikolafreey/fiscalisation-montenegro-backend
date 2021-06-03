@@ -78,7 +78,7 @@
             @foreach($racun->stavke as $stavka)
                 @php
                     $popust = 0;
-                    if($stavka->popust_iznos > 0) 
+                    if($stavka->popust_iznos > 0)
                         // TODO: provjeriti da li ovdje upisuje jedinicne cijene ili ukupne
                         // procenat popusta ako je dodat iznos
                         $popust = (1 - $stavka->cijena_bez_pdv_popust / $stavka->jedinicna_cijena_bez_pdv) * 100;
@@ -123,16 +123,22 @@
         @if($pdv_obveznik === "true")
             <SameTaxes>
                 @foreach($sameTaxes as $pdv_stopa => $sameTax)
-                    @if ($sameTax['ukupan_broj_stavki'] != 0)
-                        <SameTax
-                            NumOfItems="{{ (int) $sameTax['ukupan_broj_stavki'] }}"
-                            PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
-                            VATRate="{{ sprintf("%.02f", $pdv_stopa * 100) }}"
-                            VATAmt="{{ sprintf("%.02f", round($sameTax['ukupan_iznos_pdv'], 2)) }}"
-                            {{-- @if($sameTax["1"] == 1){
-                            ExemptFromVAT="VAT_CL17"
-                            @endif --}}
-                        />
+                    @if($sameTax['ukupan_broj_stavki'] != 0)
+                        @if($sameTax['ukupan_iznos_pdv'] === 'oslobodjen')
+                            <SameTax
+                                NumOfItems="{{ (int) $sameTax['ukupan_broj_stavki'] }}"
+                                PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
+                                VATRate="0.00"
+                                ExemptFromVAT="VAT_CL17"
+                            />
+                        @else
+                            <SameTax
+                                NumOfItems="{{ (int) $sameTax['ukupan_broj_stavki'] }}"
+                                PriceBefVAT="{{ sprintf("%.02f", $sameTax['ukupna_cijena_bez_pdv']) }}"
+                                VATRate="{{ sprintf("%.02f", $pdv_stopa * 100) }}"
+                                VATAmt="{{ sprintf("%.02f", round($sameTax['ukupan_iznos_pdv'], 2)) }}"
+                            />
+                        @endif
                     @endif
                 @endforeach
             </SameTaxes>
