@@ -84,8 +84,42 @@
 
                     {{-- TODO: da li rabat (popust) umanjuje osnovni iznos ili ne --}}
                     <Items>
-                        @foreach($stavke as $stavka)
-                            @if(in_array($stavka->id, $odabraneStavke))
+                        @if($odabraneStavke)
+                            @foreach($stavke as $stavka)
+                                @if(in_array($stavka->id, $odabraneStavke))
+                                    <I
+                                        N="{{ $stavka->naziv }}"
+                                        C="{{ $stavka->bar_code }}"
+                                        U="{{ $stavka->jedinica_mjere->naziv }}"
+                                        Q="-{{ sprintf('%0.2f', $stavka->kolicina) }}"
+                                        UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
+                                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
+                                        R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
+                                        RR="{{ (bool) $stavka->popust_iznos }}"
+                                        PB="-{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
+                                        VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
+                                        VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
+                                        PA="-{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
+                                    />
+                                @else
+                                    <I
+                                        N="{{ $stavka->naziv }}"
+                                        C="{{ $stavka->bar_code }}"
+                                        U="{{ $stavka->jedinica_mjere->naziv }}"
+                                        Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
+                                        UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
+                                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
+                                        R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
+                                        RR="{{ (bool) $stavka->popust_iznos }}"
+                                        PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
+                                        VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
+                                        VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
+                                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
+                                    />
+                                @endif
+                            @endforeach
+                        @else
+                            @foreach($stavke as $stavka)
                                 <I
                                     N="{{ $stavka->naziv }}"
                                     C="{{ $stavka->bar_code }}"
@@ -100,25 +134,9 @@
                                     VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
                                     PA="-{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
                                 />
-                            @else
-                                <I
-                                    N="{{ $stavka->naziv }}"
-                                    C="{{ $stavka->bar_code }}"
-                                    U="{{ $stavka->jedinica_mjere->naziv }}"
-                                    Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
-                                    UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
-                                    UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv) }}"
-                                    R="{{ sprintf('%0.2f', $stavka->popust_procenat) }}"
-                                    RR="{{ (bool) $stavka->popust_iznos }}"
-                                    PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
-                                    VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
-                                    VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
-                                    PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
-                                />
-                            @endif
-                        @endforeach
+                            @endforeach
+                        @endif
                     </Items>
-
 
                     @if($pdv_obveznik === "true")
                         <SameTaxes>

@@ -94,8 +94,16 @@ class Storniraj implements ShouldQueue
         }
 
         foreach($this->data['stavke'] as $stavka) {
-            if(in_array($stavka->id, $odabraneStavke)){
+            if ($odabraneStavke) {
+                if(in_array($stavka->id, $odabraneStavke)){
 
+                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+
+                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+
+                    $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
+                }
+            } else {
                 $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
 
                 $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
@@ -235,17 +243,27 @@ class Storniraj implements ShouldQueue
             ],
         ];
 
-
         foreach ($this->data['stavke'] as $stavka) {
-            if(! in_array($stavka->id, $this->data['odabraneStavke'])){
-                $porez_stopa = $stavka->porez->stopa;
-                // $porez_id = $stavka->porez->id;
+            if($this->data['odabraneStavke']) {
+                if(! in_array($stavka->id, $this->data['odabraneStavke'])){
+                    $porez_stopa = $stavka->porez->stopa;
+                    // $porez_id = $stavka->porez->id;
 
-                // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
+                    // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
 
-                $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
-                $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
-                $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+                    $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
+                    $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
+                    $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+                } else {
+                    $porez_stopa = $stavka->porez->stopa;
+                    // $porez_id = $stavka->porez->id;
+
+                    // $sameTaxes[$porez_stopa][" " . $porez_id .""] += $stavka->porez->id;
+
+                    $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
+                    $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += 0;
+                    $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += 0;
+                }
             } else {
                 $porez_stopa = $stavka->porez->stopa;
                 // $porez_id = $stavka->porez->id;
