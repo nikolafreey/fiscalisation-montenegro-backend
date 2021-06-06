@@ -366,24 +366,33 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
-        if (!isset($request->stavke) || empty($request->stavke)) {
-            return response()->json('Morate unijeti stavke koje želite da stornirate', 400);
-        }
-
         $storniranRacun = $racun->replicate()->fill([
             'created_at' => Carbon::now(),
         ]);
 
         $storniranRacun->save();
 
-        foreach ($racun->stavke as $stavka) {
-            if (!in_array($stavka->id, $request->stavke)) {
-                $stavka = $stavka->replicate()->fill([
-                    'racun_id' => $storniranRacun->id,
-                ]);
+        if (isset($request->stavke) || ! empty($request->stavke)) {
+            foreach ($racun->stavke as $stavka) {
+                if (!in_array($stavka->id, $request->stavke)) {
+                    $stavka = $stavka->replicate()->fill([
+                        'racun_id' => $storniranRacun->id,
+                    ]);
 
-                $stavka->save();
-            } else {
+                    $stavka->save();
+                } else {
+                    $stavka = $stavka->replicate()->fill([
+                        'ukupna_bez_pdv' => $stavka->ukupna_bez_pdv * -1,
+                        'ukupna_sa_pdv' => $stavka->ukupna_sa_pdv * -1,
+                        'kolicina' => $stavka->kolicina * -1,
+                        'racun_id' => $storniranRacun->id,
+                    ]);
+
+                    $stavka->save();
+                }
+            }
+        } else {
+            foreach ($racun->stavke as $stavka) {
                 $stavka = $stavka->replicate()->fill([
                     'ukupna_bez_pdv' => $stavka->ukupna_bez_pdv * -1,
                     'ukupna_sa_pdv' => $stavka->ukupna_sa_pdv * -1,
