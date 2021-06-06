@@ -30,8 +30,8 @@ class AuthController extends Controller
             }
         }
 
-        if (! $preduzecaSuDostupna) {
-            return response()->json('Svi kapaciteti vasih preduzeca su popunjeni', 400);
+        if (!$preduzecaSuDostupna) {
+            return response()->json('Broj uređaja sa kojih možete koristiti platformu je popunjen!', 400);
         }
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
