@@ -108,12 +108,24 @@ class RacunController extends Controller
 
     public function najveciKupci(Request $request)
     {
-        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
+        // return Racun::where('tip_racuna', 'racun')
+        //     ->where('status', 'placen')
+        //     ->where('preduzece_id', getAuthPreduzeceId($request))
+        //     ->where('created_at', '>', $sameDayLastYear)
+        //     ->selectRaw("SUM(racuni.ukupan_iznos_pdv) as ukupan_promet")
+        //     ->with('preduzece', 'preduzece.partneri')
+        //     // ->groupBy('partner_id')
+        //     ->get();
+
+        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) as ukupan_promet, preduzeca.* FROM racuni, partneri, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.partner_id = partneri.id AND partneri.preduzece_tabela_id = preduzeca.id GROUP BY partner_id", [getAuthPreduzeceId($request)]);
+        // return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
     }
 
     public function najveciDuznici(Request $request)
     {
-        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
+        return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) as ukupan_promet, preduzeca.* FROM racuni, partneri, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = ? AND racuni.partner_id = partneri.id AND partneri.preduzece_tabela_id = preduzeca.id GROUP BY partner_id", [getAuthPreduzeceId($request)]);
+
+        // return DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) AS ukupan_promet, preduzeca.*, racuni.* FROM racuni, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'cekase' AND racuni.preduzece_id = ? AND racuni.created_at >= curdate() - interval 1 year", [getAuthPreduzeceId($request)]);
     }
 
     public function izlazniRacuniDanas(Request $request)
@@ -372,7 +384,7 @@ class RacunController extends Controller
 
         $storniranRacun->save();
 
-        if (isset($request->stavke) || ! empty($request->stavke)) {
+        if (isset($request->stavke) || !empty($request->stavke)) {
             foreach ($racun->stavke as $stavka) {
                 if (!in_array($stavka->id, $request->stavke)) {
                     $stavka = $stavka->replicate()->fill([
