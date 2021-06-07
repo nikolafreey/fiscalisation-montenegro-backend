@@ -26,7 +26,7 @@ class UpdatePreduzece extends BaseApiRequest
             'email' => 'string|email|nullable',
             'website' => 'string|max:191|nullable',
             'pib' => 'required|string|max:50|min:7',
-            'pdv' => 'required|string|max:50',
+            'pdv' => 'string|max:50|nullable',
             'iban' => 'string|max:50|nullable',
             'bic_swift' => 'string|max:50|nullable',
             'kontakt_ime' => 'string|max:50|nullable',
