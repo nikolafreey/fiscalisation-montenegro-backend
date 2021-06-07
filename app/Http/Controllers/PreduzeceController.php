@@ -48,6 +48,7 @@ class PreduzeceController extends Controller
         $preduzece = DB::transaction(
             function () use ($request) {
                 $preduzece = Preduzece::make($request->validated());
+                $preduzece->pdv_obveznik = $request->pdv_obveznik;
 
                 $preduzece->save();
 
@@ -102,7 +103,6 @@ class PreduzeceController extends Controller
             }
         }
 
-
         if ($request->ziro_racuni && count($request->ziro_racuni) !== 0) {
             $preduzece->ziro_racuni()->delete();
 
@@ -126,6 +126,9 @@ class PreduzeceController extends Controller
         } else {
             $preduzece->update(array_filter($request->validated()));
         }
+
+        $preduzece->pdv_obveznik = $request->pdv_obveznik;
+        $preduzece->pdv = $request->pdv;
 
         $preduzece->save();
 
