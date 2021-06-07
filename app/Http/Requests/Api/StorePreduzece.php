@@ -48,6 +48,7 @@ class StorePreduzece extends BaseApiRequest
             'status' => 'boolean',
             'privatnost' => 'boolean',
             'verifikovan' => 'boolean',
+            'pdv_obveznik' => 'boolean',
             'kategorija_id' => 'required|int',
             'djelatnost_id' => 'required|int'
         ];
