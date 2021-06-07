@@ -24,7 +24,11 @@ class DepozitWithdrawController extends Controller
         $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
         $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
 
-        return DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('fiskalizovan', 1)->first();
+        $depozitPodignuto = DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->sum('iznos_withdraw');
+        $depozitUkupno =  DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('fiskalizovan', 1)->first();
+        $depozitPreostalo = $depozitUkupno - $depozitPodignuto;
+
+        return $depozitUkupno;
 
         // return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
         // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
@@ -52,9 +56,9 @@ class DepozitWithdrawController extends Controller
 
         if ($depozitWithdraw->iznos_withdraw != null) {
             $withdrawLoaded =
-                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->first();
-            if ($withdrawLoaded) {
-                return response()->json('Već je podignut depozit za današnji dan!', 400);
+                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->sum('iznos_withdraw');
+            if ($withdrawLoaded > $depozitLoaded->iznos_depozit) {
+                return response()->json('Već je podignut cijeli iznos depozita za današnji dan!', 400);
             }
         }
 
@@ -80,7 +84,7 @@ class DepozitWithdrawController extends Controller
 
         $depozitWithdraw->save();
 
-        Depozit::dispatch($depozitWithdraw)->onConnection('sync');
+        // Depozit::dispatch($depozitWithdraw)->onConnection('sync');
 
         $depozitWithdraw->update([
             'fiskalizovan' => true,
