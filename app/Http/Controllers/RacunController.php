@@ -313,7 +313,7 @@ class RacunController extends Controller
             // InvNum="{{ implode('/', [$taxpayer['BU'], $racun->broj_racuna, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
             $ovaGodina = date('Y');
 
-            $racun->datum_izdavanja = now();
+            $request->datum_izdavanja ? $racun->datum_izdavanja = $request->datum_izdavanja : $racun->datum_izdavanja = now();
             $racun->nacin_placanja = $request->nacin_placanja;
             $racun->tip_racuna = Racun::RACUN;
 
