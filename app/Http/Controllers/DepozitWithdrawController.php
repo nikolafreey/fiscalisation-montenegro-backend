@@ -80,7 +80,7 @@ class DepozitWithdrawController extends Controller
 
         $depozitWithdraw->save();
 
-        // Depozit::dispatch($depozitWithdraw)->onConnection('sync');
+        Depozit::dispatch($depozitWithdraw)->onConnection('sync');
 
         $depozitWithdraw->update([
             'fiskalizovan' => true,
