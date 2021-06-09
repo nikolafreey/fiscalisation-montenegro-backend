@@ -31,7 +31,7 @@ class AuthController extends Controller
         }
 
         if (!$preduzecaSuDostupna) {
-            return response()->json('Broj uređaja sa kojih možete koristiti platformu je popunjen!', 400);
+            return response()->json('Broj uređaja sa kojih možete koristiti platformu je popunjen! U vašem paketu je broj uređaja ograničen na ' . $preduzece->brojUredjaja, 400);
         }
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
