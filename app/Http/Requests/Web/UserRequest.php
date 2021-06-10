@@ -41,6 +41,7 @@ class UserRequest extends FormRequest
             'email' => 'required|email',
             'password' => 'required',
             'preduzece_id' => 'required',
+            'kod_operatera' => 'required',
         ];
     }
 }
