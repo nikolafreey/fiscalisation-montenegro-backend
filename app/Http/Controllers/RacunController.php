@@ -378,8 +378,13 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
+        if ($racun->status === 'storniran') {
+            abort(400, 'Račun je već storniran');
+        }
+
         $storniranRacun = $racun->replicate()->fill([
             'created_at' => Carbon::now(),
+            'status' => 'storniran'
         ]);
 
         $storniranRacun->save();
