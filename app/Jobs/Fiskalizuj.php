@@ -32,6 +32,7 @@ class Fiskalizuj implements ShouldQueue
 
             $tip_placanja = 'CASH';
             $nacin_placanja = $racun->nacin_placanja ?? 'CASH';
+            // $datum_za_placanje = now()->toIso8601String();
         }
 
         if ($racun->vrsta_racuna === 'bezgotovinski') {
@@ -41,11 +42,12 @@ class Fiskalizuj implements ShouldQueue
 
             $tip_placanja = 'NONCASH';
             $nacin_placanja = $racun->nacin_placanja ?? 'BANKNOTE';
+            // $datum_za_placanje = $racun->$datum_za_placanje->toIso8601String();
         }
 
         if ($racun->partner->preduzece_tabela_id != null) {
             $kupacPib = $racun->partner->preduzece_partner->pib;
-            $kupacNaziv = $racun->partner->kontakt_ime . " " . $racun->partner->kontakt_prezime;
+            $kupacNaziv = $racun->partner->preduzece_partner->kratki_naziv;
             $kupacAdresa = $racun->partner->preduzece_partner->adresa;
             $kupacGrad = $racun->partner->preduzece_partner->grad;
             $kupacDrzava = $racun->partner->preduzece_partner->country_code;
