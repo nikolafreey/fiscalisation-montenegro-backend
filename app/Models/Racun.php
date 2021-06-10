@@ -167,7 +167,7 @@ class Racun extends Model
         $suma = 0;
 
         foreach ($racuni as $racun) {
-            $suma += $racun->ukupna_cijena_sa_pdv;
+            $suma += $racun->ukupna_cijena_sa_pdv_popust;
         }
 
         return $suma;
@@ -202,7 +202,7 @@ class Racun extends Model
                 if ($stavka['tip_popusta'] == 'procenat') {
                     $popust_procenat = $stavka['popust'];
                 } else if ($stavka['tip_popusta'] == 'iznos') {
-                    $popust_iznos = $stavka['popust'];
+                    $popust_iznos = $stavka['popust'] ? $stavka['popust'] : 0;
                 }
             } else {
                 $tip_popusta = 'iznos';
