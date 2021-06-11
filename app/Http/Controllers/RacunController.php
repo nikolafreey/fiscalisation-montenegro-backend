@@ -378,6 +378,10 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
+        if (! getAuthPreduzeceId($request) === $racun->preduzece_id) {
+            return response()->json('Nemate dozvolu da stornirate ovaj racun!', 400);
+        }
+
         if ($racun->status === 'storniran') {
             abort(400, 'Račun je već storniran');
         }
