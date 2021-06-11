@@ -92,6 +92,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        if (! Auth::user()->tokens()->where('token', getAccessToken($request))->first()) {
+            return response()->json('Vas bearer token ne postoji!', 400);
+        }
+
         Auth::user()->tokens()
             ->where('token', getAccessToken($request))
             ->delete();
