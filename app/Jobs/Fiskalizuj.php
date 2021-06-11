@@ -101,6 +101,17 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['sameTaxes'] as $totVat) {
             $this->data['ukupan_pdv'] += round($totVat['ukupan_iznos_pdv'], 2);
         }
+
+        if (
+            !
+            round($racun->ukupna_cijena_bez_pdv_popust, 2)
+            +
+            $this->data['ukupan_pdv']
+            ===
+            round($racun->ukupna_cijena_sa_pdv_popust, 2)
+        ) {
+            Log::error('Obracun nije ispravan!');
+        }
     }
 
     public function handle()
