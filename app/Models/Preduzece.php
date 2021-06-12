@@ -82,6 +82,20 @@ class Preduzece extends Model
         //
     ];
 
+    protected $casts = [
+        'ziro_racuni' => 'array',
+        'kontakt_facetime' => 'boolean',
+        'kontakt_viber' => 'boolean',
+        'kontakt_whatsapp' => 'boolean',
+        'pdv_obveznik' => 'boolean',
+        'privatnost' => 'boolean',
+        'status' => 'boolean',
+        'telefon_facetime' => 'boolean',
+        'telefon_viber' => 'boolean',
+        'telefon_whatsapp' => 'boolean',
+        'verifikovan' => 'boolean',
+    ];
+
     protected $mapping = [
         'properties' => [
             'kratki_naziv' => [
@@ -250,6 +264,7 @@ class Preduzece extends Model
             Image::make($value)->resize(800, 600)->save($path);
 
             $this->attributes['logotip'] = 'logotipi/' . $name . '.' . $value->getClientOriginalExtension();
+            // }
         }
     }
 

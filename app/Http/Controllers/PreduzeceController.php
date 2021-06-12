@@ -50,12 +50,18 @@ class PreduzeceController extends Controller
                 $preduzece = Preduzece::make($request->validated());
                 $preduzece->pdv_obveznik = $request->pdv_obveznik;
 
+                if ($request->logotip) {
+                    $preduzece->setLogotipAttribute($request->logotip);
+                }
+
                 $preduzece->save();
 
-                if (count($request->ziro_racuni) !== 0) {
-                    $ziro_racuni = $request->ziro_racuni;
-                    foreach ($ziro_racuni as $ziro_racun) {
-                        $zr = ZiroRacun::make($ziro_racun);
+                $ziroRacuni = json_decode($request->input('ziro_racuni'));
+
+                if (count($ziroRacuni) !== 0) {
+                    foreach ($ziroRacuni as $ziro_racun) {
+                        $zr = new ZiroRacun();
+                        $zr->broj_racuna = $ziro_racun->broj_racuna;
                         $zr->user_id = auth()->id();
                         $zr->preduzece_id = $preduzece->id;
                         $zr->save();
@@ -115,6 +121,10 @@ class PreduzeceController extends Controller
                 $ziro_racuni_objects[] = $zr;
             }
             $preduzece->ziro_racuni()->saveMany($ziro_racuni_objects);
+        }
+
+        if ($request->logotip) {
+            $preduzece->setLogotipAttribute($request->logotip);
         }
 
         if ($request->hasFile('pecat') || $request->has('potpis')) {
