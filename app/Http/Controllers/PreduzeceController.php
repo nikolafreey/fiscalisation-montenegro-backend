@@ -109,11 +109,12 @@ class PreduzeceController extends Controller
             }
         }
 
-        if ($request->ziro_racuni && count($request->ziro_racuni) !== 0) {
+        $ziroRacuni = json_decode($request->input('ziro_racuni'));
+
+        if ($ziroRacuni && count($ziroRacuni) !== 0) {
             $preduzece->ziro_racuni()->delete();
 
-            $ziro_racuni = $request->ziro_racuni;
-            foreach ($ziro_racuni as $ziro_racun) {
+            foreach ($ziroRacuni as $ziro_racun) {
                 $zr = ZiroRacun::make($ziro_racun);
                 $zr->user_id = auth()->id();
                 $zr->preduzece_id = $preduzece->id;
