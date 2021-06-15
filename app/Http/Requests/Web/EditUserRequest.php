@@ -38,7 +38,8 @@ class EditUserRequest extends FormRequest
             'avatar' => 'nullable',
             'email' => 'required|email',
             'preduzece_id' => 'required',
-            'password' => 'nullable'
+            'password' => 'nullable',
+            'kod_operatera' => 'required'
         ];
     }
 }

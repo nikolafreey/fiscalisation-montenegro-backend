@@ -45,7 +45,7 @@ class PreduzeceRequest extends FormRequest
             'kod_operatera' => 'nullable',
             'kategorija_id' => 'required|int',
             'djelatnost_id' => 'required|int',
-            'user_id' => 'required',
+            'user_id' => 'nullable',
             'pecatSifra' => 'nullable',
             'sertifikatSifra' => 'nullable',
             'pecat' => ['nullable', new PecatRule($this->pecatSifra)],

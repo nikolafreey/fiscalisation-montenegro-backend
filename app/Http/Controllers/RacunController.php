@@ -550,6 +550,10 @@ class RacunController extends Controller
 
     public function fiskalizujRacun(Racun $racun)
     {
+        if ($racun->jikr !== null) {
+            return response()->json('Ovaj racun je vec fiskalizovan!', 400);
+        }
+
         Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
 
         FailedJobsCustom::where('payload', $racun->id)->delete();
