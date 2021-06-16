@@ -253,7 +253,7 @@ class Storniraj implements ShouldQueue
 
                     $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
                     $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
-                    $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+                    $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += round($stavka->pdv_iznos_ukupno, 2);
                 } else {
                     $porez_stopa = $stavka->porez->stopa;
                     // $porez_id = $stavka->porez->id;
