@@ -45,6 +45,7 @@ class Racun extends Model
         'status',
         'partner_id',
         'oslobodjen_pdv',
+        'redni_broj'
     ];
 
     public function scopeFilterByPermissions($query)
