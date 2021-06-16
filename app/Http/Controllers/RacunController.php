@@ -438,7 +438,7 @@ class RacunController extends Controller
         )
             ->onConnection('sync');
 
-        return response()->json($storniranRacun->load('stavke', 'porezi'), 201);
+        return response()->json($storniranRacun->fresh()->load('stavke', 'porezi'), 201);
     }
 
     /**

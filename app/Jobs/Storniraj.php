@@ -121,10 +121,6 @@ class Storniraj implements ShouldQueue
 
     public function handle()
     {
-        $this->data['racun']->update([
-            'ikof' => $this->ikof ?? $this->data['IICData']['IIC'],
-        ]);
-
         $xml = view(
             'xml.storniraj',
             $this->data
@@ -289,7 +285,7 @@ class Storniraj implements ShouldQueue
                 'bu=' . $this->data['taxpayer']['BU'],
                 'cr=' . $this->data['taxpayer']['CR'],
                 'sw=' . $this->data['taxpayer']['SW'],
-                'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
+                'prc=' . $this->data['ukupna_sa_pdv'],
             ]);
     }
 }
