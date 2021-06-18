@@ -26,7 +26,7 @@ class StorePreduzece extends BaseApiRequest
             'fax' => 'string|max:50|nullable',
             'email' => 'string|email|nullable',
             'website' => 'string|max:191|nullable',
-            'pib' => 'required|string|max:50|min:7',
+            'pib' => 'required|string|max:50|min:8',
             'pdv' => 'nullable|string|max:50',
             'iban' => 'string|max:50|nullable',
             'bic_swift' => 'string|max:50|nullable',
