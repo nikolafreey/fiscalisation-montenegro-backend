@@ -279,6 +279,94 @@ class IzvjestajService
             $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
         }
 
+        if ($this->tip === 'PERIODIČNI FISKALNI IZVJEŠTAJ') {
+            return [
+                'broj_promjena_poreza' => '',
+
+                'poreska_stopa_21' => [
+                    'osnovica_21' => $zbir_osnovica_21,
+                    'iznos_poreza_21' => $zbir_poreza_21,
+                    'promet_po_stopi_21' => $zbir_prometa_po_stopi_21
+                ],
+
+                'poreska_stopa_7' => [
+                    'osnovica_7' => $zbir_osnovica_7,
+                    'iznos_poreza_7' => $zbir_poreza_7,
+                    'promet_po_stopi_7' => $zbir_prometa_po_stopi_7
+                ],
+
+                'poreska_stopa_0' => [
+                    'osnovica_0' => $zbir_osnovica_0,
+                    'iznos_poreza_0' => $zbir_poreza_0,
+                    'promet_po_stopi_0' => $zbir_prometa_po_stopi_0
+                ],
+
+                'oslobodjeni_promet' => $oslobodjeniPromet,
+
+                'ukupno' => [
+                    'ukupno_osnovica_po_stopama_21_7_0' =>  $ukupnoOsnovicaPoStopama,
+                    'ukupno_porez_po_stopama_21_7_0' =>  $ukupanPorezPoStopama,
+                    'ukupan_promet' =>  $ukupanPromet
+                ],
+
+                'fiskalni_racuni' => [
+                    'od' => $racuni->first()->redni_broj,
+                    'do' => $racuni->sortByDesc('created_at')->first()->redni_broj,
+                ],
+                'fiskalni_dani' => [
+                    'od' => $this->pocetakDana,
+                    'do' => $this->krajDana,
+                ],
+
+                'racuni_sa_korekcijom' => [
+                    'ukupan_broj_racuna' => $brojKorektivnihRacuna,
+                    'ukupan_promet' => $ukupanPrometKorektivnihRacuna,
+                    'ukupan_porez' => $ukupanPorezKorektivnihRacuna
+                ],
+
+                'racuni_u_offline_rezimu' => [
+                    'ukupan_broj_racuna' => $ukupanBrojOfflineRacuna,
+                    'ukupan_promet' => $ukupanPrometOfflineRacuna,
+                    'ukupan_porez' => $ukupanPorezOfflineRacuna
+                ],
+
+                'racuni_order' => [
+                    'ukupan_broj_racuna' => $ukupanBrojOrderRacuna,
+                    'ukupan_promet' => $ukupanPrometOrderRacuna,
+                    'ukupan_porez' => $ukupanPorezOrderRacuna
+                ],
+
+                'promet_evidentiran_u_gotovini' => [
+                    'banknote' => $ukupanPrometGotovinskihBanknoteRacuna,
+                    'card' => $ukupanPrometGotovinskihCardRacuna,
+                    'order' => $ukupanPrometGotovinskihOrderRacuna,
+                    'other_cash' => $ukupanPrometGotovinskihOthercashRacuna
+                ],
+
+                'promet_evidentiran_u_bezgotovini' => [
+                    'business_card' => $ukupanPrometBezgotovinskihBusinesscardRacuna,
+                    'svoucher' =>  $ukupanPrometBezgotovinskihSvoucherRacuna,
+                    'company' => $ukupanPrometBezgotovinskihCompanyRacuna,
+                    'order' => $ukupanPrometBezgotovinskihOrderRacuna,
+                    'advance' => $ukupanPrometBezgotovinskihAdvanceRacuna,
+                    'account' => $ukupanPrometBezgotovinskihAccountRacuna,
+                    'factoring' => $ukupanPrometBezgotovinskihFactoringRacuna,
+                    'other' => $ukupanPrometBezgotovinskihOtherRacuna
+                ],
+
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+
+                'inicijalni_gotovinski_depozit' => $ukupanDepozit,
+                'ukupan_promet' => $ukupanPromet,
+                'non_cash_promet' => $ukupanPrometBezgotovinskihRacuna,
+                'card_i_order_promet' => $ukupanPrometGotovinskihRacuna,
+                'ukupno_withdraw' => $ukupanWithdraw,
+                'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
+
+                'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+            ];
+        }
+
         return [
             'broj_promjena_poreza' => '',
 
@@ -359,6 +447,39 @@ class IzvjestajService
 
     public function getVrijeme()
     {
+
+
+        if ($this->tip === 'PERIODIČNI FISKALNI IZVJEŠTAJ') {
+
+            $racuni = $this->poslovnaJedinica
+                ->racuni()
+                ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
+                ->get();
+
+            return [
+                'datum_dokumenta' => date('d-m-Y'),
+                'vrijeme_dokumenta' => date('H:i:s'),
+                'operater' => auth()->user()->punoIme,
+                'fiskalni_dani_obuhvaceni_izvjestajem' =>  [
+                    'od' => $this->pocetakDana,
+                    'do' => $this->krajDana,
+                ],
+                'fiskalni_racuni_obuhvaceni_izvjestajem' => [
+                    'od' => $racuni->first()->redni_broj,
+                    'do' => $racuni->sortByDesc('created_at')->first()->redni_broj,
+                ],
+            ];
+        }
+
+        if ($this->tip === 'FISKALNI DNEVNI IZVJEŠTAJ – KRAJ DANA') {
+            return [
+                'datum_dokumenta' => date('d-m-Y'),
+                'vrijeme_dokumenta' => date('H:i:s'),
+                'operater' => auth()->user()->punoIme,
+                'redni_broj_fiskalnog_dana' => $this->pocetakDana,
+            ];
+        }
+
         return [
             'datum_dokumenta' => date('d-m-Y'),
             'vrijeme_dokumenta' => date('H:i:s'),
