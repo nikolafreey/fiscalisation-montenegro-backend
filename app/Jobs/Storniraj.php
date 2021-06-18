@@ -97,16 +97,16 @@ class Storniraj implements ShouldQueue
             if ($odabraneStavke) {
                 if(in_array($stavka->id, $odabraneStavke)){
 
-                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv_popust;
 
-                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv_popust;
 
                     $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
                 }
             } else {
-                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv_popust;
 
-                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv_popust;
 
                 $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
             }

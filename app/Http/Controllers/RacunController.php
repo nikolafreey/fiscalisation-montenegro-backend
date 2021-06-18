@@ -388,7 +388,8 @@ class RacunController extends Controller
 
         $storniranRacun = $racun->replicate()->fill([
             'created_at' => Carbon::now(),
-            'status' => 'storniran'
+            'status' => 'storniran',
+            'redni_broj' => Racun::izracunajRedniBrojRacuna()
         ]);
 
         $storniranRacun->save();
