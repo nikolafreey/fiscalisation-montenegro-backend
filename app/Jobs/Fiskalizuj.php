@@ -102,6 +102,17 @@ class Fiskalizuj implements ShouldQueue
         foreach ($this->data['sameTaxes'] as $totVat) {
             $this->data['ukupan_pdv'] += round($totVat['ukupan_iznos_pdv'], 2);
         }
+
+        if (
+            !
+            round($racun->ukupna_cijena_bez_pdv_popust, 2)
+            +
+            $this->data['ukupan_pdv']
+            ===
+            round($racun->ukupna_cijena_sa_pdv_popust, 2)
+        ) {
+            Log::error('Obracun nije ispravan!');
+        }
     }
 
     public function handle()
@@ -243,7 +254,7 @@ class Fiskalizuj implements ShouldQueue
             } else {
                 $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
                 $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->cijena_bez_pdv_popust * $stavka->kolicina;
-                $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+                $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += round($stavka->pdv_iznos_ukupno, 2);
             }
         }
 

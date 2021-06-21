@@ -25,7 +25,7 @@ class IzvjestajService
             'pib' => $this->poslovnaJedinica->preduzece->pib,
             'naziv_objekta' => $this->poslovnaJedinica->kratki_naziv,
             'adresa_objekta' => $this->poslovnaJedinica->grad . ', ' . $this->poslovnaJedinica->adresa,
-            'enu_kod' => 'ys396zg231',
+            'enu_kod' => $this->poslovnaJedinica->preduzece->enu_kod,
 
             'tip_dokumenta_izvjestaja' => $this->tip,
 
@@ -66,24 +66,24 @@ class IzvjestajService
             foreach($racun->stavke as $stavka) {
 
                 if ($stavka->porez_id === 4) {
-                    $zbir_osnovica_21 += $stavka->cijena_bez_pdv;
-                    $zbir_poreza_21 += $stavka->pdv_iznos;
-                    $zbir_prometa_po_stopi_21 += $stavka->cijena_sa_pdv;
+                    $zbir_osnovica_21 += $stavka->ukupna_bez_pdv_popust;
+                    $zbir_poreza_21 += $stavka->pdv_iznos_ukupno;
+                    $zbir_prometa_po_stopi_21 += $stavka->ukupna_sa_pdv_popust;
                 }
 
                 if ($stavka->porez_id === 3) {
-                    $zbir_osnovica_7 += $stavka->cijena_bez_pdv;
-                    $zbir_poreza_7 += $stavka->pdv_iznos;
-                    $zbir_prometa_po_stopi_7 += $stavka->cijena_sa_pdv;
+                    $zbir_osnovica_7 += $stavka->ukupna_bez_pdv_popust;
+                    $zbir_poreza_7 += $stavka->pdv_iznos_ukupno;
+                    $zbir_prometa_po_stopi_7 += $stavka->ukupna_sa_pdv_popust;
                 }
 
                 if ($stavka->porez_id === 2) {
-                    $zbir_osnovica_0 += $stavka->cijena_bez_pdv;
-                    $zbir_prometa_po_stopi_0 += $stavka->cijena_bez_pdv;
+                    $zbir_osnovica_0 += $stavka->ukupna_bez_pdv_popust;
+                    $zbir_prometa_po_stopi_0 += $stavka->ukupna_bez_pdv_popust;
                 }
 
                 if ($stavka->porez_id === 1) {
-                    $oslobodjeniPromet += $stavka->cijena_bez_pdv;
+                    $oslobodjeniPromet += $stavka->ukupna_bez_pdv_popust;
                 }
             }
         }
@@ -103,8 +103,8 @@ class IzvjestajService
 
         foreach ($korektivniRacuni as $racun) {
             foreach($racun->stavke as $stavka){
-                $ukupanPrometKorektivnihRacuna += $stavka->cijena_bez_pdv;
-                $ukupanPorezKorektivnihRacuna += $stavka->pdv_iznos;
+                $ukupanPrometKorektivnihRacuna += $stavka->ukupna_bez_pdv_popust;
+                $ukupanPorezKorektivnihRacuna += $stavka->pdv_iznos_ukupno;
             }
         }
 
@@ -123,25 +123,25 @@ class IzvjestajService
         foreach ($gotovinskiRacuni as $racun) {
             if($racun->nacin_placanja === 'BANKNOTE') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihBanknoteRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihBanknoteRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'CARD') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihCardRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihCardRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'ORDER') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihOrderRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihOrderRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'OTHER-CASH') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihOthercashRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihOthercashRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
         }
@@ -158,49 +158,49 @@ class IzvjestajService
         foreach ($bezgotovinskiRacuni as $racun) {
             if($racun->nacin_placanja === 'BUSINESSCARD') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihBusinesscardRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihBusinesscardRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'SVOUCHER') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihSvoucherRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihSvoucherRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'COMPANY') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihCompanyRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihCompanyRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'ORDER') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihOrderRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihOrderRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'ADVANCE') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihAdvanceRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihAdvanceRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'FACTORING') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihFactoringRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihFactoringRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'ORDER') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihOrderRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihOrderRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'OTHER') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihOtherRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihOtherRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
         }
@@ -208,38 +208,38 @@ class IzvjestajService
         foreach ($bezgotovinskiRacuni as $racun) {
             if($racun->nacin_placanja === 'BUSINES') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometBezgotovinskihBusinesscardRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometBezgotovinskihBusinesscardRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'CARD') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihCardRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihCardRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'ORDER') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihOrderRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihOrderRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'OTHER-CASH') {
                 foreach($racun->stavke as $stavka){
-                    $ukupanPrometGotovinskihOthercashRacuna += $stavka->cijena_bez_pdv;
+                    $ukupanPrometGotovinskihOthercashRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
         }
 
         foreach ($gotovinskiRacuni as $racun) {
             foreach($racun->stavke as $stavka){
-                $ukupanPrometGotovinskihRacuna += $stavka->cijena_bez_pdv;
+                $ukupanPrometGotovinskihRacuna += $stavka->ukupna_bez_pdv_popust;
             }
         }
 
         foreach ($bezgotovinskiRacuni as $racun) {
             foreach($racun->stavke as $stavka){
-                $ukupanPrometBezgotovinskihRacuna += $stavka->cijena_bez_pdv;
+                $ukupanPrometBezgotovinskihRacuna += $stavka->ukupna_bez_pdv_popust;
             }
         }
 
@@ -252,8 +252,8 @@ class IzvjestajService
 
         foreach ($offlineRacuni as $racun) {
             foreach($racun->stavke as $stavka){
-                $ukupanPrometOfflineRacuna += $stavka->cijena_bez_pdv;
-                $ukupanPorezOfflineRacuna += $stavka->pdv_iznos;
+                $ukupanPrometOfflineRacuna += $stavka->ukupna_bez_pdv_popust;
+                $ukupanPorezOfflineRacuna += $stavka->pdv_iznos_ukupno;
             }
         }
 
@@ -266,8 +266,8 @@ class IzvjestajService
 
         foreach ($orderRacuni as $racun) {
             foreach($racun->stavke as $stavka){
-                $ukupanPrometOrderRacuna += $stavka->cijena_bez_pdv;
-                $ukupanPorezOrderRacuna += $stavka->pdv_iznos;
+                $ukupanPrometOrderRacuna += $stavka->ukupna_bez_pdv_popust;
+                $ukupanPorezOrderRacuna += $stavka->pdv_iznos_ukupno;
             }
         }
 
@@ -277,6 +277,94 @@ class IzvjestajService
         foreach($this->poslovnaJedinica->depozitWithdraw as $depozitWithdraw){
             $ukupanDepozit += $depozitWithdraw->iznos_depozit;
             $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
+        }
+
+        if ($this->tip === 'PERIODIČNI FISKALNI IZVJEŠTAJ') {
+            return [
+                'broj_promjena_poreza' => '',
+
+                'poreska_stopa_21' => [
+                    'osnovica_21' => $zbir_osnovica_21,
+                    'iznos_poreza_21' => $zbir_poreza_21,
+                    'promet_po_stopi_21' => $zbir_prometa_po_stopi_21
+                ],
+
+                'poreska_stopa_7' => [
+                    'osnovica_7' => $zbir_osnovica_7,
+                    'iznos_poreza_7' => $zbir_poreza_7,
+                    'promet_po_stopi_7' => $zbir_prometa_po_stopi_7
+                ],
+
+                'poreska_stopa_0' => [
+                    'osnovica_0' => $zbir_osnovica_0,
+                    'iznos_poreza_0' => $zbir_poreza_0,
+                    'promet_po_stopi_0' => $zbir_prometa_po_stopi_0
+                ],
+
+                'oslobodjeni_promet' => $oslobodjeniPromet,
+
+                'ukupno' => [
+                    'ukupno_osnovica_po_stopama_21_7_0' =>  $ukupnoOsnovicaPoStopama,
+                    'ukupno_porez_po_stopama_21_7_0' =>  $ukupanPorezPoStopama,
+                    'ukupan_promet' =>  $ukupanPromet
+                ],
+
+                'fiskalni_racuni' => [
+                    'od' => $racuni->first()->redni_broj,
+                    'do' => $racuni->sortByDesc('created_at')->first()->redni_broj,
+                ],
+                'fiskalni_dani' => [
+                    'od' => $this->pocetakDana,
+                    'do' => $this->krajDana,
+                ],
+
+                'racuni_sa_korekcijom' => [
+                    'ukupan_broj_racuna' => $brojKorektivnihRacuna,
+                    'ukupan_promet' => $ukupanPrometKorektivnihRacuna,
+                    'ukupan_porez' => $ukupanPorezKorektivnihRacuna
+                ],
+
+                'racuni_u_offline_rezimu' => [
+                    'ukupan_broj_racuna' => $ukupanBrojOfflineRacuna,
+                    'ukupan_promet' => $ukupanPrometOfflineRacuna,
+                    'ukupan_porez' => $ukupanPorezOfflineRacuna
+                ],
+
+                'racuni_order' => [
+                    'ukupan_broj_racuna' => $ukupanBrojOrderRacuna,
+                    'ukupan_promet' => $ukupanPrometOrderRacuna,
+                    'ukupan_porez' => $ukupanPorezOrderRacuna
+                ],
+
+                'promet_evidentiran_u_gotovini' => [
+                    'banknote' => $ukupanPrometGotovinskihBanknoteRacuna,
+                    'card' => $ukupanPrometGotovinskihCardRacuna,
+                    'order' => $ukupanPrometGotovinskihOrderRacuna,
+                    'other_cash' => $ukupanPrometGotovinskihOthercashRacuna
+                ],
+
+                'promet_evidentiran_u_bezgotovini' => [
+                    'business_card' => $ukupanPrometBezgotovinskihBusinesscardRacuna,
+                    'svoucher' =>  $ukupanPrometBezgotovinskihSvoucherRacuna,
+                    'company' => $ukupanPrometBezgotovinskihCompanyRacuna,
+                    'order' => $ukupanPrometBezgotovinskihOrderRacuna,
+                    'advance' => $ukupanPrometBezgotovinskihAdvanceRacuna,
+                    'account' => $ukupanPrometBezgotovinskihAccountRacuna,
+                    'factoring' => $ukupanPrometBezgotovinskihFactoringRacuna,
+                    'other' => $ukupanPrometBezgotovinskihOtherRacuna
+                ],
+
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+
+                'inicijalni_gotovinski_depozit' => $ukupanDepozit,
+                'ukupan_promet' => $ukupanPromet,
+                'non_cash_promet' => $ukupanPrometBezgotovinskihRacuna,
+                'card_i_order_promet' => $ukupanPrometGotovinskihRacuna,
+                'ukupno_withdraw' => $ukupanWithdraw,
+                'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
+
+                'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+            ];
         }
 
         return [
@@ -353,16 +441,49 @@ class IzvjestajService
             'ukupno_withdraw' => $ukupanWithdraw,
             'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-            'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr')->toArray()
+            'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
         ];
     }
 
     public function getVrijeme()
     {
+
+
+        if ($this->tip === 'PERIODIČNI FISKALNI IZVJEŠTAJ') {
+
+            $racuni = $this->poslovnaJedinica
+                ->racuni()
+                ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
+                ->get();
+
+            return [
+                'datum_dokumenta' => date('d-m-Y'),
+                'vrijeme_dokumenta' => date('H:i:s'),
+                'operater' => auth()->user()->punoIme,
+                'fiskalni_dani_obuhvaceni_izvjestajem' =>  [
+                    'od' => $this->pocetakDana,
+                    'do' => $this->krajDana,
+                ],
+                'fiskalni_racuni_obuhvaceni_izvjestajem' => [
+                    'od' => $racuni->first()->redni_broj,
+                    'do' => $racuni->sortByDesc('created_at')->first()->redni_broj,
+                ],
+            ];
+        }
+
+        if ($this->tip === 'FISKALNI DNEVNI IZVJEŠTAJ – KRAJ DANA') {
+            return [
+                'datum_dokumenta' => date('d-m-Y'),
+                'vrijeme_dokumenta' => date('H:i:s'),
+                'operater' => auth()->user()->punoIme,
+                'redni_broj_fiskalnog_dana' => $this->pocetakDana,
+            ];
+        }
+
         return [
             'datum_dokumenta' => date('d-m-Y'),
             'vrijeme_dokumenta' => date('H:i:s'),
-            'operater' => '', // auth user
+            'operater' => auth()->user()->punoIme,
         ];
     }
 

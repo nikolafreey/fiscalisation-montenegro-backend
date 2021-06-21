@@ -44,7 +44,9 @@ class PreduzeceController extends Controller
     {
         $preduzece = Preduzece::create(array_filter($request->validated()));
 
-        $preduzece->users()->attach($request->user_id);
+        if ($request->user_id !== null) {
+            $preduzece->users()->attach($request->user_id);
+        }
 
         $request->session()->flash('success', 'Uspješno ste dodali preduzeće');
 

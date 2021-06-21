@@ -29,7 +29,7 @@ class CreatePreduzecaTable extends Migration
             $table->string('email', 191)->nullable();
             $table->string('website', 191)->nullable();
             $table->string('pib', 50)->unique();
-            $table->string('pdv', 50)->nullable();
+            $table->string('pdv', 50)->unique();
             // $table->string('djelatnost', 50)->nullable();
             $table->string('iban', 50)->nullable();
             $table->string('bic_swift', 50)->nullable();

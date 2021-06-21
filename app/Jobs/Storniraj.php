@@ -97,16 +97,16 @@ class Storniraj implements ShouldQueue
             if ($odabraneStavke) {
                 if(in_array($stavka->id, $odabraneStavke)){
 
-                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv_popust;
 
-                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv_popust;
 
                     $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
                 }
             } else {
-                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv_popust;
 
-                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv_popust;
 
                 $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
             }
@@ -121,10 +121,6 @@ class Storniraj implements ShouldQueue
 
     public function handle()
     {
-        $this->data['racun']->update([
-            'ikof' => $this->ikof ?? $this->data['IICData']['IIC'],
-        ]);
-
         $xml = view(
             'xml.storniraj',
             $this->data
@@ -253,7 +249,7 @@ class Storniraj implements ShouldQueue
 
                     $sameTaxes[$porez_stopa]['ukupan_broj_stavki']++;
                     $sameTaxes[$porez_stopa]['ukupna_cijena_bez_pdv'] += $stavka->jedinicna_cijena_bez_pdv * $stavka->kolicina;
-                    $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += $stavka->pdv_iznos_ukupno;
+                    $sameTaxes[$porez_stopa]['ukupan_iznos_pdv'] += round($stavka->pdv_iznos_ukupno, 2);
                 } else {
                     $porez_stopa = $stavka->porez->stopa;
                     // $porez_id = $stavka->porez->id;
@@ -289,7 +285,7 @@ class Storniraj implements ShouldQueue
                 'bu=' . $this->data['taxpayer']['BU'],
                 'cr=' . $this->data['taxpayer']['CR'],
                 'sw=' . $this->data['taxpayer']['SW'],
-                'prc=' . $this->data['racun']['ukupna_cijena_sa_pdv'],
+                'prc=' . $this->data['ukupna_sa_pdv'],
             ]);
     }
 }

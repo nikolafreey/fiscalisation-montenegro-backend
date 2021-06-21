@@ -233,6 +233,10 @@ class RacunController extends Controller
      */
     public function store(StoreRacun $request)
     {
+        if (empty($request->stavke)) {
+            return response()->json('Racun nema stavke!', 400);
+        }
+
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
 
@@ -378,8 +382,18 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
+        if (! getAuthPreduzeceId($request) === $racun->preduzece_id) {
+            return response()->json('Nemate dozvolu da stornirate ovaj racun!', 400);
+        }
+
+        if ($racun->status === 'storniran') {
+            abort(400, 'Račun je već storniran');
+        }
+
         $storniranRacun = $racun->replicate()->fill([
             'created_at' => Carbon::now(),
+            'status' => 'storniran',
+            'redni_broj' => Racun::izracunajRedniBrojRacuna()
         ]);
 
         $storniranRacun->save();
@@ -429,7 +443,7 @@ class RacunController extends Controller
         )
             ->onConnection('sync');
 
-        return response()->json($storniranRacun->load('stavke', 'porezi'), 201);
+        return response()->json($storniranRacun->fresh()->load('stavke', 'porezi'), 201);
     }
 
     /**
@@ -541,6 +555,10 @@ class RacunController extends Controller
 
     public function fiskalizujRacun(Racun $racun)
     {
+        if ($racun->jikr !== null) {
+            return response()->json('Ovaj racun je vec fiskalizovan!', 400);
+        }
+
         Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
 
         FailedJobsCustom::where('payload', $racun->id)->delete();

@@ -49,6 +49,10 @@
                                     <input type="text" class="form-control" id="prezime" placeholder="Prezime..." name="prezime" value="{{ old('prezime', $user->prezime) }}">
                                 </div>
                                 <div class="form-group">
+                                    <label for="kod_operatera">Kod Operatera</label>
+                                    <input type="text" class="form-control" id="kod_operatera" placeholder="Kod operatera..." name="kod_operatera" value="{{ old('kod_operatera', $user->kod_operatera) }}">
+                                </div>
+                                <div class="form-group">
                                     <label for="avatar">Avatar</label>
                                     <input type="file" class="form-control-file" id="avatar" name="avatar">
                                 </div>
