@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/public/logotipi
 /storage/*.key
 /vendor
 .env
@@ -15,3 +16,4 @@ launch.json
 /resources/docs
 /public/vendor/scribe
 /resources/views/scribe
+*.apk
