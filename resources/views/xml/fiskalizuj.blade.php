@@ -15,7 +15,7 @@
             TypeOfInv="{{ $tip_placanja }}"
             IsSimplifiedInv="false"
             IssueDateTime="{{ $danasnji_datum }}"
-            @if($racun->datum_za_placanje) PayDeadline="{{ $racun->datum_za_placanje }}" @endif
+            @if($datum_za_placanje) PayDeadline="{{ $datum_za_placanje }}" @endif
             InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
             InvOrdNum="{{ $racun->redni_broj }}"
             TCRCode="{{ $taxpayer['CR'] }}"
@@ -35,7 +35,7 @@
             TypeOfInv="{{ $tip_placanja }}"
             IsSimplifiedInv="false"
             IssueDateTime="{{ $danasnji_datum }}"
-            @if($racun->datum_za_placanje) PayDeadline="{{ $racun->datum_za_placanje }}" @endif
+            @if($datum_za_placanje) PayDeadline="{{ $datum_za_placanje }}" @endif
             InvNum="{{ implode('/', [$taxpayer['BU'], $racun->redni_broj, $racun->created_at->format('Y'), $taxpayer['CR']]) }}"
             InvOrdNum="{{ $racun->redni_broj }}"
             TCRCode="{{ $taxpayer['CR'] }}"
