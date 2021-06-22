@@ -382,9 +382,9 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
-        if (getAuthPreduzeceId($request) != $racun->preduzece_id) {
-            return response()->json('Nemate dozvolu da stornirate ovaj racun!', 400);
-        }
+        // if (getAuthPreduzeceId($request) != $racun->preduzece_id) {
+        //     return response()->json('Nemate dozvolu da stornirate ovaj racun!', 400);
+        // }
 
         if ($racun->status === 'storniran') {
             abort(400, 'Račun je već storniran');
@@ -395,6 +395,8 @@ class RacunController extends Controller
             'status' => 'storniran',
             'redni_broj' => Racun::izracunajRedniBrojRacuna(),
             'broj_racuna' => implode('/', [getAuthPoslovnaJedinica($request)->kod_poslovnog_prostora, Racun::izracunajRedniBrojRacuna(), now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
+            'korektivni_racun' => 1,
+            'korektivni_racun_vrsta' => 'CORRECTIVE'
         ]);
 
         $storniranRacun->save();
