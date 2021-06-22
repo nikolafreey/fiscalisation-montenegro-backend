@@ -50,7 +50,7 @@ class PreduzeceController extends Controller
                 $preduzece = Preduzece::make($request->validated());
                 $preduzece->pdv_obveznik = $request->pdv_obveznik;
 
-                if ($request->logotip) {
+                if ($request->logotip && $request->logotip != "undefined" && strlen($request->logotip) <= 10) {
                     $preduzece->setLogotipAttribute($request->logotip);
                 }
 
@@ -115,7 +115,13 @@ class PreduzeceController extends Controller
             $preduzece->ziro_racuni()->delete();
 
             foreach ($ziroRacuni as $ziro_racun) {
-                $zr = ZiroRacun::make($ziro_racun);
+                // $zr = ZiroRacun::make($ziro_racun);
+                // $zr->user_id = auth()->id();
+                // $zr->preduzece_id = $preduzece->id;
+                // $zr->save();
+                // $ziro_racuni_objects[] = $zr;
+                $zr = new ZiroRacun();
+                $zr->broj_racuna = $ziro_racun->broj_racuna;
                 $zr->user_id = auth()->id();
                 $zr->preduzece_id = $preduzece->id;
                 $zr->save();
@@ -124,7 +130,7 @@ class PreduzeceController extends Controller
             $preduzece->ziro_racuni()->saveMany($ziro_racuni_objects);
         }
 
-        if ($request->logotip) {
+        if ($request->logotip && $request->logotip != "undefined" && strlen($request->logotip) <= 10) {
             $preduzece->setLogotipAttribute($request->logotip);
         }
 
@@ -140,6 +146,7 @@ class PreduzeceController extends Controller
 
         $preduzece->pdv_obveznik = $request->pdv_obveznik;
         $preduzece->pdv = $request->pdv;
+        $preduzece->telefon = $request->telefon;
 
         $preduzece->save();
 

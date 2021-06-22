@@ -84,6 +84,9 @@ class Preduzece extends Model
 
     protected $casts = [
         'ziro_racuni' => 'array',
+        'ovlascena_lica' => 'array',
+        'djelatnosti' => 'object',
+        'kategorija' => 'object',
         'kontakt_facetime' => 'boolean',
         'kontakt_viber' => 'boolean',
         'kontakt_whatsapp' => 'boolean',
@@ -252,6 +255,12 @@ class Preduzece extends Model
             Storage::makeDirectory('public/logotipi');
         }
 
+        return;
+
+        if ($value === "undefined" || !$value || strlen($value) <= 10) {
+            return;
+        }
+
         if ($value->getClientOriginalExtension() === 'svg') {
             $this->attributes['logotip'] = Storage::disk('public')->putFile('logotipi', $value);
         } else {
@@ -273,6 +282,10 @@ class Preduzece extends Model
     {
         if (!Storage::exists('public/logotipi/thumbnails')) {
             Storage::makeDirectory('public/logotipi/thumbnails');
+        }
+
+        if ($value === "undefined" || !$value || strlen($value) <= 10) {
+            return;
         }
 
         $extension = $value->getClientOriginalExtension();
