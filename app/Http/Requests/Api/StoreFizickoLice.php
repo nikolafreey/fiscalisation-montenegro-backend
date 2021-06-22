@@ -14,7 +14,7 @@ class StoreFizickoLice extends BaseApiRequest
         return [
             'ime' => 'required|string|max:50|min:3',
             'prezime' => 'required|string|max:50|min:3',
-            'jmbg' => 'required|string|size:13',
+            'jmbg' => 'string|size:13',
             'ib' => 'nullable|string|size:8',
             'adresa' => 'nullable|string|max:191',
             'grad' => 'string|max:191',
