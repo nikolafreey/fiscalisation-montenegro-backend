@@ -122,17 +122,17 @@ Route::middleware('auth:sanctum')->group(function () {
             ]);
 
             Route::prefix('izvjestaji')->group(function () {
-                Route::post('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
+                Route::get('fiskalni-presjek-stanja', [IzvjestajController::class, 'fiskalniPresjekStanja']);
 
-                Route::post('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
+                Route::get('fiskalni-dnevni-izvjestaj', [IzvjestajController::class, 'fiskalniDnevniIzvjestaj']);
 
-                Route::post('periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
+                Route::get('periodicni-fiskalni-izvjestaj', [IzvjestajController::class, 'periodicniFiskalniIzvjestaj']);
 
-                Route::post('periodični-analiticki-pregled', [IzvjestajController::class, 'periodicniAnalitickiPregled']);
+                Route::get('periodični-analiticki-pregled', [IzvjestajController::class, 'periodicniAnalitickiPregled']);
 
-                Route::post('periodicni-analiticki-pregled-offline', [IzvjestajController::class, 'periodicniAnalitickiPregledOffline']);
+                Route::get('periodicni-analiticki-pregled-offline', [IzvjestajController::class, 'periodicniAnalitickiPregledOffline']);
 
-                Route::post('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
+                Route::get('periodicni-analiticki-pregled-korektivni', [IzvjestajController::class, 'periodicniAnalitickiPregledKorektivni']);
             });
 
             //Mobilna Aplikacija AUTH
