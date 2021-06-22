@@ -31,11 +31,11 @@ class GrupaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'naziv' => 'required|unique:grupe',
+            'naziv' => 'required',
         ]);
 
         if (!$validated) {
-            abort('Grupa sa ovim nazivom vec postoji!', 422);
+            abort('Naziv grupe je obavezno unijeti!', 422);
         }
 
         $grupa = Grupa::make($request->all());

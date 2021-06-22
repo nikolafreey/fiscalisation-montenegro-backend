@@ -233,6 +233,10 @@ class RacunController extends Controller
      */
     public function store(StoreRacun $request)
     {
+        if (empty($request->stavke)) {
+            return response()->json('Racun nema stavke!', 400);
+        }
+
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
 

@@ -63,6 +63,7 @@ class Fiskalizuj implements ShouldQueue
 
         $this->data = [
             'danasnji_datum' => now()->toIso8601String(),
+            'datum_za_placanje' => date("Y-m-d", strtotime($racun->datum_za_placanje)),
             'racun' => $racun->load('stavke'),
             'taxpayer' => [
                 'CR' => $racun->preduzece->enu_kod,
