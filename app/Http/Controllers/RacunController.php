@@ -422,6 +422,8 @@ class RacunController extends Controller
                 $stavka = $stavka->replicate()->fill([
                     'ukupna_bez_pdv' => $stavka->ukupna_bez_pdv * -1,
                     'ukupna_sa_pdv' => $stavka->ukupna_sa_pdv * -1,
+                    'ukupna_bez_pdv_popust' => $stavka->ukupna_bez_pdv_popust * -1,
+                    'ukupna_sa_pdv_popust' => $stavka->ukupna_sa_pdv_popust * -1,
                     'kolicina' => $stavka->kolicina * -1,
                     'racun_id' => $storniranRacun->id,
                 ]);
