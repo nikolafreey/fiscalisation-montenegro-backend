@@ -382,21 +382,28 @@ class RacunController extends Controller
 
     public function stornirajRacun(Racun $racun, Request $request)
     {
-        // if (getAuthPreduzeceId($request) != $racun->preduzece_id) {
-        //     return response()->json('Nemate dozvolu da stornirate ovaj racun!', 400);
-        // }
+        if (getAuthPreduzeceId($request) != $racun->preduzece_id) {
+            return response()->json('Nemate dozvolu da stornirate ovaj racun!', 400);
+        }
 
         if ($racun->status === 'storniran') {
             abort(400, 'Račun je već storniran');
         }
 
+        $racun->update([
+            'status' => 'storniran'
+        ]);
+
+        $redniBroj = Racun::izracunajRedniBrojRacuna();
+
         $storniranRacun = $racun->replicate()->fill([
             'created_at' => Carbon::now(),
-            'status' => 'storniran',
-            'redni_broj' => Racun::izracunajRedniBrojRacuna(),
-            'broj_racuna' => implode('/', [getAuthPoslovnaJedinica($request)->kod_poslovnog_prostora, Racun::izracunajRedniBrojRacuna(), now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
+            'status' => 'korektivni',
+            'redni_broj' => $redniBroj,
+            'broj_racuna' => implode('/', [$racun->poslovnaJedinica->kod_poslovnog_prostora, $redniBroj, now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
             'korektivni_racun' => 1,
-            'korektivni_racun_vrsta' => 'CORRECTIVE'
+            'korektivni_racun_vrsta' => 'CORRECTIVE',
+            'originalni_racun_id' => $racun->id
         ]);
 
         $storniranRacun->save();
@@ -413,6 +420,9 @@ class RacunController extends Controller
                     $stavka = $stavka->replicate()->fill([
                         'ukupna_bez_pdv' => $stavka->ukupna_bez_pdv * -1,
                         'ukupna_sa_pdv' => $stavka->ukupna_sa_pdv * -1,
+                        'ukupna_bez_pdv_popust' => $stavka->ukupna_bez_pdv_popust * -1,
+                        'ukupna_sa_pdv_popust' => $stavka->ukupna_sa_pdv_popust * -1,
+                        'pdv_iznos_ukupno' => $stavka->pdv_iznos_ukupno * -1,
                         'kolicina' => $stavka->kolicina * -1,
                         'racun_id' => $storniranRacun->id,
                     ]);
@@ -427,6 +437,7 @@ class RacunController extends Controller
                     'ukupna_sa_pdv' => $stavka->ukupna_sa_pdv * -1,
                     'ukupna_bez_pdv_popust' => $stavka->ukupna_bez_pdv_popust * -1,
                     'ukupna_sa_pdv_popust' => $stavka->ukupna_sa_pdv_popust * -1,
+                    'pdv_iznos_ukupno' => $stavka->pdv_iznos_ukupno * -1,
                     'kolicina' => $stavka->kolicina * -1,
                     'racun_id' => $storniranRacun->id,
                 ]);
