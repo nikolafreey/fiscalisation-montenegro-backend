@@ -376,7 +376,7 @@ class RacunController extends Controller
             if ($racun->fresh()->ukupna_cijena_sa_pdv_popust == 0) {
                 $racun->delete();
 
-                return response()->json('Iznos vaseg racuna je 0!', 400);
+                return response()->json('Iznos računa ne može biti 0 eura!', 400);
             }
 
             return $racun;
