@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\DijeljenjeRacunaRequest;
-use App\Http\Requests\Api\StoreRacun;
-use App\Jobs\Fiskalizuj;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Grupa;
+use App\Models\Racun;
+use App\Models\Invite;
+use App\Models\Usluga;
 use App\Jobs\Storniraj;
+use App\Models\Partner;
+use App\Jobs\Fiskalizuj;
+use App\Models\Preduzece;
 use App\Models\AtributRobe;
+use App\Models\FizickoLice;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use ScoutElastic\Searchable;
 use App\Models\DepozitWithdraw;
 use App\Models\FailedJobsCustom;
-use App\Models\FizickoLice;
-use App\Models\Grupa;
-use App\Models\Invite;
-use App\Models\Partner;
-use App\Models\Preduzece;
-use App\Models\Racun;
-use App\Models\User;
-use App\Notifications\PodijeliRacunGostu;
-use App\Notifications\PodijeliRacunKorisniku;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Api\StoreRacun;
+use App\Notifications\PodijeliRacunGostu;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
-use ScoutElastic\Searchable;
+use App\Notifications\PodijeliRacunKorisniku;
+use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 
 class RacunController extends Controller
 {
@@ -235,6 +236,15 @@ class RacunController extends Controller
     {
         if (empty($request->stavke)) {
             return response()->json('Racun nema stavke!', 400);
+        }
+
+        $zbirStavki = 0;
+        foreach ($request->stavke as $stavka) {
+            $zbirStavki += Usluga::find($stavka['usluga_id'])->cijena_bez_pdv;
+        }
+
+        if (Usluga::find($stavka['usluga_id'])->cijena_bez_pdv == 0) {
+            return response()->json('Zbir stavki je 0!', 400);
         }
 
         $racun = DB::transaction(function () use ($request) {
