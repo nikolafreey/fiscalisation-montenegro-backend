@@ -238,15 +238,6 @@ class RacunController extends Controller
             return response()->json('Racun nema stavke!', 400);
         }
 
-        $zbirStavki = 0;
-        foreach ($request->stavke as $stavka) {
-            $zbirStavki += Usluga::find($stavka['usluga_id'])->cijena_bez_pdv;
-        }
-
-        if (Usluga::find($stavka['usluga_id'])->cijena_bez_pdv == 0) {
-            return response()->json('Zbir stavki je 0!', 400);
-        }
-
         $racun = DB::transaction(function () use ($request) {
             $racun = Racun::make($request->validated());
 
@@ -381,6 +372,12 @@ class RacunController extends Controller
 
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
+
+            if ($racun->fresh()->ukupna_cijena_sa_pdv_popust == 0) {
+                $racun->delete();
+
+                return response()->json('Iznos vaseg racuna je 0!', 400);
+            }
 
             return $racun;
         });
