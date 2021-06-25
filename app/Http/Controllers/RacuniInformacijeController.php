@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Racun;
 use Carbon\Carbon;
 use App\Models\UlazniRacun;
 use Illuminate\Http\Request;
@@ -13,11 +14,11 @@ class RacuniInformacijeController extends Controller
     {
         $preduzece = getAuthPreduzece($request);
 
-        $blagajna = $preduzece->racuni()->where('vrsta_racuna', 'gotovinski')->whereDate('created_at', Carbon::today())->get();
+        $blagajna = $preduzece->racuni()->where('vrsta_racuna', 'gotovinski')->whereDate('created_at', Carbon::today())->sum('ukupna_cijena_sa_pdv_popust');
 
         $depozit = 0;
         foreach ($preduzece->poslovne_jedinice as $poslovna_jedinica) {
-            $vrijednostDepozita = $poslovna_jedinica->depozitWithdraw()->whereNull('iznos_withdraw')->whereDate('created_at', Carbon::today())->first();
+            $vrijednostDepozita = $poslovna_jedinica->depozitWithdraw()->whereNull('iznos_withdraw')->whereDate('created_at', Carbon::today())->first()->iznos_depozit;
 
             if ($vrijednostDepozita != null) {
                 $depozit += $vrijednostDepozita;
@@ -42,23 +43,76 @@ class RacuniInformacijeController extends Controller
                         ->where('status', 'nenaplativ')
                         ->sum('ukupna_cijena_sa_pdv_popust');
 
-        $najveciKupci = DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) as ukupan_promet, preduzeca.* FROM racuni, partneri, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.partner_id = partneri.id AND partneri.preduzece_tabela_id = preduzeca.id GROUP BY partner_id", [getAuthPreduzeceId($request)]);
+        $dan = Carbon::now()->day;
+        $mjesec = Carbon::now()->month;
+        $godina = Carbon::now()->year;
 
-        $najveciDuznici = DB::select("SELECT SUM(racuni.ukupan_iznos_pdv) as ukupan_promet, preduzeca.* FROM racuni, partneri, preduzeca WHERE tip_racuna='racun' AND racuni.status = 'placen' AND racuni.preduzece_id = ? AND racuni.partner_id = partneri.id AND partneri.preduzece_tabela_id = preduzeca.id GROUP BY partner_id", [getAuthPreduzeceId($request)]);
+        $prviUMjesecu = "{$godina}-{$mjesec}-1 00:00:00";
+        $prviUMjesecu = Carbon::parse($prviUMjesecu);
+        $prethodniMjesec = Carbon::parse($prviUMjesecu)->subMonthNoOverflow();
+
+        // Izlazni obracun
+        $izlazniQuery = Racun::query();
+        $izlazniQueryAll = Racun::query();
+        $izlazniQueryPoredjenje = Racun::query();
+
+        $izlazniPdv = $izlazniQueryAll->filterByPermissions()->where('tip_racuna', Racun::RACUN)->where('jikr', '!=', null)->get();
+        $izlazniQueryPdv = $izlazniQuery->filterByPermissions()->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->get();
+        $izlazniQueryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE deleted_at IS NULL AND datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
+
+        $izlazniUkupnaSuma = 0;
+        $izdatiTrenutniMjesecSuma = 0;
+        $izlazniPoredjenjeSuma = 0;
+        foreach ($izlazniPdv as $racunPdv) {
+            $izlazniUkupnaSuma += $racunPdv->ukupan_iznos_pdv;
+        }
+
+        foreach ($izlazniQueryPdv as $racun) {
+            $izdatiTrenutniMjesecSuma += $racun->ukupna_cijena_sa_pdv_popust;
+        }
+
+        foreach ($izlazniQueryPoredjenje as $racun) {
+            $izlazniPoredjenjeSuma += $racun->ukupna_cijena_sa_pdv_popust;
+        }
+
+        // Ulazni obracun
+        $ulazniQuery = UlazniRacun::query();
+        $ulazniQueryAll = UlazniRacun::query();
+        $ulazniQueryPoredjenje = UlazniRacun::query();
+
+        $ulazniPdv = $ulazniQueryAll->where('tip_racuna', UlazniRacun::RACUN)->get();
+        $ulazniQueryPdv = $ulazniQuery->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', UlazniRacun::RACUN)->get();
+        $ulazniQueryPoredjenje = DB::select(DB::raw('SELECT * FROM `ulazni_racuni` WHERE datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
+
+        $ulazniUkupnaSuma = 0;
+        $primljeniTrenutniMjesecSuma = 0;
+        $ulazniPoredjenjeSuma = 0;
+        foreach ($ulazniPdv as $racunPdv) {
+            $ulazniUkupnaSuma += $racunPdv->ukupan_iznos_pdv;
+        }
+
+        foreach ($ulazniQueryPdv as $racun) {
+            $primljeniTrenutniMjesecSuma += $racun->ukupna_cijena_sa_pdv_popust;
+        }
+
+        foreach ($ulazniQueryPoredjenje as $racun) {
+            $ulazniPoredjenjeSuma += $racun->ukupna_cijena_sa_pdv_popust;
+        }
 
         $informacije = [
-            'blagajna' => $blagajna,
+            'blagajna' => (int) $blagajna,
             'depozit' => $depozit,
-            'naplaceno' => $naplaceno,
-            'ceka_se_uplata' => $cekaSeUplata,
-            'nije_moguce_naplatiti' => $nijeMogucePlatiti,
-            'izdati_racuni' => '',
-            'primljeni_racuni' => '',
-            'PDV_za_trenutni_mjesec' => '',
-            'PDV_na_izlaznim_racunima' => '',
-            'PDV_na_ulaznim_racunima' => '',
-            'najveci_kupci' => $najveciKupci,
-            'najveci_duznici' => $najveciDuznici,
+            'naplaceno' => (int) $naplaceno,
+            'ceka_se_uplata' => (int) $cekaSeUplata,
+            'nije_moguce_naplatiti' => (int) $nijeMogucePlatiti,
+            'izdati_racuni' => $izdatiTrenutniMjesecSuma,
+            'izlazni_poredjenje_pdv' => $izlazniPoredjenjeSuma,
+            'primljeni_racuni' => $primljeniTrenutniMjesecSuma,
+            'ulazni_poredjenje_pdv' => $ulazniPoredjenjeSuma,
+            'PDV_na_izlaznim_racunima' => $izlazniUkupnaSuma,
+            'PDV_na_ulaznim_racunima' => $ulazniUkupnaSuma,
+            'najveci_kupci' => '',
+            'najveci_duznici' => '',
         ];
 
         return response()->json($informacije);
