@@ -307,9 +307,12 @@ class RacunController extends Controller
                     }
                     $racun->partner_id = $partner->id;
                 }
-
                 $racun->status = 'placen';
             } else {
+                $racun->partner_id = $request->partner_id;
+            }
+
+            if ($request->partner_id) {
                 $racun->partner_id = $request->partner_id;
             }
 
