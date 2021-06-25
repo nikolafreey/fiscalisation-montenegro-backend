@@ -194,6 +194,11 @@ class Preduzece extends Model
         return $this->hasMany('App\Models\Racun', 'preduzece_id');
     }
 
+    public function ulazni_racuni()
+    {
+        return $this->hasMany('App\Models\UlazniRacun', 'preduzece_id');
+    }
+
     public function dokumenti()
     {
         return $this->hasMany(Dokument::class);
