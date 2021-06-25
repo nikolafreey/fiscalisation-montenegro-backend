@@ -99,16 +99,8 @@ class IzvjestajService
         $korektivniRacuni = $racuni->where('status', 'storniran');
 
         $brojKorektivnihRacuna = $korektivniRacuni->count();
-        $ukupanPrometKorektivnihRacuna = 0;
-        $ukupanPorezKorektivnihRacuna = 0;
-
-        foreach ($korektivniRacuni as $racun) {
-            foreach($racun->stavke as $stavka){
-                $ukupanPrometKorektivnihRacuna += $stavka->ukupna_bez_pdv_popust;
-                $ukupanPorezKorektivnihRacuna += $stavka->pdv_iznos_ukupno;
-            }
-        }
-
+        $ukupanPrometKorektivnihRacuna = $korektivniRacuni->sum('ukupna_bez_pdv_popust');
+        $ukupanPorezKorektivnihRacuna = $korektivniRacuni->sum('pdv_iznos_ukupno');
 
         $gotovinskiRacuni = $racuni->where('vrsta_racuna', 'gotovinski');
         $bezgotovinskiRacuni = $racuni->where('vrsta_racuna', 'bezgotovinski');
@@ -355,7 +347,7 @@ class IzvjestajService
                     'other' => $ukupanPrometBezgotovinskihOtherRacuna
                 ],
 
-                'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
@@ -364,7 +356,7 @@ class IzvjestajService
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-                'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
             ];
         }
 
@@ -434,7 +426,7 @@ class IzvjestajService
                     'other' => $ukupanPrometBezgotovinskihOtherRacuna
                 ],
 
-                'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
@@ -443,7 +435,7 @@ class IzvjestajService
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-                'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray(),
+                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray(),
 
                 'redni_broj_fiskalnog_dana' => $this->pocetakDana,
             ];
@@ -514,7 +506,7 @@ class IzvjestajService
                 'other' => $ukupanPrometBezgotovinskihOtherRacuna
             ],
 
-            'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+            'withdraw' => $this->poslovnaJedinica()->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
             'inicijalni_gotovinski_depozit' => $ukupanDepozit,
             'ukupan_promet' => $ukupanPromet,
@@ -523,7 +515,7 @@ class IzvjestajService
             'ukupno_withdraw' => $ukupanWithdraw,
             'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-            'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+            'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
         ];
     }
 
@@ -573,6 +565,8 @@ class IzvjestajService
     {
         $racuni = $this->poslovnaJedinica
             ->racuni()
+            ->where('status', '!=', 'korektivni')
+            ->where('status', '!=', 'storniran')
             ->when($withStavke, function ($q) {
                 return $q->with('stavke');
             })

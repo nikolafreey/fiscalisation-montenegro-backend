@@ -404,6 +404,8 @@ class RacunController extends Controller
             'status' => 'storniran'
         ]);
 
+        $racun->stavke()->delete();
+
         $redniBroj = Racun::izracunajRedniBrojRacuna();
 
         $storniranRacun = $racun->replicate()->fill([
