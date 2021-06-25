@@ -80,8 +80,10 @@ class Storniraj implements ShouldQueue
             'ikof' => $ikof,
             'datum' => $datum->toIso8601String(),
             'odabraneStavke' => $odabraneStavke,
-            'ukupna_bez_pdv' => $racun->ukupna_cijena_bez_pdv_popust,
-            'ukupna_sa_pdv' => $racun->ukupna_cijena_sa_pdv_popust,
+            'ukupna_bez_pdv' => $racun->ukupna_cijena_bez_pdv,
+            'ukupna_bez_pdv_popust' => $racun->ukupna_cijena_bez_pdv_popust,
+            'ukupna_sa_pdv' => $racun->ukupna_cijena_sa_pdv,
+            'ukupna_sa_pdv_popust' => $racun->ukupna_cijena_sa_pdv_popust,
             'ukupan_storniran_pdv' => $racun->ukupan_iznos_pdv,
             'stavke' => $stavke
         ];
@@ -97,16 +99,20 @@ class Storniraj implements ShouldQueue
             if ($odabraneStavke) {
                 if(in_array($stavka->id, $odabraneStavke)){
 
-                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv_popust;
+                    $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+                    $this->data['ukupna_bez_pdv_popust'] -= $stavka->ukupna_bez_pdv_popust;
 
-                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv_popust;
+                    $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+                    $this->data['ukupna_sa_pdv_popust'] -= $stavka->ukupna_sa_pdv_popust;
 
                     $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
                 }
             } else {
-                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv_popust;
+                $this->data['ukupna_bez_pdv'] -= $stavka->ukupna_bez_pdv;
+                $this->data['ukupna_bez_pdv_popust'] -= $stavka->ukupna_bez_pdv_popust;
 
-                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv_popust;
+                $this->data['ukupna_sa_pdv'] -= $stavka->ukupna_sa_pdv;
+                $this->data['ukupna_sa_pdv_popust'] -= $stavka->ukupna_sa_pdv_popust;
 
                 $this->data['ukupan_storniran_pdv'] -= $stavka->pdv_iznos_ukupno;
             }
@@ -115,8 +121,8 @@ class Storniraj implements ShouldQueue
         $this->data['racun']->update([
             'ukupna_cijena_bez_pdv' => $this->data['ukupna_bez_pdv'],
             'ukupna_cijena_sa_pdv' => $this->data['ukupna_sa_pdv'],
-            'ukupna_cijena_bez_pdv_popust' => $this->data['ukupna_bez_pdv'],
-            'ukupna_cijena_sa_pdv_popust' => $this->data['ukupna_sa_pdv'],
+            'ukupna_cijena_bez_pdv_popust' => $this->data['ukupna_bez_pdv_popust'],
+            'ukupna_cijena_sa_pdv_popust' => $this->data['ukupna_sa_pdv_popust'],
             'ukupan_iznos_pdv' => $this->data['ukupan_storniran_pdv'],
         ]);
     }
@@ -287,7 +293,7 @@ class Storniraj implements ShouldQueue
                 'bu=' . $this->data['taxpayer']['BU'],
                 'cr=' . $this->data['taxpayer']['CR'],
                 'sw=' . $this->data['taxpayer']['SW'],
-                'prc=' . $this->data['ukupna_sa_pdv'],
+                'prc=' . $this->data['ukupna_sa_pdv_popust'],
             ]);
     }
 }

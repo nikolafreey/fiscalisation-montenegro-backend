@@ -131,7 +131,7 @@
                                     RR="{{ (bool) $stavka->popust_iznos }}"
                                     PB="-{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}"
                                     VR="{{ sprintf('%0.2f', $stavka->porez->stopa) }}"
-                                    VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
+                                    VA="-{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
                                     PA="-{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv) }}"
                                 />
                             @endforeach

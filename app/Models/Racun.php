@@ -45,7 +45,8 @@ class Racun extends Model
         'status',
         'partner_id',
         'oslobodjen_pdv',
-        'redni_broj'
+        'redni_broj',
+        'originalni_racun_id'
     ];
 
     public function scopeFilterByPermissions($query)
@@ -516,5 +517,9 @@ class Racun extends Model
     public function preduzece()
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
+    }
+
+    public function originalniRacun() {
+        return $this->belongsTo('App\Models\Racun', 'originalni_racun_id');
     }
 }
