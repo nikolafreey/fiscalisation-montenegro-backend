@@ -411,7 +411,7 @@ class RacunController extends Controller
             'status' => 'korektivni',
             'redni_broj' => $redniBroj,
             'broj_racuna' => implode('/', [$racun->poslovnaJedinica->kod_poslovnog_prostora, $redniBroj, now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
-            'korektivni_racun' => 1,
+            'korektivni_racun' => true,
             'korektivni_racun_vrsta' => 'CORRECTIVE',
             'originalni_racun_id' => $racun->id
         ]);

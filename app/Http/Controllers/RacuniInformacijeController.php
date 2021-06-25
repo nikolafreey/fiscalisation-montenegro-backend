@@ -56,21 +56,12 @@ class RacuniInformacijeController extends Controller
         $izlazniQueryAll = Racun::query();
         $izlazniQueryPoredjenje = Racun::query();
 
-        $izlazniPdv = $izlazniQueryAll->filterByPermissions()->where('tip_racuna', Racun::RACUN)->where('jikr', '!=', null)->get();
-        $izlazniQueryPdv = $izlazniQuery->filterByPermissions()->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->get();
+        $izlazniUkupnaSuma = $izlazniQueryAll->filterByPermissions()->where('tip_racuna', Racun::RACUN)->whereNotNull('jikr')->sum('ukupan_iznos_pdv');
+        $izdatiTrenutniMjesecSuma = $izlazniQuery->filterByPermissions()->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', Racun::RACUN)->sum('ukupna_cijena_sa_pdv_popust');
+
         $izlazniQueryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE deleted_at IS NULL AND datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
 
-        $izlazniUkupnaSuma = 0;
-        $izdatiTrenutniMjesecSuma = 0;
         $izlazniPoredjenjeSuma = 0;
-        foreach ($izlazniPdv as $racunPdv) {
-            $izlazniUkupnaSuma += $racunPdv->ukupan_iznos_pdv;
-        }
-
-        foreach ($izlazniQueryPdv as $racun) {
-            $izdatiTrenutniMjesecSuma += $racun->ukupna_cijena_sa_pdv_popust;
-        }
-
         foreach ($izlazniQueryPoredjenje as $racun) {
             $izlazniPoredjenjeSuma += $racun->ukupna_cijena_sa_pdv_popust;
         }
@@ -80,17 +71,13 @@ class RacuniInformacijeController extends Controller
         $ulazniQueryAll = UlazniRacun::query();
         $ulazniQueryPoredjenje = UlazniRacun::query();
 
-        $ulazniPdv = $ulazniQueryAll->where('tip_racuna', UlazniRacun::RACUN)->get();
+        $ulazniUkupnaSuma = $ulazniQueryAll->where('tip_racuna', UlazniRacun::RACUN)->sum('ukupan_iznos_pdv');
+
         $ulazniQueryPdv = $ulazniQuery->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->where('tip_racuna', UlazniRacun::RACUN)->get();
         $ulazniQueryPoredjenje = DB::select(DB::raw('SELECT * FROM `ulazni_racuni` WHERE datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
 
-        $ulazniUkupnaSuma = 0;
         $primljeniTrenutniMjesecSuma = 0;
         $ulazniPoredjenjeSuma = 0;
-        foreach ($ulazniPdv as $racunPdv) {
-            $ulazniUkupnaSuma += $racunPdv->ukupan_iznos_pdv;
-        }
-
         foreach ($ulazniQueryPdv as $racun) {
             $primljeniTrenutniMjesecSuma += $racun->ukupna_cijena_sa_pdv_popust;
         }
@@ -105,12 +92,12 @@ class RacuniInformacijeController extends Controller
             'naplaceno' => (int) $naplaceno,
             'ceka_se_uplata' => (int) $cekaSeUplata,
             'nije_moguce_naplatiti' => (int) $nijeMogucePlatiti,
-            'izdati_racuni' => $izdatiTrenutniMjesecSuma,
+            'izdati_racuni' => (int) $izdatiTrenutniMjesecSuma,
             'izlazni_poredjenje_pdv' => $izlazniPoredjenjeSuma,
             'primljeni_racuni' => $primljeniTrenutniMjesecSuma,
             'ulazni_poredjenje_pdv' => $ulazniPoredjenjeSuma,
-            'PDV_na_izlaznim_racunima' => $izlazniUkupnaSuma,
-            'PDV_na_ulaznim_racunima' => $ulazniUkupnaSuma,
+            'PDV_na_izlaznim_racunima' => (int) $izlazniUkupnaSuma,
+            'PDV_na_ulaznim_racunima' => (int) $ulazniUkupnaSuma,
             'najveci_kupci' => '',
             'najveci_duznici' => '',
         ];

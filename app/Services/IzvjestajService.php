@@ -38,13 +38,14 @@ class IzvjestajService
     {
         $racuni = $this->poslovnaJedinica
             ->racuni()
+            ->where('status', '!=', 'korektivni')
             ->when($tipRacuna, function ($q) use ($tipRacuna) {
                 if ($tipRacuna === 'offline') {
                     return $q->where('offline', true);
                 }
 
                 if ($tipRacuna === 'korektivni_racun') {
-                    return $q->where('korektivni_racun', true);
+                    return $q->where('status', 'storniran');
                 }
             })
             ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
@@ -95,7 +96,7 @@ class IzvjestajService
         $ukupanPromet = $zbir_prometa_po_stopi_21 + $zbir_prometa_po_stopi_7 + $zbir_prometa_po_stopi_0 + $oslobodjeniPromet;
 
 
-        $korektivniRacuni = $racuni->where('korektivni_racun', true);
+        $korektivniRacuni = $racuni->where('status', 'storniran');
 
         $brojKorektivnihRacuna = $korektivniRacuni->count();
         $ukupanPrometKorektivnihRacuna = 0;
