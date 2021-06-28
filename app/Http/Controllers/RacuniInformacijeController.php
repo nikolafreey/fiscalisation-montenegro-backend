@@ -94,24 +94,24 @@ class RacuniInformacijeController extends Controller
 
         // Najveci kupci
         $kupci = $preduzece->partneri()
-                    ->withCount(['racuni as suma_ukupna_cijena_sa_pdv' => function ($query) {
+                    ->withCount(['racuni as suma_ukupna_cijena_sa_pdv_popust' => function ($query) {
                         $query->where('status', 'placen')
                             ->where('jikr', '!=', null)
                             ->whereMonth('created_at', Carbon::now()->month)
-                            ->select(DB::raw('SUM(ukupna_cijena_sa_pdv) as suma_ukupna_cijena_sa_pdv'));
+                            ->select(DB::raw('SUM(ukupna_cijena_sa_pdv_popust) as suma_ukupna_cijena_sa_pdv_popust'));
                     }])
-                    ->orderByDesc('suma_ukupna_cijena_sa_pdv')
+                    ->orderByDesc('suma_ukupna_cijena_sa_pdv_popust')
                     ->take(3)
                     ->get();
 
         $duznici = $preduzece->partneri()
-            ->withCount(['racuni as suma_ukupna_cijena_sa_pdv' => function ($query) {
+            ->withCount(['racuni as suma_ukupna_cijena_sa_pdv_popust' => function ($query) {
                 $query->where('status', 'nijeplacen')
                     ->where('jikr', '!=', null)
                     ->whereMonth('created_at', Carbon::now()->month)
-                    ->select(DB::raw('SUM(ukupna_cijena_sa_pdv) as suma_ukupna_cijena_sa_pdv'));
+                    ->select(DB::raw('SUM(ukupna_cijena_sa_pdv_popust) as suma_ukupna_cijena_sa_pdv_popust'));
             }])
-            ->orderByDesc('suma_ukupna_cijena_sa_pdv')
+            ->orderByDesc('suma_ukupna_cijena_sa_pdv_popust')
             ->take(3)
             ->get();
 
@@ -119,7 +119,7 @@ class RacuniInformacijeController extends Controller
         foreach ($kupci as $kupac) {
             $kupciArray[] = [
                 'kupac' => ! $kupac->preduzece_tabela_id ? $kupac->fizicko_lice : $kupac->preduzece,
-                'cijena' => (int) $kupac->suma_ukupna_cijena_sa_pdv
+                'cijena' => (int) $kupac->suma_ukupna_cijena_sa_pdv_popust
             ];
         }
 
@@ -127,7 +127,7 @@ class RacuniInformacijeController extends Controller
         foreach ($duznici as $duznik) {
             $duzniciArray[] = [
                 'duznik' => ! $duznik->preduzece_tabela_id ? $duznik->fizicko_lice : $duznik->preduzece,
-                'cijena' => (int) $duznik->suma_ukupna_cijena_sa_pdv
+                'cijena' => (int) $duznik->suma_ukupna_cijena_sa_pdv_popust
             ];
         }
 
