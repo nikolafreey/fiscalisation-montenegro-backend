@@ -149,4 +149,9 @@ class Partner extends Model
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_tabela_id', 'id');
     }
+
+    public function racuni()
+    {
+        return $this->hasMany('App\Models\Racun', 'partner_id');
+    }
 }

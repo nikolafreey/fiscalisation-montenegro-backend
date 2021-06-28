@@ -86,7 +86,7 @@ class FizickoLice extends Model
         return $this->hasMany('App\Models\ZiroRacun', 'fizicko_lice_id');
     }
 
-    public function preduzeca()
+    public function preduzece()
     {
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
