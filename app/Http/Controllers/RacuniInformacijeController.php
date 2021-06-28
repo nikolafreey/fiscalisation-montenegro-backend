@@ -58,15 +58,12 @@ class RacuniInformacijeController extends Controller
         $izlazniQueryAll = Racun::query();
         $izlazniQueryPoredjenje = Racun::query();
 
-        $izlazniUkupnaSuma = $izlazniQueryAll
-                                ->filterByPermissions()
+        $izlazniUkupnaSuma = $izlazniQueryAll->filterByPermissions()
                                 ->where('tip_racuna', Racun::RACUN)->whereNotNull('jikr')
                                 ->sum('ukupan_iznos_pdv') ?? 0;
 
-        $izdatiTrenutniMjesecSuma = $izlazniQuery
-                                ->filterByPermissions()
-                                ->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")
-                                ->where('tip_racuna', Racun::RACUN)
+        $izdatiTrenutniMjesecSuma = $izlazniQuery->filterByPermissions()
+                                ->whereMonth('created_at', Carbon::now()->month)                                ->where('tip_racuna', Racun::RACUN)
                                 ->sum('ukupna_cijena_sa_pdv_popust') ?? 0;
 
         $izlazniQueryPoredjenje = DB::select(DB::raw('SELECT * FROM `racuni` WHERE deleted_at IS NULL AND datum_izdavanja BETWEEN "' . $prethodniMjesec . '" AND "' . $prviUMjesecu . '"'));
@@ -81,12 +78,10 @@ class RacuniInformacijeController extends Controller
         $ulazniQueryAll = UlazniRacun::query();
         $ulazniQueryPoredjenje = UlazniRacun::query();
 
-        $ulazniUkupnaSuma = $ulazniQueryAll
-                                ->where('tip_racuna', UlazniRacun::RACUN)
+        $ulazniUkupnaSuma = $ulazniQueryAll->where('tip_racuna', UlazniRacun::RACUN)
                                 ->sum('ukupan_iznos_pdv') ?? 0;
 
-        $primljeniTrenutniMjesecSuma = $ulazniQuery
-                            ->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")
+        $primljeniTrenutniMjesecSuma = $ulazniQuery->whereMonth('created_at', Carbon::now()->month)
                             ->where('tip_racuna', UlazniRacun::RACUN)
                             ->sum('ukupan_iznos_pdv') ?? 0;
 
@@ -101,6 +96,8 @@ class RacuniInformacijeController extends Controller
         $kupci = $preduzece->partneri()
                     ->withCount(['racuni as suma_ukupna_cijena_sa_pdv' => function ($query) {
                         $query->where('status', 'placen')
+                            ->where('jikr', '!=', null)
+                            ->whereMonth('created_at', Carbon::now()->month)
                             ->select(DB::raw('SUM(ukupna_cijena_sa_pdv) as suma_ukupna_cijena_sa_pdv'));
                     }])
                     ->orderByDesc('suma_ukupna_cijena_sa_pdv')
@@ -110,6 +107,8 @@ class RacuniInformacijeController extends Controller
         $duznici = $preduzece->partneri()
             ->withCount(['racuni as suma_ukupna_cijena_sa_pdv' => function ($query) {
                 $query->where('status', 'nijeplacen')
+                    ->where('jikr', '!=', null)
+                    ->whereMonth('created_at', Carbon::now()->month)
                     ->select(DB::raw('SUM(ukupna_cijena_sa_pdv) as suma_ukupna_cijena_sa_pdv'));
             }])
             ->orderByDesc('suma_ukupna_cijena_sa_pdv')
@@ -140,7 +139,7 @@ class RacuniInformacijeController extends Controller
             'nije_moguce_naplatiti' => (int) $nijeMogucePlatiti,
             'izdati_racuni' => (int) $izdatiTrenutniMjesecSuma,
             'izlazni_poredjenje_pdv' => $izlazniPoredjenjeSuma,
-            'primljeni_racuni' => $primljeniTrenutniMjesecSuma,
+            'primljeni_racuni' => (int) $primljeniTrenutniMjesecSuma,
             'ulazni_poredjenje_pdv' => $ulazniPoredjenjeSuma,
             'PDV_na_izlaznim_racunima' => (int) $izlazniUkupnaSuma,
             'PDV_na_ulaznim_racunima' => (int) $ulazniUkupnaSuma,
