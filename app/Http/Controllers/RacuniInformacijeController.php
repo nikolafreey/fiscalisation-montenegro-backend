@@ -98,121 +98,38 @@ class RacuniInformacijeController extends Controller
         }
 
         // Najveci kupci
-        $liceKupac1 = null;
-        $liceKupac2 = null;
-        $liceKupac3 = null;
-        $kupac1 = null;
-        $kupac2 = null;
-        $kupac3 = null;
+        $kupci = $preduzece->partneri()
+                    ->withCount(['racuni as suma_ukupna_cijena_sa_pdv' => function ($query) {
+                        $query->where('status', 'placen')
+                            ->select(DB::raw('SUM(ukupna_cijena_sa_pdv) as suma_ukupna_cijena_sa_pdv'));
+                    }])
+                    ->orderByDesc('suma_ukupna_cijena_sa_pdv')
+                    ->take(3)
+                    ->get();
 
-        $cijena1 = 0;
-        foreach ($preduzece->fizicka_lica_partneri as $partner) {
-            $sum1 = $partner->racuni()->where('status', 'placen')->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->sum('ukupna_cijena_sa_pdv_popust');
+        $duznici = $preduzece->partneri()
+            ->withCount(['racuni as suma_ukupna_cijena_sa_pdv' => function ($query) {
+                $query->where('status', 'nijeplacen')
+                    ->select(DB::raw('SUM(ukupna_cijena_sa_pdv) as suma_ukupna_cijena_sa_pdv'));
+            }])
+            ->orderByDesc('suma_ukupna_cijena_sa_pdv')
+            ->take(3)
+            ->get();
 
-            if ($cijena1 <= $sum1) {
-                $cijena1 = (int) $sum1;
-                $kupac1 = $partner->fizicko_lice;
-            }
-        }
-
-        $liceKupac1 = [
-            'lice' => $kupac1,
-            'cijena' => $cijena1
-        ];
-
-        if ($preduzece->fizicka_lica_partneri()->where('fizicko_lice_id', '!=', $kupac1->id)->exists()) {
-
-            $cijena2 = 0;
-            foreach ($preduzece->fizicka_lica_partneri->where('fizicko_lice_id', '!=', $kupac1->id) as $partner) {
-                $sum2 = $partner->racuni()->where('status', 'placen')->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->sum('ukupna_cijena_sa_pdv_popust');
-
-                if ($cijena2 <= $sum2) {
-                    $cijena2 = (int) $sum2;
-                    $kupac2 = $partner->fizicko_lice;
-                }
-            }
-
-            $liceKupac2 = [
-                'lice' => $kupac2,
-                'cijena' => $cijena2
+        $kupciArray = [];
+        foreach ($kupci as $kupac) {
+            $kupciArray[] = [
+                'kupac' => ! $kupac->preduzece_tabela_id ? $kupac->fizicko_lice : $kupac->preduzece,
+                'cijena' => (int) $kupac->suma_ukupna_cijena_sa_pdv
             ];
-
-            if ($preduzece->fizicka_lica_partneri()->where('fizicko_lice_id', '!=', $kupac1->id)->where('fizicko_lice_id', '!=', $kupac2->id)->exists()) {
-
-                $cijena3 = 0;
-                foreach ($preduzece->fizicka_lica_partneri->where('fizicko_lice_id', '!=', $kupac1->id)->where('fizicko_lice_id', '!=', $kupac2->id) as $partner) {
-                    $sum3 = $partner->racuni()->where('status', 'placen')->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->sum('ukupna_cijena_sa_pdv_popust');
-
-                    if ($cijena3 <= $sum3) {
-                        $cijena3 = (int) $sum3;
-                        $kupac3 = $partner->fizicko_lice;
-                    }
-                }
-
-                $liceKupac3 = [
-                    'lice' => $kupac3,
-                    'cijena' => $cijena3
-                ];
-            }
         }
 
-        // Najveci duznici
-        $liceDuznik1 = null;
-        $liceDuznik2 = null;
-        $liceDuznik3 = null;
-        $duznik1 = null;
-        $duznik2 = null;
-        $duznik3 = null;
-
-        $dug1 = 0;
-        foreach ($preduzece->fizicka_lica_partneri as $partner) {
-            $sum1 = $partner->racuni()->where('status', 'nijeplacen')->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->sum('ukupna_cijena_sa_pdv_popust');
-
-            if ($dug1 <= $sum1) {
-                $dug1 = (int) $sum1;
-                $duznik1 = $partner->fizicko_lice;
-            }
-        }
-
-        $liceDuznik1 = [
-            'lice' => $duznik1,
-            'dug' => $dug1
-        ];
-
-        if ($preduzece->fizicka_lica_partneri()->where('fizicko_lice_id', '!=', $duznik1->id)->exists()) {
-
-            $dug2 = 0;
-            foreach ($preduzece->fizicka_lica_partneri->where('fizicko_lice_id', '!=', $duznik1->id) as $partner) {
-                $sum2 = $partner->racuni()->where('status', 'nijeplacen')->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->sum('ukupna_cijena_sa_pdv_popust');
-
-                if ($dug2 <= $sum2) {
-                    $dug2 = (int) $sum2;
-                    $duznik2 = $partner->fizicko_lice;
-                }
-            }
-
-            $liceDuznik2 = [
-                'lice' => $duznik2,
-                'dug' => $dug2
+        $duzniciArray = [];
+        foreach ($duznici as $duznik) {
+            $duzniciArray[] = [
+                'duznik' => ! $duznik->preduzece_tabela_id ? $duznik->fizicko_lice : $duznik->preduzece,
+                'cijena' => (int) $duznik->suma_ukupna_cijena_sa_pdv
             ];
-
-            if ($preduzece->fizicka_lica_partneri()->where('fizicko_lice_id', '!=', $duznik1->id)->where('fizicko_lice_id', '!=', $duznik2->id)->exists()) {
-
-                $dug3 = 0;
-                foreach ($preduzece->fizicka_lica_partneri->where('fizicko_lice_id', '!=', $duznik1->id)->where('fizicko_lice_id', '!=', $duznik2->id) as $partner) {
-                    $sum3 = $partner->racuni()->where('status', 'nijeplacen')->where('datum_izdavanja', '>=', "{$godina}-{$mjesec}-1 23:59:59")->sum('ukupna_cijena_sa_pdv_popust');
-
-                    if ($dug3 <= $sum3) {
-                        $dug3 = (int) $sum3;
-                        $duznik3 = $partner->fizicko_lice;
-                    }
-                }
-
-                $liceDuznik3 = [
-                    'lice' => $duznik3,
-                    'dug' => $dug3
-                ];
-            }
         }
 
         $informacije = [
@@ -227,8 +144,8 @@ class RacuniInformacijeController extends Controller
             'ulazni_poredjenje_pdv' => $ulazniPoredjenjeSuma,
             'PDV_na_izlaznim_racunima' => (int) $izlazniUkupnaSuma,
             'PDV_na_ulaznim_racunima' => (int) $ulazniUkupnaSuma,
-            'najveci_kupci' => [$liceKupac1, $liceKupac2, $liceKupac3],
-            'najveci_duznici' => [$liceDuznik1, $liceDuznik2, $liceDuznik3]
+            'najveci_kupci' => $kupciArray,
+            'najveci_duznici' => $duzniciArray
         ];
 
         return response()->json($informacije);
