@@ -165,7 +165,7 @@ class Racun extends Model
 
     public static function izracunajUkupnuCijenu($query)
     {
-        $racuni = $query->get();
+        $racuni = $query->where('status', '!=', 'storniran')->where('korektivni_racun', 0)->get();
         $suma = 0;
 
         foreach ($racuni as $racun) {
@@ -519,7 +519,8 @@ class Racun extends Model
         return $this->belongsTo('App\Models\Preduzece', 'preduzece_id');
     }
 
-    public function originalniRacun() {
+    public function originalniRacun()
+    {
         return $this->belongsTo('App\Models\Racun', 'originalni_racun_id');
     }
 }
