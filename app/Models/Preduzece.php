@@ -149,9 +149,14 @@ class Preduzece extends Model
         return $this->hasMany('App\Models\FizickoLice', 'preduzece_id');
     }
 
-    public function partneri()
+    public function partner()
     {
         return $this->hasOne('App\Models\Partner', 'preduzece_tabela_id');
+    }
+
+    public function partneri()
+    {
+        return $this->hasMany('App\Models\Partner', 'preduzece_id');
     }
 
     public function ziro_racuni()
@@ -192,6 +197,11 @@ class Preduzece extends Model
     public function racuni()
     {
         return $this->hasMany('App\Models\Racun', 'preduzece_id');
+    }
+
+    public function ulazni_racuni()
+    {
+        return $this->hasMany('App\Models\UlazniRacun', 'preduzece_id');
     }
 
     public function dokumenti()

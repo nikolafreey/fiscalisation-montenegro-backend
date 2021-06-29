@@ -143,9 +143,12 @@ class Fiskalizuj implements ShouldQueue
                 'body' => $signedXML,
             ]);
 
+        $qr = $this->generateQRCode();
+
         $this->data['racun']->update([
             'jikr' => $this->parseJikrFromXmlResponse($response),
-            'qr_url' => $this->generateQRCode(),
+            'qr_url' => $qr,
+            'qr_code' => $qr
         ]);
 
         return true;

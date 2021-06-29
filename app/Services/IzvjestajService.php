@@ -38,13 +38,11 @@ class IzvjestajService
     {
         $racuni = $this->poslovnaJedinica
             ->racuni()
+            ->where('status', '!=', 'korektivni')
+            ->where('status', '!=', 'storniran')
             ->when($tipRacuna, function ($q) use ($tipRacuna) {
                 if ($tipRacuna === 'offline') {
                     return $q->where('offline', true);
-                }
-
-                if ($tipRacuna === 'korektivni_racun') {
-                    return $q->where('korektivni_racun', true);
                 }
             })
             ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
@@ -95,19 +93,15 @@ class IzvjestajService
         $ukupanPromet = $zbir_prometa_po_stopi_21 + $zbir_prometa_po_stopi_7 + $zbir_prometa_po_stopi_0 + $oslobodjeniPromet;
 
 
-        $korektivniRacuni = $racuni->where('korektivni_racun', true);
+        $korektivniRacuni = $this->poslovnaJedinica
+                            ->racuni()
+                            ->where('status', 'storniran')
+                            ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
+                            ->get();
 
         $brojKorektivnihRacuna = $korektivniRacuni->count();
-        $ukupanPrometKorektivnihRacuna = 0;
-        $ukupanPorezKorektivnihRacuna = 0;
-
-        foreach ($korektivniRacuni as $racun) {
-            foreach($racun->stavke as $stavka){
-                $ukupanPrometKorektivnihRacuna += $stavka->ukupna_bez_pdv_popust;
-                $ukupanPorezKorektivnihRacuna += $stavka->pdv_iznos_ukupno;
-            }
-        }
-
+        $ukupanPrometKorektivnihRacuna = $korektivniRacuni->sum('ukupna_bez_pdv_popust');
+        $ukupanPorezKorektivnihRacuna = $korektivniRacuni->sum('pdv_iznos_ukupno');
 
         $gotovinskiRacuni = $racuni->where('vrsta_racuna', 'gotovinski');
         $bezgotovinskiRacuni = $racuni->where('vrsta_racuna', 'bezgotovinski');
@@ -206,39 +200,39 @@ class IzvjestajService
         }
 
         foreach ($bezgotovinskiRacuni as $racun) {
-            if($racun->nacin_placanja === 'BUSINES') {
+            if($racun->nacin_placanja === 'BUSSINESS') {
                 foreach($racun->stavke as $stavka){
                     $ukupanPrometBezgotovinskihBusinesscardRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'CARD') {
-                foreach($racun->stavke as $stavka){
+                foreach($racun->stavke as $stavka) {
                     $ukupanPrometGotovinskihCardRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'ORDER') {
-                foreach($racun->stavke as $stavka){
+                foreach($racun->stavke as $stavka) {
                     $ukupanPrometGotovinskihOrderRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
 
             if($racun->nacin_placanja === 'OTHER-CASH') {
-                foreach($racun->stavke as $stavka){
+                foreach($racun->stavke as $stavka) {
                     $ukupanPrometGotovinskihOthercashRacuna += $stavka->ukupna_bez_pdv_popust;
                 }
             }
         }
 
         foreach ($gotovinskiRacuni as $racun) {
-            foreach($racun->stavke as $stavka){
+            foreach($racun->stavke as $stavka) {
                 $ukupanPrometGotovinskihRacuna += $stavka->ukupna_bez_pdv_popust;
             }
         }
 
         foreach ($bezgotovinskiRacuni as $racun) {
-            foreach($racun->stavke as $stavka){
+            foreach($racun->stavke as $stavka) {
                 $ukupanPrometBezgotovinskihRacuna += $stavka->ukupna_bez_pdv_popust;
             }
         }
@@ -274,7 +268,8 @@ class IzvjestajService
 
         $ukupanDepozit = 0;
         $ukupanWithdraw = 0;
-        foreach($this->poslovnaJedinica->depozitWithdraw as $depozitWithdraw){
+
+        foreach($this->poslovnaJedinica->depozitWithdraw->whereBetween('created_at', [$this->pocetakDana, $this->krajDana]) as $depozitWithdraw){
             $ukupanDepozit += $depozitWithdraw->iznos_depozit;
             $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
         }
@@ -354,7 +349,7 @@ class IzvjestajService
                     'other' => $ukupanPrometBezgotovinskihOtherRacuna
                 ],
 
-                'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
@@ -363,7 +358,7 @@ class IzvjestajService
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-                'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url', 'qr_code')->toArray()
             ];
         }
 
@@ -433,7 +428,7 @@ class IzvjestajService
                     'other' => $ukupanPrometBezgotovinskihOtherRacuna
                 ],
 
-                'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
@@ -442,7 +437,7 @@ class IzvjestajService
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-                'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray(),
+                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url', 'qr_code')->toArray(),
 
                 'redni_broj_fiskalnog_dana' => $this->pocetakDana,
             ];
@@ -513,7 +508,7 @@ class IzvjestajService
                 'other' => $ukupanPrometBezgotovinskihOtherRacuna
             ],
 
-            'withdraw' => $this->poslovnaJedinica->depozitWithdraw->map->only('id', 'iznos_withdraw')->toArray(),
+            'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
             'inicijalni_gotovinski_depozit' => $ukupanDepozit,
             'ukupan_promet' => $ukupanPromet,
@@ -522,7 +517,7 @@ class IzvjestajService
             'ukupno_withdraw' => $ukupanWithdraw,
             'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-            'racuni_kod' => $racuni->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+            'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url', 'qr_code')->toArray()
         ];
     }
 
@@ -570,12 +565,26 @@ class IzvjestajService
 
     public function getRacuni($withStavke = false, $withDepozitWithdraw = false)
     {
-        $racuni = $this->poslovnaJedinica
-            ->racuni()
-            ->when($withStavke, function ($q) {
-                return $q->with('stavke');
-            })
-            ->get();
+        if ($this->tip === 'Periodični analitički pregled (izvještaj) – elektronski žurnal') {
+            $racuni = $this->poslovnaJedinica
+                ->racuni()
+                ->where('status', '!=', 'korektivni')
+                ->where('status', '!=', 'storniran')
+                ->when($withStavke, function ($q) {
+                    return $q->with('stavke');
+                })
+                ->get();
+        } else {
+            $racuni = $this->poslovnaJedinica
+                ->racuni()
+                ->where('status', '!=', 'korektivni')
+                ->where('status', '!=', 'storniran')
+                ->where('jikr', null)
+                ->when($withStavke, function ($q) {
+                    return $q->with('stavke');
+                })
+                ->get();
+        }
 
         if ($withDepozitWithdraw) {
             $racuni = $racuni->merge($this->poslovnaJedinica->depozitWithdraw);

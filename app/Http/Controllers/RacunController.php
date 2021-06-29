@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Api\DijeljenjeRacunaRequest;
-use App\Http\Requests\Api\StoreRacun;
-use App\Jobs\Fiskalizuj;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Grupa;
+use App\Models\Racun;
+use App\Models\Invite;
+use App\Models\Usluga;
 use App\Jobs\Storniraj;
+use App\Models\Partner;
+use App\Jobs\Fiskalizuj;
+use App\Models\Preduzece;
 use App\Models\AtributRobe;
+use App\Models\FizickoLice;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use ScoutElastic\Searchable;
 use App\Models\DepozitWithdraw;
 use App\Models\FailedJobsCustom;
-use App\Models\FizickoLice;
-use App\Models\Grupa;
-use App\Models\Invite;
-use App\Models\Partner;
-use App\Models\Preduzece;
-use App\Models\Racun;
-use App\Models\User;
-use App\Notifications\PodijeliRacunGostu;
-use App\Notifications\PodijeliRacunKorisniku;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Api\StoreRacun;
+use App\Notifications\PodijeliRacunGostu;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Str;
-use ScoutElastic\Searchable;
+use App\Notifications\PodijeliRacunKorisniku;
+use App\Http\Requests\Api\DijeljenjeRacunaRequest;
 
 class RacunController extends Controller
 {
@@ -307,9 +308,12 @@ class RacunController extends Controller
                     }
                     $racun->partner_id = $partner->id;
                 }
-
                 $racun->status = 'placen';
             } else {
+                $racun->partner_id = $request->partner_id;
+            }
+
+            if ($request->partner_id) {
                 $racun->partner_id = $request->partner_id;
             }
 
@@ -372,6 +376,12 @@ class RacunController extends Controller
             $racun->izracunajUkupneCijene();
             $racun->izracunajPoreze();
 
+            if ($racun->fresh()->ukupna_cijena_sa_pdv_popust == 0) {
+                $racun->delete();
+
+                return response()->json('Iznos računa ne može biti 0 eura!', 400);
+            }
+
             return $racun;
         });
 
@@ -394,6 +404,8 @@ class RacunController extends Controller
             'status' => 'storniran'
         ]);
 
+        $racun->stavke()->delete();
+
         $redniBroj = Racun::izracunajRedniBrojRacuna();
 
         $storniranRacun = $racun->replicate()->fill([
@@ -401,7 +413,7 @@ class RacunController extends Controller
             'status' => 'korektivni',
             'redni_broj' => $redniBroj,
             'broj_racuna' => implode('/', [$racun->poslovnaJedinica->kod_poslovnog_prostora, $redniBroj, now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
-            'korektivni_racun' => 1,
+            'korektivni_racun' => true,
             'korektivni_racun_vrsta' => 'CORRECTIVE',
             'originalni_racun_id' => $racun->id
         ]);

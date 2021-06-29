@@ -1,30 +1,26 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BlogCategoryController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\DokumentController;
-use App\Http\Controllers\DozvolaController;
-use App\Http\Controllers\InvitesController;
-use App\Http\Controllers\KategorijaDokumentaController;
-use App\Http\Controllers\OdaberiPoslovnuJedinicuController;
-use App\Http\Controllers\OdaberiPreduzeceController;
-use App\Http\Controllers\PodesavanjeController;
-use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
-use App\Http\Controllers\UploadController;
-use App\Models\KategorijaDokumenta;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\Sanctum;
+use App\Models\DepozitWithdraw;
+use App\Models\KategorijaDokumenta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\RobaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GrupaController;
 use App\Http\Controllers\ModulController;
 use App\Http\Controllers\PorezController;
 use App\Http\Controllers\RacunController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UslugaController;
+use App\Http\Controllers\DozvolaController;
+use App\Http\Controllers\InvitesController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\DokumentController;
 use App\Http\Controllers\IzvjestajController;
 use App\Http\Controllers\PredracunController;
 use App\Http\Controllers\PreduzeceController;
@@ -32,9 +28,12 @@ use App\Http\Controllers\ZiroRacunController;
 use App\Http\Controllers\CijenaRobeController;
 use App\Http\Controllers\DjelatnostController;
 use App\Http\Controllers\KategorijaController;
+use App\Http\Controllers\MobileAuthController;
 use App\Http\Controllers\AtributRobeController;
 use App\Http\Controllers\FizickoLiceController;
+use App\Http\Controllers\PodesavanjeController;
 use App\Http\Controllers\UlazniRacunController;
+use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\TipKorisnikaController;
 use App\Http\Controllers\JedinicaMjereController;
 use App\Http\Controllers\OvlascenoLiceController;
@@ -42,12 +41,14 @@ use App\Http\Controllers\KategorijaRobeController;
 use App\Http\Controllers\TipoviAtributaController;
 use App\Http\Controllers\DepozitWithdrawController;
 use App\Http\Controllers\ProizvodjacRobeController;
+use App\Http\Controllers\OdaberiPreduzeceController;
 use App\Http\Controllers\PoslovnaJedinicaController;
 use App\Http\Controllers\PodKategorijaRobeController;
-use App\Http\Controllers\MobileAuthController;
-use App\Models\DepozitWithdraw;
+use App\Http\Controllers\RacuniInformacijeController;
+use App\Http\Controllers\KategorijaDokumentaController;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
-use Laravel\Sanctum\Sanctum;
+use App\Http\Controllers\OdaberiPoslovnuJedinicuController;
+use App\Http\Controllers\UlogeKorisnikaPreduzecaController;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -173,6 +174,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('nefiskalizovani-racuni', [RacunController::class, 'nefiskalizovaniRacuni']);
             Route::post('nefiskalizovani-racuni/{racun}', [RacunController::class, 'fiskalizujRacun']);
             Route::post('storniraj-racun/{racun}', [RacunController::class, 'stornirajRacun']);
+
+            Route::apiResource('racuni-informacije', RacuniInformacijeController::class)->only('index');
 
             Route::apiResource('ulazni-racuni', UlazniRacunController::class)->parameters([
                 'ulazni_racuni' => 'ulazni_racun'
