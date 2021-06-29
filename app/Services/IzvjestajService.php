@@ -268,7 +268,8 @@ class IzvjestajService
 
         $ukupanDepozit = 0;
         $ukupanWithdraw = 0;
-        foreach($this->poslovnaJedinica->depozitWithdraw as $depozitWithdraw){
+
+        foreach($this->poslovnaJedinica->depozitWithdraw->whereBetween('created_at', [$this->pocetakDana, $this->krajDana]) as $depozitWithdraw){
             $ukupanDepozit += $depozitWithdraw->iznos_depozit;
             $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
         }
