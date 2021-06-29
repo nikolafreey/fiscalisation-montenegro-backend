@@ -277,7 +277,7 @@ class IzvjestajService
         $ukupanDepozit = 0;
         $ukupanWithdraw = 0;
 
-        foreach($this->poslovnaJedinica->depozitWithdraw->whereBetween('created_at', [$this->pocetakDana, $this->krajDana]) as $depozitWithdraw){
+        foreach($this->poslovnaJedinica->depozitWithdraw->where('fiskalizovan', true)->whereBetween('created_at', [$this->pocetakDana, $this->krajDana]) as $depozitWithdraw){
             $ukupanDepozit += $depozitWithdraw->iznos_depozit;
             $ukupanWithdraw += $depozitWithdraw->iznos_withdraw;
         }
@@ -357,7 +357,7 @@ class IzvjestajService
                     'other' => $ukupanPrometBezgotovinskihOtherRacuna
                 ],
 
-                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])->where('fiskalizovan', true)->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
@@ -436,7 +436,7 @@ class IzvjestajService
                     'other' => $ukupanPrometBezgotovinskihOtherRacuna
                 ],
 
-                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
+                'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])->where('fiskalizovan', true)->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
@@ -516,7 +516,7 @@ class IzvjestajService
                 'other' => $ukupanPrometBezgotovinskihOtherRacuna
             ],
 
-            'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
+            'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])->where('fiskalizovan', true)->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
             'inicijalni_gotovinski_depozit' => $ukupanDepozit,
             'ukupan_promet' => $ukupanPromet,
