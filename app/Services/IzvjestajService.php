@@ -356,7 +356,7 @@ class IzvjestajService
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url', 'qr_code')->toArray()
             ];
         }
 
@@ -435,7 +435,7 @@ class IzvjestajService
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray(),
+                'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url', 'qr_code')->toArray(),
 
                 'redni_broj_fiskalnog_dana' => $this->pocetakDana,
             ];
@@ -506,7 +506,7 @@ class IzvjestajService
                 'other' => $ukupanPrometBezgotovinskihOtherRacuna
             ],
 
-            'withdraw' => $this->poslovnaJedinica()->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
+            'withdraw' => $this->poslovnaJedinica->depozitWithdraw()->whereNull('iznos_depozit')->get()->map->only('id', 'iznos_withdraw')->toArray(),
 
             'inicijalni_gotovinski_depozit' => $ukupanDepozit,
             'ukupan_promet' => $ukupanPromet,
@@ -515,7 +515,7 @@ class IzvjestajService
             'ukupno_withdraw' => $ukupanWithdraw,
             'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 
-            'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url')->toArray()
+            'racuni_kod' => $racuni->where('status', '!=', 'storniran')->map->only('kod_operatera', 'broj_racuna', 'jikr', 'ikof', 'qr_url', 'qr_code')->toArray()
         ];
     }
 
