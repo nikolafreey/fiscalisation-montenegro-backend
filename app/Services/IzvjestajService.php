@@ -157,6 +157,12 @@ class IzvjestajService
                 }
             }
 
+            if($racun->nacin_placanja === 'ACCOUNT') {
+                foreach($racun->stavke as $stavka){
+                    $ukupanPrometBezgotovinskihAccountRacuna += $stavka->ukupna_sa_pdv_popust;
+                }
+            }
+
             if($racun->nacin_placanja === 'SVOUCHER') {
                 foreach($racun->stavke as $stavka){
                     $ukupanPrometBezgotovinskihSvoucherRacuna += $stavka->ukupna_sa_pdv_popust;
@@ -218,6 +224,7 @@ class IzvjestajService
                     $ukupanPrometGotovinskihOrderRacuna += $stavka->ukupna_sa_pdv_popust;
                 }
             }
+
 
             if($racun->nacin_placanja === 'OTHER-CASH') {
                 foreach($racun->stavke as $stavka) {
