@@ -21,7 +21,7 @@
             TCRCode="{{ $taxpayer['CR'] }}"
             IsIssuerInVAT="{{ $pdv_obveznik }}"
             TotPriceWoVAT="{{ sprintf('%0.2f', $ukupna_bez_pdv_popust) }}"
-            TotVATAmt="-{{ sprintf('%0.2f', $ukupan_storniran_pdv) }}"
+            TotVATAmt="{{ sprintf('%0.2f', $ukupan_storniran_pdv) }}"
             TotPrice="{{ sprintf('%0.2f', $ukupna_sa_pdv_popust) }}"
             OperatorCode="{{ $taxpayer['OP'] }}"
             BusinUnitCode="{{ $taxpayer['BU'] }}"
