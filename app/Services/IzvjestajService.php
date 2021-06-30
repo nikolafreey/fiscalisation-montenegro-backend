@@ -13,8 +13,8 @@ class IzvjestajService
     {
         $this->poslovnaJedinica = $poslovnaJedinica;
         $this->tip = $tip;
-        $this->pocetakDana = $pocetakDana;
-        $this->krajDana = $krajDana;
+        $this->pocetakDana = $pocetakDana->format('Y-m-d H:i:s');
+        $this->krajDana = $krajDana->format('Y-m-d H:i:s');
     }
 
     public function getPoreskiObveznikInformacije()
