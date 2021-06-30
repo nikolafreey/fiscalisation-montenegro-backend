@@ -96,13 +96,13 @@ class IzvjestajService
 
         $korektivniRacuni = $this->poslovnaJedinica
                             ->racuni()
-                            ->where('status', 'storniran')
+                            ->where('status', 'korektivni')
                             ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
                             ->get();
 
         $brojKorektivnihRacuna = $korektivniRacuni->count();
-        $ukupanPrometKorektivnihRacuna = $korektivniRacuni->sum('ukupna_bez_pdv_popust');
-        $ukupanPorezKorektivnihRacuna = $korektivniRacuni->sum('pdv_iznos_ukupno');
+        $ukupanPrometKorektivnihRacuna = $korektivniRacuni->sum('ukupna_cijena_sa_pdv_popust') * (-1);
+        $ukupanPorezKorektivnihRacuna = $korektivniRacuni->sum('ukupan_iznos_pdv') * (-1);
 
         $gotovinskiRacuni = $racuni->where('vrsta_racuna', 'gotovinski');
         $bezgotovinskiRacuni = $racuni->where('vrsta_racuna', 'bezgotovinski');
@@ -537,6 +537,8 @@ class IzvjestajService
 
             $racuni = $this->poslovnaJedinica
                 ->racuni()
+                ->where('status', '!=', 'korektivni')
+                ->where('status', '!=', 'storniran')
                 ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
                 ->get();
 
@@ -597,7 +599,7 @@ class IzvjestajService
         }
 
         if ($withDepozitWithdraw) {
-            $racuni = $racuni->merge($this->poslovnaJedinica->depozitWithdraw);
+            $racuni = $racuni->merge($this->poslovnaJedinica->depozitWithdraw->where('fiskalizovan', true)->whereBetween('created_at', [$this->pocetakDana, $this->krajDana]));
         }
 
         return [
