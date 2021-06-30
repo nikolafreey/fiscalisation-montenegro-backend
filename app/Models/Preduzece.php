@@ -149,12 +149,12 @@ class Preduzece extends Model
         return $this->hasMany('App\Models\FizickoLice', 'preduzece_id');
     }
 
-    public function partneri()
+    public function partner()
     {
         return $this->hasOne('App\Models\Partner', 'preduzece_tabela_id');
     }
 
-    public function fizicka_lica_partneri()
+    public function partneri()
     {
         return $this->hasMany('App\Models\Partner', 'preduzece_id');
     }

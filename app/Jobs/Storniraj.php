@@ -80,11 +80,11 @@ class Storniraj implements ShouldQueue
             'ikof' => $ikof,
             'datum' => $datum->toIso8601String(),
             'odabraneStavke' => $odabraneStavke,
-            'ukupna_bez_pdv' => $racun->ukupna_cijena_bez_pdv,
-            'ukupna_bez_pdv_popust' => $racun->ukupna_cijena_bez_pdv_popust,
-            'ukupna_sa_pdv' => $racun->ukupna_cijena_sa_pdv,
-            'ukupna_sa_pdv_popust' => $racun->ukupna_cijena_sa_pdv_popust,
-            'ukupan_storniran_pdv' => $racun->ukupan_iznos_pdv,
+            'ukupna_bez_pdv' => "0",
+            'ukupna_bez_pdv_popust' => "0",
+            'ukupna_sa_pdv' => "0",
+            'ukupna_sa_pdv_popust' => "0",
+            'ukupan_storniran_pdv' => "0",
             'stavke' => $stavke
         ];
 
@@ -293,7 +293,7 @@ class Storniraj implements ShouldQueue
                 'bu=' . $this->data['taxpayer']['BU'],
                 'cr=' . $this->data['taxpayer']['CR'],
                 'sw=' . $this->data['taxpayer']['SW'],
-                'prc=' . $this->data['ukupna_sa_pdv_popust'],
+                'prc=' . sprintf('%0.4f', $this->data['racun']['ukupna_cijena_sa_pdv_popust']),
             ]);
     }
 }

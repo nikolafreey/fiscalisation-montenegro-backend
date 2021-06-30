@@ -70,6 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('mobilna-posljednja-verzija', function (Request $request) {
         return response()->json([
             "android" => env("ANDROID_VERZIJA"),
+            "android_build" => env("ANDROID_BUILD"),
             "android_apk" => url(env("ANDROID_APK")),
             "ios" => env("IOS_VERZIJA")
         ]);

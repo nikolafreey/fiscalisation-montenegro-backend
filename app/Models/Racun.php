@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 use ScoutElastic\Searchable;
 use App\Traits\ImaAktivnost;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Racun extends Model
 {
@@ -46,7 +50,8 @@ class Racun extends Model
         'partner_id',
         'oslobodjen_pdv',
         'redni_broj',
-        'originalni_racun_id'
+        'originalni_racun_id',
+        'qr_code'
     ];
 
     public function scopeFilterByPermissions($query)
@@ -482,6 +487,21 @@ class Racun extends Model
         }
 
         return $redni_broj;
+    }
+
+    public function setQrcodeAttribute($value)
+    {
+        if (!Storage::exists('public/qr_codes')) {
+            Storage::makeDirectory('public/qr_codes');
+        }
+
+        $name = Str::random(40);
+
+        $qr = QrCode::format('png')
+            ->size(150)
+            ->generate($value, '../storage/app/public/qr_codes/' . $name . '.png');
+
+        $this->attributes['qr_code'] = 'qr_codes/' . $name . '.png';
     }
 
     public function user()
