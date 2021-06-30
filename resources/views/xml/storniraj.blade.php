@@ -54,12 +54,17 @@
                     IICSignature="{{ $IICData['signature'] }}"
                     IsReverseCharge="false"
                 >
+                <CorrectiveInv
+                    IICRef="{{ $ikof }}"
+                    IssueDateTime="{{ $datum }}"
+                    Type="CORRECTIVE"
+                ></CorrectiveInv>
                     @endif
 
                     <PayMethods>
                         <PayMethod
                             Type="{{ $nacin_placanja ?? 'BANKNOTE' }}"
-                            Amt="{{ sprintf('%0.2f', $ukupna_sa_pdv) }}"
+                            Amt="{{ sprintf('%0.2f', $ukupna_sa_pdv_popust) }}"
                         />
                     </PayMethods>
 
