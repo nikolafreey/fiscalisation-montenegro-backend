@@ -94,15 +94,15 @@
                         C="{{ $stavka->bar_code }}"
                         U="{{ $stavka->jedinica_mjere->naziv }}"
                         Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
-                        UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
-                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv_popust) }}"
+                        UPB="{{ sprintf('%0.4f', $stavka->jedinicna_cijena_bez_pdv) }}"
+                        UPA="{{ sprintf('%0.4f', $stavka->cijena_sa_pdv_popust) }}"
                         R="{{ sprintf('%0.2f', $popust) }}"
                         RR="true"  {{-- osnovica za izračune je jedinična cijena bez PDV-a i rabata --}}
                         {{-- PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}" --}}
-                        PB="{{ sprintf('%0.2f', $stavka->ukupna_bez_pdv_popust) }}"
+                        PB="{{ sprintf('%0.4f', $stavka->ukupna_bez_pdv_popust) }}"
                         VR="{{ sprintf('%0.2f', $stavka->porez->stopa * 100) }}"
-                        VA="{{ sprintf('%0.2f', round($stavka->pdv_iznos_ukupno, 2)) }}"
-                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popust) }}"
+                        VA="{{ sprintf('%0.4f', round($stavka->pdv_iznos_ukupno, 2)) }}"
+                        PA="{{ sprintf('%0.4f', $stavka->ukupna_sa_pdv_popust) }}"
                     />
                 @else
                     <I
@@ -110,14 +110,14 @@
                         C="{{ $stavka->bar_code }}"
                         U="{{ $stavka->jedinica_mjere->naziv }}"
                         Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
-                        UPB="{{ sprintf('%0.2f', $stavka->jedinicna_cijena_bez_pdv) }}"
-                        UPA="{{ sprintf('%0.2f', $stavka->cijena_sa_pdv_popust) }}"
+                        UPB="{{ sprintf('%0.4f', $stavka->jedinicna_cijena_bez_pdv) }}"
+                        UPA="{{ sprintf('%0.4f', $stavka->cijena_sa_pdv_popust) }}"
                         R="{{ sprintf('%0.2f', $popust) }}"
                         RR="true"  {{-- osnovica za izračune je jedinična cijena bez PDV-a i rabata --}}
                         {{-- PB="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv - $stavka->pdv_iznos * $stavka->kolicina) }}" --}}
-                        PB="{{ sprintf('%0.2f', $stavka->ukupna_bez_pdv_popust) }}"
+                        PB="{{ sprintf('%0.4f', $stavka->ukupna_bez_pdv_popust) }}"
                         EX="VAT_CL17"
-                        PA="{{ sprintf('%0.2f', $stavka->ukupna_sa_pdv_popust) }}"
+                        PA="{{ sprintf('%0.4f', $stavka->ukupna_sa_pdv_popust) }}"
                     />
                 @endif
             @endforeach
