@@ -131,7 +131,13 @@ class RacuniInformacijeController extends Controller
             ];
         }
 
+        $sertifikatValidan = false;
+        if ($preduzece->sertifikat !== null || $preduzece->pecat !== null) {
+            $sertifikatValidan = true;
+        }
+
         $informacije = [
+            'preduzece_naziv' => $preduzece->kratki_naziv,
             'blagajna' => (int) $blagajna,
             'depozit' => $depozit,
             'naplaceno' => (int) $naplaceno,
@@ -144,7 +150,8 @@ class RacuniInformacijeController extends Controller
             'PDV_na_izlaznim_racunima' => (int) $izlazniUkupnaSuma,
             'PDV_na_ulaznim_racunima' => (int) $ulazniUkupnaSuma,
             'najveci_kupci' => $kupciArray,
-            'najveci_duznici' => $duzniciArray
+            'najveci_duznici' => $duzniciArray,
+            'sertifikat_validan' => $sertifikatValidan,
         ];
 
         return response()->json($informacije);
