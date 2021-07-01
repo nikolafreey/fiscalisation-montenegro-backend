@@ -99,6 +99,12 @@ class PreduzeceController extends Controller
      */
     public function update(UpdatePreduzece $request, Preduzece $preduzece)
     {
+        foreach ($request->all() as $key => $value) {
+            if ($value === "null") {
+                $value = json_decode($value);
+            }
+        }
+
         if ($preduzece->verifikovan === 1) {
             if (
                 !auth()->user()->hasRole('Vlasnik')
