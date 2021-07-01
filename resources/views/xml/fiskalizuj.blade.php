@@ -49,6 +49,7 @@
             IsIssuerInVAT="{{ $pdv_obveznik }}"
             TotPriceWoVAT="{{ sprintf('%0.2f', $racun->ukupna_cijena_bez_pdv_popust) }}"
             TotPrice="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv_popust) }}"
+            TaxFreeAmt="{{ sprintf('%0.2f', $racun->ukupna_cijena_sa_pdv_popust) }}"
             OperatorCode="{{ $taxpayer['OP'] }}"
             BusinUnitCode="{{ $taxpayer['BU'] }}"
             SoftCode="{{ $taxpayer['SW'] }}"

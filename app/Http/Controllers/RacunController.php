@@ -415,7 +415,8 @@ class RacunController extends Controller
             'korektivni_racun_vrsta' => 'CORRECTIVE',
             'originalni_racun_id' => $racun->id,
             'jikr' => null,
-            'qr_url' => null
+            'qr_url' => null,
+            'datum_izdavanja' => now(),
         ]);
 
         $storniranRacun->save();
