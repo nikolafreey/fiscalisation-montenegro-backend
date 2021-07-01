@@ -90,7 +90,7 @@
                 @endphp
                 @if($pdv_obveznik === "true")
                     <I
-                        N="{{ $stavka->naziv }}"
+                        N="{{ Str::limit($stavka->naziv, 47) }}"
                         C="{{ $stavka->bar_code }}"
                         U="{{ $stavka->jedinica_mjere->naziv }}"
                         Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"
@@ -106,7 +106,7 @@
                     />
                 @else
                     <I
-                        N="{{ $stavka->naziv }}"
+                        N="{{ Str::limit($stavka->naziv, 47) }}"
                         C="{{ $stavka->bar_code }}"
                         U="{{ $stavka->jedinica_mjere->naziv }}"
                         Q="{{ sprintf('%0.2f', $stavka->kolicina) }}"

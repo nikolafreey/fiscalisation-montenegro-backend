@@ -15,24 +15,24 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->firstOrFail();
-
-        $preduzecaSuDostupna = false;
-        foreach ($user->preduzeca as $preduzece) {
-            $loggedInUsersIntoPreduzeceCount = DB::table('personal_access_tokens')
-                ->where('preduzece_id', $preduzece->id)
-                // ->where('last_used_at', '>', now()->subDays(30))
-                ->count();
-
-            if ($loggedInUsersIntoPreduzeceCount < $preduzece->brojUredjaja) {
-                $preduzecaSuDostupna = true;
-                break;
-            }
-        }
-
-        if (!$preduzecaSuDostupna) {
-            return response()->json('Broj uređaja sa kojih možete koristiti platformu je popunjen! U vašem paketu je broj uređaja ograničen na ' . $preduzece->brojUredjaja, 400);
-        }
+        // $user = User::where('email', $request->email)->firstOrFail();
+        //
+        // $preduzecaSuDostupna = false;
+        // foreach ($user->preduzeca as $preduzece) {
+        //     $loggedInUsersIntoPreduzeceCount = DB::table('personal_access_tokens')
+        //         ->where('preduzece_id', $preduzece->id)
+        //         // ->where('last_used_at', '>', now()->subDays(30))
+        //         ->count();
+        //
+        //     if ($loggedInUsersIntoPreduzeceCount < $preduzece->brojUredjaja) {
+        //         $preduzecaSuDostupna = true;
+        //         break;
+        //     }
+        // }
+        //
+        // if (!$preduzecaSuDostupna) {
+        //     return response()->json('Broj uređaja sa kojih možete koristiti platformu je popunjen! U vašem paketu je broj uređaja ograničen na ' . $preduzece->brojUredjaja, 400);
+        // }
 
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return response()->json('Neuspješna prijava!');
