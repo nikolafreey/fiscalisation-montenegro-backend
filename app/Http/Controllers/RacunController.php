@@ -413,7 +413,9 @@ class RacunController extends Controller
             'broj_racuna' => implode('/', [$racun->poslovnaJedinica->kod_poslovnog_prostora, $redniBroj, now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
             'korektivni_racun' => true,
             'korektivni_racun_vrsta' => 'CORRECTIVE',
-            'originalni_racun_id' => $racun->id
+            'originalni_racun_id' => $racun->id,
+            'jikr' => null,
+            'qr_url' => null
         ]);
 
         $storniranRacun->save();
@@ -585,7 +587,11 @@ class RacunController extends Controller
             return response()->json('Ovaj racun je vec fiskalizovan!', 400);
         }
 
-        Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
+        if ($racun->status === 'korektivni') {
+            Fiskalizuj::dispatch($racun, $racun->ikof, $racun->originalniRacun->ikof, $racun->originalniRacun->created_at)->onConnection('sync');
+        } else {
+            Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
+        }
 
         FailedJobsCustom::where('payload', $racun->id)->delete();
 

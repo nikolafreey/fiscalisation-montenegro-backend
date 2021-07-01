@@ -30,6 +30,13 @@
             IICSignature="{{ $IICData['signature'] }}"
             IsReverseCharge="false"
         >
+        @if($racun->status === 'korektivni')
+            <CorrectiveInv
+                IICRef="{{ $ikof }}"
+                IssueDateTime="{{ $datum }}"
+                Type="CORRECTIVE"
+            ></CorrectiveInv>
+        @endif
     @else
         <Invoice
             TypeOfInv="{{ $tip_placanja }}"

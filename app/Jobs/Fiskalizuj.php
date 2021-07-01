@@ -23,7 +23,7 @@ class Fiskalizuj implements ShouldQueue
 
     public $ikof;
 
-    public function __construct($racun, $ikof = null)
+    public function __construct($racun, $ikof = null, $originalIkof = null, $datum = null)
     {
         if ($racun->vrsta_racuna === 'gotovinski') {
             $potpis = $racun->preduzece->pecat;
@@ -93,6 +93,8 @@ class Fiskalizuj implements ShouldQueue
             'nacin_placanja' => $nacin_placanja,
             'ukupan_pdv' => null,
             'pdv_obveznik' => $racun->preduzece->pdv_obveznik ? "true" : "false",
+            'ikof' => $ikof,
+            'datum' => $datum ? $datum->toIso8601String() : '',
         ];
 
         $this->data['IICData'] = $this->generateIIC();
