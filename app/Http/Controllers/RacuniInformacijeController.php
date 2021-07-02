@@ -132,8 +132,10 @@ class RacuniInformacijeController extends Controller
         }
 
         $sertifikatValidan = false;
-        if ($preduzece->sertifikat !== null || $preduzece->pecat !== null) {
-            $sertifikatValidan = true;
+        if ($preduzece->sertifikat !== null && $preduzece->vazenje_sertifikata_do > now()) {
+            if ($preduzece->pecat !== null && $preduzece->vazenje_pecata_do > now()) {
+                $sertifikatValidan = true;
+            }
         }
 
         $informacije = [
@@ -149,9 +151,9 @@ class RacuniInformacijeController extends Controller
             'ulazni_poredjenje_pdv' => $ulazniPoredjenjeSuma,
             'PDV_na_izlaznim_racunima' => (int) $izlazniUkupnaSuma,
             'PDV_na_ulaznim_racunima' => (int) $ulazniUkupnaSuma,
+            'sertifikat_validan' => $sertifikatValidan,
             'najveci_kupci' => $kupciArray,
             'najveci_duznici' => $duzniciArray,
-            'sertifikat_validan' => $sertifikatValidan,
         ];
 
         return response()->json($informacije);
