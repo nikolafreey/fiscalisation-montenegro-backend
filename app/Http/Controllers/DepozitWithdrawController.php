@@ -50,6 +50,31 @@ class DepozitWithdrawController extends Controller
             }
         }
 
+        $blagajna =
+            getAuthPreduzece($request)->racuni()
+                ->where('vrsta_racuna', 'gotovinski')
+                ->where('status', '!=', 'storniran')
+                ->whereDate('created_at', Carbon::today())
+                ->sum('ukupna_cijena_sa_pdv_popust') +
+            DepozitWithdraw::filterByPermissions()
+                ->whereDate('created_at', Carbon::today())
+                ->where('iznos_withdraw', null)
+                ->sum('iznos_depozit');
+
+        if ($depozitWithdraw->iznos_withdraw != null) {
+            $withdrawLoaded =
+                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->sum('iznos_withdraw');
+            if ($withdrawLoaded > $blagajna) {
+                return response()->json('Već je podignut cijeli iznos iz blagajne za današnji dan!', 400);
+            }
+        }
+
+        if ($depozitWithdraw->iznos_withdraw != null) {
+            if ($depozitWithdraw->iznos_withdraw > $blagajna) {
+                return response()->json('Iznos koji podižete ne može biti veći od ukupnog iznosa blagajne za današnji dan!', 400);
+            }
+        }
+
         $depozitWithdraw->user_id = auth()->id();
         $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
         $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
