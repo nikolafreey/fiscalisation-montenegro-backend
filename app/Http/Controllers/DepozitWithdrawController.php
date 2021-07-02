@@ -63,15 +63,10 @@ class DepozitWithdrawController extends Controller
 
         if ($depozitWithdraw->iznos_withdraw != null) {
             $withdrawLoaded =
-                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->sum('iznos_withdraw');
+                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->sum('iznos_withdraw') + $depozitWithdraw->iznos_withdraw;
+
             if ($withdrawLoaded > $blagajna) {
                 return response()->json('Već je podignut cijeli iznos iz blagajne za današnji dan!', 400);
-            }
-        }
-
-        if ($depozitWithdraw->iznos_withdraw != null) {
-            if ($depozitWithdraw->iznos_withdraw > $blagajna) {
-                return response()->json('Iznos koji podižete ne može biti veći od ukupnog iznosa blagajne za današnji dan!', 400);
             }
         }
 
