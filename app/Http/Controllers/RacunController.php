@@ -596,6 +596,38 @@ class RacunController extends Controller
 
         FailedJobsCustom::where('payload', $racun->id)->delete();
 
-        return response()->json('Uspjesno ste fiskalizovali racun', 200);
+        return response()->json('Uspjesno ste fiskalizovali racun!', 200);
+    }
+
+    public function klonirajRacun(Racun $racun, Request $request)
+    {
+        $redniBroj = Racun::izracunajRedniBrojRacuna();
+
+        $kloniranRacun = $racun->replicate()->fill([
+            'created_at' => now(),
+            'redni_broj' => $redniBroj,
+            'broj_racuna' => implode('/', [$racun->poslovnaJedinica->kod_poslovnog_prostora, $redniBroj, now()->format('Y'), getAuthPreduzece($request)->enu_kod]),
+            'jikr' => null,
+            'qr_url' => null,
+            'datum_izdavanja' => now(),
+        ]);
+
+        $kloniranRacun->save();
+
+        foreach ($racun->stavke as $stavka) {
+            $stavka = $stavka->replicate()->fill([
+                'racun_id' => $kloniranRacun->id,
+            ]);
+
+            $stavka->save();
+        }
+
+        foreach ($racun->porezi as $porez) {
+            $kloniranRacun->porezi()->attach($porez);
+        }
+
+        Fiskalizuj::dispatch($kloniranRacun)->onConnection('sync');
+
+        return response()->json($kloniranRacun->fresh()->load('stavke', 'porezi'), 201);
     }
 }

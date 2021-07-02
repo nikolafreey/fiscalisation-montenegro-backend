@@ -174,6 +174,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('nefiskalizovani-racuni', [RacunController::class, 'nefiskalizovaniRacuni']);
             Route::post('nefiskalizovani-racuni/{racun}', [RacunController::class, 'fiskalizujRacun']);
             Route::post('storniraj-racun/{racun}', [RacunController::class, 'stornirajRacun']);
+            Route::post('kloniraj-racun/{racun}', [RacunController::class, 'klonirajRacun']);
 
             Route::apiResource('racuni-informacije', RacuniInformacijeController::class)->only('index');
 
