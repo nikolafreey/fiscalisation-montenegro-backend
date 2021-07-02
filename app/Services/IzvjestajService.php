@@ -40,7 +40,6 @@ class IzvjestajService
             ->racuni()
             ->where('status', '!=', 'korektivni')
             ->where('status', '!=', 'storniran')
-            ->where('jikr', '!=', null)
             ->when($tipRacuna, function ($q) use ($tipRacuna) {
                 if ($tipRacuna === 'offline') {
                     return $q->where('offline', true);
@@ -246,7 +245,13 @@ class IzvjestajService
         }
 
 
-        $offlineRacuni = $racuni->where('offline', true);
+        $offlineRacuni = $racuni = $this->poslovnaJedinica
+            ->racuni()
+            ->where('status', '!=', 'korektivni')
+            ->where('status', '!=', 'storniran')
+            ->where('jikr', null)
+            ->whereBetween('created_at', [$this->pocetakDana, $this->krajDana])
+            ->get();
 
         $ukupanBrojOfflineRacuna = $offlineRacuni->count();
         $ukupanPrometOfflineRacuna = 0;
