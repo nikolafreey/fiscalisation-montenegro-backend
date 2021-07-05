@@ -603,6 +603,8 @@ class RacunController extends Controller
     {
         $redniBroj = Racun::izracunajRedniBrojRacuna();
 
+        $razlikaIntervala = $racun->created_at->diffInDays($racun->datum_za_placanje);
+
         $kloniranRacun = $racun->replicate()->fill([
             'created_at' => now(),
             'redni_broj' => $redniBroj,
@@ -610,6 +612,8 @@ class RacunController extends Controller
             'jikr' => null,
             'qr_url' => null,
             'datum_izdavanja' => now(),
+            'status' => 'nijeplacen',
+            'datum_za_placanje' => now()->add($razlikaIntervala),
         ]);
 
         $kloniranRacun->save();

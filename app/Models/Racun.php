@@ -53,6 +53,11 @@ class Racun extends Model
         'qr_code'
     ];
 
+    protected $casts = [
+        'datum_izdavanja' => 'datetime',
+        'datum_za_placanje' => 'datetime',
+    ];
+
     public function scopeFilterByPermissions($query)
     {
         if (auth()->user()->hasRole('SuperAdmin')) {

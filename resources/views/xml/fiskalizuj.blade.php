@@ -92,7 +92,7 @@
                     if($stavka->popust_iznos > 0)
                         // TODO: provjeriti da li ovdje upisuje jedinicne cijene ili ukupne
                         // procenat popusta ako je dodat iznos
-                        $popust = ($stavka->popust_iznos / $stavka->cijena_bez_pdv) * 100;
+                        $popust = $stavka->popust_iznos * $stavka->kolicina / $stavka->ukupna_sa_pdv * 100;
                     else
                         $popust = $stavka->popust_procenat;
                 @endphp
