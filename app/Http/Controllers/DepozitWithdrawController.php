@@ -74,7 +74,7 @@ class DepozitWithdrawController extends Controller
                                 ->sum('iznos_withdraw') + $depozitWithdraw->iznos_withdraw;
 
             if ($withdrawLoaded > $blagajna) {
-                return response()->json('Već je podignut cijeli iznos iz blagajne za današnji dan!', 400);
+                return response()->json('U blagajni nema gotovine u iznosu koji ste naveli!', 400);
             }
         }
 

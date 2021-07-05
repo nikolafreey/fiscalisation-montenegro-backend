@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Racun;
 use App\Models\UlazniRacun;
 use Illuminate\Http\Request;
@@ -17,14 +16,14 @@ class RacuniInformacijeController extends Controller
 
         // Depozit i withdraw
         $depozit = DepozitWithdraw::filterByPermissions()
-                    ->whereDate('created_at', Carbon::today())
+                    ->whereDate('created_at', today())
                     ->whereNull('iznos_withdraw')
                     ->where('fiskalizovan', true)
                     ->first()
                     ->iznos_depozit ?? 0;
 
         $withdraw = DepozitWithdraw::filterByPermissions()
-                    ->whereDate('created_at', Carbon::today())
+                    ->whereDate('created_at', today())
                     ->whereNull('iznos_depozit')
                     ->where('fiskalizovan', true)
                     ->sum('iznos_withdraw');
@@ -35,13 +34,13 @@ class RacuniInformacijeController extends Controller
                         ->where('status', '!=', 'storniran')
                         ->where('status', '!=', 'korektivni')
                         ->whereNotNull('jikr')
-                        ->whereDate('created_at', Carbon::today())
+                        ->whereDate('created_at', today())
                         ->sum('ukupna_cijena_sa_pdv_popust') + $depozit - $withdraw;
 
         // Naplaceno
         $naplaceno = $preduzece
                         ->racuni()
-                        ->whereMonth('created_at', Carbon::now()->month)
+                        ->whereMonth('created_at', now()->month)
                         ->where('status', 'placen')
                         ->whereNotNull('jikr')
                         ->sum('ukupna_cijena_sa_pdv_popust');
@@ -49,7 +48,7 @@ class RacuniInformacijeController extends Controller
         // Ceka se uplata
         $cekaSeUplata = $preduzece
                         ->racuni()
-                        ->whereMonth('created_at', Carbon::now()->month)
+                        ->whereMonth('created_at', now()->month)
                         ->where('status', 'nijeplacen')
                         ->whereNotNull('jikr')
                         ->sum('ukupna_cijena_sa_pdv_popust');
@@ -57,61 +56,62 @@ class RacuniInformacijeController extends Controller
         // Nije moguce platiti
         $nijeMogucePlatiti = $preduzece
                         ->racuni()
-                        ->whereMonth('created_at', Carbon::now()->month)
+                        ->whereMonth('created_at', now()->month)
                         ->where('status', 'nenaplativ')
                         ->whereNotNull('jikr')
                         ->sum('ukupna_cijena_sa_pdv_popust');
 
         // Izlazni obracun
         $izlazniQuery = Racun::query();
-        $izlazniQueryAll = Racun::query();
 
-        $izlazniUkupnaSuma = $izlazniQueryAll->filterByPermissions()
+        $izlazniUkupnaSuma = $izlazniQuery->filterByPermissions()
                                 ->whereMonth('created_at', now()->month)
                                 ->where('tip_racuna', Racun::RACUN)
+                                ->where('status', '!=', 'korektivni')
+                                ->where('status', '!=', 'storniran')
                                 ->whereNotNull('jikr')
                                 ->sum('ukupan_iznos_pdv') ?? 0;
 
         $izdatiTrenutniMjesecSuma = $izlazniQuery->filterByPermissions()
                                 ->whereMonth('created_at', now()->month)
                                 ->where('tip_racuna', Racun::RACUN)
+                                ->where('status', '!=', 'korektivni')
+                                ->where('status', '!=', 'storniran')
                                 ->whereNotNull('jikr')
                                 ->sum('ukupna_cijena_sa_pdv_popust') ?? 0;
 
         $izdatiProsliMjesecSuma = $izlazniQuery->filterByPermissions()
                                 ->whereMonth('created_at', now()->subMonth()->month)
                                 ->where('tip_racuna', Racun::RACUN)
+                                ->where('status', '!=', 'korektivni')
+                                ->where('status', '!=', 'storniran')
                                 ->whereNotNull('jikr')
                                 ->sum('ukupna_cijena_sa_pdv_popust') ?? 0;
 
         // Ulazni obracun
         $ulazniQuery = UlazniRacun::query();
-        $ulazniQueryAll = UlazniRacun::query();
 
-        $ulazniUkupnaSuma = $ulazniQueryAll->filterByPermissions()
+        $ulazniUkupnaSuma = $ulazniQuery->filterByPermissions()
                                 ->whereMonth('created_at', now()->month)
                                 ->where('tip_racuna', UlazniRacun::RACUN)
-                                ->whereNotNull('jikr')
                                 ->sum('ukupan_iznos_pdv') ?? 0;
 
         $primljeniTrenutniMjesecSuma = $ulazniQuery->filterByPermissions()
                             ->whereMonth('created_at', now()->month)
                             ->where('tip_racuna', UlazniRacun::RACUN)
-                            ->whereNotNull('jikr')
-                            ->sum('ukupan_iznos_pdv') ?? 0;
+                            ->sum('ukupna_cijena_sa_pdv') ?? 0;
 
         $primljeniProsliMjesecSuma = $izlazniQuery->filterByPermissions()
                             ->whereMonth('created_at', now()->subMonth()->month)
                             ->where('tip_racuna', UlazniRacun::RACUN)
-                            ->whereNotNull('jikr')
-                            ->sum('ukupna_cijena_sa_pdv_popust') ?? 0;
+                            ->sum('ukupna_cijena_sa_pdv') ?? 0;
 
         // Najveci kupci
         $kupci = $preduzece->partneri()
                     ->withCount(['racuni as suma_ukupna_cijena_sa_pdv_popust' => function ($query) {
                         $query->where('status', 'placen')
                             ->whereNotNull('jikr')
-                            ->whereMonth('created_at', Carbon::now()->month)
+                            ->whereMonth('created_at', now()->month)
                             ->select(DB::raw('SUM(ukupna_cijena_sa_pdv_popust) as suma_ukupna_cijena_sa_pdv_popust'));
                     }])
                     ->orderByDesc('suma_ukupna_cijena_sa_pdv_popust')
@@ -122,7 +122,7 @@ class RacuniInformacijeController extends Controller
             ->withCount(['racuni as suma_ukupna_cijena_sa_pdv_popust' => function ($query) {
                 $query->where('status', 'nijeplacen')
                     ->whereNotNull('jikr')
-                    ->whereMonth('created_at', Carbon::now()->month)
+                    ->whereMonth('created_at', now()->month)
                     ->select(DB::raw('SUM(ukupna_cijena_sa_pdv_popust) as suma_ukupna_cijena_sa_pdv_popust'));
             }])
             ->orderByDesc('suma_ukupna_cijena_sa_pdv_popust')
@@ -133,7 +133,7 @@ class RacuniInformacijeController extends Controller
         foreach ($kupci as $kupac) {
             $kupciArray[] = [
                 'kupac' => ! $kupac->preduzece_tabela_id ? $kupac->fizicko_lice : $kupac->preduzece,
-                'cijena' => (int) $kupac->suma_ukupna_cijena_sa_pdv_popust
+                'cijena' => (float) $kupac->suma_ukupna_cijena_sa_pdv_popust
             ];
         }
 
@@ -141,7 +141,7 @@ class RacuniInformacijeController extends Controller
         foreach ($duznici as $duznik) {
             $duzniciArray[] = [
                 'duznik' => ! $duznik->preduzece_tabela_id ? $duznik->fizicko_lice : $duznik->preduzece,
-                'cijena' => (int) $duznik->suma_ukupna_cijena_sa_pdv_popust
+                'cijena' => (float) $duznik->suma_ukupna_cijena_sa_pdv_popust
             ];
         }
 
@@ -154,17 +154,17 @@ class RacuniInformacijeController extends Controller
 
         $informacije = [
             'preduzece_naziv' => $preduzece->kratki_naziv,
-            'blagajna' => (int) $blagajna,
-            'depozit' => (int) $depozit,
-            'naplaceno' => (int) $naplaceno,
-            'ceka_se_uplata' => (int) $cekaSeUplata,
-            'nije_moguce_naplatiti' => (int) $nijeMogucePlatiti,
-            'izdati_racuni' => (int) $izdatiTrenutniMjesecSuma,
+            'blagajna' => (float) $blagajna,
+            'depozit' => (float) $depozit,
+            'naplaceno' => (float) $naplaceno,
+            'ceka_se_uplata' => (float) $cekaSeUplata,
+            'nije_moguce_naplatiti' => (float) $nijeMogucePlatiti,
+            'izdati_racuni' => (float) $izdatiTrenutniMjesecSuma,
             'izdati_racuni_prosli_mjesec' => $izdatiProsliMjesecSuma,
-            'PDV_na_izlaznim_racunima' => (int) $izlazniUkupnaSuma,
-            'primljeni_racuni' => (int) $primljeniTrenutniMjesecSuma,
+            'PDV_na_izlaznim_racunima' => (float) $izlazniUkupnaSuma,
+            'primljeni_racuni' => (float) $primljeniTrenutniMjesecSuma,
             'primljeni_racuni_prosli_mjesec' => $primljeniProsliMjesecSuma,
-            'PDV_na_ulaznim_racunima' => (int) $ulazniUkupnaSuma,
+            'PDV_na_ulaznim_racunima' => (float) $ulazniUkupnaSuma,
             'sertifikat_validan' => $sertifikatValidan,
             'najveci_kupci' => $kupciArray,
             'najveci_duznici' => $duzniciArray,
