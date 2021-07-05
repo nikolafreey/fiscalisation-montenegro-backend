@@ -50,12 +50,14 @@ class Racun extends Model
         'oslobodjen_pdv',
         'redni_broj',
         'originalni_racun_id',
-        'qr_code'
+        'qr_code',
+        'datum_fiskalizacije',
     ];
 
     protected $casts = [
         'datum_izdavanja' => 'datetime',
         'datum_za_placanje' => 'datetime',
+        'datum_fiskalizacije' => 'datetime',
     ];
 
     public function scopeFilterByPermissions($query)

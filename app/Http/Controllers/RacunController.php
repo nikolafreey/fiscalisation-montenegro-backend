@@ -417,9 +417,14 @@ class RacunController extends Controller
             'jikr' => null,
             'qr_url' => null,
             'datum_izdavanja' => now(),
+            'datum_za_placanje' => $racun->datum_za_placanje,
         ]);
 
         $storniranRacun->save();
+
+        if ($racun->datum_za_placanje < now()) {
+            $storniranRacun->update(['datum_za_placanje' => now()]);
+        }
 
         if (isset($request->stavke) || !empty($request->stavke)) {
             foreach ($racun->stavke as $stavka) {
@@ -593,6 +598,8 @@ class RacunController extends Controller
         } else {
             Fiskalizuj::dispatch($racun, $racun->ikof)->onConnection('sync');
         }
+
+        $racun->update(['datum_fiskalizacije' => now()]);
 
         FailedJobsCustom::where('payload', $racun->id)->delete();
 
