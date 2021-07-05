@@ -23,10 +23,15 @@ class OdabranoPreduzeceMiddleware
             return $next($request);
         }
 
-        $odabranoPreduzeceID = DB::table('personal_access_tokens')
+        $preduzece = DB::table('personal_access_tokens')
             ->where('token', getAccessToken($request))
-            ->first()
-            ->preduzece_id;
+            ->first();
+
+        if (! $preduzece) {
+            return response()->json('Bearer token nije pronadjen!', 400);
+        }
+
+        $odabranoPreduzeceID = $preduzece->preduzece_id;
 
         if ($odabranoPreduzeceID === null) {
             $brojPreduzeca = auth()->user()->preduzeca()->count();

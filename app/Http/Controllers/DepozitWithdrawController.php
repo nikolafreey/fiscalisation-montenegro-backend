@@ -17,17 +17,11 @@ class DepozitWithdrawController extends Controller
 
     public function getDepozitToday()
     {
-        $dan = Carbon::now()->day;
-        $mjesec = Carbon::now()->month;
-        $godina = Carbon::now()->year;
-
-        $pocetakDana = "{$godina}-{$mjesec}-{$dan} 00:00:00";
-        $krajDana = "{$godina}-{$mjesec}-{$dan} 23:59:59";
-
-        return DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('fiskalizovan', 1)->first();
-
-        // return DB::select(DB::raw('SELECT iznos_depozit FROM `depozit_withdraws` WHERE created_at BETWEEN "' . $pocetakDana . '" AND "' . $krajDana . '" LIMIT 1'));
-        // return DepozitWithdraw::whereBetween('created_at', ["2021-03-02 00:00:00", "2021-03-02 23:59:59"])->get(); ?? Zasto ne radi?
+        return DepozitWithdraw::filterByPermissions()
+                ->whereDate('created_at', today())
+                ->whereNull('iznos_withdraw')
+                ->where('fiskalizovan', true)
+                ->first();
     }
 
     public function index()
@@ -43,27 +37,41 @@ class DepozitWithdrawController extends Controller
             return response()->json('Ne možete unijeti i povući depozit istovremeno', 400);
         }
 
-        $depozitLoaded = $this->getDepozitToday();
+        if ($depozitWithdraw->iznos_depozit < 0 ) {
+            return response()->json('Depozit nije validan!', 400);
+        }
+
+        if ($depozitWithdraw->iznos_withdraw < 0) {
+            return response()->json('Withdraw nije validan!', 400);
+        }
+
+        $depozitLoaded =  $this->getDepozitToday();
+
         if ($depozitWithdraw->iznos_depozit != null) {
             if ($depozitLoaded) {
                 return response()->json('Već je dodat depozit za današnji dan!', 400);
             }
         }
 
-        $blagajna =
-            getAuthPreduzece($request)->racuni()
-                ->where('vrsta_racuna', 'gotovinski')
-                ->where('status', '!=', 'storniran')
-                ->whereDate('created_at', Carbon::today())
-                ->sum('ukupna_cijena_sa_pdv_popust') +
-            DepozitWithdraw::filterByPermissions()
-                ->whereDate('created_at', Carbon::today())
-                ->where('iznos_withdraw', null)
-                ->sum('iznos_depozit');
-
         if ($depozitWithdraw->iznos_withdraw != null) {
-            $withdrawLoaded =
-                DepozitWithdraw::filterByPermissions()->whereDate('created_at', Carbon::today())->where('iznos_withdraw', '!=', null)->sum('iznos_withdraw') + $depozitWithdraw->iznos_withdraw;
+            $depozit = 0;
+            if ($depozitLoaded) {
+                $depozit = $depozitLoaded->iznos_depozit;
+            }
+
+            $blagajna = getAuthPreduzece($request)->racuni()
+                    ->where('vrsta_racuna', 'gotovinski')
+                    ->where('status', '!=', 'storniran')
+                    ->where('status', '!=', 'korektivni')
+                    ->whereNotNull('jikr')
+                    ->whereDate('created_at', Carbon::today())
+                    ->sum('ukupna_cijena_sa_pdv_popust') + $depozit;
+
+            $withdrawLoaded = DepozitWithdraw::filterByPermissions()
+                                ->whereDate('created_at', Carbon::today())
+                                ->whereNull('iznos_depozit')
+                                ->where('fiskalizovan', true)
+                                ->sum('iznos_withdraw') + $depozitWithdraw->iznos_withdraw;
 
             if ($withdrawLoaded > $blagajna) {
                 return response()->json('Već je podignut cijeli iznos iz blagajne za današnji dan!', 400);
@@ -73,16 +81,6 @@ class DepozitWithdrawController extends Controller
         $depozitWithdraw->user_id = auth()->id();
         $depozitWithdraw->preduzece_id = getAuthPreduzeceId($request);
         $depozitWithdraw->poslovna_jedinica_id = getAuthPoslovnaJedinicaId($request);
-
-        if ($depozitWithdraw->iznos_depozit < 0) {
-            return response()->json('Depozit nije validan', 400);
-        }
-
-        if ($depozitWithdraw) {
-            if ($depozitWithdraw->iznos_withdraw < 0) {
-                return response()->json('Withdraw nije validan', 400);
-            }
-        }
 
         $depozitWithdraw->save();
 

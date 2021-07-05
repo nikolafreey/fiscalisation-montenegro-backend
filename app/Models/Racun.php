@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\RacuniIndexConfigurator;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 use ScoutElastic\Searchable;
 use App\Traits\ImaAktivnost;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -23,11 +21,6 @@ class Racun extends Model
     protected $naziv = 'vrsta_racuna';
 
     protected $table = 'racuni';
-
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
 
     protected $fillable = [
         'ikof',
