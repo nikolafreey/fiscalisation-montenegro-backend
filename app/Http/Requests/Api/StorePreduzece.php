@@ -53,4 +53,48 @@ class StorePreduzece extends BaseApiRequest
             'djelatnost_id' => 'required|int'
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'kratki_naziv' => $this->kratki_naziv === "null" ? null : $this->kratki_naziv,
+            'puni_naziv' => $this->puni_naziv === "null" ? null : $this->puni_naziv,
+            'oblik_preduzeca' => $this->oblik_preduzeca === "null" ? null : $this->oblik_preduzeca,
+            'adresa' => $this->adresa === "null" ? null : $this->adresa,
+            'grad' => $this->grad === "null" ? null : $this->grad,
+            'drzava' => $this->drzava === "null" ? null : $this->drzava,
+            'country_code' => $this->country_code === "null" ? null : $this->country_code,
+            'telefon' => $this->telefon === "null" ? null : $this->telefon,
+            'telefon_viber' => $this->telefon_viber === "null" ? null : $this->telefon_viber,
+            'telefon_whatsapp' => $this->telefon_whatsapp === "null" ? null : $this->telefon_whatsapp,
+            'telefon_facetime' => $this->telefon_facetime === "null" ? null : $this->telefon_facetime,
+            'fax' => $this->fax === "null" ? null : $this->fax,
+            'email' => $this->email === "null" ? null : $this->email,
+            'website' => $this->website === "null" ? null : $this->website,
+            'pib' => $this->pib === "null" ? null : $this->pib,
+            'pdv' => $this->pdv === "null" ? null : $this->pdv,
+            'iban' => $this->iban === "null" ? null : $this->iban,
+            'bic_swift' => $this->bic_swift === "null" ? null : $this->bic_swift,
+            'kontakt_ime' => $this->kontakt_ime === "null" ? null : $this->kontakt_ime,
+            'kontakt_prezime' => $this->kontakt_prezime === "null" ? null : $this->kontakt_prezime,
+            'kontakt_telefon' => $this->kontakt_telefon === "null" ? null : $this->kontakt_telefon,
+            'kontakt_viber' => $this->kontakt_viber === "null" ? null : $this->kontakt_viber,
+            'kontakt_whatsapp' => $this->kontakt_whatsapp === "null" ? null : $this->kontakt_whatsapp,
+            'kontakt_facetime' => $this->kontakt_facetime === "null" ? null : $this->kontakt_facetime,
+            'kontakt_email' => $this->kontakt_email === "null" ? null : $this->kontakt_email,
+            'twitter_username' => $this->twitter_username === "null" ? null : $this->twitter_username,
+            'facebook_username' => $this->kontakt_email === "null" ? null : $this->kontakt_email,
+            'instagram_username' => $this->kontakt_email === "null" ? null : $this->kontakt_email,
+            'logotip' => $this->logotip === "null" ? null : $this->logotip,
+            'thumbnail' => $this->thumbnail === "null" ? null : $this->thumbnail,
+            'opis' => $this->opis === "null" ? null : $this->opis,
+            'lokacija_lat' => $this->lokacija_lat === "null" ? null : $this->lokacija_lat,
+            'lokacija_long' => $this->lokacija_long === "null" ? null : $this->lokacija_long,
+            'status' => $this->status === "null" ? null : $this->status,
+            'privatnost' => $this->privatnost === "null" ? null : $this->privatnost,
+            'pdv_obveznik' => $this->pdv_obveznik === "null" ? null : $this->pdv_obveznik,
+            'kategorija_id' => $this->kategorija_id === "null" ? null : $this->kategorija_id,
+            'djelatnost_id' => $this->djelatnost_id === "null" ? null : $this->djelatnost_id,
+        ]);
+    }
 }

@@ -47,13 +47,13 @@ class DepozitWithdrawController extends Controller
 
         $depozitLoaded =  $this->getDepozitToday();
 
-        if ($depozitWithdraw->iznos_depozit != null) {
+        if ($depozitWithdraw->iznos_depozit) {
             if ($depozitLoaded) {
                 return response()->json('Već je dodat depozit za današnji dan!', 400);
             }
         }
 
-        if ($depozitWithdraw->iznos_withdraw != null) {
+        if ($depozitWithdraw->iznos_withdraw) {
             $depozit = 0;
             if ($depozitLoaded) {
                 $depozit = $depozitLoaded->iznos_depozit;

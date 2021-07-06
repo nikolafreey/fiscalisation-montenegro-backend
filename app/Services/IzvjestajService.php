@@ -314,7 +314,7 @@ class IzvjestajService
                 'ukupno' => [
                     'ukupno_osnovica_po_stopama_21_7_0' =>  $ukupnoOsnovicaPoStopama,
                     'ukupno_porez_po_stopama_21_7_0' =>  $ukupanPorezPoStopama,
-                    'ukupan_promet' =>  $ukupanPromet
+                    'ukupan_promet' => $ukupanPromet
                 ],
 
                 'fiskalni_racuni' => [
@@ -367,7 +367,7 @@ class IzvjestajService
                 'inicijalni_gotovinski_depozit' => $ukupanDepozit,
                 'ukupan_promet' => $ukupanPromet,
                 'non_cash_promet' => $ukupanPrometBezgotovinskihRacuna,
-                'card_i_order_promet' => $ukupanPrometGotovinskihCardRacuna + $ukupanPrometOrderRacuna +$ukupanPrometBezgotovinskihBusinesscardRacuna,
+                'card_i_order_promet' => $ukupanPrometGotovinskihCardRacuna + $ukupanPrometOrderRacuna + $ukupanPrometBezgotovinskihBusinesscardRacuna,
                 'ukupno_withdraw' => $ukupanWithdraw,
                 'gotovina_u_enu' => $ukupanDepozit + $ukupanPrometGotovinskihRacuna,
 

@@ -97,7 +97,7 @@ class PreduzeceController extends Controller
      * @param  \App\Models\Preduzece  $preduzece
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePreduzece $request, Preduzece $preduzece)
+    public function update(StorePreduzece $request, Preduzece $preduzece)
     {
         foreach ($request->all() as $key => $value) {
             if ($value === "null") {
