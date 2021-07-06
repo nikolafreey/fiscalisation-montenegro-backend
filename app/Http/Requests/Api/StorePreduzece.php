@@ -42,7 +42,7 @@ class StorePreduzece extends BaseApiRequest
             'facebook_username' => 'nullable',
             'logotip' => 'nullable',
             'thumbnail' => 'nullable',
-            'opis' => 'string|max:255|nullable',
+            'opis' => 'nullable',
             'lokacija_lat' => 'string|max:255|nullable',
             'lokacija_long' => 'string|max:255|nullable',
             'status' => 'nullable',

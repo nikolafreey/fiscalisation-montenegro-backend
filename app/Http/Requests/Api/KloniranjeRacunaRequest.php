@@ -12,7 +12,7 @@ class KloniranjeRacunaRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'opis' => 'nullable|max:255',
+            'opis' => 'nullable',
         ];
     }
 }
