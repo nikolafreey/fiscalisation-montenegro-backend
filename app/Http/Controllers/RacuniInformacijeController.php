@@ -146,9 +146,10 @@ class RacuniInformacijeController extends Controller
         }
 
         $sertifikatValidan = false;
-        if ($preduzece->sertifikat !== null && $preduzece->vazenje_sertifikata_do > now()) {
-            $sertifikatValidan = true;
-        } else if ($preduzece->pecat !== null && $preduzece->vazenje_pecata_do > now()) {
+        if (
+            ($preduzece->sertifikat && $preduzece->vazenje_sertifikata_do > now()) ||
+            ($preduzece->pecat && $preduzece->vazenje_pecata_do > now())
+        ) {
             $sertifikatValidan = true;
         }
 

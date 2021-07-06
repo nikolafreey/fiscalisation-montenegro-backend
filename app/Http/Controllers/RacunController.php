@@ -625,6 +625,10 @@ class RacunController extends Controller
 
         $kloniranRacun->save();
 
+        if ($request->opis) {
+            $kloniranRacun->update(['opis' => $request->opis]);
+        }
+
         foreach ($racun->stavke as $stavka) {
             $stavka = $stavka->replicate()->fill([
                 'racun_id' => $kloniranRacun->id,

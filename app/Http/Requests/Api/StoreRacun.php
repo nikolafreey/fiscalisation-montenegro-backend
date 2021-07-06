@@ -23,6 +23,7 @@ class StoreRacun extends BaseApiRequest
             'nacin_placanja' => 'nullable',
             'broj_racuna' => 'nullable',
             'datum_za_placanje' => 'nullable',
+            'datum_fiskalizacije' => 'nullable',
             'kod_poslovnog_prostora_enu' => 'nullable',
             'ukupna_cijena_bez_pdv' => 'nullable',
             'ukupna_cijena_sa_pdv' => 'nullable',
