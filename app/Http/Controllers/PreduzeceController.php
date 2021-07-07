@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\StorePreduzece;
 use App\Http\Requests\Api\UpdatePreduzece;
+use App\Models\OvlascenoLice;
 use App\Models\Preduzece;
 use App\Models\ZiroRacun;
 use Illuminate\Http\Request;
@@ -49,12 +50,26 @@ class PreduzeceController extends Controller
             function () use ($request) {
                 $preduzece = Preduzece::make($request->validated());
                 $preduzece->pdv_obveznik = $request->pdv_obveznik;
+                $preduzece->skype_username = $request->skype_username;
 
                 if ($request->logotip && $request->logotip != "undefined" && strlen($request->logotip) <= 10) {
                     $preduzece->setLogotipAttribute($request->logotip);
                 }
 
+                $ovlascenoLice = OvlascenoLice::make([
+                    'ime' => $request->ovlasceno_lice_kontakt_ime,
+                    'prezime' => $request->ovlasceno_lice_kontakt_prezime,
+                    'telefon' => $request->ovlasceno_lice_kontakt_telefon,
+                    'email' => $request->ovlasceno_lice_kontakt_email,
+                    'telefon_viber' => $request->ovlasceno_lice_kontakt_viber,
+                    'telefon_whatsapp' => $request->ovlasceno_lice_kontakt_whatsapp,
+                    'telefon_facetime' => $request->ovlasceno_lice_kontakt_facetime,
+                ]);
+                $ovlascenoLice->save();
+
                 $preduzece->save();
+
+                $preduzece->ovlascena_lica()->attach($ovlascenoLice, ["preduzece_id" => $preduzece->id]);
 
                 $ziroRacuni = json_decode($request->input('ziro_racuni'));
 
@@ -153,6 +168,18 @@ class PreduzeceController extends Controller
         $preduzece->pdv_obveznik = $request->pdv_obveznik;
         $preduzece->pdv = $request->pdv;
         $preduzece->telefon = $request->telefon;
+        $preduzece->skype_username = $request->skype_username;
+
+        $ovlascenoLice = new OvlascenoLice([
+            'ime' => $request->ovlasceno_lice_kontakt_ime,
+            'prezime' => $request->ovlasceno_lice_kontakt_prezime,
+            'telefon' => $request->ovlasceno_lice_kontakt_telefon,
+            'email' => $request->ovlasceno_lice_kontakt_email,
+            'telefon_viber' => $request->ovlasceno_lice_kontakt_viber,
+            'telefon_whatsapp' => $request->ovlasceno_lice_kontakt_whatsapp,
+            'telefon_facetime' => $request->ovlasceno_lice_kontakt_facetime,
+        ]);
+        $preduzece->ovlascena_lica()->attach($ovlascenoLice);
 
         $preduzece->save();
 

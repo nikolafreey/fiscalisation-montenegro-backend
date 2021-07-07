@@ -19,10 +19,10 @@ class OvlascenoLice extends Model
         'ime',
         'prezime',
         'telefon',
+        'email',
         'telefon_viber',
         'telefon_whatsapp',
         'telefon_facetime',
-        'email'
     ];
 
     public function preduzeca()
