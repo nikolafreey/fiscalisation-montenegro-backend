@@ -32,10 +32,10 @@ class PreduzeceController extends Controller
     public function index(Request $request)
     {
         if ($request->search) {
-            return Preduzece::search($request->search . '*')->with('partneri', 'ziro_racuni:id,preduzece_id,broj_racuna', 'djelatnosti')->paginate(50);
+            return Preduzece::search($request->search . '*')->with('partneri', 'ziro_racuni:id,preduzece_id,broj_racuna', 'djelatnosti', 'ovlascena_lica')->paginate(50);
         }
 
-        return Preduzece::with('partneri', 'ziro_racuni:id,preduzece_id,broj_racuna', 'djelatnosti')->orderBy('created_at', 'DESC')->paginate(15);
+        return Preduzece::with('partneri', 'ziro_racuni:id,preduzece_id,broj_racuna', 'djelatnosti', 'ovlascena_lica')->orderBy('created_at', 'DESC')->paginate(15);
     }
 
     /**
