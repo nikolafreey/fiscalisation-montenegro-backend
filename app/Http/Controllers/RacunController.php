@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Api\KloniranjeRacunaRequest;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Grupa;
@@ -589,7 +590,7 @@ class RacunController extends Controller
 
     public function fiskalizujRacun(Racun $racun)
     {
-        if ($racun->jikr !== null) {
+        if ($racun->jikr) {
             return response()->json('Ovaj racun je vec fiskalizovan!', 400);
         }
 
@@ -606,7 +607,7 @@ class RacunController extends Controller
         return response()->json('Uspjesno ste fiskalizovali racun!', 200);
     }
 
-    public function klonirajRacun(Racun $racun, Request $request)
+    public function klonirajRacun(Racun $racun, KloniranjeRacunaRequest $request)
     {
         $redniBroj = Racun::izracunajRedniBrojRacuna();
 
@@ -625,9 +626,7 @@ class RacunController extends Controller
 
         $kloniranRacun->save();
 
-        if ($request->opis) {
-            $kloniranRacun->update(['opis' => $request->opis]);
-        }
+        $kloniranRacun->update($request->validated());
 
         foreach ($racun->stavke as $stavka) {
             $stavka = $stavka->replicate()->fill([
